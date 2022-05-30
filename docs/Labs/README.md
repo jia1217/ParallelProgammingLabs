@@ -3,6 +3,6 @@ sort: 2
 ---
 
 
-# Finite Impulse Response Filter (FIR)
+# Parallel Progamming Labs
 
-## Introduction
+<!-- {% include list.liquid %} -->
