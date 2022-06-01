@@ -19,7 +19,9 @@ sort: 1
 
 
 Finate impulse response filter is widely used. The algorithm is simply shown below:
+
 $$y[i] = \sum_{j = 0}^{N-1}h[j]x[i-j]$$
+
 where $h[j]$ is the impulse response.
 
 
@@ -115,6 +117,7 @@ The II = 2 comes from a fake data dependency. Since the hardware circuit is alwa
  
 ## Optimation 1: Remove if/else branches in for loop:
 The if/else operation is inefficient in for loop. Loop hoisted can be carried out.  "HLS tool creates logical hardware that checks if the condition is met, which is executed in every iteration of the loop. Furthermore, this conditional structure limits the execution of the statements in either the if or else branches; these statements can only be executed after the if condition statement is resolved."[^1] Now the "Shift_Accum_Loop" becomes:
+
 ```c++
 Shift_Accum_Loop:
     for (i = N - 1; i > 0;i--){
@@ -125,6 +128,7 @@ Shift_Accum_Loop:
     acc += x_temp.data * c[0];
     shift_reg[0] = x_temp.data;
 ```
+
 With the new implementation, the II of the "Shift_Accum_Loop" becomes 1 and the II of the entire module becomes 18. This is huge improvement. However, this performance increasement does not caused directly from the  loop  hoisting optimization. Moving branch i == 0 out just happens to reduce one write operation to the shift_reg. This design costs 407 FFs and 196 LUTs, which is less than the original code because of the loop c optimization. 
 
 [^1]: [Parallel Programming for FPGAs ]()
