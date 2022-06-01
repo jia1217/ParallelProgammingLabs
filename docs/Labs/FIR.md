@@ -15,7 +15,7 @@ sort: 1
         src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
 </script>
 
-# FIR
+## FIR
 
 
 Finate impulse response filter is widely used. The algorithm is simply shown below:
