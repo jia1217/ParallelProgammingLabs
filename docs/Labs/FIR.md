@@ -15,7 +15,7 @@ sort: 1
         src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
 </script>
 
-# FIR Project
+# FIR
 
 
 Finate impulse response filter is widely used. The algorithm is simply shown below:
@@ -115,7 +115,7 @@ The II = 2 comes from a fake data dependency. Since the hardware circuit is alwa
 
 >  The II Violation in module ... Unable to enforce a carried dependence constraint (II = 1, distance = 1, offset = 1) between '**store**' operation of variable 'shift_reg_load', ./srcs/fir.cpp:25 on array 'shift_reg' and '**store**' operation ('0_write_ln22', ./srcs/fir.cpp:22) of variable 'tmp_data_1_read' on array 'shift_reg'.
  
-## Optimation 1: Remove if/else branches in for loop:
+## Optimization 1: Loop hoisting
 The if/else operation is inefficient in for loop. Loop hoisted can be carried out.  "HLS tool creates logical hardware that checks if the condition is met, which is executed in every iteration of the loop. Furthermore, this conditional structure limits the execution of the statements in either the if or else branches; these statements can only be executed after the if condition statement is resolved."[^1] Now the "Shift_Accum_Loop" becomes:
 
 ```c++
@@ -130,6 +130,30 @@ Shift_Accum_Loop:
 ```
 
 With the new implementation, the II of the "Shift_Accum_Loop" becomes 1 and the II of the entire module becomes 18. This is huge improvement. However, this performance increasement does not caused directly from the  loop  hoisting optimization. Moving branch i == 0 out just happens to reduce one write operation to the shift_reg. This design costs 407 FFs and 196 LUTs, which is less than the original code because of the loop c optimization. 
+
+## Optimization 2: Loop fission
+There are two operations in the Shift_Accum_Loop, one is moving the shift_reg and another one is doing the multiplication and accumulation. Loop fission means seperate the operations into independent loops. In this case, the code should become:
+
+```c++
+
+TDL:
+    for (i = N - 1; i > 0;i--){
+        shift_reg[i] = shift_reg[i-1];
+    }
+    shift_reg[0] = x_temp.data;
+
+MAC:
+    for (i = N - 1; i >= 0;i--){
+        acc += shift_reg[i] * c[i];
+    }
+
+```
+
+In the code, label "TDL" means tapped delay line, which is implemented as shift registers in digital circuit, and "MAC" means multiply accumulate. Notice that in TDL the loop hoisting is used as it is required to check if i equals 0, while the MAC loop doesn't need loop hoisting (i > 0 or i >= 0). The II of the two loops are all 1 and the II for the entire module is 31. The TDL and MAC loops costs  415 FFs and 247 LUTs. This is actually worse than the result with optimization 1 only. The II of the module becomes 31 as one loop becomes two loops each requires 11 trips. More LUTs are required as the each loop requires its own control circuit.
+
+## Optimization 3: Loop Unrolling
+The optimization 2 doesn't make the design faster, but it enables the following optimizations. The HLS execute the loops in a sequential manner, which means only one copy of the 
+
 
 [^1]: [Parallel Programming for FPGAs ]()
 
