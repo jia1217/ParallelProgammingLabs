@@ -161,9 +161,117 @@ In the code, label "TDL" means tapped delay line, which is implemented as shift 
 
 ## Optimization 3: Loop Unrolling
 
-The optimization 2 doesn't make the design faster, but it enables the following optimizations. The HLS execute the loops in a sequential manner, which means only one copy of the 
+The optimization 2 doesn't make the design faster, but it makes further optimizations possible. The HLS execute the loops in a sequential manner, which means only one circuit instance of the loop body. Loop unrolling basicly tries to create multiple running instances for the loop body. A manully unrolling TDL loop is shown below:
+
+```c++
+
+TDL:
+    for (i = N - 1; i > 1;i= i - 2){
+        shift_reg[i] = shift_reg[i-1];
+        shift_reg[i-1] = shift_reg[i-2];
+    }
+    if (i == 1){
+        shift_reg[1] = shift_reg[0];
+    }
+    shift_reg[0] = x_temp.data;
+
+```
+
+``` if (i == 1)``` is added to support even N. The unrollong reduces the trip count and increases the hardware required. However, if we sythesis this modue directly, the II of TDL loop is 2, which means the total clock cycles required doesn't change (II * trip_count). This is caused by the same reason in the original code. "In the unrolled code, each iteration requires that we read two values from the shift reg array; and we write two values to the same array. Thus, if we wish to execute both statements in parallel, we must be able to perform two read operations and two write operations from the shift reg array in the same cycle."[^1] Mostly, a RAM can only provide a read port and a write port simultaneously. To solve this problem, the shift_array is required to be **partitioned**, which means saving the value in different memory (or even registers) instead of saving all the value in one single memory. The is called array_partition. HLS provides pargma to do this in the background, this syntax is [^2]:
+
+```
+
+#pragma HLS array_partition variable=<variable name> type=<cyclic, block, complete> factor=<int> dim=<int>
+
+```
+
+Since we know that the shift_reg should be implemented as shift registers on hardware, we can simply use:
+
+```
+
+#pragma HLS array_partition variable=shift_reg type=complete dim=1
+
+```
+
+With this pragma, the HLS should be able to give an implementation of TDL with II=1, which reduces the total II of the module by 1/2.
+
+Obviously, if we unroll the TDL loop by a larger factor (or even completely) can further increase the performance. However, it is unwise and not always possible to do that manully. Another pragma called ```unroll``` is provided by HLS so that the designer can realize the loop unrolling in an easier way, the syntax is shown below [^3]:
+
+```
+#pragma HLS unroll factor=<N> skip_exit_check
+```
+
+The mannully unrolling can then be simply realized by adding the pragma under the for loop header:
+
+```c++
+TDL:
+    for (i = N - 1; i > 0;i--){
+#pragma HLS unroll factor=2
+        shift_reg[i] = shift_reg[i-1];
+    }
+    shift_reg[0] = x_temp.data;
+```
+
+Since N is small in the example, we can remove the ```factor=2``` so that the HLS completely unroll the loop.
+
+As for the second loop MAC, though the accumulator acc seems to have a loop carry dependency, (the next loop requires the result of the current loop, it is still possible to be unrolled in this specefic case (just sum up independent multiplications). The unroll pragma can be used as well (the Clear_Loop can also be unrolled). Now the code becomes:
+
+```c++
+#include "fir.h"
+
+// Not optimzied code in Figure 2.1
+
+void fir(d_stream& y, d_stream& x){
+#pragma HLS INTERFACE mode=ap_ctrl_none port=return
+#pragma HLS INTERFACE mode=axis register_mode=both port=y
+#pragma HLS INTERFACE mode=axis register_mode=both port=x
+    coef_t c[N] = {
+        53, 0, -91, 0, 313, 500, 313, 0, -91, 0, 53
+    };
+    static data_t shift_reg[N];
+#pragma HLS array_partition type=complete variable=shift_reg dim=1
+    data_t_pack x_temp;
+    acc_t acc = 0;
+    int i;
+    x >> x_temp;
+
+// Algorithm
+TDL:
+    for (i = N - 1; i > 0;i--){
+#pragma HLS unroll
+        shift_reg[i] = shift_reg[i-1];
+    }
+    shift_reg[0] = x_temp.data;
+
+MAC:
+    for (i = N - 1; i >= 0;i--){
+#pragma HLS unroll
+        acc += shift_reg[i] * c[i];
+    }
+    
+// Output Stream
+    data_t_pack y_temp;
+    y_temp.data = acc;
+    y_temp.keep = -1;
+    y_temp.last = x_temp.last;
+    y << y_temp;
+    if (x_temp.last){
+Clear_Loop:
+    	for (i = N - 1; i >= 0;i--){
+#pragma HLS unroll
+            shift_reg[i] = 0;
+        }
+    }
+}
+
+```
+
+According to the syntesis result, now the II of the entire block becomes 5, which is a huge improvment. The price is that the FF required becomes 1242 and the LUT required becomes 791. This is due to the fact the unrolling and array partition increases the parallelisim and of course requires more hardware resources. In this example, N = 11 so it is possible to unroll all loops and patrtition all arraies. If N equals 4096 or more, we may need to reduce the unroll factor to save the resources.
+
+## Pipelining
 
 
 [^1]: [Parallel Programming for FPGAs](https://kastner.ucsd.edu/hlsbook/)
-
+[^2]: [pragma HLS array_partition](https://docs.xilinx.com/r/en-US/ug1399-vitis-hls/pragma-HLS-array_partition)
+[^3]: [pragma HLS unroll](https://docs.xilinx.com/r/en-US/ug1399-vitis-hls/pragma-HLS-unroll)
 
