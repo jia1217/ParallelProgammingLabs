@@ -23,7 +23,7 @@ Finite Impulse Response (FIR) filter is a well known and widely used digital fil
 
 $$y[i] = \sum_{j = 0}^{N-1}h[j]x[i-j]$$
 
-where $h[j]$ is the impulse response.
+where $$h[j]$$ is the impulse response.
 
 
 ## Highly unoptimzied code
