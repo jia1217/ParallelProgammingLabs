@@ -19,7 +19,6 @@ sort: 1
 
 ## Introduction
 
-
 Finite Impulse Response (FIR) filter is a well known and widely used digital filter. The algorithm is shown below:
 
 $$y[i] = \sum_{j = 0}^{N-1}h[j]x[i-j]$$
@@ -27,8 +26,9 @@ $$y[i] = \sum_{j = 0}^{N-1}h[j]x[i-j]$$
 where $h[j]$ is the impulse response.
 
 
-
 ## Highly unoptimzied code
+
+Following code shows a highly unoptimized version of FIR filter in HLS. This code uses **typedef** to define the datatype of different variables. Datatype of all three variables (coef_t, data_t, and acc_t) are **int** (32 bit) in this example.
 
 ### fir.h
 ```c++
@@ -62,6 +62,8 @@ void fir (
 #endif
 
 ```
+
+
 ### fir.cpp
 
 ```c++
