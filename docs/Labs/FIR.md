@@ -28,9 +28,10 @@ where $$h[j]$$ is the impulse response.
 
 ## Highly unoptimzied code
 
+### fir.h
+
 Following code shows a highly unoptimized version of FIR filter in HLS. This code uses **typedef** to define the datatype of different variables. Datatype of all three variables (coef_t, data_t, and acc_t) are **int** (32 bit) in this example.
 
-### fir.h
 ```c++
 
 /*
