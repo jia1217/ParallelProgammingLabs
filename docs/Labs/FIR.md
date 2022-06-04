@@ -117,8 +117,6 @@ Clear_Loop:
 }
 
 ```
-### Sythesis Result
-
 According to the report, the core loop (Shift_Accum_Loop) has II=2 and the II of the IP block is 31, which means this IP can only receive 1 data every 31 clock cycles. This is extremely slow. An optimized design should have an II = 1 (receive a new data every clock). This design costs 442 FFs and 265 LUTs for the Shift_Accum_Loop.
 
 The II = 2 comes from a fake data dependency. Since the hardware circuit is always running (the code in software runs independently), which means the the two branches in the Shift_Accum_Loop both have a hardware implementation. For a pipelined structure, all the operations in the loop have a hardware as well. In the Shift_Accum_Loop, there exists two write operations (shift_reg[0] = x_temp.data; shift_reg[i] = shift_reg[i-1];), requiring 2 write ports for shift_reg (implemented in a BRAM). BRAM does not support 2 write ports. Therefore, the tool failed to make the II = 1 because of the conflict between the two write (store) operations. It is reported in the systhesis log from console:
