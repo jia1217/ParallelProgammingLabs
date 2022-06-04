@@ -20,7 +20,6 @@ sort: 1
 ## Introduction
 
 
-
 Finite Impulse Response (FIR) filter is a well known and widely used digital filter. The algorithm is shown below:
 
 $$y[i] = \sum_{j = 0}^{N-1}h[j]x[i-j]$$
