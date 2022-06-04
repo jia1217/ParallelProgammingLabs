@@ -28,7 +28,7 @@ where $$h[j]$$ is the impulse response.
 
 ## Highly unoptimzied code
 
-Following code shows a highly unoptimized version of FIR filter in HLS. in the header file (**fir.h**), this code uses **typedef** to define the datatype of different variables. Datatype of all three variables (**coef_t**, **data_t**, and **acc_t**) are **int** (32 bit) in this example. hls::axis<data_t,0,0,0> from ap_axi_sdata.h packs data_t into a standarded AXI4-Stream Interfaces datatype, namely, **data_t_pack**. ([Reference](https://docs.xilinx.com/r/en-US/ug1399-vitis-hls/How-AXI4-Stream-is-Implemented)) Finally, hls::stream<data_t_pack> from hls_stream.h creates a HLS stream datatype, **d_stream**.
+Following code shows a highly unoptimized version of FIR filter in HLS. in the header file (fir.h), this code uses **typedef** to define the datatype of different variables. Datatype of all three variables (coef_t, data_t, and acc_t) are int (32 bit) in this example. hls::axis<data_t,0,0,0> from ap_axi_sdata.h packs data_t into a standarded AXI4-Stream Interfaces datatype, namely, data_t_pack. ([Reference](https://docs.xilinx.com/r/en-US/ug1399-vitis-hls/How-AXI4-Stream-is-Implemented)) Finally, hls::stream<data_t_pack> from hls_stream.h creates a HLS stream datatype, d_stream.
 
 ### fir.h
 ```c++
