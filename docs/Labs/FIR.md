@@ -21,7 +21,7 @@ sort: 1
 
 
 
-Finite Impulse Response (FIR) filter is widely used. The algorithm is simply shown below:
+Finite Impulse Response (FIR) filter is a well known and widely used digital filter. The algorithm is shown below:
 
 $$y[i] = \sum_{j = 0}^{N-1}h[j]x[i-j]$$
 
