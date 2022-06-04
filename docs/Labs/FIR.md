@@ -7,8 +7,9 @@ sort: 1
 <script type="text/x-mathjax-config">
   MathJax.Hub.Config({
     tex2jax: {
-      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
-      processEscapes: true
+        inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+        displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+        processEscapes: false,
     }
   });
 </script>
@@ -219,7 +220,7 @@ As for the second loop MAC, though the accumulator acc seems to have a loop carr
 ```c++
 #include "fir.h"
 
-// Not optimzied code in Figure 2.1
+// Unrolling and array partition
 
 void fir(d_stream& y, d_stream& x){
 #pragma HLS INTERFACE mode=ap_ctrl_none port=return
@@ -268,10 +269,70 @@ Clear_Loop:
 
 According to the syntesis result, now the II of the entire block becomes 5, which is a huge improvment. The price is that the FF required becomes 1242 and the LUT required becomes 791. This is due to the fact the unrolling and array partition increases the parallelisim and of course requires more hardware resources. In this example, N = 11 so it is possible to unroll all loops and patrtition all arraies. If N equals 4096 or more, we may need to reduce the unroll factor to save the resources.
 
-## Pipelining
+In addititon, only 4 multipliers rather than N are used. HLS does some conditionally optimization. In this case, if the coefficient is 0, it is not required to do the multiplication. and since the coefficients are symetric, some multiplications can be combined. Therefore, the unrolled MAC loop is finally implemented as:
 
+```
+acc = c[0] * (shift_reg[0] + shift_reg[10])
+    + c[2] * (shift_reg[2] + shift_reg[8])
+    + c[4] * (shift_reg[4] + shift_reg[6])
+    + c[5] *  shift_reg[5]
+```
+
+Clearly, only 4 multipliers are required. The scheduling of math operations is shown below:
+
+![](imgs/Scheduling.png)
+
+At the first period, three add openerations are done, correspodning to the three sums in parentheses. Then, four multiplications are done and each requires more than one clock period, which makes the result only available at the fourth (3 in figure) cycle. Notice that finally only three add operations are required as HLS automatically use tree adder [^4] structure to implement accumulation like loops. For four numbers, only 4 adders are required.
+
+
+## Optimization 4: Pipelining
+
+Pipelining is a widely used method on hardware to increase the throughput. Pipeline can be applied both to a loop and a function. In this example, pipelining any loop is not a good idea as it will reduce the II of the entire module (This is why we unrolled all the loops). The unrolled loops are not loop anymore from the hardware perspective, as unrolling makes all loop iterations run together in parallel. Hence, now the module has the following stages of opertions:
+
+> 1. Read new x and shift the TDL
+> 2. MAC
+>> 2.1. Add
+>> 2.2. Mul
+>> 2.3. Add
+> 3. Write y out. (and clear when last x comes)
+
+Without pipelining, the operations are executed one by one, and new data can only be received after the last step is finished. Some resources can also be shared, for example, the adders in 2.1 can be reused in 2.3, though some extra logic may required to control the dataflow. Pipelining, however, creates independent hardware for operation and some filp-flops to tap the inputs and middle results. The book gives an example for the MAC loop (though we are not pipelining the MAC loop here) shown below, (a) is without pipelining and (b) is with pipelining:
+
+![](imgs/20220603-160025.png)
+
+Notice that no resources can be shared if the function is pipelined as circuits in different stages are processing data input at different time. For example, the circuit at first stage is always proceesing the newest data while the circuit at the second stage is always processing the data input from the last cycle and the output from the first stage circuit. Hence, pipelining mostly requires more resuources.
+
+To pipelining the loop, we can simply add a pragma to the source file (under the function or loop header). The syntax is:
+
+```
+#pragma HLS pipeline II=<int> off rewind style=<stp, frp, flp>
+```
+
+The II determines the throughput of the module. Mostly, we want the II=1 which means the module (loop) can receive a new data every clock. In this case, we just tell the tool to pipeline the while fir funtion and the code becomes:
+
+```c++
+
+#include "fir.h"
+
+// pipelining
+
+void fir(d_stream& y, d_stream& x){
+#pragma HLS INTERFACE mode=ap_ctrl_none port=return
+#pragma HLS INTERFACE mode=axis register_mode=both port=y
+#pragma HLS INTERFACE mode=axis register_mode=both port=x
+#pragma HLS PIPELINE
+    coef_t c[N] = {
+        53, 0, -91, 0, 313, 500, 313, 0, -91, 0, 53
+    };
+    static data_t shift_reg[N];
+    ...
+}
+
+```
+
+According to the synthesis report, now the II of the entire module becomes 1 and 1306 FFs and 796 LUTs are required.
 
 [^1]: [Parallel Programming for FPGAs](https://kastner.ucsd.edu/hlsbook/)
 [^2]: [pragma HLS array_partition](https://docs.xilinx.com/r/en-US/ug1399-vitis-hls/pragma-HLS-array_partition)
 [^3]: [pragma HLS unroll](https://docs.xilinx.com/r/en-US/ug1399-vitis-hls/pragma-HLS-unroll)
-
+[^4]: [Partial Reconfigurable FIR Filtering System Using Distributed Arithmetic](https://www.researchgate.net/publication/50283091_Partial_Reconfigurable_FIR_Filtering_System_Using_Distributed_Arithmetic)
