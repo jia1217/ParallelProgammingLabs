@@ -28,7 +28,7 @@ where $$h[j]$$ is the impulse response.
 
 ## Highly unoptimzied code
 
-Following code shows a highly unoptimized version of FIR filter in HLS. in the header file (fir.h), this code uses **typedef** to define the datatype of different variables. Datatype of all three variables (coef_t, data_t, and acc_t) are int (32 bit) in this example. hls::axis<data_t,0,0,0> from ap_axi_sdata.h packs data_t into a standarded AXI4-Stream Interfaces datatype, namely, data_t_pack. ([Reference](https://docs.xilinx.com/r/en-US/ug1399-vitis-hls/How-AXI4-Stream-is-Implemented)) Finally, hls::stream<data_t_pack> from hls_stream.h creates a HLS stream (also an AXIs datatype) datatype, d_stream.
+Following code shows a highly unoptimized version of FIR filter in HLS. in the header file (fir.h), this code uses **typedef** to define the datatype of different variables. Datatype of all three variables (coef_t, data_t, and acc_t) are int (32 bit) in this example. hls::axis<data_t,0,0,0> from ap_axi_sdata.h packs data_t into a standarded AXI4-Stream Interfaces datatype, namely, data_t_pack. ([Ref](https://docs.xilinx.com/r/en-US/ug1399-vitis-hls/How-AXI4-Stream-is-Implemented)) Finally, hls::stream<data_t_pack> from hls_stream.h creates a HLS stream (also an AXIs datatype) datatype, d_stream.
 
 ### fir.h
 ```c++
@@ -127,7 +127,7 @@ The II = 2 comes from a fake data dependency. Since the hardware circuit is alwa
  
 ## Optimization 1: Loop hoisting
 
-The if/else operation is inefficient in for loop. Loop hoisted can be carried out.  "HLS tool creates logical hardware that checks if the condition is met, which is executed in every iteration of the loop. Furthermore, this conditional structure limits the execution of the statements in either the if or else branches; these statements can only be executed after the if condition statement is resolved."(reference[(https://kastner.ucsd.edu/hlsbook/)]) Now the "Shift_Accum_Loop" becomes:
+The if/else operation is inefficient in for loop. Loop hoisted can be carried out.  "HLS tool creates logical hardware that checks if the condition is met, which is executed in every iteration of the loop. Furthermore, this conditional structure limits the execution of the statements in either the if or else branches; these statements can only be executed after the if condition statement is resolved."([Ref](https://kastner.ucsd.edu/hlsbook/)) Now the "Shift_Accum_Loop" becomes:
 
 ```c++
 Shift_Accum_Loop:
@@ -181,7 +181,7 @@ TDL:
 
 ```
 
-``` if (i == 1)``` is added to support even N. The unrollong reduces the trip count and increases the hardware required. However, if we sythesis this modue directly, the II of TDL loop is 2, which means the total clock cycles required doesn't change (II * trip_count). This is caused by the same reason in the original code. "In the unrolled code, each iteration requires that we read two values from the shift reg array; and we write two values to the same array. Thus, if we wish to execute both statements in parallel, we must be able to perform two read operations and two write operations from the shift reg array in the same cycle."[^1] Mostly, a RAM can only provide a read port and a write port simultaneously. To solve this problem, the shift_array is required to be **partitioned**, which means saving the value in different memory (or even registers) instead of saving all the value in one single memory. The is called array_partition. HLS provides pargma to do this in the background, this syntax is [^2]:
+``` if (i == 1)``` is added to support even N. The unrollong reduces the trip count and increases the hardware required. However, if we sythesis this modue directly, the II of TDL loop is 2, which means the total clock cycles required doesn't change (II * trip_count). This is caused by the same reason in the original code. "In the unrolled code, each iteration requires that we read two values from the shift reg array; and we write two values to the same array. Thus, if we wish to execute both statements in parallel, we must be able to perform two read operations and two write operations from the shift reg array in the same cycle."([Ref](https://kastner.ucsd.edu/hlsbook/)) In most of the cases, a RAM can only provide a read port and a write port simultaneously. To solve this problem, the shift_array is required to be **partitioned**, which means saving the value in different memory (or even registers) instead of saving all the value in one single memory. The is called array_partition. HLS provides pargma to do this in the background, this syntax is in [Ref](https://docs.xilinx.com/r/en-US/ug1399-vitis-hls/pragma-HLS-array_partition):
 
 ```
 
@@ -199,13 +199,13 @@ Since we know that the shift_reg should be implemented as shift registers on har
 
 With this pragma, the HLS should be able to give an implementation of TDL with II=1, which reduces the total II of the module by 1/2.
 
-Obviously, if we unroll the TDL loop by a larger factor (or even completely) can further increase the performance. However, it is unwise and not always possible to do that manully. Another pragma called ```unroll``` is provided by HLS so that the designer can realize the loop unrolling in an easier way, the syntax is shown below [^3]:
+Obviously, if we unroll the TDL loop by a larger factor (or even completely) can further increase the performance. However, it is unwise and not always possible to do that manually. Another pragma called ```unroll``` is provided by HLS so that the designer can realize the loop unrolling in an easier way, the syntax is shown below: ([Ref](https://docs.xilinx.com/r/en-US/ug1399-vitis-hls/pragma-HLS-unroll))
 
 ```
 #pragma HLS unroll factor=<N> skip_exit_check
 ```
 
-The mannully unrolling can then be simply realized by adding the pragma under the for loop header:
+Manual unrolling can then be simply realized by adding pragma under the for loop header:
 
 ```c++
 TDL:
@@ -274,8 +274,4 @@ According to the syntesis result, now the II of the entire block becomes 5, whic
 
 ## Pipelining
 
-
-[^1]: [Parallel Programming for FPGAs](https://kastner.ucsd.edu/hlsbook/)
-[^2]: [pragma HLS array_partition](https://docs.xilinx.com/r/en-US/ug1399-vitis-hls/pragma-HLS-array_partition)
-[^3]: [pragma HLS unroll](https://docs.xilinx.com/r/en-US/ug1399-vitis-hls/pragma-HLS-unroll)
 
