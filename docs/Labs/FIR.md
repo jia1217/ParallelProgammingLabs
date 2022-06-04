@@ -104,10 +104,10 @@ Shift_Accum_Loop:
     y_temp.last = x_temp.last;
     y << y_temp;
     
-  // Clear at the last data
+  // Clear all shift_reg at the last data
     if (x_temp.last){
 Clear_Loop:
-    	for (i = N - 1; i >= 0;i--){
+    	for (i = N - 1; i >= 0; i--){
             shift_reg[i] = 0;
         }
     }
