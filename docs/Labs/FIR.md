@@ -83,6 +83,8 @@ void fir(d_stream& y, d_stream& x){
     acc_t acc = 0;
     int i;
     x >> x_temp;
+    // x_temp = x.read();
+    // x.read(x_temp);
 
 // Algorithm
 Shift_Accum_Loop:
@@ -103,6 +105,7 @@ Shift_Accum_Loop:
     y_temp.keep = -1;
     y_temp.last = x_temp.last;
     y << y_temp;
+    // y.write(y_temp);
     
   // Clear all shift_reg at the last data
     if (x_temp.last){
