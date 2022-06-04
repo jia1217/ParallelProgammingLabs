@@ -218,7 +218,7 @@ TDL:
 
 Since N is small in the example, we can remove the ```factor=2``` so that the HLS completely unroll the loop.
 
-As for the second loop MAC, though the accumulator acc seems to have a loop carry dependency, (the next loop requires the result of the current loop, it is still possible to be unrolled in this specefic case (just sum up independent multiplications). The unroll pragma can be used as well (the Clear_Loop can also be unrolled). Now the code becomes:
+As for the second loop MAC, though the accumulator acc seems to have a loop carry dependency (the next loop requires the result of the current loop), it is still possible to be unrolled in this specefic case (just sum up independent multiplications). The unroll pragma can be used as well (the Clear_Loop can also be unrolled). Now the code becomes:
 
 ```c++
 #include "fir.h"
