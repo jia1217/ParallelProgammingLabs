@@ -270,7 +270,7 @@ Clear_Loop:
 
 ```
 
-According to the syntesis result, now the II of the entire block becomes 5, which is a huge improvment. The price is that the FF required becomes 1242 and the LUT required becomes 791. This is due to the fact the unrolling and array partition increases the parallelisim and of course requires more hardware resources. In this example, N = 11 so it is possible to unroll all loops and patrtition all arraies. If N equals 4096 or more, we may need to reduce the unroll factor to save the resources.
+According to the syntesis result, now the II of the loop (TDL and MAC) becomes 1. II of the entire block becomes 5, which is a huge improvment. The trade-off is that the required FF becomes 1242 and the required LUT becomes 791. This is due to the fact the unrolling and array partition increases the parallelisim and of course requires more hardware resources. In this example, N = 11 so it is possible to unroll all loops and patrtition all arraies. If N equals 4096 or more, we may need to reduce the unroll factor to balance the resources with speed.
 
 ## Pipelining
 
