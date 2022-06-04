@@ -88,10 +88,10 @@ void fir(d_stream& y, d_stream& x){
 
 // Algorithm
 Shift_Accum_Loop:
-    for (i = N - 1; i >= 0;i--){
+    for (i = N - 1; i >= 0; i--){
         if (i == 0){
-            acc += x_temp.data * c[0];
             shift_reg[0] = x_temp.data;
+            acc += x_temp.data * c[0];
         }
         else{
             shift_reg[i] = shift_reg[i-1];
@@ -119,19 +119,19 @@ Clear_Loop:
 ```
 ### Sythesis Result
 
-According to the report, the key loop (Shift_Accum_Loop) has II=2 and the II of the IP block is 31, which means this IP can only receive 1 data every 31 clock cycles. This is extremely slow. An optimized design should have the II of the module equal 1 (receive a new data every clock). This design costs 442 FFs and 265 LUTs for the Shift_Accum_Loop.
+According to the report, the core loop (Shift_Accum_Loop) has II=2 and the II of the IP block is 31, which means this IP can only receive 1 data every 31 clock cycles. This is extremely slow. An optimized design should have an II = 1 (receive a new data every clock). This design costs 442 FFs and 265 LUTs for the Shift_Accum_Loop.
 
-The II = 2 comes from a fake data dependency. Since the hardware circuit is always running (the code in software can run independently), which means the the two branches in the Shift_Accum_Loop both have a hardware implementation. For a pipelined structure, all the operations in the loop have a hardware as well. In the Shift_Accum_Loop, there are one read operation (acc += shift_reg[i] * c[i];) and two write operations (acc += shift_reg[i] * c[i]; shift_reg[i] = shift_reg[i-1];), which means the shift_reg should be implemented as a RAM with one read port and two write ports, which is impossible. Therefore, the tool failed to make the II = 1 because of the conflict between the two write (store) operations. It can be checked in the console systhesis log:
+The II = 2 comes from a fake data dependency. Since the hardware circuit is always running (the code in software runs independently), which means the the two branches in the Shift_Accum_Loop both have a hardware implementation. For a pipelined structure, all the operations in the loop have a hardware as well. In the Shift_Accum_Loop, there exists two write operations (shift_reg[0] = x_temp.data; shift_reg[i] = shift_reg[i-1];), requiring 2 write ports for shift_reg (implemented in a BRAM). BRAM does not support 2 write ports. Therefore, the tool failed to make the II = 1 because of the conflict between the two write (store) operations. It is reported in the systhesis log from console:
 
 >  The II Violation in module ... Unable to enforce a carried dependence constraint (II = 1, distance = 1, offset = 1) between '**store**' operation of variable 'shift_reg_load', ./srcs/fir.cpp:25 on array 'shift_reg' and '**store**' operation ('0_write_ln22', ./srcs/fir.cpp:22) of variable 'tmp_data_1_read' on array 'shift_reg'.
  
 ## Optimization 1: Loop hoisting
 
-The if/else operation is inefficient in for loop. Loop hoisted can be carried out.  "HLS tool creates logical hardware that checks if the condition is met, which is executed in every iteration of the loop. Furthermore, this conditional structure limits the execution of the statements in either the if or else branches; these statements can only be executed after the if condition statement is resolved."[^1] Now the "Shift_Accum_Loop" becomes:
+The if/else operation is inefficient in for loop. Loop hoisted can be carried out.  "HLS tool creates logical hardware that checks if the condition is met, which is executed in every iteration of the loop. Furthermore, this conditional structure limits the execution of the statements in either the if or else branches; these statements can only be executed after the if condition statement is resolved."(reference[(https://kastner.ucsd.edu/hlsbook/)]) Now the "Shift_Accum_Loop" becomes:
 
 ```c++
 Shift_Accum_Loop:
-    for (i = N - 1; i > 0;i--){
+    for (i = N - 1; i > 0; i--){
         shift_reg[i] = shift_reg[i-1];
         acc += shift_reg[i] * c[i];
     }
@@ -140,11 +140,11 @@ Shift_Accum_Loop:
     shift_reg[0] = x_temp.data;
 ```
 
-With the new implementation, the II of the "Shift_Accum_Loop" becomes 1 and the II of the entire module becomes 18. This is huge improvement. However, this performance increasement does not caused directly from the  loop  hoisting optimization. Moving branch i == 0 out just happens to reduce one write operation to the shift_reg. This design costs 407 FFs and 196 LUTs, which is less than the original code because of the loop c optimization. 
+With the new implementation, the II of the "Shift_Accum_Loop" becomes 1 and the II of the entire module becomes 18. This is a huge improvement. However, this performance increase is not directly from the loop hoisting optimization. Moving branch i == 0 out of the for lopp reduces one write operation to the shift_reg, remove the conflict (2 writes in the same clock clyle). This design consumes 407 FFs and 196 LUTs. 
 
 ## Optimization 2: Loop fission
 
-There are two operations in the Shift_Accum_Loop, one is moving the shift_reg and another one is doing the multiplication and accumulation. Loop fission means seperate the operations into independent loops. In this case, the code should become:
+There are two operations in the Shift_Accum_Loop, one is moving the shift_reg and another one is performing the multiplication and accumulation (MAC). Loop fission refers to seperate the operations into independent loops. In this case, the code becomes:
 
 ```c++
 
@@ -161,7 +161,7 @@ MAC:
 
 ```
 
-In the code, label "TDL" means tapped delay line, which is implemented as shift registers in digital circuit, and "MAC" means multiply accumulate. Notice that in TDL the loop hoisting is used as it is required to check if i equals 0, while the MAC loop doesn't need loop hoisting (i > 0 or i >= 0). The II of the two loops are all 1 and the II for the entire module is 31. The TDL and MAC loops costs  415 FFs and 247 LUTs. This is actually worse than the result with optimization 1 only. The II of the module becomes 31 as one loop becomes two loops each requires 11 trips. More LUTs are required as the each loop requires its own control circuit.
+In the above code, label "TDL" stands for tapped delay line, which is implemented as shift registers in digital circuit, and "MAC" refers to multiply accumulate. Notice that in TDL the loop hoisting is used as it is required to check if i equals 0, while the MAC loop doesn't need loop hoisting (i > 0 or i >= 0). The II of both two loops (TDL and MAC) is 1 and the II for the entire module is 31. The TDL and MAC loops consumes 415 FFs and 247 LUTs. This is actually worse than the result with optimization 1. The II of the module becomes 31 as one loop becomes two loops each requires 11 trips. More LUTs are required as the each loop requires its own control circuit.
 
 ## Optimization 3: Loop Unrolling
 
