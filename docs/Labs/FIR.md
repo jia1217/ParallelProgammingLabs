@@ -332,6 +332,10 @@ void fir(d_stream& y, d_stream& x){
 
 According to the synthesis report, now the II of the entire module becomes 1 and 1306 FFs and 796 LUTs are required.
 
+## C simulation
+
+## Co-simulation
+
 ## Implementation
 
 
