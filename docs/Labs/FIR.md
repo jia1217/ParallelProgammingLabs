@@ -85,8 +85,9 @@ void fir(d_stream& y, d_stream& x){
     acc_t acc = 0;
     int i;
     x >> x_temp;
-    // x_temp = x.read();
+    // x_temp = x.read();  
     // x.read(x_temp);
+    // x as an AXI4-stream input includes data, keep, and last. 
 
 // Algorithm
 Shift_Accum_Loop:
@@ -108,8 +109,10 @@ Shift_Accum_Loop:
     y_temp.last = x_temp.last;
     y << y_temp;
     // y.write(y_temp);
+    // It it require to pack data, keep, and last into the output y
     
-  // Clear all shift_reg at the last data
+    
+  // Clear all shift_reg at the last data, otherwise shift_regs are non-zero next time it is called
     if (x_temp.last){
 Clear_Loop:
     	for (i = N - 1; i >= 0; i--){
