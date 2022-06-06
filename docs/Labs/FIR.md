@@ -32,7 +32,7 @@ where $$h[j]$$ is the impulse response.
 
 Following code shows a highly unoptimized version of FIR filter in HLS. in the header file (fir.h), this code uses **typedef** to define the datatype of different variables. Datatype of all three variables (coef_t, data_t, and acc_t) are int (32 bit) in this example. hls::axis<data_t,0,0,0> from ap_axi_sdata.h packs data_t into a standarded AXI4-Stream Interfaces datatype, namely, data_t_pack. ([Ref](https://docs.xilinx.com/r/en-US/ug1399-vitis-hls/How-AXI4-Stream-is-Implemented)) Finally, hls::stream<data_t_pack> from hls_stream.h creates a HLS stream (also an AXIs datatype) datatype, d_stream.
 
-### fir.h
+**fir.h**
 ```c++
 
 /*
@@ -66,7 +66,7 @@ void fir (
 ```
 
 
-### fir.cpp
+**fir.cpp**
 
 ```c++
 #include "fir.h"
@@ -302,7 +302,7 @@ Without pipelining, the operations are executed one by one, and new data can onl
 
 Notice that no resources can be shared if the function is pipelined. Circuits at different stages are processing data simultaneously. For example, the circuit at the first stage is always processing the newest data, while the circuit at the second stage is always processing the data input (via shift register) from the previous cycle and the output from the first stage circuit. Hence, pipelining mostly requires more resources.
 
-To pipelining the loop, we can simply add a pragma to the source file (under the function or loop header). The syntax is:
+To pipelining the loop, we can simply add a pragma to the source file (under the function or loop header). The syntax is: ([Ref](https://docs.xilinx.com/r/en-US/ug1399-vitis-hls/pragma-HLS-pipeline))
 
 ```
 #pragma HLS pipeline II=<int> off rewind style=<stp, frp, flp>
