@@ -296,9 +296,9 @@ Pipelining is a widely used method on hardware to increase the throughput. Pipel
 >> 2.1. Add
 >> 2.2. Mul
 >> 2.3. Add
-> 3. Write y out. (and clear when "Last" signal x comes)
+> 3. Write y out (and clear shift_reg, when the last signal x comes)
 
-Without pipelining, the operations are executed one by one, and new data can only be received after the last step is finished. Some resources can also be shared, for example, the adders in 2.1 can be reused in 2.3, though some extra logic may be required to control the dataflow. Pipelining, however, creates independent hardware for operation and some flip-flops to tap the inputs and middle results. The book gives an example for the MAC loop (though we are not pipelining the MAC loop here) shown below, (a) is without pipelining and (b) is with pipelining:
+Without pipelining, the operations are executed one by one, and new data can only be received after the last step is finished. Some resources can also be shared, for example, the adders in 2.1 can be reused in 2.3, though some extra logic may be required to control the dataflow. Pipelining, however, creates independent hardware for operation and some flip-flops to tap the inputs and middle results. The book ([Ref](https://kastner.ucsd.edu/hlsbook/)) gives an example for the MAC loop (though we are not pipelining the MAC loop here) shown below, (a) is without pipelining and (b) is with pipelining:
 
 <img src="imgs/20220603-160025.png" alt="drawing" width="600"/>
 
