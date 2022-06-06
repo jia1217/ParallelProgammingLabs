@@ -283,6 +283,9 @@ acc = c[0] * (shift_reg[0] + shift_reg[10])
 Clearly, only 4 multipliers are required. The scheduling of math operations is shown below:
 
 ![](imgs/Scheduling.png)
+<img src="Scheduling.png"
+     height="200px">
+
 
 At the first period, three add openerations are done, correspodning to the three sums in parentheses. Then, four multiplications are done and each requires more than one clock period, which makes the result only available at the fourth (3 in figure) cycle. Notice that finally only three add operations are required as HLS automatically use tree adder [^4] structure to implement accumulation like loops. For four numbers, only 4 adders are required.
 
