@@ -299,7 +299,7 @@ Without pipelining, the operations are executed one by one, and new data can onl
 
 <img src="imgs/20220603-160025.png" alt="drawing" width="600"/>
 
-Notice that no resources can be shared if the function is pipelined. Circuits at different stages are processing data simultaneously. For example, the circuit at the first stage is always processing the newest data, while the circuit at the second stage is always processing the data input from the last cycle and the output from the first stage circuit. Hence, pipelining mostly requires more resources.
+Notice that no resources can be shared if the function is pipelined. Circuits at different stages are processing data simultaneously. For example, the circuit at the first stage is always processing the newest data, while the circuit at the second stage is always processing the data input (via shift register) from the previous cycle and the output from the first stage circuit. Hence, pipelining mostly requires more resources.
 
 To pipelining the loop, we can simply add a pragma to the source file (under the function or loop header). The syntax is:
 
