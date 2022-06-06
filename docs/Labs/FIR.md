@@ -26,8 +26,9 @@ $$y[i] = \sum_{j = 0}^{N-1}h[j]x[i-j]$$
 
 where $$h[j]$$ is the impulse response.
 
+## Optimization
 
-## Highly unoptimized code
+### The highly unoptimized code
 
 Following code shows a highly unoptimized version of FIR filter in HLS. in the header file (fir.h), this code uses **typedef** to define the datatype of different variables. Datatype of all three variables (coef_t, data_t, and acc_t) are int (32 bit) in this example. hls::axis<data_t,0,0,0> from ap_axi_sdata.h packs data_t into a standarded AXI4-Stream Interfaces datatype, namely, data_t_pack. ([Ref](https://docs.xilinx.com/r/en-US/ug1399-vitis-hls/How-AXI4-Stream-is-Implemented)) Finally, hls::stream<data_t_pack> from hls_stream.h creates a HLS stream (also an AXIs datatype) datatype, d_stream.
 
@@ -124,7 +125,7 @@ The II = 2 comes from a fake data dependency. Since the hardware circuit is alwa
 
 >  The II Violation in module ... Unable to enforce a carried dependence constraint (II = 1, distance = 1, offset = 1) between '**store**' operation of variable 'shift_reg_load', ./srcs/fir.cpp:25 on array 'shift_reg' and '**store**' operation ('0_write_ln22', ./srcs/fir.cpp:22) of variable 'tmp_data_1_read' on array 'shift_reg'.
  
-## Optimization 1: Loop hoisting
+### Optimization 1: Loop hoisting
 
 The if/else operation is inefficient in for loop. Loop hoisted can be carried out.  "HLS tool creates logical hardware that checks if the condition is met, which is executed in every iteration of the loop. Furthermore, this conditional structure limits the execution of the statements in either the if or else branches; these statements can only be executed after the if condition statement is resolved."([Ref](https://kastner.ucsd.edu/hlsbook/)) Now the "Shift_Accum_Loop" becomes:
 
@@ -141,7 +142,7 @@ Shift_Accum_Loop:
 
 With the new implementation, the II of the "Shift_Accum_Loop" becomes 1 and the II of the entire module becomes 18. This is a huge improvement. However, this performance increase is not directly from the loop hoisting optimization. Moving branch i == 0 out of the for loop reduces one write operation to the shift_reg, removing the conflict (2 writes in the same clock cycle). This design consumes 407 FFs and 196 LUTs. 
 
-## Optimization 2: Loop fission
+### Optimization 2: Loop fission
 
 There are two operations in the Shift_Accum_Loop, one is moving the shift_reg and another one is performing the multiplication and accumulation (MAC). Loop fission refers to separating the operations into independent loops. In this case, the code becomes:
 
@@ -162,7 +163,7 @@ MAC:
 
 In the above code, the label "TDL" stands for tapped delay line, which is implemented as shift registers in a digital circuit, and "MAC" refers to multiply-accumulate. Notice that in TDL the loop hoisting is used as it is required to check if i equals 0, while the MAC loop doesn't need loop hoisting (i > 0 or i >= 0). The II of both two loops (TDL and MAC) is 1 and the II for the entire module is 31. The TDL and MAC loops consume a total of 415 FFs and 247 LUTs. This is worse than the result with optimization 1. The II of the module becomes 31 as one loop becomes two loops, each requiring 11 trips. More LUTs are required as each loop requires its control circuit.
 
-## Optimization 3: Loop Unrolling
+### Optimization 3: Loop Unrolling
 
 Optimization 2 doesn't make the design faster, but it makes further optimizations possible. The HLS executes the loops in a sequential manner, which means only one circuit instance of the loop body. Essentially, loop unrolling creates multiple running instances for the loop body. A manual unrolling TDL loop is shown below:
 
@@ -287,7 +288,7 @@ Clearly, only 4 multipliers are required. The scheduling of math operations is s
 In the first period, three add operations are completed, corresponding to the three sums in parentheses. Then, four multiplications are done and each requires more than one clock period, which makes the result only available at the fourth (3rd in the scheduling figure) cycle. Notice that only three add operations are required as HLS automatically uses "adder tree" structure to implement accumulation-like loops. For four numbers, only 4 adders are required.
 
 
-## Optimization 4: Pipelining
+### Optimization 4: Pipelining
 
 Pipelining is a widely used hardware trhoughput improvement method. Pipelining can be applied both to a loop and a function. In this example, pipelining any loop is not a good idea as it will reduce the II of the entire module (This is why we unrolled all the loops). The unrolled loops are not loops anymore from the hardware perspective, as unrolling makes all loop iterations run together in parallel. Hence, now the module has the following stages of operations:
 
@@ -330,6 +331,8 @@ void fir(d_stream& y, d_stream& x){
 ```
 
 According to the synthesis report, now the II of the entire module becomes 1 and 1306 FFs and 796 LUTs are required.
+
+## Implementation
 
 
 [^1]: [Parallel Programming for FPGAs](https://kastner.ucsd.edu/hlsbook/)
