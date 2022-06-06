@@ -109,7 +109,7 @@ Shift_Accum_Loop:
     y_temp.last = x_temp.last;
     y << y_temp;
     // y.write(y_temp);
-    // It it require to pack data, keep, and last into the output y
+    // It it required to pack data, keep, and last into the output y
     
     
   // Clear all shift_reg at the last data, otherwise shift_regs are non-zero next time it is called
