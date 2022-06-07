@@ -29,7 +29,7 @@ where $$h[j]$$ is the impulse response.
 
 ## Highly unoptimzied code
 
-Following code shows a highly unoptimized version of FIR filter in HLS. in the header file (fir.h), this code uses **typedef** to define the datatype of different variables. Datatype of all three variables (coef_t, data_t, and acc_t) are int (32 bit) in this example. hls::axis<data_t,0,0,0> from ap_axi_sdata.h packs data_t into a standarded AXI4-Stream Interfaces datatype, namely, data_t_pack. ([Ref](https://docs.xilinx.com/r/en-US/ug1399-vitis-hls/How-AXI4-Stream-is-Implemented)) Finally, hls::stream<data_t_pack> from hls_stream.h creates a HLS stream (also an AXIs datatype) datatype, d_stream.
+Following code shows a highly unoptimized version of FIR filter in HLS. in the header file (fir.h), this code uses **typedef** to define the datatype of different variables. Datatype of all three variables (```coef_t```, ```data_t```, and ```acc_t```) are int (32 bit) in this example. ```hls::axis<data_t,0,0,0>``` from ```ap_axi_sdata.h``` packs data_t into a standarded AXI4-Stream Interfaces datatype, namely, data_t_pack. ([Ref](https://docs.xilinx.com/r/en-US/ug1399-vitis-hls/How-AXI4-Stream-is-Implemented)) Finally, ```hls::stream<data_t_pack>``` from ```hls_stream.h``` creates a HLS stream (also an AXIs datatype) datatype, ```d_stream```.
 
 ### fir.h
 ```c++
@@ -298,7 +298,8 @@ Pipelining is a widely used method on hardware to increase the throughput. Pipel
 >> 2.3. Add
 > 3. Write y out. (and clear when last x comes)
 
-Without pipelining, the operations are executed one by one, and new data can only be received after the last step is finished. Some resources can also be shared, for example, the adders in 2.1 can be reused in 2.3, though some extra logic may required to control the dataflow. Pipelining, however, creates independent hardware for operation and some filp-flops to tap the inputs and middle results. The book gives an example for the MAC loop (though we are not pipelining the MAC loop here) shown below, (a) is without pipelining and (b) is with pipelining:
+Without pipelining, the operations are executed one by one, and new data can only be received after the last step is finished. Some resources can also be shared, for example, the adders in 2.1 can be reused in 2.3, though some extra logic may required to control the dataflow. Pipelining, however, creates independent hardware for operation and some filp-flops to tap the inputs and middle results. The book gives an example for the MAC loop (though we are not pipe
+
 
 ![](imgs/20220603-160025.png)
 
@@ -310,7 +311,7 @@ To pipelining the loop, we can simply add a pragma to the source file (under the
 #pragma HLS pipeline II=<int> off rewind style=<stp, frp, flp>
 ```
 
-The II determines the throughput of the module. Mostly, we want the II=1 which means the module (loop) can receive a new data every clock. In this case, we just tell the tool to pipeline the while fir funtion and the code becomes:
+The II determines the throughput of the module. Mostly, we want the II=1 which means the module (loop) can receive a new data every clock. In this case, we just tell the tool to pipeline the while fir funtion and the code becomes:  
 
 ```c++
 
@@ -332,10 +333,71 @@ void fir(d_stream& y, d_stream& x){
 
 ```
 
-According to the synthesis report, now the II of the entire module becomes 1 and 1306 FFs and 796 LUTs are required.
+According to the synthesis report, now the II of the entire module becomes 1 and 1306 FFs and 796 LUTs are required.  
+
+#### Pipeline Type
+According to Xilinx Doc, the HLS supports three types of pipelines:  
+
+**Stalled pipeline (STP)**  
+Default pipeline. No usage constraints.  
+Advantages:
+> Typically the lowest overall resource usage.  
+> Default pipeline. No usage constraints.  
+
+Disadvantages:
+> Not flushable:  
+>> Cause mroe deadlock in dataflow.  
+>> Prevent already calculated output data from being delivered, if the inputs to the next iterations are missing.  
+> Timing issues due to high fanout on pipeline controls.  
+
+Take a pipeline with three stages as an example. As is shown in the following figure, one single enable signal is shared with three stages (this causes the high fanout of pipeline control signals). If the input data continuously comes, stalled pipeline is good. However, if a packet of data (fixed length) is being processed, after the last data arrives, the input valid becomes '0'. Since no valid data comes, the first stage of the pipeline should be closed (set enable to 0). Consequently, the second and third stages of the pipeline are also closed, stopping the data from flowing out from the pipeline (not flushable). A deadlock could happen if there exists a software level data dependency. For example, if there are 10 packets to be processed, and the progammer write a totally resonable code like this:
+
+```c++
+    for (int i = 0; i < 10; i++){
+        fir(y[i],x[i]);
+    }
+```
+
+When running this code, it doesn't stack at the last iteration (i = 9). Actully, the new data is only sent out when the result of first iteration fully received, while the hardware is waiting the new data for the second iteration to fully send out the result of the first iteration. This is socalled deadlock.  
+
+A typical solution is to add some zeors after the last data of the packet to push the useful data out. Though the solution looks promising, it is hard for progamming as the added zeros also needs to be removed from the output of next packet mannully.
+
+<img src="imgs/STP.png" alt="drawing" width="600"/>
+
+**Flushable Pipeline (FLP)**  
+Flushable pipeline is a better choice when processing packets of data.  
+Advantages:
+> Flushable
+
+Disadvantages:
+> May have larger II  
+> More resources  
+
+In flushable pipeline, once the input data becomes invalid, it shutting down each successive pipeline stage, until the final input has been processed through to the output of the pipeline rather than close all stages at once. The structure is shown below.
+
+<img src="imgs/FLP.png" alt="drawing" width="600"/>
+
+In the FIR application, unless the input data comes directly from an ADC (infinite data), a flushable pipeline is preferred.
+
+**Free-Running/Flushanle Pipeline (FRP)**  
+Though the FLP reduces some fanout of the pipeline controlling signal, it is still perfect as one stage of pipeline may have hundreds of FFs to control. Free running pipeline simplifies it even more.   
+Advantages:
+> Flushable  
+> Better Timing:  
+>> Less fanout  
+>> simpler pipeline control logic  
+
+Disadvantages:
+> Moderate resource increase due to FIFOs added on outputs  
+
+The structure is shown below:
+
+<img src="imgs/FRP.png" alt="drawing" width="600"/>
+
+The enable signal for the first stage is optional. It is only required when a shift register is put at the first stage (if the input is not valid, the shift register shouldn't run). For the next stages, FRP pipeline just make them always running. The output valid signal is calculated by the valid_in. Therefore, only minimum enable signal is required. However, makeing the circuit always running is not energy efficient.
 
 
-[^1]: [Parallel Programming for FPGAs](https://kastner.ucsd.edu/hlsbook/)
-[^2]: [pragma HLS array_partition](https://docs.xilinx.com/r/en-US/ug1399-vitis-hls/pragma-HLS-array_partition)
-[^3]: [pragma HLS unroll](https://docs.xilinx.com/r/en-US/ug1399-vitis-hls/pragma-HLS-unroll)
+[^1]: [Parallel Programming for FPGAs](https://kastner.ucsd.edu/hlsbook/)  
+[^2]: [pragma HLS array_partition](https://docs.xilinx.com/r/en-US/ug1399-vitis-hls/pragma-HLS-array_partition)  
+[^3]: [pragma HLS unroll](https://docs.xilinx.com/r/en-US/ug1399-vitis-hls/pragma-HLS-unroll)  
 [^4]: [Partial Reconfigurable FIR Filtering System Using Distributed Arithmetic](https://www.researchgate.net/publication/50283091_Partial_Reconfigurable_FIR_Filtering_System_Using_Distributed_Arithmetic)
