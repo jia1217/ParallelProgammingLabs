@@ -6,7 +6,7 @@ void fir(d_stream& y, d_stream& x){
 #pragma HLS INTERFACE mode=ap_ctrl_none port=return
 #pragma HLS INTERFACE mode=axis register_mode=both port=y
 #pragma HLS INTERFACE mode=axis register_mode=both port=x
-#pragma HLS PIPELINE style=flp
+#pragma HLS PIPELINE style=frp
     coef_t c[N] = {
         53, 0, -91, 0, 313, 500, 313, 0, -91, 0, 53
     };
