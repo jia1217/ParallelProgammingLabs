@@ -348,15 +348,7 @@ Disadvantages:
 >> Prevent already calculated output data from being delivered, if the inputs to the next iterations are missing.  
 > Timing issues due to high fanout on pipeline controls ("enable" signal distributed to all processing elements, or stages, in a pipeline structure).  
 
-Let us take a pipeline structure with three stages as an example. As is shown in the following figure, one "enable" signal is shared with three stages (this causes a fanout issue of the pipeline control signal). If the input data continuously comes in, a stalled pipeline should work properly. Now, considering a stream of data with a fixed length, after the last data arrives, the input valid becomes '0'. Since no valid data comes in after this, the first stage of the pipeline is closed (set "enable" to 0). Consequently, the second and third stages of the pipeline are also closed, stopping the data from flowing out from the pipeline (not flushable). A deadlock could happen if there exists a software-level data dependency. For example, if there are 10 streams to be processed, and the programmer writes code as follows:
-
-```c++
-    for (int i = 0; i < 10; i++){
-        fir(y[i],x[i]);
-    }
-```
-
-When running this code, it doesn't stack at the last iteration (i = 9). The new data can only be sent in when the result of the first iteration is received. While the hardware is waiting for the new data for the second iteration to fully send out the result of the first iteration. This is a so-called deadlock.  
+Let us take a pipeline structure with three stages as an example. As is shown in the following figure, one "enable" signal is shared with three stages (this causes a fanout issue of the pipeline control signal). If the input data continuously comes in, a stalled pipeline should work properly. Now, considering a stream of data with a fixed length, after the last data arrives, the input valid becomes '0'. Since no valid data comes in after this, the first stage of the pipeline is closed (set "enable" to 0). Consequently, the second and third stages of the pipeline are also closed, stopping the data from flowing out from the pipeline (not flushable). 
 
 A typical solution is to add some zeros after the last data of the stream to push the useful data out. Though the solution looks promising, it is hard for programming as the added zeros also need to be removed from the output of the next stream manually.
 
