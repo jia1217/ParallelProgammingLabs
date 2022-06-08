@@ -28,7 +28,7 @@ where $$h[j]$$ is the impulse response.
 
 ## Optimization
 
-### The highly unoptimized code
+### The unoptimized code
 
 Following code shows a highly unoptimized version of FIR filter in HLS. in the header file (fir.h), this code uses **typedef** to define the datatype of different variables. Datatype of all three variables (```coef_t```, ```data_t```, and ```acc_t```) are int (32 bit) in this example. ```hls::axis<data_t,0,0,0>``` from ```ap_axi_sdata.h``` packs data_t into a standarded AXI4-Stream Interfaces datatype, namely, data_t_pack. ([Ref](https://docs.xilinx.com/r/en-US/ug1399-vitis-hls/How-AXI4-Stream-is-Implemented)) Finally, ```hls::stream<data_t_pack>``` from ```hls_stream.h``` creates a HLS stream (also an AXIs datatype) datatype, ```d_stream```.
 
@@ -122,7 +122,7 @@ Clear_Loop:
 }
 
 ```
-According to the report, the core loop (Shift_Accum_Loop) has II=2 and the II of the IP block is 31, which means this IP can only receive 1 data every 31 clock cycles. This is extremely slow. An optimized design should have an II = 1 (receive new data every clock; maximum throughput). This design consumes 442 FFs and 265 LUTs for the Shift_Accum_Loop.
+According to the report, the core loop (Shift_Accum_Loop) has II = 2 and the II of the IP block is 31, which means this IP can only receive 1 data every 31 clock cycles. This is extremely slow. An optimized design should have an II = 1 (receive new data every clock; maximum throughput). This design consumes 442 FFs and 265 LUTs for the Shift_Accum_Loop.
 
 The II = 2 comes from a fake data dependency. Since the hardware circuit is always running (the code in software runs independently), which means the two branches in the Shift_Accum_Loop both have a hardware implementation. For a pipelined structure, all the operations in the loop have dedicated hardware implementation. In the Shift_Accum_Loop, there exists two write operations (shift_reg[0] = x_temp.data; shift_reg[i] = shift_reg[i-1];), requiring 2 write ports for shift_reg (implemented in a BRAM). BRAM does not support 2 write ports. Therefore, the tool failed to make the II = 1 because of the conflict between the two write (store) operations. It is reported in the synthesis log from the console:
 
@@ -337,7 +337,7 @@ void fir(d_stream& y, d_stream& x){
 According to the synthesis report, now the II of the entire module becomes 1 and 1306 FFs and 796 LUTs are required.  
 
 #### Pipeline Type
-According to Xilinx Doc, the HLS supports three types of pipelines:  
+According to Xilinx Doc, the HLS supports three types of pipelines: ([Ref](https://docs.xilinx.com/r/en-US/ug1399-vitis-hls/pragma-HLS-pipeline))  
 
 **Stalled pipeline (STP)**  
 Default pipeline. No usage constraints.  
