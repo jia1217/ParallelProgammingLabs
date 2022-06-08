@@ -344,7 +344,7 @@ Advantages:
 > Lowest overall resource usage.  
 Disadvantages:
 > Not flushable:  
->> Lead to deadlock in dataflow.  
+>> Lead to deadlock in the dataflow.  
 >> Prevent already calculated output data from being delivered, if the inputs to the next iterations are missing.  
 > Timing issues due to high fanout on pipeline controls ("enable" signal distributed to all processing elements, or stages, in a pipeline structure).  
 
