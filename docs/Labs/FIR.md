@@ -368,7 +368,6 @@ Advantages:
 > Flushable
 
 Disadvantages:
-> May have larger II  
 > More resources 
 
 In a flushable pipeline, once the input data becomes invalid, it shuts down pipeline stages successively, until the final input is processed and moved to the output, rather than closing all stages at once. The structure is shown below.
