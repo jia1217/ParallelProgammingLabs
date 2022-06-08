@@ -336,22 +336,19 @@ void fir(d_stream& y, d_stream& x){
 
 According to the synthesis report, now the II of the entire module becomes 1 and 1306 FFs and 796 LUTs are required.  
 
-#### Pipeline Type
+#### Remaining Issue: Pipeline Type
 According to Xilinx Doc, the HLS supports three types of pipelines: ([Ref](https://docs.xilinx.com/r/en-US/ug1399-vitis-hls/pragma-HLS-pipeline))  
 
-**Stalled pipeline (STP)**  
-Default pipeline. No usage constraints.  
+**Stalled pipeline (STP)**  (Default pipeline; no usage constraints)  
 Advantages:
-> Typically the lowest overall resource usage.  
-> Default pipeline. No usage constraints.  
-
+> Lowest overall resource usage.  
 Disadvantages:
 > Not flushable:  
->> Cause mroe deadlock in dataflow.  
+>> Lead to deadlock in dataflow.  
 >> Prevent already calculated output data from being delivered, if the inputs to the next iterations are missing.  
-> Timing issues due to high fanout on pipeline controls.  
+> Timing issues due to high fanout on pipeline controls ("enable" signal distributed to all processing elements, or stages, in a pipeline structure).  
 
-Take a pipeline with three stages as an example. As is shown in the following figure, one single enable signal is shared with three stages (this causes the high fanout of pipeline control signals). If the input data continuously comes, stalled pipeline is good. However, if a packet of data (fixed length) is being processed, after the last data arrives, the input valid becomes '0'. Since no valid data comes, the first stage of the pipeline should be closed (set enable to 0). Consequently, the second and third stages of the pipeline are also closed, stopping the data from flowing out from the pipeline (not flushable). A deadlock could happen if there exists a software level data dependency. For example, if there are 10 packets to be processed, and the progammer write a totally resonable code like this:
+Let us take a pipeline structure with three stages as an example. As is shown in the following figure, one "enable" signal is shared with three stages (this causes a fanout issue of the pipeline control signal). If the input data continuously comes in, a stalled pipeline should work properly. Now, considering a stream of data with a fixed length, after the last data arrives, the input valid becomes '0'. Since no valid data comes in after this, the first stage of the pipeline is closed (set "enable" to 0). Consequently, the second and third stages of the pipeline are also closed, stopping the data from flowing out from the pipeline (not flushable). A deadlock could happen if there exists a software-level data dependency. For example, if there are 10 streams to be processed, and the programmer writes code as follows:
 
 ```c++
     for (int i = 0; i < 10; i++){
@@ -359,29 +356,29 @@ Take a pipeline with three stages as an example. As is shown in the following fi
     }
 ```
 
-When running this code, it doesn't stack at the last iteration (i = 9). Actully, the new data is only sent out when the result of first iteration fully received, while the hardware is waiting the new data for the second iteration to fully send out the result of the first iteration. This is socalled deadlock.  
+When running this code, it doesn't stack at the last iteration (i = 9). The new data can only be sent in when the result of the first iteration is received. While the hardware is waiting for the new data for the second iteration to fully send out the result of the first iteration. This is a so-called deadlock.  
 
-A typical solution is to add some zeors after the last data of the packet to push the useful data out. Though the solution looks promising, it is hard for progamming as the added zeros also needs to be removed from the output of next packet mannully.
+A typical solution is to add some zeros after the last data of the stream to push the useful data out. Though the solution looks promising, it is hard for programming as the added zeros also need to be removed from the output of the next stream manually.
 
 <img src="imgs/STP.png" alt="drawing" width="600"/>
 
 **Flushable Pipeline (FLP)**  
-Flushable pipeline is a better choice when processing packets of data.  
+A flushable pipeline is a better choice when processing multiple streams of data.  
 Advantages:
 > Flushable
 
 Disadvantages:
 > May have larger II  
-> More resources  
+> More resources 
 
-In flushable pipeline, once the input data becomes invalid, it shutting down each successive pipeline stage, until the final input has been processed through to the output of the pipeline rather than close all stages at once. The structure is shown below.
+In a flushable pipeline, once the input data becomes invalid, it shuts down pipeline stages successively, until the final input is processed and moved to the output, rather than closing all stages at once. The structure is shown below.
 
 <img src="imgs/FLP.png" alt="drawing" width="600"/>
 
-In the FIR application, unless the input data comes directly from an ADC (infinite data), a flushable pipeline is preferred.
+In the FIR application, unless the input data comes directly from an ADC (infinite data stream), a flushable pipeline is preferred.
 
 **Free-Running/Flushanle Pipeline (FRP)**  
-Though the FLP reduces some fanout of the pipeline controlling signal, it is still perfect as one stage of pipeline may have hundreds of FFs to control. Free running pipeline simplifies it even more.   
+Though the FLP reduces some fanout of the pipeline controlling signal, it is still not perfect as one pipeline may have hundreds of FFs to control. Free running pipeline further simplifies it.   
 Advantages:
 > Flushable  
 > Better Timing:  
@@ -389,17 +386,16 @@ Advantages:
 >> simpler pipeline control logic  
 
 Disadvantages:
-> Moderate resource increase due to FIFOs added on outputs  
+> Moderate resource increase due to FIFOs added on outputs
+> Energy inefficient  
 
 The structure is shown below:
 
 <img src="imgs/FRP.png" alt="drawing" width="600"/>
 
-The enable signal for the first stage is optional. It is only required when a shift register is put at the first stage (if the input is not valid, the shift register shouldn't run). For the next stages, FRP pipeline just make them always running. The output valid signal is calculated by the valid_in. Therefore, only minimum enable signal is required. However, makeing the circuit always running is not energy efficient.
+The "enable" signal for the first stage is optional. It is only required when a shift register is placed at the first stage (if the input is not valid, the shift register shouldn't run). FRP keeps the following stages running. The output valid signal is generated from the valid_in. Therefore, a minimum number of "enable" signals is required. However, making the circuit run continuously is not energy efficient.
 
-## C simulation
-
-## Co-simulation
+## Simulation
 
 ## Implementation
 
