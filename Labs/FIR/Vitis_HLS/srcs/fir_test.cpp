@@ -15,8 +15,10 @@ int main () {
   const int    SAMPLES=600;
   FILE         *fp, *fin;
 
-  data_t signal, output;
-  d_stream signal_stream, result_stream;
+  data_t signal;
+  acc_t output;
+  d_in_stream signal_stream;
+  d_out_stream result_stream;
   int i;
   signal = 0;
 
@@ -25,9 +27,10 @@ int main () {
   printf("%10s%10s%10s%10s\n", "Index", "Input", "Output", "TLAST");
 
   for (i=0;i<SAMPLES;i++) {
-	fscanf(fin,"%d",&signal);
+	int temp;
+	fscanf(fin,"%d",&temp);
 	data_t_pack signal_pack;
-	signal_pack.data = signal;
+	signal_pack.data = (data_t)temp;
 	signal_pack.keep = -1;
 	signal_pack.last = (i == (SAMPLES - 1));
 
@@ -36,11 +39,11 @@ int main () {
 	//Call the HLS block
     fir(result_stream,signal_stream);
 
-    data_t_pack result_pack;
+    acc_t_pack result_pack;
     result_stream >> result_pack;
     // Save the results.
-    fprintf(fp,"%d\n",result_pack.data);
-    printf("%10d%10d%10d%10d\n",i,signal,result_pack.data, (int)result_pack.last);
+    fprintf(fp,"%d\n",(int)result_pack.data);
+    printf("%10d%10d%10d%10d\n",i,signal,int(result_pack.data), (int)result_pack.last);
     if (result_pack.last != signal_pack.last){
     	printf("Tlast signal error!\n");
     	return 2;
