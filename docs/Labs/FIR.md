@@ -30,7 +30,7 @@ where $$h[j]$$ is the impulse response.
 
 ### The unoptimized code
 
-Following code shows a highly unoptimized version of FIR filter in HLS. in the header file (fir.h), this code uses **typedef** to define the datatype of different variables. Datatype of all three variables (```coef_t```, ```data_t```, and ```acc_t```) are int (32 bit) in this example. ```hls::axis<data_t,0,0,0>``` from ```ap_axi_sdata.h``` packs data_t into a standarded AXI4-Stream Interfaces datatype, namely, data_t_pack. ([Ref](https://docs.xilinx.com/r/en-US/ug1399-vitis-hls/How-AXI4-Stream-is-Implemented)) Finally, ```hls::stream<data_t_pack>``` from ```hls_stream.h``` creates a HLS stream (also an AXIs datatype) datatype, ```d_stream```.
+Following code shows a highly unoptimized version of FIR filter in HLS. in the header file (fir.h), this code uses **typedef** to define the datatype of different variables. Datatype of all three variables (```coef_t```, ```data_t```, and ```acc_t```) are int (32 bit) in this example. ```hls::axis<data_t,0,0,0>``` from ```ap_axi_sdata.h``` packs data_t into a standarded AXI4-Stream Interfaces datatype, namely, data_t_pack. ([Ref](https://docs.xilinx.com/r/en-US/ug1399-vitis-hls/How-AXI4-Stream-is-Implemented)) Finally, ```hls::stream<data_t_pack>``` from ```hls_stream.h``` creates a HLS stream (also an AXIs datatype) datatype, ```d_stream```. The block level interface of the kernel (how the kernel is triggered, ```port=return```, [Ref](https://docs.xilinx.com/r/en-US/ug1399-vitis-hls/pragma-HLS-interface)) is set as ```ap_ctrl_none```, which means the kernel is always ready to receive new data (free-running kernel).  
 
 **fir.h**
 ```c++
@@ -342,10 +342,13 @@ According to Xilinx Doc, the HLS supports three types of pipelines: ([Ref](https
 **Stalled pipeline (STP)**  (Default pipeline; no usage constraints)  
 Advantages:
 > Lowest overall resource usage.  
+
 Disadvantages:
 > Not flushable:  
+
 >> Lead to deadlock in the dataflow.  
 >> Prevent already calculated output data from being delivered, if the inputs to the next iterations are missing.  
+
 > Timing issues due to high fanout on pipeline controls ("enable" signal distributed to all processing elements, or stages, in a pipeline structure).  
 
 Let us take a pipeline structure with three stages as an example. As is shown in the following figure, one "enable" signal is shared with three stages (this causes a fanout issue of the pipeline control signal). If the input data continuously comes in, a stalled pipeline should work properly. Now, considering a stream of data with a fixed length, after the last data arrives, the input valid becomes '0'. Since no valid data comes in after this, the first stage of the pipeline is closed (set "enable" to 0). Consequently, the second and third stages of the pipeline are also closed, stopping the data from flowing out from the pipeline (not flushable). 
@@ -371,7 +374,8 @@ In the FIR application, unless the input data comes directly from an ADC (infini
 **Free-Running/Flushanle Pipeline (FRP)**  
 Though the FLP reduces some fanout of the pipeline controlling signal, it is still not perfect as one pipeline may have hundreds of FFs to control. Free running pipeline further simplifies it.   
 Advantages:
-> Flushable  
+> Flushable
+
 > Better Timing:  
 >> Less fanout  
 >> simpler pipeline control logic  
@@ -386,8 +390,148 @@ The structure is shown below:
 
 The "enable" signal for the first stage is optional. It is only required when a shift register is placed at the first stage (if the input is not valid, the shift register shouldn't run). FRP keeps the following stages running. The output valid signal is generated from the valid_in. Therefore, a minimum number of "enable" signals is required. However, making the circuit run continuously is not energy efficient.
 
+> (Important) Free-running kernel and free-running pipeline are different concepts. The free-running kernel means the entire module doesn't require any 'start' signal and is always ready to receive new data. The free-running pipeline is one structure to implement the pipeline.  
+
+### Optimization 5: Bitwidth optimization
+
+In C language supports variables with the following types:
+
+|  type   | bit length  |  decimal support  |
+|  ----  | ----  | ----  |
+| char  | 8 | No |
+| short  | 16 | No |
+| int  | 32 | No |
+| long  | 64 | No |
+| float  | 32 | Yes |
+| double  | 64 | Yes |
+
+The first four types only support integers, and they can be defined as unsigned variables. ```float``` and ```double``` are floating point variables that support decimal numbers. Notice that the bit width is always 2 to the power of an integer ($8=2^3$) and the minimum bit width is 8. FPGA is not good at processing floating point data. Therefore, once a decimal number is required to be computed in the FPGA, a common solution is to multiply the number with a large integer number $N$ and truncate the decimal parts so that it becomes an integer. Then the FPGA does the computation with the integer and provides a result. The result should be corrected with $N$ as well according to the math operation. For example, if the FPGA is used to multiply two decimal numbers 0.4 and 0.375, the first step could be multiplying each number by 1000 so that the two numbers become 400 and 375. Then the FPGA does the multiplication with the two numbers and gives the result 400\*375=150000. The last step is to correct the result, and in this case, since both numbers are multiplied by 1000, the result must be divided by 1000\*1000. Therefore, the final result is 0.15. An optimal way to implement this on FPGA (or any other hardware) is to use a $N$ that is 2 to the power of an integer becacuse dividing a number with such $N$ becomes bit shifting, which is super easy to be implemented by hardware. In this example, it is more hardware friendly to use $N=1024$ if you want to let FPGA do the result correction as well. This leads to the concept of fixed-point data, which is a binary number whose decimal is fixed at a constant place. For example, if a fixed-point number has total of 8 bits and 3 bits for the integer part(we call it <8,3>), '010.11000' then means 2.75.
+
+In this example, the frequency response is shown on the left of the figures below. It is definitely not a normal FIR filter since the gain at the pass band is 60dB rather than 0dB (unit gain). To make the pass band gain equal to 1, we have to divide all the coefficients by the sum of all coefficients (1050 in this case). As talked about before, it is better to use 1024 here as it is close to 1050. The frequency responses when dividing the coefficients by 1050 and 1024 are shown in the right figure, and they are almost identical.
+
+<img src="imgs/Freqz0.png" alt="drawing" width="300"/>
+<img src="imgs/Freqz1.png" alt="drawing" width="300"/>
+
+In this example, we just assume we do want a filter with a pass band gain equal 60dB (so that we don't have to manipulate the coefficients). The maximum value of the coefficients equals 500, which means we need at least 10 bits (1 for sign) to represent the coefficient. For the input signal, we assume that the input signal ranges from -127 to +127, which means we need 8 bits to represent it. Once we know the range of the input signal, we should use as least bits as possible to optimize the resource utilization. If it is in C language, we could use short for the coefficients and char for the input signal. But this causes some waste of Flip-Flops and LUTs for the coefficients because only 10 bits are required but we can only use 16 bits. Xilinx provides an arbitrary precision numbers package in HLS so that we can define variables with custom bit width. To use the package, include ```"ap_fixed.h"``` and then define the variable type like this ([Ref](https://docs.xilinx.com/r/en-US/ug1399-vitis-hls/Arbitrary-Precision-Fixed-Point-Data-Types)):
+
+```
+typedef ap_fixed<TOTAL_WIDTH,INTEGER_WIDTH> new_type_name;
+```
+
+For example, we can define the type of coefficients like this:
+
+```
+typedef ap_fixed<10,10> coef_t;
+```
+
+In this example, the filter has a pass band gain of 60dB, which means the output range should be at least 1000 times larger than the input. Therefore, the output should have at least 8 + 10 = 18 bit width. We can use 19 bits just in case. Therefore, we have the optimized bit width here:
+```
+typedef ap_fixed<10,10> coef_t;
+typedef ap_fixed<8,8> data_t;
+typedef ap_fixed<19,19> acc_t;
+```
+
+According to the report, the optimized design requires 194 FFs and 321 LUTs, which is much less than the one with pipelined optimization.
+
 ## Simulation
 
+The testbench file for simulation is shown below:
+
+
+```c++
+/*
+	Filename: fir_test.h
+		FIR lab wirtten for WES/CSE237C class at UCSD. Modified by URI nextlab.
+		Testbench file
+		Calls fir() function from fir.cpp
+		Compares the output from fir() with out.gold.dat
+*/
+
+#include <stdio.h>
+#include <math.h>
+#include <stdlib.h>
+#include "fir.h"
+
+int main () {
+  const int    SAMPLES=600;
+  FILE         *fp, *fin;
+
+  data_t signal;
+  acc_t output;
+  d_in_stream signal_stream;
+  d_out_stream result_stream;
+  int i;
+  signal = 0;
+
+  fin=fopen("input.dat","r");
+  fp=fopen("out.dat","w");
+  printf("%10s%10s%10s%10s\n", "Index", "Input", "Output", "TLAST");
+
+  for (i=0;i<SAMPLES;i++) {
+	int temp;
+	fscanf(fin,"%d",&temp);
+	data_t_pack signal_pack;
+	signal_pack.data = (data_t)temp;
+	signal_pack.keep = -1;
+	signal_pack.last = (i == (SAMPLES - 1));
+
+	signal_stream << signal_pack;
+
+	//Call the HLS block
+    fir(result_stream,signal_stream);
+
+    acc_t_pack result_pack;
+    result_stream >> result_pack;
+    // Save the results.
+    fprintf(fp,"%d\n",(int)result_pack.data);
+    printf("%10d%10d%10d%10d\n",i,signal,int(result_pack.data), (int)result_pack.last);
+    if (result_pack.last != signal_pack.last){
+    	printf("Tlast signal error!\n");
+    	return 2;
+    }
+  }
+
+  fclose(fp);
+  fclose(fin);
+
+  //Comparing results with the golden output.
+  printf ("Comparing against output data \n");
+    if (system("diff -w out.dat out.gold.dat")) {
+  	fprintf(stdout, "*******************************************\n");
+  	fprintf(stdout, "FAIL: Output DOES NOT match the golden output\n");
+  	fprintf(stdout, "*******************************************\n");
+       return 1;
+    } else {
+  	fprintf(stdout, "*******************************************\n");
+  	fprintf(stdout, "PASS: The output matches the golden output!\n");
+  	fprintf(stdout, "*******************************************\n");
+       return 0;
+    }
+
+}
+```
+The input signal (input.dat) and correct output signal (out.gold.dat) can be found [here](https://github.com/KastnerRG/pp4fpgas/blob/master/labs/project1.zip). The test bench first read the input signal from the file (```input.dat```), and packets the data into AXI stream interface (with ```tlast``` signal). Then, call the ```fir``` function and save the result into the ```out.dat``` file. Finally, use ```diff``` commands in Linux to compare the ```out.dat``` with ```out.gold.dat```. ```diff``` returns 0 if the two files are the same, and non-zero when there is any difference. If the result matches, the hardware kernel passes the test.  
+
+In Vitis HLS, there are two types of simulations, C simulation, and C/RTL Cosimulation. In C simulation, Vitis HLS runs the kernel (fir) as pure software. The pragmas do not take effect in C simulation. C/RTL cosimulation first compiles the kernel into HDL hardware kernel and then generates the interface between the test bench and hardware kernel. Calling the ```fir``` function launches the hardware simulation if the block level interface is not ```ap_ctrl_none```. In this example, the ```fir``` kernel doesn't require any start signal. Calling the kernel just passes the data into it. Such a free-running kernel performs differently in C simulation and Cosimulatio ([Ref](https://docs.xilinx.com/r/en-US/ug1393-vitis-application-acceleration/Free-Running-Kernel)). Conceptually, a free-running kernel is always running which means you can imagine that there is a ```while(1)``` loop outside the kernel code (the ```fir``` function is only required to be called for one time). However, the ```while(1)``` loop will halt the software. Therefore, in the test bench, the ```fir``` function is actually called by ***SAMPLES*** of times. If it is the kernel that is calling the free-running kernel (interconnected between kernels), the C simulation may fail and actually be meaningless.  
+
+To run the simulation, simply clock the C simulation or C/RTL cosimulation in the Flow Navigator (bottom right). You should see the *PASS* if everything is good. When running the Cosimulation, you can change the *Dump Trace* option to *all* before launching. Then, once the simulation is finished, you can click the *Wave Viewer* to see the waveform from the simulation. You can check if the actual II matches the report with the waveform.  
 ## Implementation
+To create the Vitis_HLS project, cd into the Vitis_HLS folder in the Labs/FIR, and run the following command:
 
+```shell
+make all IMPL=0
+vitis_hls -p fir
+```
 
+The 'make' operation simply copies the correct file into the folder and then creates the Vitis_HLS project, synthesis the design and generates the Vivado IP (the IP is also extracted into the IP folder). The IMPL specifies which is optimization step has been done, the possible value is listed below, '0' is the final design: 
+
+|  Version   | Description  |
+|  ----  | ----  |
+| 2.1  | Non-optimized code |
+| 2.3  | Loop hoisting |
+| 2.4  |  Loop fission |
+| 2.6  | Loop unrolling |
+| 2.8  | Pipelining |
+| 0  | Bit Width optimization |
+
+```vitis_hls -p fir``` operation is to open the project so that you can check the scheduling and run simulations. It is optional; you don't have to run it if you just want the IP and doesn't want to see any details or run simulations.
