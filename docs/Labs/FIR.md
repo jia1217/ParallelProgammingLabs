@@ -431,7 +431,86 @@ typedef ap_fixed<8,8> data_t;
 typedef ap_fixed<19,19> acc_t;
 ```
 
-According to the report, the optimized design requires 194 FFs and 321 LUTs, which is much less than the one with pipelined optimization.
+According to the report, the optimized design requires 194 FFs and 321 LUTs, which is much less than the one with pipelined optimization. The final code should look like this:
+
+
+fir.h
+```c++
+#ifndef FIR_H_
+#define FIR_H_
+
+#include "hls_stream.h"
+#include "ap_axi_sdata.h"
+#include "ap_fixed.h"
+
+const int N=11;
+
+typedef ap_fixed<10,10> coef_t;
+typedef ap_fixed<8,8> data_t;
+typedef ap_fixed<19,19> acc_t;
+
+typedef hls::axis<data_t,0,0,0> data_t_pack;
+typedef hls::stream<data_t_pack> d_stream;
+
+void fir (
+  d_stream& y,
+  d_stream& x
+);
+
+#endif
+```
+
+fir.cpp
+```c++
+#include "fir.h"
+
+// Not optimzied code in Figure 2.1
+
+void fir(d_stream& y, d_stream& x){
+#pragma HLS INTERFACE mode=ap_ctrl_none port=return
+#pragma HLS INTERFACE mode=axis register_mode=both port=y
+#pragma HLS INTERFACE mode=axis register_mode=both port=x
+#pragma HLS PIPELINE style=frp
+    coef_t c[N] = {
+        53, 0, -91, 0, 313, 500, 313, 0, -91, 0, 53
+    };
+    static data_t shift_reg[N];
+#pragma HLS array_partition type=complete variable=shift_reg dim=1
+    data_t_pack x_temp;
+    acc_t acc = 0;
+    int i;
+    x >> x_temp;
+
+// Algorithm
+TDL:
+    for (i = N - 1; i > 0;i--){
+#pragma HLS unroll
+        shift_reg[i] = shift_reg[i-1];
+    }
+    shift_reg[0] = x_temp.data;
+
+MAC:
+    for (i = N - 1; i >= 0;i--){
+#pragma HLS unroll
+        acc += shift_reg[i] * c[i];
+    }
+    
+// Output Stream
+    data_t_pack y_temp;
+    y_temp.data = acc;
+    y_temp.keep = -1;
+    y_temp.last = x_temp.last;
+    y << y_temp;
+    if (x_temp.last){
+Clear_Loop:
+    	for (i = N - 1; i >= 0;i--){
+#pragma HLS unroll
+            shift_reg[i] = 0;
+        }
+    }
+}
+
+```
 
 ## Simulation
 
