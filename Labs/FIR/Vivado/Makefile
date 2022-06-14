@@ -3,8 +3,8 @@ PRJ_NAME ?= FIR
 
 all:
 	-@vivado -nolog -nojournal -mode batch -source ./srcs/generate_bitstream.tcl
-	-@cp prj/$(PRJ_NAME).runs/impl_1/*.bit ./system.bit
-	-@cp prj/system/hw_handoff/system.hwh ./
+	-@cp prj/$(PRJ_NAME).runs/impl_1/*.bit ./fir.bit
+	-@cp prj/fir/hw_handoff/fir.hwh ./
 
 clean:
 	-@rm -f ./system.bit
@@ -13,6 +13,6 @@ clean:
 
 
 move:
-	-@cp prj/$(PRJ_NAME).runs/impl_1/*.bit ./system.bit
-	-@cp prj/system/hw_handoff/system.hwh ./
+	-@cp prj/$(PRJ_NAME).runs/impl_1/*.bit ./fir.bit
+	-@cp prj/fir/hw_handoff/fir.hwh ./
 

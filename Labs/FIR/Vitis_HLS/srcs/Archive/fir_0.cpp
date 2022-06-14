@@ -2,7 +2,7 @@
 
 // Not optimzied code in Figure 2.1
 
-void fir(d_stream& y, d_stream& x){
+void fir(d_out_stream& y, d_in_stream& x){
 #pragma HLS INTERFACE mode=ap_ctrl_none port=return
 #pragma HLS INTERFACE mode=axis register_mode=both port=y
 #pragma HLS INTERFACE mode=axis register_mode=both port=x
@@ -32,7 +32,7 @@ MAC:
     }
     
 // Output Stream
-    data_t_pack y_temp;
+    acc_t_pack y_temp;
     y_temp.data = acc;
     y_temp.keep = -1;
     y_temp.last = x_temp.last;

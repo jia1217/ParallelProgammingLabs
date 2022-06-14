@@ -22,8 +22,8 @@ typedef hls::stream<data_t_pack> d_in_stream;
 typedef hls::stream<acc_t_pack> d_out_stream;
 
 void fir (
-		d_out_stream& y,
-		d_in_stream& x
+  d_out_stream& y,
+  d_in_stream& x
 );
 
 #endif
