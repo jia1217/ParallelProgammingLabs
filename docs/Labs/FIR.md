@@ -450,11 +450,13 @@ typedef ap_fixed<8,8> data_t;
 typedef ap_fixed<19,19> acc_t;
 
 typedef hls::axis<data_t,0,0,0> data_t_pack;
-typedef hls::stream<data_t_pack> d_stream;
+typedef hls::axis<acc_t,0,0,0> acc_t_pack;
+typedef hls::stream<data_t_pack> d_in_stream;
+typedef hls::stream<acc_t_pack> d_out_stream;
 
 void fir (
-  d_stream& y,
-  d_stream& x
+  d_out_stream& y,
+  d_in_stream& x
 );
 
 #endif
@@ -464,9 +466,9 @@ fir.cpp
 ```c++
 #include "fir.h"
 
-// Not optimzied code in Figure 2.1
+// Optimzied code
 
-void fir(d_stream& y, d_stream& x){
+void fir(d_out_stream& y, d_in_stream& x){
 #pragma HLS INTERFACE mode=ap_ctrl_none port=return
 #pragma HLS INTERFACE mode=axis register_mode=both port=y
 #pragma HLS INTERFACE mode=axis register_mode=both port=x
@@ -496,7 +498,7 @@ MAC:
     }
     
 // Output Stream
-    data_t_pack y_temp;
+    acc_t_pack y_temp;
     y_temp.data = acc;
     y_temp.keep = -1;
     y_temp.last = x_temp.last;
@@ -595,6 +597,8 @@ In Vitis HLS, there are two types of simulations, C simulation, and C/RTL Cosimu
 
 To run the simulation, simply clock the C simulation or C/RTL cosimulation in the Flow Navigator (bottom right). You should see the *PASS* if everything is good. When running the Cosimulation, you can change the *Dump Trace* option to *all* before launching. Then, once the simulation is finished, you can click the *Wave Viewer* to see the waveform from the simulation. You can check if the actual II matches the report with the waveform.  
 ## Implementation
+
+### Create FIR IP
 To create the Vitis_HLS project, cd into the Vitis_HLS folder in the Labs/FIR, and run the following command:
 
 ```shell
@@ -614,3 +618,39 @@ The 'make' operation simply copies the correct file into the folder and then cre
 | 0  | Bit Width optimization |
 
 ```vitis_hls -p fir``` operation is to open the project so that you can check the scheduling and run simulations. It is optional; you don't have to run it if you just want the IP and doesn't want to see any details or run simulations.
+
+### Create Vivado Project
+
+* If you are familiar with how to createing the project and setup the testing platform, just cd into the Labs/FIR/Vivado and run ```make all```. The bitstream and hardware hand-off will be copied into the folder automatically. (The automatically created project only supports the final optimised kernel)  
+1. 'cd' into Labs/FIR/Vivado/prj folder. 
+2. Open a terminal in the folder, and run ```vivado -nolog -nojournal & ``` in the terminal, this should launch the GUI.
+3. In the Quick Start block, click 'Create Project'. Click 'Next'.
+4. Name the project as 'fir'. The Project location should be the same as the path you opened the Vivado. Then uncheck the box 'Create project subdirectory to avoid redundant paths. Click 'Next'.
+5. Select RTL Project, and enable 'Do not specify sources at this time' and disable 'Project is an extensible Vitis platform'. Click 'Next'.
+6. On the top, select 'Boards' first, and you can search for PYNQ in the list, select 'PYNQ-Z2' here. If 'PYNQ-Z2' didn't show up, go to [
+xupsh/pynq-supported-board-file](https://github.com/xupsh/pynq-supported-board-file.git) and follow the instructions on the webpage. You may need to restart the Vivado. Click 'Next'. Click 'Finish'.
+7. In the left flow navigator, click 'IP INTEGRATOR/Create Block Design'. Name it as 'fir'.
+8. On the bottom, type 'source ../srcs/base_bd.tcl' in the TCL command window, press 'Enter'. This script adds essential IP blocks to make PYNQ run correctly.
+9. In the left flow navigator, click 'PROJECT MANAGER/Settings' and go to 'IP/Repository'. Click the 'ADD' bottom on the right, and select the 'Labs/FIR/Vitis_HLS/IP', click OK. Click OK in the settings window to apply the change and exit the settings.
+10. Back to the Block Design Diagram. Right-click in the blank area, and select 'Add IP'. Search for FIR and add the one you created (NOT 'fir_compiler').
+11. Since fixed-point data is not supported on software, it is required to transfer a software supporting type to the required fixed-point data as well as the inverse transfer. Xilinx provides official IP to accomplish this. Right-click on the blank area and select 'ADD IP', search for 'floating' and select the 'Floating-point'. Double click the floating-point IP just added to open the configuration window.
+12. In the operation selection session, select 'Float-to-fixed'.
+13. In the Precision of Input session, check if the input is 32-bits float (float32 or single).
+14. In the Precision of Result session, select 'Custom', the fill the integer width with 8 and fraction width with 0.
+15. In the Interface Options session, make sure the flowing control is Blocking and the 'Result channel has TREADY' is enabled. Then in the 'Optional Output Fields', enable the 'Has TLAST' in channel A. The 'TLAST Behavior' at the bottom should be automatically changed 'Pass A TLAST'. Click 'OK'.
+16. Add another floating-point IP.
+17. The operation should be fixed-to-float (inversed).
+18. In the Precision of Input session, disable the auto, and then select the Custome on the right. Disable the two 'Auto' and set the integer width as 9 and Fraction Width as 10. A trick is played here. The output should have 19 integer width and 0 fraction width. We set the Fraction Width as 10 to implement a shift right by 10-bits operation, which divides the output by 1024, so that the unit gain filter is realized (see the bit width optimization).
+19. In the Precision of Result session, select 'Single'.
+20. Repeat step 15. Click 'OK'.
+21. Connect the M_AXIS_MM2S port of axi_dma_0 to the S_AXIS_A port of the floating_point_0.
+22. Connect the M_AXIS_RESULT port of the floating_point_0 to the 'x' port of fir_0.
+23. Connect the 'y' port of the fir_0 to the S_AXIS_A port of floating_point_1.
+24. Connect the M_AXIS_RESULT port of the floating_point_1 to the S_AXIS_S2MM port of the axi_dma_0.
+25. Click the 'Run Connection Automation' on the top of the 'Diagram' window, and select all automation. Click OK. This should have all clock signals connected automatically.
+26. Click the save button on the top left. Then right click on the yellow fir.bd in the Sources view, and select create HDL wrapper. In the options, let Vivado manage wrapper and auto-update. Click OK. This should finish the project creation.
+27. Click the 'Generate Bitstream' at the bottom. Click OK if any window shows up.
+
+### Run PYNQ test program
+
+

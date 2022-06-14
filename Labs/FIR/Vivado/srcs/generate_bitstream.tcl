@@ -1,7 +1,7 @@
 create_project FIR ./prj -part xc7z020clg400-1
 set_property IP_REPO_PATHS {../Vitis_HLS/IP} [get_filesets sources_1]
 source ./srcs/system_block_design.tcl
-make_wrapper -files [get_files ./prj/system/system.bd] -top -import -force
+make_wrapper -files [get_files ./prj/fir/fir.bd] -top -import -force
 launch_runs synth_1
 wait_on_run synth_1
 
