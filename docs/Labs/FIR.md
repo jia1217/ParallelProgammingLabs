@@ -617,11 +617,11 @@ The 'make' operation simply copies the correct file into the folder and then cre
 | 2.8  | Pipelining |
 | 0  | Bit Width optimization |
 
-```vitis_hls -p fir``` operation is to open the project so that you can check the scheduling and run simulations. It is optional; you don't have to run it if you just want the IP and doesn't want to see any details or run simulations.
+```vitis_hls -p fir``` operation is to open the project so that you can check the scheduling and run simulations. It is optional; you don't have to run it if you just want the IP and doesn't want to see any details or run simulations. You can also package your own IP.
 
 ### Create Vivado Project
 
-* If you are familiar with how to createing the project and setup the testing platform, just cd into the Labs/FIR/Vivado and run ```make all```. The bitstream and hardware hand-off will be copied into the folder automatically. (The automatically created project only supports the final optimised kernel)  
+* If you are familiar with how to create the project and set up the testing platform, just cd into the Labs/FIR/Vivado and run ```make all```. The bitstream and hardware hand-off will be copied into the folder automatically. (The automatically created project only supports the final optimized kernel)  
 1. 'cd' into Labs/FIR/Vivado/prj folder. 
 2. Open a terminal in the folder, and run ```vivado -nolog -nojournal & ``` in the terminal, this should launch the GUI.
 3. In the Quick Start block, click 'Create Project'. Click 'Next'.
@@ -653,4 +653,110 @@ xupsh/pynq-supported-board-file](https://github.com/xupsh/pynq-supported-board-f
 
 ### Run PYNQ test program
 
+First, open the PYNQ Z2 and log in to the jupyter notebook. Create a folder to save the files first.
 
+Double click the folder just created, then click the ```upload``` on the top right. Upload the following files:
+> input.dat
+>> Test bench input  
+
+> out.gold.dat
+>> Test bench output  
+
+> fir.hwh
+>> Hardware description. If you use the provided makefile, it should be in Labs/FIR/Vivado/ folder. If you create the project by yourself, it shuold be in Labs/FIR/Vivado/prj/fir.gen/sources_1/bd/fir/hw_handoff/ folder
+
+> fir_wrapper.bit
+>> Bitsream. If you use the provided makefile, it should be in Labs/FIR/Vivado/ folder and already renamed to fir.bit. If you create the project by yourself, it shuold be in Labs/FIR/Vivado/prj/fir.runs/impl_1 folder. Rename it as fir.bit in the PYNQ Z2
+
+Then create a python3 notebook via clicking the new in the website and selecting python3. 
+
+In this project, we need the following python packages and import them.
+
+```python
+from pynq import Overlay
+from pynq import allocate
+import matplotlib.pyplot as plt
+import numpy as np
+import time
+```
+
+The pynq.Overlay is used to download the bitstream into the FPGA ([Ref](https://pynq.readthedocs.io/en/latest/pynq_libraries/overlay.html)). Package pynq.allocate is used to allocate buffers whose physical address is available ([Ref](https://pynq.readthedocs.io/en/latest/pynq_libraries/allocate.html)). The buffers type inherits from the numpy array, so all the functions in numpy can be used with the buffers.
+
+First, we download the bitstream and create variables points to the two DMA channels (s2mm is the data flowing towards PS, which should be the output of fir; mm2s is the data flowing away from the PS, which should be the input of fir). The overlay class will automatically load 'fir.hwh' to see how many IPs and their addresses on AXI bus.
+
+```python
+hw = Overlay('fir.bit')
+mm2s = hw.axi_dma_0.sendchannel
+s2mm = hw.axi_dma_0.recvchannel
+```
+
+To test if the kernel works correctly, we have to load both the 'input.dat' and the 'out.gold.dat'. Run the following commands:
+
+```python
+input_data = np.loadtxt('input.dat',dtype=np.float32)
+output_gold_data = np.loadtxt('out.gold.dat',dtype=np.float32)
+N = len(input_data)
+```
+
+N is the length of the input_data, which is used for creating the buffers. Now, create the buffers:
+
+```
+oBuf = allocate(shape=(N,), dtype = np.float32)
+iBuf = allocate(shape=(N,), dtype = np.float32)
+oBuf[:] = input_data[:]
+```
+
+Notice the data type (dtype) is float32 to match the hardware design. Then we can run the fir kernel via launching the DMA channels:
+
+```python
+start_time = time.time()
+s2mm.transfer(iBuf)
+mm2s.transfer(oBuf)
+mm2s.wait()
+
+s2mm.wait()
+finish_time = time.time()
+
+correct = np.array_equal(iBuf, output_gold_data/1024)
+time_cost = finish_time - start_time
+if correct:
+    print("Success! Took %.2f ms!" % (time_cost * 1e3))
+else:
+    print("Failed! Took %.2f ms!" % (time_cost * 1e3))
+```
+
+Unlike the testbench where we just call the fir function, don't need to call (or start) the fir kernel here as the block-level interface is ap_ctrl_none. The fir IP is always ready to receive and process new data so all we need to do are just create the two data streams.
+
+To fully test the IP, we can also do a frequency sweeping here. Since we don't have a sampling rate defined here, we can just use the digital frequency, which is basically how many radius phase changes in one sample.
+
+```python
+N = 1024
+idx = np.array(range(0,N))
+oBuf = allocate(shape=(N,), dtype = np.float32)
+iBuf = allocate(shape=(N,), dtype = np.float32)
+Gain = np.zeros((99,1))
+for i in range(0,99,1):
+    w = (i+1)/100
+    oBuf[:] = 100*np.sin(np.pi*w*idx)
+    s2mm.transfer(iBuf)
+    mm2s.transfer(oBuf)
+    mm2s.wait()
+    s2mm.wait()
+    E_o = np.var(oBuf)
+    E_i = np.var(iBuf)
+    Gain[i] = 10 * np.log10(E_i/E_o)
+w = np.array(range(0,99))
+w = w / 100
+plt.figure(dpi=200)
+plt.plot(w,Gain[:,],linewidth=2)
+plt.xlabel('Normalized frequency (0~fs/2->0~1)')
+plt.ylabel('Gain (dB)')
+plt.title('Tested Frequency Response')
+plt.xlim(0, 1)
+plt.grid(True)
+```
+
+The plot is shown below on the left, it matches the theoretical frequency response shown on the right.
+
+<img src="imgs/Freqz_Exp.png" alt="drawing" width="300"/>
+<img src="imgs/Freqz1.png" alt="drawing" width="300"/>
