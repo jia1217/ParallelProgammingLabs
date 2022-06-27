@@ -134,6 +134,220 @@ Rotation Mode is used to calculate $\sin$, $\cos$ and the related values such as
 
 ## Vector Mode
 
-Vector mode is similar, while the initial vector is user-defined and the targeted angle is always $0\degree$. For example, if we initialize the $V_0$ with $x= x_0$ and $y=y_0$ (the initial angle is $\arctan(\frac{y_0}{x_0})$), and rotate the angle towards $0\degree$, the final length of the vector is $A\times|V_0|=A\sqrt{x_0^2+y_0^2}$, which is exactly the final $x$ as the angle is rotated to $0\degree$. However, since the final value is not $\sqrt{x_0^2+y_0^2}$ directly, the division is required either for the final result or the initial value of $x,y$. Hence, the Vector Mode with trigonometric functions is not that useful. However, with hyperbolic functions to replace the $\sin and \cos$ here, the square root of any given value can be calculated directly with Cordic ([Ref](https://www.youtube.com/watch?v=3g6bkSDvYQM)).  
+Vector mode is similar, while the initial vector is user-defined and the targeted angle is always $0\degree$. For example, if we initialize the $V_0$ with $x= x_0$ and $y=y_0$ (the initial angle is $\arctan(\frac{y_0}{x_0})$), and rotate the angle towards $0\degree$, the final length of the vector is $A\times\lvert V_0\rvert=A\sqrt{x_0^2+y_0^2}$, which is exactly the final $x$ as the angle is rotated to $0\degree$. However, since the final value is not $\sqrt{x_0^2+y_0^2}$ directly, the division is required either for the final result or the initial value of $x,y$. Hence, the Vector Mode with trigonometric functions is not that useful. However, with hyperbolic functions to replace the $\sin and \cos$ here, the square root of any given value can be calculated directly with Cordic ([Ref](https://www.youtube.com/watch?v=3g6bkSDvYQM)).  
 
 # Cordic Implementation
+
+cordic.h
+
+```c++
+/*
+Filename: cordic.h
+	Header file
+	CORDIC lab
+*/
+#ifndef CORDIC_H_
+#define CORDIC_H_
+
+#include "hls_stream.h"
+#include "ap_axi_sdata.h"
+#include "ap_fixed.h"
+
+#define PI (3.14159265f)
+
+const int NUM_ITERATIONS = 28;
+const float INIT_X = 0.60735;
+
+typedef ap_fixed<32,8> THETA_TYPE;
+typedef ap_fixed<32,2>	COS_SIN_TYPE;
+
+typedef hls::axis<THETA_TYPE,0,0,0> theta_t_pack;
+typedef hls::stream<theta_t_pack> theta_t_stream;
+typedef hls::axis<COS_SIN_TYPE,0,0,0> cos_sin_t_pack;
+typedef hls::stream<cos_sin_t_pack> cos_sin_t_stream;
+
+void cordic (
+  cos_sin_t_stream& sin_stream,
+  cos_sin_t_stream& cos_stream,
+  theta_t_stream& theta_stream
+);
+
+#endif
+```
+
+cordic.cpp
+
+```c++
+#include "cordic.h"
+
+void cordic (
+  cos_sin_t_stream& sin_stream,
+  cos_sin_t_stream& cos_stream,
+  theta_t_stream& theta_stream
+){
+#pragma HLS INTERFACE mode=ap_ctrl_none port=return
+#pragma HLS INTERFACE mode=axis register_mode=both port=sin_stream
+#pragma HLS INTERFACE mode=axis register_mode=both port=cos_stream
+#pragma HLS INTERFACE mode=axis register_mode=both port=theta_stream
+#pragma HLS PIPELINE style=frp
+    static THETA_TYPE cordic_phase[NUM_ITERATIONS] = {
+        0.78539816339745,   0.46364760900081,   0.24497866312686,   0.12435499454676,
+        0.06241880999596,   0.03123983343027,   0.01562372862048,   0.00781234106010,
+        0.00390623013197,   0.00195312251648,   0.00097656218956,   0.00048828121119,
+        0.00024414062015,   0.00012207031189,   0.00006103515617,   0.00003051757812,
+        0.00001525878906,   0.00000762939453,   0.00000381469727,   0.00000190734863,
+        0.00000095367432,   0.00000047683716,   0.00000023841858,   0.00000011920929,
+        0.00000005960464,   0.00000002980232,   0.00000001490116,   0.00000000745058
+    };
+
+    theta_t_pack theta_t_pack_temp;
+    theta_stream >> theta_t_pack_temp;
+    THETA_TYPE theta = theta_t_pack_temp.data;
+
+    COS_SIN_TYPE current_cos = INIT_X;
+    COS_SIN_TYPE current_sin = 0.0;
+
+
+ROTATION_LOOP:
+    for (int j = 0; j < NUM_ITERATIONS; j++){
+        COS_SIN_TYPE cos_shift = current_cos >> j;
+        COS_SIN_TYPE sin_shift = current_sin >> j;
+
+        if (theta >= 0){
+            current_cos = current_cos - sin_shift;
+            current_sin = current_sin + cos_shift;
+            theta -= cordic_phase[j];
+        }
+        else{
+            current_cos = current_cos + sin_shift;
+            current_sin = current_sin - cos_shift;
+            theta += cordic_phase[j];
+        }
+    }
+
+    cos_sin_t_pack cos_temp, sin_temp;
+    cos_temp.data = current_cos;
+    sin_temp.data = current_sin;
+    cos_temp.keep = -1;
+    sin_temp.keep = -1;
+    cos_temp.last = theta_t_pack_temp.last;
+    sin_temp.last = theta_t_pack_temp.last;
+
+    sin_stream << sin_temp;
+    cos_stream << cos_temp;
+   
+}
+```
+
+Testbench
+
+```c++
+/*
+  Filename: cordic_test.h
+  CORDIC lab wirtten for WES/CSE237C class at UCSD.
+  Testbench file
+  Calls cordic() function from cordic.cpp
+  Compares the output from cordic() with math library
+*/
+
+#include <stdio.h>
+#include <math.h>
+#include <stdlib.h>
+#include "cordic.h"
+
+
+
+int main (int argc, char** argv) {
+  printf("Cordic rotation mode test:\n");
+  cos_sin_t_stream sin_stream;
+  cos_sin_t_stream cos_stream;
+  theta_t_stream theta_stream;
+  THETA_TYPE theta;
+
+  float acc_error = 0;
+  printf("Angle\t\t\tsin\t\t\tsin_gold\tcos\t\t\tcos_gold\terror\t\t\tacc_error\n");
+  for (int i = 0; i < 16; i++){
+    theta = i * PI / 16 / 2; // 16 steps from 0 to pi/2
+    theta_t_pack theta_t_pack_temp;
+    theta_t_pack_temp.data = theta;
+    theta_t_pack_temp.keep = -1;
+    theta_t_pack_temp.last = (i == 15);
+    theta_stream << theta_t_pack_temp;
+
+    cordic(sin_stream, cos_stream, theta_stream);
+
+    cos_sin_t_pack sin_pack, cos_pack;
+    sin_stream >> sin_pack;
+    cos_stream >> cos_pack;
+    float sin_golden = sin((float)theta);
+    float cos_golden = cos((float)theta);
+
+    float new_error = pow((float)cos_pack.data-(float)cos_golden,2) + pow((float)sin_pack.data-(float)sin_golden,2);
+    acc_error += new_error;
+
+    printf("%3.3f    :\t\t%1.4f\t\t%1.4f\t\t%1.4f\t\t%1.4f\t\t%1.8f\t\t%1.8f\n",(float)theta,(float)sin_pack.data,(float)sin_golden,(float)cos_pack.data,(float)cos_golden,new_error, acc_error);
+  }
+  if(acc_error / 16 < 0.0001){
+	  printf(" +---------------------+\n");
+	  printf(" |        PASS!        |\n");
+	  printf(" +---------------------+\n");
+	  printf("Mean error = %.8f\n",acc_error / 16);
+	  return 0;
+  }
+  else{
+	  printf(" +---------------------+\n");
+	  printf(" |        FAIL!        |\n");
+	  printf(" +---------------------+\n");
+	  printf("Mean error = %.8f\n",acc_error / 16);
+	  return -1;
+  }
+}
+```
+
+In this implementation, the angle is rotated 28 times. To be hardware friendly, this code rotates the coordinate system. Therefore, theta is always compared with 0.
+
+To be fast, the module is pipelined. In HLS, the for loop inside the module must be unrolled.
+
+Pipelining the loop is different from unrolling the loop and making it a pipeline. Pipelining the loop only generates a pipeline for the loop body. Therefore, no new data can be received before the for loop is executed. In this case, the II of the module cannot be 1. However, pipelining the whole module (unroll the loop) generates multiple loop body circuits (equal to the trip count) and makes a large pipeline. Hence, new data can be received every clock cycle and the II of the module can be 1.
+
+To generate the IP, cd into *Labs/Cordic/Vitis_HLS*, and run ```make all```. It will create the IP saved in the IP folder. Then, cd into *Labs/Cordic/Vivado* and run ```make all``` to generate the bitstream.
+
+To test the the IP, generate an array ranging from $0\to\pi/2$, and collect the cos value calculated by hardware. Then, compare with the value calculated via numpy ```cos``` function. The error is represented by a percentage.
+
+```python
+from pynq import Overlay
+from pynq import allocate
+import matplotlib.pyplot as plt
+import numpy as np
+import time
+
+hw = Overlay('cordic.bit')
+mm2s = hw.axi_dma_0.sendchannel
+s2mm = hw.axi_dma_0.recvchannel
+
+N = 1024
+oBuf = allocate(shape=(N,), dtype = np.float32)
+iBuf = allocate(shape=(N,), dtype = np.float32)
+for i in range(N):
+    oBuf[i] = np.pi * i / 1024 / 2
+
+start_time = time.time()
+s2mm.transfer(iBuf)
+mm2s.transfer(oBuf)
+mm2s.wait()
+s2mm.wait()
+finish_time = time.time()
+
+gold_data = np.cos(oBuf[:])
+plt.figure(dpi=150)
+plt.plot(oBuf[:]/np.pi,(iBuf[:] - gold_data) / gold_data * 100)
+plt.xlim([0, 0.5])
+plt.xlabel('Angle (rad/pi)')
+plt.ylabel('Error pencentage (%)')
+```
+
+The plot is shown below:
+
+<img src="./imgs/cordic_exp.png" alt="drawing" width="600"/>
+
+In most cases, the error is less than 0.02%, which is good enough, and the II of the module is 1.
