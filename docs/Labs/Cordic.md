@@ -136,7 +136,7 @@ Rotation Mode is used to calculate $\sin$, $\cos$ and the related values such as
 
 Vector mode is similar, while the initial vector is user-defined and the targeted angle is always $0\degree$. For example, if we initialize the $V_0$ with $x= x_0$ and $y=y_0$ (the initial angle is $\arctan(\frac{y_0}{x_0})$), and rotate the angle towards $0\degree$, the final length of the vector is $A\times\lvert V_0\rvert=A\sqrt{x_0^2+y_0^2}$, which is exactly the final $x$ as the angle is rotated to $0\degree$. However, since the final value is not $\sqrt{x_0^2+y_0^2}$ directly, the division is required either for the final result or the initial value of $x,y$. Hence, the Vector Mode with trigonometric functions is not that useful. However, with hyperbolic functions to replace the $\sin and \cos$ here, the square root of any given value can be calculated directly with Cordic ([Ref](https://www.youtube.com/watch?v=3g6bkSDvYQM)).  
 
-# Cordic Implementation
+## Cordic Implementation
 
 cordic.h
 
@@ -351,3 +351,59 @@ The plot is shown below:
 <img src="./imgs/cordic_exp.png" alt="drawing" width="600"/>
 
 In most cases, the error is less than 0.02%, which is good enough, and the II of the module is 1.
+
+## Small modification
+
+In the previous code, the input $\theta$ must range from $0\to\pi/2$. If the required angle ranges from $\pi/2\to 2\pi$, it is still possible to transfer them into the CORDIC allowed range. However, if we already know a phase of a signal, it is hard to regenerate the original signal as the phase can easily go to thousands. For example, in OFDR (Optical frequency domain reflectometry), an auxilary MZI is frequently used to do resampling and canceling phase noise ([Ref](https://ieeexplore.ieee.org/abstract/document/9146592)). In this case, a phase curve is required. If the input angle is higher than $\pi/2$, a modular function is required, which is difficult for hardware.
+
+To solve this problem, we can map $0\to2\pi$ to $0\to1$, so that the integer part can be ignored directly. Then, we just need to transfer all angles from $0.25\to1$ to $0\to0.25$. Two bool variables are required to save if the final cos/sin value has to be inverted. Here is how the input $\theta$ is processed:
+
+Pre-process:  
+
+```c++
+......
+
+static THETA_TYPE cordic_phase[NUM_ITERATIONS] = {
+    		0.125000000000000000,    		0.073791808825216645,    		0.038989565188684662,    		0.019791712080282773,
+    		0.009934262152770421,    		0.004971973911794637,    		0.002486593639475207,    		0.001243372696834870,
+    		0.000621695834357050,    		0.000310849102961686,    		0.000155424699705010,    		0.000077712368380566,
+    		0.000038856186506292,    		0.000019428093542647,    		0.000009714046807511,    		0.000004857023408279,
+    		0.000002428511704705,    		0.000001214255852423,    		0.000000607127926220,    		0.000000303563963111,
+    		0.000000151781981556,    		0.000000075890990778,    		0.000000037945495389,    		0.000000018972747694,
+    		0.000000009486373847,    		0.000000004743186924,    		0.000000002371593462,    		0.000000001185796731
+    };
+
+
+......
+    bool inv_sin = false;
+    bool inv_cos = false;
+    theta = theta * MAP_K; // MAP_K = 1/2/pi
+    // handle negative phase
+    if (theta < 0){
+    	theta = (THETA_TYPE)-theta;
+    	theta(30,16) = 0; // Clear interger part. Equivalently theta = mod(theta, 1)
+    	theta = 1 - theta;
+    }else{
+    	theta(30,16) = 0;
+    }
+
+    if (theta < 0.25){
+    	theta = theta;
+    }else if(theta < 0.5){
+    	theta = (THETA_TYPE)0.5 - theta;
+    	inv_cos = true;
+    }else if (theta < 0.75){
+    	theta = theta - (THETA_TYPE)0.5;
+    	inv_cos = true;
+    	inv_sin = true;
+    }else if (theta < 1){
+    	theta = (THETA_TYPE)1 - theta;
+    	inv_sin = true;
+    }
+ROTATION_LOOP:
+......
+
+    cos_temp.data = inv_cos?((COS_SIN_TYPE)-current_cos):current_cos;
+    sin_temp.data = inv_sin?((COS_SIN_TYPE)-current_sin):current_sin;
+......
+```
