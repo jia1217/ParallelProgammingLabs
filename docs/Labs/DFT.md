@@ -1,9 +1,9 @@
 ---
-sort: 4
+sort: 3
 ---
 
 
-## FFT
+## DFT (Matrix Multipliation)
 
 
 # Algorithm Introduction
