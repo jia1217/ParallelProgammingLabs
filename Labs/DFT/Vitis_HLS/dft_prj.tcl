@@ -1,15 +1,13 @@
 # create project
-open_project -reset fir
+open_project -reset dft
 
 # set top function
-set_top fir
+set_top dft
 
 # add files
-add_files ./srcs/fir.cpp
-add_files ./srcs/fir.h
-add_files -tb ./srcs/fir_test.cpp
-add_files -tb ./srcs/out.gold.dat
-add_files -tb ./srcs/input.dat
+add_files ./srcs/dft.cpp
+add_files ./srcs/dft.h
+add_files -tb ./srcs/dft_test.cpp
 
 # create solution
 open_solution -reset -flow_target vivado solution1

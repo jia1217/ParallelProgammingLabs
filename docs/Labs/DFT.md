@@ -68,6 +68,109 @@ ROW_LOOP:
 }
 ```
 
-The first thing to do is to determine which loop should be the first. In this example, we assume that $x$ comes in series, which means only $x[i]$ comes in order and only one $x[i]$ is available in each cycle. In this case, once a new $x[i]$ is received, we should finish all computations that require $x[i]$ all some extra memory is required to save the $x$ for future use. Hence, the $i$ loop should be the first. If not, then $x$ has to be iterated in each outer loop. Then, the second step is to determine the data accessibility in the ROW_LOOP. In the ROW_LOOP (j), the $i_{th}$ value in all rows of $T$ are required. Then, if we don't do any partition to array $T$, only one $T[j][i]$ is available in each cycle, which means it takes $N^2$ trips to finish the operation. Partitioning the $T$ array in the second dimension doesn't help as only one $xi$ is available. Even though we have more value in the same row available, no computation can be done. Partitioning the $T$ array in the first dimension makes the data in different rows available at the same time, which helps reduce the trip count. For example, if we completely partition the $T$ in the first dimension, the ROW_LOOP can also be fully unrolled, generating $N$ independent dot product instances like the figure (a) in the last section (see Figure 4.12 in the textbook as well).  
+The first thing to do is to determine which loop should be the first. In this example, we assume that $x$ comes in series, which means only $x[i]$ comes in order and only one $x[i]$ is available in each cycle. In this case, once a new $x[i]$ is received, we should finish all computations that require $x[i]$ all some extra memory is required to save the $x$ for future use. Hence, the $i$ loop should be the first. If not, then $x$ has to be iterated in each outer loop. Then, the second step is to determine the data accessibility in the ROW_LOOP. In the ROW_LOOP (j), the $i_{th}$ value in all rows of $T$ is required. Then, if we don't do any partition to array $T$, only one $T[j][i]$ is available in each cycle, which means it takes $N^2$ trips to finish the operation. Partitioning the $T$ array in the second dimension doesn't help as only one $xi$ is available. Even though we have more value in the same row available, no computation can be done. Partitioning the $T$ array in the first dimension makes the data in different rows available at the same time, which helps reduce the trip count. For example, if we completely partition the $T$ in the first dimension, the ROW_LOOP can also be fully unrolled, generating $N$ independent dot product instances like the figure (a) in the last section (see Figure 4.12 in the textbook as well).  
+
+Since multiplication operation mostly requires more than 1 clock cycle to finish, we still need to pipeline the outer loop for better performance. The pipeline is shown below:
+
+<img src="./imgs/DotProductPipeline.png" alt="drawing" width="600"/>
+
+If we pipeline the outer loop and unroll the inner loop, $N$ instances of this pipeline are generated. Here is the implementation of the MVM:
+
+## Special: Four-point DFT implementation
+Since DFT has a better implementation called FFT, it doesn't make sense to create a large MVM kernel to do DFT in specific. However, Four-point DFT is important due to the simple $T$ matrix:
+
+$$
+\begin{equation}
+T = \left[\begin{matrix}
+1&1&1&1\\
+1&-j&-1&j\\
+1&-1&1&-1\\
+1&j&-1&-j
+\end{matrix}\right]
+\end{equation}
+$$
+
+Obviously, only add and subtrication is required in Four-point DFT. Here is an implementation of the Four-point DFT:
+
+
+dft.h
+```c++
+/*
+Filename: dft.h
+	Header file
+	DFT lab
+*/
+#ifndef DFT_H_
+#define DFT_H_
+
+#include "hls_stream.h"
+#include "ap_axi_sdata.h"
+#include "ap_fixed.h"
+
+const int N = 4;
+
+typedef ap_fixed<32,8> data_t;
+typedef ap_fixed<32,8> acc_t;
+
+typedef struct {
+	data_t x[N];
+}dft_tdp;
+
+typedef struct {
+	acc_t real[N];
+	acc_t imag[N];
+}dft_fdp;
+
+typedef hls::axis<dft_tdp,0,0,0> dft_tdp_axis_dp;
+typedef hls::axis<dft_fdp,0,0,0> dft_fdp_axis_dp;
+typedef hls::stream<dft_tdp_axis_dp> dft_time_stream;
+typedef hls::stream<dft_fdp_axis_dp> dft_freq_stream;
+
+void dft (
+		dft_freq_stream& y,
+		dft_time_stream& x
+);
+
+#endif
+```
+
+dft.cpp
+```c++
+#include "dft.h"
+
+// Not optimzied code in Figure 2.1
+
+void dft(
+		dft_freq_stream& y,
+		dft_time_stream& x)
+{
+#pragma HLS INTERFACE mode=ap_ctrl_none port=return
+#pragma HLS INTERFACE mode=axis register_mode=both port=y
+#pragma HLS INTERFACE mode=axis register_mode=both port=x
+
+#pragma HLS pipeline style=frp
+	dft_tdp_axis_dp x_temp;
+	x >> x_temp;
+
+	dft_fdp_axis_dp y_temp;
+	y_temp.data.real[0] = (x_temp.data.x[0] + x_temp.data.x[1]) + (x_temp.data.x[2] + x_temp.data.x[3]);
+	y_temp.data.real[1] = (x_temp.data.x[0] - x_temp.data.x[2]);
+	y_temp.data.real[2] = (x_temp.data.x[0] - x_temp.data.x[1]) + (x_temp.data.x[2] - x_temp.data.x[3]);
+	y_temp.data.real[3] = (x_temp.data.x[0] - x_temp.data.x[2]);
+
+
+	y_temp.data.imag[0] = 0;
+	y_temp.data.imag[1] = (-x_temp.data.x[1] + x_temp.data.x[3]);
+	y_temp.data.imag[2] = 0;
+	y_temp.data.imag[3] = (x_temp.data.x[1] - x_temp.data.x[3]);
+
+	y_temp.last = x_temp.last;
+	y_temp.keep = -1;
+	y << y_temp;
+
+}
+```
+
+This module can be easily pipelined. According to Vitis HLS synthesis report, with 100MHz clock, the II for the module is 1 and the latency is also 1, which means it is a combinational logic module (Under higher frequency, it may become a real pipeline).
 
 ## Result
