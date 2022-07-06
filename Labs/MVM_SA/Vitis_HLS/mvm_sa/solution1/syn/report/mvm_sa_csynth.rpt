@@ -1,0 +1,168 @@
+
+
+================================================================
+== Vitis HLS Report for 'mvm_sa'
+================================================================
+* Date:           Wed Jul  6 15:16:20 2022
+
+* Version:        2021.2 (Build 3367213 on Tue Oct 19 02:47:39 MDT 2021)
+* Project:        mvm_sa
+* Solution:       solution1 (Vivado IP Flow Target)
+* Product family: zynq
+* Target device:  xc7z020-clg400-1
+
+
+================================================================
+== Performance Estimates
+================================================================
++ Timing: 
+    * Summary: 
+    +--------+----------+----------+------------+
+    |  Clock |  Target  | Estimated| Uncertainty|
+    +--------+----------+----------+------------+
+    |ap_clk  |  10.00 ns|  6.912 ns|     2.70 ns|
+    +--------+----------+----------+------------+
+
++ Latency: 
+    * Summary: 
+    +---------+---------+----------+----------+-----+-----+---------+
+    |  Latency (cycles) |  Latency (absolute) |  Interval | Pipeline|
+    |   min   |   max   |    min   |    max   | min | max |   Type  |
+    +---------+---------+----------+----------+-----+-----+---------+
+    |       20|       21|  0.200 us|  0.210 us|   21|   22|       no|
+    +---------+---------+----------+----------+-----+-----+---------+
+
+    + Detail: 
+        * Instance: 
+        +-----------------------------------------+------------------------------+---------+---------+-----------+-----------+-----+-----+---------+
+        |                                         |                              |  Latency (cycles) |   Latency (absolute)  |  Interval | Pipeline|
+        |                 Instance                |            Module            |   min   |   max   |    min    |    max    | min | max |   Type  |
+        +-----------------------------------------+------------------------------+---------+---------+-----------+-----------+-----+-----+---------+
+        |grp_mvm_sa_Pipeline_read_x_loop_fu_84    |mvm_sa_Pipeline_read_x_loop   |        8|        8|  80.000 ns|  80.000 ns|    8|    8|       no|
+        |grp_mvm_sa_Pipeline_load_A_loop_fu_112   |mvm_sa_Pipeline_load_A_loop   |       18|       18|   0.180 us|   0.180 us|   18|   18|       no|
+        |grp_mvm_sa_Pipeline_write_y_loop_fu_132  |mvm_sa_Pipeline_write_y_loop  |        6|        6|  60.000 ns|  60.000 ns|    6|    6|       no|
+        +-----------------------------------------+------------------------------+---------+---------+-----------+-----------+-----+-----+---------+
+
+        * Loop: 
+        N/A
+
+
+
+================================================================
+== Utilization Estimates
+================================================================
+* Summary: 
++-----------------+---------+-----+--------+-------+-----+
+|       Name      | BRAM_18K| DSP |   FF   |  LUT  | URAM|
++-----------------+---------+-----+--------+-------+-----+
+|DSP              |        -|    -|       -|      -|    -|
+|Expression       |        -|    -|       0|      4|    -|
+|FIFO             |        -|    -|       -|      -|    -|
+|Instance         |        -|    3|     451|    777|    -|
+|Memory           |        -|    -|       -|      -|    -|
+|Multiplexer      |        -|    -|       -|     66|    -|
+|Register         |        -|    -|     268|      -|    -|
++-----------------+---------+-----+--------+-------+-----+
+|Total            |        0|    3|     719|    847|    0|
++-----------------+---------+-----+--------+-------+-----+
+|Available        |      280|  220|  106400|  53200|    0|
++-----------------+---------+-----+--------+-------+-----+
+|Utilization (%)  |        0|    1|      ~0|      1|    0|
++-----------------+---------+-----+--------+-------+-----+
+
++ Detail: 
+    * Instance: 
+    +-----------------------------------------+------------------------------+---------+----+-----+-----+-----+
+    |                 Instance                |            Module            | BRAM_18K| DSP|  FF | LUT | URAM|
+    +-----------------------------------------+------------------------------+---------+----+-----+-----+-----+
+    |grp_mvm_sa_Pipeline_load_A_loop_fu_112   |mvm_sa_Pipeline_load_A_loop   |        0|   0|  105|  269|    0|
+    |grp_mvm_sa_Pipeline_read_x_loop_fu_84    |mvm_sa_Pipeline_read_x_loop   |        0|   3|  336|  408|    0|
+    |grp_mvm_sa_Pipeline_write_y_loop_fu_132  |mvm_sa_Pipeline_write_y_loop  |        0|   0|   10|  100|    0|
+    +-----------------------------------------+------------------------------+---------+----+-----+-----+-----+
+    |Total                                    |                              |        0|   3|  451|  777|    0|
+    +-----------------------------------------+------------------------------+---------+----+-----+-----+-----+
+
+    * DSP: 
+    N/A
+
+    * Memory: 
+    N/A
+
+    * FIFO: 
+    N/A
+
+    * Expression: 
+    +---------------------------------------------------------+----------+----+---+----+------------+------------+
+    |                      Variable Name                      | Operation| DSP| FF| LUT| Bitwidth P0| Bitwidth P1|
+    +---------------------------------------------------------+----------+----+---+----+------------+------------+
+    |grp_mvm_sa_Pipeline_write_y_loop_fu_132_y_stream_TREADY  |       and|   0|  0|   2|           1|           1|
+    |tmp_nbreadreq_fu_70_p6                                   |       and|   0|  0|   2|           1|           0|
+    +---------------------------------------------------------+----------+----+---+----+------------+------------+
+    |Total                                                    |          |   0|  0|   4|           2|           1|
+    +---------------------------------------------------------+----------+----+---+----+------------+------------+
+
+    * Multiplexer: 
+    +------------------------------+----+-----------+-----+-----------+
+    |             Name             | LUT| Input Size| Bits| Total Bits|
+    +------------------------------+----+-----------+-----+-----------+
+    |A_stream_TREADY_int_regslice  |   9|          2|    1|          2|
+    |ap_NS_fsm                     |  48|          9|    1|          9|
+    |x_stream_TREADY_int_regslice  |   9|          2|    1|          2|
+    +------------------------------+----+-----------+-----+-----------+
+    |Total                         |  66|         13|    3|         13|
+    +------------------------------+----+-----------+-----+-----------+
+
+    * Register: 
+    +-------------------------------------------------------------------------------------------------------------+----+----+-----+-----------+
+    |                                                     Name                                                    | FF | LUT| Bits| Const Bits|
+    +-------------------------------------------------------------------------------------------------------------+----+----+-----+-----------+
+    |ap_CS_fsm                                                                                                    |   8|   0|    8|          0|
+    |grp_mvm_sa_Pipeline_load_A_loop_fu_112_ap_start_reg                                                          |   1|   0|    1|          0|
+    |grp_mvm_sa_Pipeline_read_x_loop_fu_84_ap_start_reg                                                           |   1|   0|    1|          0|
+    |grp_mvm_sa_Pipeline_write_y_loop_fu_132_ap_start_reg                                                         |   1|   0|    1|          0|
+    |mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_A_local_0   |  32|   0|   32|          0|
+    |mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_A_local_11  |  32|   0|   32|          0|
+    |mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_A_local_22  |  32|   0|   32|          0|
+    |mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_A_local_33  |  32|   0|   32|          0|
+    |mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_acc         |  32|   0|   32|          0|
+    |mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_acc_1       |  32|   0|   32|          0|
+    |mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_acc_2       |  32|   0|   32|          0|
+    |mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_acc_3       |  32|   0|   32|          0|
+    |tmp_reg_152                                                                                                  |   1|   0|    1|          0|
+    +-------------------------------------------------------------------------------------------------------------+----+----+-----+-----------+
+    |Total                                                                                                        | 268|   0|  268|          0|
+    +-------------------------------------------------------------------------------------------------------------+----+----+-----+-----------+
+
+
+
+================================================================
+== Interface
+================================================================
+* Summary: 
++-------------------+-----+-----+--------------+-------------------+--------------+
+|     RTL Ports     | Dir | Bits|   Protocol   |   Source Object   |    C Type    |
++-------------------+-----+-----+--------------+-------------------+--------------+
+|ap_local_block     |  out|    1|  ap_ctrl_none|             mvm_sa|  return value|
+|ap_local_deadlock  |  out|    1|  ap_ctrl_none|             mvm_sa|  return value|
+|ap_clk             |   in|    1|  ap_ctrl_none|             mvm_sa|  return value|
+|ap_rst_n           |   in|    1|  ap_ctrl_none|             mvm_sa|  return value|
+|A_stream_TDATA     |   in|   32|          axis|  A_stream_V_data_V|       pointer|
+|A_stream_TVALID    |   in|    1|          axis|  A_stream_V_last_V|       pointer|
+|A_stream_TREADY    |  out|    1|          axis|  A_stream_V_last_V|       pointer|
+|A_stream_TLAST     |   in|    1|          axis|  A_stream_V_last_V|       pointer|
+|A_stream_TKEEP     |   in|    4|          axis|  A_stream_V_keep_V|       pointer|
+|A_stream_TSTRB     |   in|    4|          axis|  A_stream_V_strb_V|       pointer|
+|x_stream_TDATA     |   in|   32|          axis|  x_stream_V_data_V|       pointer|
+|x_stream_TVALID    |   in|    1|          axis|  x_stream_V_last_V|       pointer|
+|x_stream_TREADY    |  out|    1|          axis|  x_stream_V_last_V|       pointer|
+|x_stream_TLAST     |   in|    1|          axis|  x_stream_V_last_V|       pointer|
+|x_stream_TKEEP     |   in|    4|          axis|  x_stream_V_keep_V|       pointer|
+|x_stream_TSTRB     |   in|    4|          axis|  x_stream_V_strb_V|       pointer|
+|y_stream_TDATA     |  out|   32|          axis|  y_stream_V_data_V|       pointer|
+|y_stream_TVALID    |  out|    1|          axis|  y_stream_V_last_V|       pointer|
+|y_stream_TREADY    |   in|    1|          axis|  y_stream_V_last_V|       pointer|
+|y_stream_TLAST     |  out|    1|          axis|  y_stream_V_last_V|       pointer|
+|y_stream_TKEEP     |  out|    4|          axis|  y_stream_V_keep_V|       pointer|
+|y_stream_TSTRB     |  out|    4|          axis|  y_stream_V_strb_V|       pointer|
++-------------------+-----+-----+--------------+-------------------+--------------+
+

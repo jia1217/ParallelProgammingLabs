@@ -16,7 +16,7 @@ sort: 3
         src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
 </script>
 
-# DFT (Matrix-Vector Multipliation)
+# DFT
 
 
 ## Introduction
@@ -49,6 +49,8 @@ $$
 $$
 \vec T_k = e^{-j\frac{2k\pi}{N}n}, n = 0,1,2,...,N-1
 $$
+
+Since DFT has a better implementation called FFT, in this experiment we just foucus on Matrix-Vector Multiplication for real numbers for simplification.
 
 ## Inner product implementation
 
@@ -87,7 +89,203 @@ Since multiplication operation mostly requires more than 1 clock cycle to finish
 
 <img src="./imgs/DotProductPipeline.png" alt="drawing" width="600"/>
 
-If we pipeline the outer loop and unroll the inner loop, $N$ instances of this pipeline are generated. Here is the implementation of the MVM:
+If we pipeline the outer loop and unroll the inner loop, $N$ instances of this pipeline are generated. Here is the implementation of the MVM ($y = Ax$, all real number cases):
+
+mvm.h
+
+```c++
+/*
+Filename: MVM.h
+	Header file
+	MVM lab
+*/
+#ifndef MVM_H_
+#define MVM_H_
+
+#include "hls_stream.h"
+#include "ap_axi_sdata.h"
+#include "ap_fixed.h"
+
+const int N = 4;
+
+typedef int data_t;
+typedef int acc_t;
+
+
+
+typedef hls::axis<data_t,0,0,0> data_axis_dp;
+typedef hls::axis<acc_t,0,0,0> acc_axis_dp;
+typedef hls::stream<data_axis_dp> data_stream;
+typedef hls::stream<acc_axis_dp> acc_stream;
+
+void mvm (
+		data_stream& A_stream,
+		data_stream& x_stream,
+		data_stream& y_stream
+);
+
+#endif
+```
+
+```c++
+#include "mvm.h"
+
+void mvm (
+		data_stream& A_stream,
+		data_stream& x_stream,
+		data_stream& y_stream
+){
+#pragma HLS INTERFACE mode=ap_ctrl_none port=return
+#pragma HLS INTERFACE mode=axis register_mode=both port=A_stream
+#pragma HLS INTERFACE mode=axis register_mode=both port=x_stream
+#pragma HLS INTERFACE mode=axis register_mode=both port=y_stream
+#pragma HLS DATAFLOW
+
+	data_t local_A[N][N];
+#pragma HLS ARRAY_PARTITION dim=1 type=complete variable=local_A
+	acc_t local_y[N] = {0};
+#pragma HLS ARRAY_PARTITION dim=1 type=complete variable=local_y
+
+load_A_loop:
+	for (int loc = 0, i = 0, j = 0; loc < N * N; loc++, j++) {
+#pragma HLS PIPELINE
+        if (j == N) {
+            i++;
+            j = 0;
+        }
+        data_axis_dp temp;
+        A_stream >> temp;
+        local_A[i][j] = temp.data;
+    }
+
+COL_LOOP:
+	for (int i = 0; i < N; i++){
+#pragma HLS PIPELINE
+		data_axis_dp temp;
+		x_stream >> temp;
+ROW_LOOP:
+		for(int j = 0; j < N;j++){
+#pragma HLS UNROLL
+			local_y[j] += local_A[j][i] * temp.data;
+		}
+	}
+
+write_y_loop:
+	for (int i = 0; i < N;i++){
+#pragma HLS PIPELINE
+		acc_axis_dp temp;
+		temp.data = local_y[i];
+		temp.keep = -1;
+		temp.last = (i == (N-1));
+		y_stream << temp;
+	}
+
+}
+```
+
+Testbench
+
+```c++
+/*
+	Filename: mvm_test.h
+		Testbench file
+		Calls mvm() function from mvm.cpp
+		Compares the output from mvm() with out.gold.dat
+*/
+
+#include <stdio.h>
+#include <math.h>
+#include <stdlib.h>
+#include "mvm.h"
+
+int main () {
+	data_stream A_stream;
+	data_stream x_stream;
+	data_stream y_stream;
+	data_t A[N][N];
+	data_t x[N];
+	acc_t soft_y[N] = {0};
+	acc_t hard_y[N];
+
+	for (int i = 0; i < N; i++){
+		for (int j = 0; j < N; j++){
+			A[i][j] = i * N + j;
+		}
+		x[i] = i;
+	}
+// push into stream first
+	for (int k = 0; k < 5; k++){
+
+		for (int i = 0; i < N; i++){
+			for (int j = 0; j < N; j++){
+				data_axis_dp temp;
+				temp.data = A[i][j];
+				temp.keep = -1;
+				temp.last = (i == (N - 1)) && (j == (N - 1));
+				A_stream << temp;
+			}
+			data_axis_dp temp;
+			temp.data = x[i];
+			temp.keep = -1;
+			temp.last = (i == (N - 1));
+			x_stream << temp;
+		}
+	}
+
+// run kernel
+	for (int k = 0; k < 5; k++){
+		mvm(A_stream, x_stream, y_stream);
+	}
+	for (int k = 0; k < 5; k++){
+		for (int i = 0; i < N; i++){
+			acc_axis_dp temp;
+			y_stream >> temp;
+			hard_y[i] = temp.data;
+		}
+	}
+	for (int i = 0; i < N; i++){
+		for (int j = 0; j < N; j++){
+			soft_y[j] += A[j][i] * x[i];
+		}
+	}
+	bool correct = true;
+
+	for (int i = 0; i < N; i++){
+		if (soft_y[i] != hard_y[i]){
+			correct = false;
+		}
+	}
+	if (correct){
+		printf("Pass!\n");
+		return 0;
+	}
+	else{
+		printf("Fail!\n");
+		return 1;
+	}
+}
+```
+
+The waveform is shown below:
+
+<img src="./imgs/mvm_vhls.png" alt="drawing" width="600"/>
+
+The waveform shows that the module has very low efficiency. Firstly, matrix A is reloaded every time. For an AXI stream bus, it requires $N^2$ clock cycles to reload the matrix, while the computation only requires $N$ cycles. This stops vector $x$ from being received continuously. Since in most cases, the matrix remains the same while the input vector varies (for example, DFT has a constant transform matrix). Secondly, this structure makes the new input $x$ be accessed by all rows, which means one FF in the final implementation is fanned out to $N$ receivers. When $N$ is small, it is still Okay, but when $N$ goes to hundreds or even thousands, it leads to high load capacitance that will slow down the circuit. Xilinx Vivado may use redundant resources to avoid too large a fanout, but it consequently increases the difficulty of routing.  
+The systolic array is a typical way to solve the problem. The systolic array uses interconnected independent data processing elements to achieve the final algorithm. The input of a PE comes from the outside or other PEs; the input from the outside and the output of PE are only fanned out to one receiver. Thus, a chain or a network of PEs is formed. In MVM, each PE can simply do the inner product (one row vector times one column vector). However, the input $x$ is only sent to the first PE (the first row) rather than all PEs like the simply unrolled implementation. The first PE then registers the input $x$ and sends it to the next PE (the second row). Therefore, PE can be simply described with the following figure and formula, where acc has to be cleared every time the calculation starts:
+
+<center><img src="./imgs/PE.png" alt="drawing" width="150"/></center>
+
+$$
+\begin{aligned}
+x_{out} &= x_{in}\\
+A_{out} &= A_{in}\\
+acc &= acc + A_{in} \times x_{in}
+\end{aligned}
+$$
+
+Depending on how the PEs are connected, different operations can be realized. For example, if we connect the new PEs vertically ($x_{out}$ connect to new $x_{in}$, $A_{out}$ is neglected) and form an $N$ row $1$ column array, MVM is realized. If we form an $N$ by $N$ grid, matrix-matrix multiplication can be realized.  
+
+Avoiding reloading $A$ every time is tricky. All HLS IP has a block-level interface (Interface pragma, port = return)([Ref](https://docs.xilinx.com/r/en-US/ug1399-vitis-hls/pragma-HLS-interface)). Except for $$$ap_ctrl_none$$ interface, the IP kernel (block, module) must be started manually. Unless the latency from the first input to the last output is much smaller than the length of the total data stream, or the whole module can be implemented as an FRP pipeline (Like fir and Cordic example), starting signal can significantly slow down the process. For example, even when the systolic array is used, the first output of MVM comes after the final $x$ is received, which requires $N$ clock cycles, and another $N$ clock cycles are still required to let the result being pushed out. In this case, even under the perfect circumstance, the latency between the first input and last output is at least $2\times N$. If the module requires a start signal, the corresponding 'done' comes after $2\times N$ clock cycles. During this time, the software can only wait, and no input can be received between $N\to 2N$ cycles. Hence, even when all pipeline inside the loop has II=1, the total average II for the module is at least 2. Reloading $A$ requires at least $N^2$ clock cycles and no operation can be done during this time, which means it is impossible to make the module an FRP pipeline via HLS (reloading itself is a pipeline, then the whole module cannot be a pipeline because if the module is specified as pipelined the reload loop must be unrolled). To solve the problem, we have to create independent reloading $A$ module and let the module forwards the columns of $A$ to the MVM module. Only in this case, the MVM kernel is simple enough to be designed as an FRP pipeline. Vitis HLS cannot simulate with multiple kernels connected (Vitis allows). Therefore, here we assume the matrix $A$ is a constant matrix, and we just write it inside the bitstream and not need to be reloaded. The ultimate purpose is to have a module with II=1 and new data can still be received during the $N\to 2N$ cycles.
 
 ## Special: Four-point DFT implementation
 Since DFT has a better implementation called FFT, it doesn't make sense to create a large MVM kernel to do DFT in specific. However, Four-point DFT is important due to the simple $T$ matrix:

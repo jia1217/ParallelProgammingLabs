@@ -1,0 +1,348 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<cdfg:DBCdfg xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:cdfg="http://www.autoesl.com/DBCdfg" timeStamp="1657134980872">
+  <ports id="1" name="A_stream_V_data_V" type="PortType" originalName="A_stream" coreId="3621216858" bitwidth="32">
+    <dataOutputObjs>nbreadreq</dataOutputObjs>
+    <dataOutputObjs>call</dataOutputObjs>
+  </ports>
+  <ports id="2" name="A_stream_V_keep_V" type="PortType" originalName="A_stream" coreId="504209712" bitwidth="4">
+    <dataOutputObjs>nbreadreq</dataOutputObjs>
+    <dataOutputObjs>call</dataOutputObjs>
+  </ports>
+  <ports id="3" name="A_stream_V_strb_V" type="PortType" originalName="A_stream" coreId="504517344" bitwidth="4">
+    <dataOutputObjs>nbreadreq</dataOutputObjs>
+    <dataOutputObjs>call</dataOutputObjs>
+  </ports>
+  <ports id="4" name="A_stream_V_last_V" type="PortType" originalName="A_stream" coreId="503083920" bitwidth="1">
+    <dataOutputObjs>nbreadreq</dataOutputObjs>
+    <dataOutputObjs>call</dataOutputObjs>
+  </ports>
+  <ports id="5" name="x_stream_V_data_V" type="PortType" originalName="x_stream" coreId="504529840" bitwidth="32">
+    <dataOutputObjs>call</dataOutputObjs>
+  </ports>
+  <ports id="6" name="x_stream_V_keep_V" type="PortType" originalName="x_stream" coreId="0" bitwidth="4">
+    <dataOutputObjs>call</dataOutputObjs>
+  </ports>
+  <ports id="7" name="x_stream_V_strb_V" type="PortType" originalName="x_stream" coreId="0" bitwidth="4">
+    <dataOutputObjs>call</dataOutputObjs>
+  </ports>
+  <ports id="8" name="x_stream_V_last_V" type="PortType" originalName="x_stream" coreId="0" bitwidth="1">
+    <dataOutputObjs>call</dataOutputObjs>
+  </ports>
+  <ports id="9" name="y_stream_V_data_V" type="PortType" originalName="y_stream" coreId="0" bitwidth="32" direction="DirOut">
+    <dataInputObjs>call</dataInputObjs>
+  </ports>
+  <ports id="10" name="y_stream_V_keep_V" type="PortType" originalName="y_stream" coreId="504173152" bitwidth="4" direction="DirOut">
+    <dataInputObjs>call</dataInputObjs>
+  </ports>
+  <ports id="11" name="y_stream_V_strb_V" type="PortType" originalName="y_stream" coreId="1330007625" bitwidth="4" direction="DirOut">
+    <dataInputObjs>call</dataInputObjs>
+  </ports>
+  <ports id="12" name="y_stream_V_last_V" type="PortType" originalName="y_stream" coreId="504720160" bitwidth="1" direction="DirOut">
+    <dataInputObjs>call</dataInputObjs>
+  </ports>
+  <edges id="55" source_obj="//@ports.0" sink_obj="//@blocks.0/@node_objs.0"/>
+  <edges id="56" source_obj="//@ports.1" sink_obj="//@blocks.0/@node_objs.0"/>
+  <edges id="57" source_obj="//@ports.2" sink_obj="//@blocks.0/@node_objs.0"/>
+  <edges id="58" source_obj="//@ports.3" sink_obj="//@blocks.0/@node_objs.0"/>
+  <edges id="63" source_obj="//@blocks.0/@node_objs.0" sink_obj="//@blocks.0/@node_objs.2"/>
+  <edges id="64" edge_type="CtrlEdge" source_obj="//@blocks.1" sink_obj="//@blocks.0/@node_objs.2"/>
+  <edges id="65" edge_type="CtrlEdge" source_obj="//@blocks.2" sink_obj="//@blocks.0/@node_objs.2"/>
+  <edges id="68" source_obj="//@ports.0" sink_obj="//@blocks.2/@node_objs.0"/>
+  <edges id="69" source_obj="//@ports.1" sink_obj="//@blocks.2/@node_objs.0"/>
+  <edges id="70" source_obj="//@ports.2" sink_obj="//@blocks.2/@node_objs.0"/>
+  <edges id="71" source_obj="//@ports.3" sink_obj="//@blocks.2/@node_objs.0"/>
+  <edges id="72" edge_type="CtrlEdge" source_obj="//@blocks.3" sink_obj="//@blocks.2/@node_objs.1"/>
+  <edges id="75" source_obj="//@ports.4" sink_obj="//@blocks.1/@node_objs.0"/>
+  <edges id="76" source_obj="//@ports.5" sink_obj="//@blocks.1/@node_objs.0"/>
+  <edges id="77" source_obj="//@ports.6" sink_obj="//@blocks.1/@node_objs.0"/>
+  <edges id="78" source_obj="//@ports.7" sink_obj="//@blocks.1/@node_objs.0"/>
+  <edges id="83" source_obj="//@blocks.1/@node_objs.3" sink_obj="//@ports.8"/>
+  <edges id="84" source_obj="//@blocks.1/@node_objs.3" sink_obj="//@ports.9"/>
+  <edges id="85" source_obj="//@blocks.1/@node_objs.3" sink_obj="//@ports.10"/>
+  <edges id="86" source_obj="//@blocks.1/@node_objs.3" sink_obj="//@ports.11"/>
+  <edges id="87" edge_type="CtrlEdge" source_obj="//@blocks.3" sink_obj="//@blocks.1/@node_objs.4"/>
+  <edges id="88" sink_obj="//@blocks.2/@node_objs.0"/>
+  <edges id="89" sink_obj="//@blocks.2/@node_objs.0"/>
+  <edges id="90" sink_obj="//@blocks.2/@node_objs.0"/>
+  <edges id="91" sink_obj="//@blocks.2/@node_objs.0"/>
+  <edges id="92" sink_obj="//@blocks.1/@node_objs.0"/>
+  <edges id="93" sink_obj="//@blocks.1/@node_objs.0"/>
+  <edges id="94" sink_obj="//@blocks.1/@node_objs.0"/>
+  <edges id="95" sink_obj="//@blocks.1/@node_objs.0"/>
+  <edges id="96" sink_obj="//@blocks.1/@node_objs.0"/>
+  <edges id="97" sink_obj="//@blocks.1/@node_objs.0"/>
+  <edges id="98" sink_obj="//@blocks.1/@node_objs.0"/>
+  <edges id="99" sink_obj="//@blocks.1/@node_objs.0"/>
+  <edges id="100" sink_obj="//@blocks.1/@node_objs.3"/>
+  <edges id="101" sink_obj="//@blocks.1/@node_objs.3"/>
+  <edges id="102" sink_obj="//@blocks.1/@node_objs.3"/>
+  <edges id="103" sink_obj="//@blocks.1/@node_objs.3"/>
+  <edges id="216" edge_type="CtrlEdge" source_obj="//@blocks.0" sink_obj="//@blocks.2"/>
+  <edges id="217" edge_type="CtrlEdge" source_obj="//@blocks.0" sink_obj="//@blocks.1"/>
+  <edges id="218" edge_type="CtrlEdge" source_obj="//@blocks.1" sink_obj="//@blocks.3"/>
+  <edges id="219" edge_type="CtrlEdge" source_obj="//@blocks.2" sink_obj="//@blocks.3"/>
+  <edges id="220" edge_type="VirtEdge" source_obj="//@blocks.0/@node_objs.0" sink_obj="//@blocks.0/@node_objs.1"/>
+  <edges id="221" edge_type="VirtEdge" source_obj="//@blocks.1/@node_objs.1" sink_obj="//@blocks.1/@node_objs.2"/>
+  <edges id="222" edge_type="VirtEdge" source_obj="//@blocks.1/@node_objs.0" sink_obj="//@blocks.1/@node_objs.1"/>
+  <edges id="223" edge_type="VirtEdge" source_obj="//@blocks.1/@node_objs.2" sink_obj="//@blocks.1/@node_objs.3"/>
+  <edges id="224" edge_type="VirtEdge" source_obj="//@blocks.0/@node_objs.1" sink_obj="//@blocks.1/@node_objs.1"/>
+  <edges id="225" edge_type="VirtEdge" source_obj="//@blocks.0/@node_objs.1" sink_obj="//@blocks.1/@node_objs.0"/>
+  <edges id="226" edge_type="VirtEdge" source_obj="//@blocks.0/@node_objs.1" sink_obj="//@blocks.2/@node_objs.0"/>
+  <edges id="227" edge_type="VirtEdge" source_obj="//@blocks.1/@node_objs.0" sink_obj="//@blocks.1/@node_objs.3"/>
+  <edges id="228" edge_type="VirtEdge" source_obj="//@blocks.0/@node_objs.0" sink_obj="//@blocks.2/@node_objs.0"/>
+  <edges id="229" edge_type="VirtEdge" source_obj="//@blocks.1/@node_objs.0" sink_obj="//@blocks.1/@node_objs.3"/>
+  <blocks id="41" name="block_41" type="BlockType">
+    <controlOutputObjs>.preheader.preheader</controlOutputObjs>
+    <controlOutputObjs>.preheader5.preheader</controlOutputObjs>
+    <node_objs xsi:type="cdfg:CdfgNode" id="38" name="tmp" lineNumber="267" originalName="tmp" fileName="/tools/Xilinx/Vitis_HLS/2021.2/common/technology/autopilot/ap_axi_sdata.h" fileDirectory=".." coreName="axis" implIndex="axi4stream" control="no" opType="adapter" coreId="115" contextFuncName="empty" bitwidth="1" opcode="nbreadreq" m_display="0" m_topoIndex="1" m_clusterGroupNumber="-1">
+      <inlineStackInfo fileName="/tools/Xilinx/Vitis_HLS/2021.2/common/technology/autopilot/ap_axi_sdata.h" linenumber="267" fileDirectory="/home/alfred/Projects/ParallelComputingLab/GitPage/Labs/MVM_SA/Vitis_HLS" functionName="empty"/>
+      <dataInputObjs>A_stream_V_data_V</dataInputObjs>
+      <dataInputObjs>A_stream_V_keep_V</dataInputObjs>
+      <dataInputObjs>A_stream_V_strb_V</dataInputObjs>
+      <dataInputObjs>A_stream_V_last_V</dataInputObjs>
+      <dataOutputObjs>br</dataOutputObjs>
+      <constName>empty</constName>
+    </node_objs>
+    <node_objs xsi:type="cdfg:CdfgNode" id="39" name="empty" coreId="1970040691" bitwidth="32" opcode="wait" nodeLabel="1.0" m_display="0" m_topoIndex="2" m_clusterGroupNumber="-1"/>
+    <node_objs xsi:type="cdfg:CdfgNode" id="40" name="br_ln17" lineNumber="17" fileName="mvm_sa.cpp" fileDirectory=".." coreId="504528336" contextFuncName="mvm_sa" opcode="br" nodeLabel="1.0" m_display="0" m_topoIndex="3" m_clusterGroupNumber="-1">
+      <inlineStackInfo fileName="mvm_sa.cpp" linenumber="17" fileDirectory="/home/alfred/Projects/ParallelComputingLab/GitPage/Labs/MVM_SA/Vitis_HLS" functionName="mvm_sa"/>
+      <dataInputObjs>nbreadreq</dataInputObjs>
+      <controlInputObjs>.preheader5.preheader</controlInputObjs>
+      <controlInputObjs>.preheader.preheader</controlInputObjs>
+    </node_objs>
+    <fileValidLineNumbers fileName="mvm_sa.cpp">
+      <validLinenumbers>17</validLinenumbers>
+    </fileValidLineNumbers>
+    <fileValidLineNumbers fileName="/tools/Xilinx/Vitis_HLS/2021.2/common/technology/autopilot/ap_axi_sdata.h">
+      <validLinenumbers>267</validLinenumbers>
+    </fileValidLineNumbers>
+  </blocks>
+  <blocks id="47" name=".preheader5.preheader" type="BlockType">
+    <controlInputObjs>block_41</controlInputObjs>
+    <controlOutputObjs>br</controlOutputObjs>
+    <controlOutputObjs>.loopexit</controlOutputObjs>
+    <node_objs xsi:type="cdfg:CdfgNode" id="42" name="_ln0" rtlName="grp_mvm_sa_Pipeline_read_x_loop_fu_84" coreId="504707296" opcode="call" nodeLabel="1.0" nodeLatency="1" m_display="0" m_topoIndex="4" m_clusterGroupNumber="-1">
+      <dataInputObjs>x_stream_V_data_V</dataInputObjs>
+      <dataInputObjs>x_stream_V_keep_V</dataInputObjs>
+      <dataInputObjs>x_stream_V_strb_V</dataInputObjs>
+      <dataInputObjs>x_stream_V_last_V</dataInputObjs>
+      <constName>mvm_sa_Pipeline_read_x_loop</constName>
+    </node_objs>
+    <node_objs xsi:type="cdfg:CdfgNode" id="43" name="empty_13" coreId="0" bitwidth="32" opcode="wait" nodeLabel="3.0" m_display="0" m_topoIndex="6" m_clusterGroupNumber="-1"/>
+    <node_objs xsi:type="cdfg:CdfgNode" id="44" name="empty_14" coreId="504706624" bitwidth="32" opcode="wait" nodeLabel="4.0" m_display="0" m_topoIndex="7" m_clusterGroupNumber="-1"/>
+    <node_objs xsi:type="cdfg:CdfgNode" id="45" name="_ln0" rtlName="grp_mvm_sa_Pipeline_write_y_loop_fu_132" coreId="0" opcode="call" nodeLabel="4.0" nodeLatency="1" m_display="0" m_topoIndex="8" m_clusterGroupNumber="-1">
+      <dataOutputObjs>y_stream_V_data_V</dataOutputObjs>
+      <dataOutputObjs>y_stream_V_keep_V</dataOutputObjs>
+      <dataOutputObjs>y_stream_V_strb_V</dataOutputObjs>
+      <dataOutputObjs>y_stream_V_last_V</dataOutputObjs>
+      <constName>mvm_sa_Pipeline_write_y_loop</constName>
+    </node_objs>
+    <node_objs xsi:type="cdfg:CdfgNode" id="46" name="br_ln0" coreId="504711344" opcode="br" nodeLabel="5.0" m_display="0" m_topoIndex="9" m_clusterGroupNumber="-1">
+      <controlInputObjs>.loopexit</controlInputObjs>
+    </node_objs>
+  </blocks>
+  <blocks id="50" name=".preheader.preheader" type="BlockType">
+    <controlInputObjs>block_41</controlInputObjs>
+    <controlOutputObjs>br</controlOutputObjs>
+    <controlOutputObjs>.loopexit</controlOutputObjs>
+    <node_objs xsi:type="cdfg:CdfgNode" id="48" name="_ln0" rtlName="grp_mvm_sa_Pipeline_load_A_loop_fu_112" coreId="176" opcode="call" nodeLabel="1.0" nodeLatency="1" m_display="0" m_topoIndex="5" m_clusterGroupNumber="-1">
+      <dataInputObjs>A_stream_V_data_V</dataInputObjs>
+      <dataInputObjs>A_stream_V_keep_V</dataInputObjs>
+      <dataInputObjs>A_stream_V_strb_V</dataInputObjs>
+      <dataInputObjs>A_stream_V_last_V</dataInputObjs>
+      <constName>mvm_sa_Pipeline_load_A_loop</constName>
+    </node_objs>
+    <node_objs xsi:type="cdfg:CdfgNode" id="49" name="br_ln0" coreId="504669232" opcode="br" nodeLabel="6.0" m_display="0" m_topoIndex="10" m_clusterGroupNumber="-1">
+      <controlInputObjs>.loopexit</controlInputObjs>
+    </node_objs>
+  </blocks>
+  <blocks id="52" name=".loopexit" type="BlockType">
+    <controlInputObjs>.preheader5.preheader</controlInputObjs>
+    <controlInputObjs>.preheader.preheader</controlInputObjs>
+    <controlOutputObjs>br</controlOutputObjs>
+    <controlOutputObjs>br</controlOutputObjs>
+    <node_objs xsi:type="cdfg:CdfgNode" id="51" name="_ln68" lineNumber="68" fileName="mvm_sa.cpp" fileDirectory=".." coreId="0" contextFuncName="mvm_sa" opcode="ret" nodeLabel="7.0" m_display="0" m_topoIndex="11" m_clusterGroupNumber="-1">
+      <inlineStackInfo fileName="mvm_sa.cpp" linenumber="68" fileDirectory="/home/alfred/Projects/ParallelComputingLab/GitPage/Labs/MVM_SA/Vitis_HLS" functionName="mvm_sa"/>
+    </node_objs>
+    <fileValidLineNumbers fileName="mvm_sa.cpp">
+      <validLinenumbers>68</validLinenumbers>
+    </fileValidLineNumbers>
+  </blocks>
+  <ScheduleInfo time="0"/>
+  <ScheduleInfo time="1"/>
+  <ScheduleInfo time="2"/>
+  <ScheduleInfo time="3"/>
+  <ScheduleInfo time="4"/>
+  <ScheduleInfo time="5"/>
+  <ScheduleInfo time="6"/>
+  <ScheduleInfo time="7"/>
+  <regnodes realName="tmp_reg_152">
+    <nodeIds>38</nodeIds>
+  </regnodes>
+  <moduleNodes realName="grp_mvm_sa_Pipeline_load_A_loop_fu_112">
+    <nodeIds>48</nodeIds>
+  </moduleNodes>
+  <moduleNodes realName="grp_mvm_sa_Pipeline_read_x_loop_fu_84">
+    <nodeIds>42</nodeIds>
+  </moduleNodes>
+  <moduleNodes realName="grp_mvm_sa_Pipeline_write_y_loop_fu_132">
+    <nodeIds>45</nodeIds>
+  </moduleNodes>
+  <ioNodes realName="tmp_nbreadreq_fu_70">
+    <nodeIds>38</nodeIds>
+  </ioNodes>
+  <ioPorts name="A_stream_V_data_V">
+    <contents name="call">
+      <nodeIds>48</nodeIds>
+    </contents>
+    <contents name="nbreadreq">
+      <nodeIds>38</nodeIds>
+    </contents>
+  </ioPorts>
+  <ioPorts name="A_stream_V_keep_V">
+    <contents name="call">
+      <nodeIds>48</nodeIds>
+    </contents>
+    <contents name="nbreadreq">
+      <nodeIds>38</nodeIds>
+    </contents>
+  </ioPorts>
+  <ioPorts name="A_stream_V_last_V">
+    <contents name="call">
+      <nodeIds>48</nodeIds>
+    </contents>
+    <contents name="nbreadreq">
+      <nodeIds>38</nodeIds>
+    </contents>
+  </ioPorts>
+  <ioPorts name="A_stream_V_strb_V">
+    <contents name="call">
+      <nodeIds>48</nodeIds>
+    </contents>
+    <contents name="nbreadreq">
+      <nodeIds>38</nodeIds>
+    </contents>
+  </ioPorts>
+  <ioPorts name="x_stream_V_data_V">
+    <contents name="call">
+      <nodeIds>42</nodeIds>
+    </contents>
+  </ioPorts>
+  <ioPorts name="x_stream_V_keep_V">
+    <contents name="call">
+      <nodeIds>42</nodeIds>
+    </contents>
+  </ioPorts>
+  <ioPorts name="x_stream_V_last_V">
+    <contents name="call">
+      <nodeIds>42</nodeIds>
+    </contents>
+  </ioPorts>
+  <ioPorts name="x_stream_V_strb_V">
+    <contents name="call">
+      <nodeIds>42</nodeIds>
+    </contents>
+  </ioPorts>
+  <ioPorts name="y_stream_V_data_V">
+    <contents name="call">
+      <nodeIds>45</nodeIds>
+    </contents>
+  </ioPorts>
+  <ioPorts name="y_stream_V_keep_V">
+    <contents name="call">
+      <nodeIds>45</nodeIds>
+    </contents>
+  </ioPorts>
+  <ioPorts name="y_stream_V_last_V">
+    <contents name="call">
+      <nodeIds>45</nodeIds>
+    </contents>
+  </ioPorts>
+  <ioPorts name="y_stream_V_strb_V">
+    <contents name="call">
+      <nodeIds>45</nodeIds>
+    </contents>
+  </ioPorts>
+  <fsm>
+    <states id="1">
+      <operations id="38" stage="1" latency="1"/>
+    </states>
+    <states id="2">
+      <operations id="21" stage="1" latency="1"/>
+      <operations id="22" stage="1" latency="1"/>
+      <operations id="23" stage="1" latency="1"/>
+      <operations id="24" stage="1" latency="1"/>
+      <operations id="25" stage="1" latency="1"/>
+      <operations id="26" stage="1" latency="1"/>
+      <operations id="27" stage="1" latency="1"/>
+      <operations id="28" stage="1" latency="1"/>
+      <operations id="29" stage="1" latency="1"/>
+      <operations id="30" stage="1" latency="1"/>
+      <operations id="31" stage="1" latency="1"/>
+      <operations id="32" stage="1" latency="1"/>
+      <operations id="33" stage="1" latency="1"/>
+      <operations id="34" stage="1" latency="1"/>
+      <operations id="35" stage="1" latency="1"/>
+      <operations id="36" stage="1" latency="1"/>
+      <operations id="37" stage="1" latency="1"/>
+      <operations id="39" stage="1" latency="1"/>
+      <operations id="40" stage="1" latency="1"/>
+      <operations id="42" stage="2" latency="2"/>
+      <operations id="48" stage="2" latency="2"/>
+    </states>
+    <states id="3">
+      <operations id="42" stage="1" latency="2"/>
+    </states>
+    <states id="4">
+      <operations id="43" stage="1" latency="1"/>
+    </states>
+    <states id="5">
+      <operations id="44" stage="1" latency="1"/>
+      <operations id="45" stage="2" latency="2"/>
+    </states>
+    <states id="6">
+      <operations id="45" stage="1" latency="2"/>
+      <operations id="46" stage="1" latency="1"/>
+    </states>
+    <states id="7">
+      <operations id="48" stage="1" latency="2"/>
+      <operations id="49" stage="1" latency="1"/>
+    </states>
+    <states id="8">
+      <operations id="51" stage="1" latency="1"/>
+    </states>
+    <transitions inState="1" outState="2">
+      <condition id="-1"/>
+    </transitions>
+    <transitions inState="2" outState="3">
+      <condition id="-1"/>
+    </transitions>
+    <transitions inState="2" outState="7">
+      <condition id="-1"/>
+    </transitions>
+    <transitions inState="3" outState="4">
+      <condition id="-1"/>
+    </transitions>
+    <transitions inState="4" outState="5">
+      <condition id="-1"/>
+    </transitions>
+    <transitions inState="5" outState="6">
+      <condition id="-1"/>
+    </transitions>
+    <transitions inState="6" outState="8">
+      <condition id="-1"/>
+    </transitions>
+    <transitions inState="7" outState="8">
+      <condition id="-1"/>
+    </transitions>
+  </fsm>
+  <CFGRegionsRoot>
+    <cfgRegions mId="1" mTag="mvm_sa" mII="-1" mDepth="-1" mMinTripCount="-1" mMaxTripCount="-1" mMinLatency="20" mMaxLatency="21">
+      <basicBlocks>41</basicBlocks>
+      <basicBlocks>47</basicBlocks>
+      <basicBlocks>50</basicBlocks>
+      <basicBlocks>52</basicBlocks>
+      <mDfPipe/>
+    </cfgRegions>
+  </CFGRegionsRoot>
+</cdfg:DBCdfg>
