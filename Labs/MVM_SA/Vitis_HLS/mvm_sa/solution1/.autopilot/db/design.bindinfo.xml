@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<BindInfo>
+	<BindNode BINDTYPE="op" DISPLAY="bind_op sub" ID="" IMPL="fabric" LATENCY="0" OPTYPE="sub" PRAGMA="" RTLNAME="sub_ln34_fu_104_p2" SOURCE="mvm_sa.cpp:34" VARIABLE="sub_ln34" MODULE="mvm_sa" LOOP="" BUNDLEDNAME="" DSP="0" BRAM="0" URAM="0"/>
+	<BindNode BINDTYPE="op" DISPLAY="bind_op add" ID="" IMPL="tadder" LATENCY="0" OPTYPE="add" PRAGMA="" RTLNAME="add_ln34_fu_110_p2" SOURCE="mvm_sa.cpp:34" VARIABLE="add_ln34" MODULE="mvm_sa" LOOP="" BUNDLEDNAME="" DSP="0" BRAM="0" URAM="0"/>
+	<BindNode BINDTYPE="op" DISPLAY="bind_op add" ID="" IMPL="tadder" LATENCY="0" OPTYPE="add" PRAGMA="" RTLNAME="last_fu_116_p2" SOURCE="mvm_sa.cpp:34" VARIABLE="last" MODULE="mvm_sa" LOOP="" BUNDLEDNAME="" DSP="0" BRAM="0" URAM="0"/>
+</BindInfo>

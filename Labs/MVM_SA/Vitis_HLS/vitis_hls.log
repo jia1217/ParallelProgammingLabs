@@ -1,0 +1,101 @@
+INFO: Applying HLS Y2K22 patch v1.2 for IP revision
+INFO: [HLS 200-10] Running '/tools/Xilinx/Vitis_HLS/2021.2/bin/unwrapped/lnx64.o/vitis_hls'
+INFO: [HLS 200-10] For user 'alfred' on host 'alfred-rog' (Linux_x86_64 version 5.13.0-52-generic) on Wed Jul 06 17:05:35 EDT 2022
+INFO: [HLS 200-10] On os Ubuntu 20.04.4 LTS
+INFO: [HLS 200-10] In directory '/home/alfred/Projects/ParallelComputingLab/GitPage/Labs/MVM_SA/Vitis_HLS'
+Sourcing Tcl script '/home/alfred/Projects/ParallelComputingLab/GitPage/Labs/MVM_SA/Vitis_HLS/mvm_sa/solution1/csynth.tcl'
+INFO: [HLS 200-1510] Running: open_project mvm_sa 
+INFO: [HLS 200-10] Opening project '/home/alfred/Projects/ParallelComputingLab/GitPage/Labs/MVM_SA/Vitis_HLS/mvm_sa'.
+INFO: [HLS 200-1510] Running: set_top mvm_sa 
+INFO: [HLS 200-1510] Running: add_files mvm_sa.hpp 
+INFO: [HLS 200-10] Adding design file 'mvm_sa.hpp' to the project
+INFO: [HLS 200-1510] Running: add_files mvm_sa.cpp 
+INFO: [HLS 200-10] Adding design file 'mvm_sa.cpp' to the project
+INFO: [HLS 200-1510] Running: open_solution solution1 -flow_target vivado 
+INFO: [HLS 200-10] Opening solution '/home/alfred/Projects/ParallelComputingLab/GitPage/Labs/MVM_SA/Vitis_HLS/mvm_sa/solution1'.
+INFO: [SYN 201-201] Setting up clock 'default' with a period of 10ns.
+INFO: [HLS 200-1611] Setting target device to 'xc7z020-clg400-1'
+INFO: [HLS 200-1505] Using flow_target 'vivado'
+Resolution: For help on HLS 200-1505 see www.xilinx.com/cgi-bin/docs/rdoc?v=2021.2;t=hls+guidance;d=200-1505.html
+INFO: [HLS 200-1510] Running: set_part xc7z020-clg400-1 
+INFO: [HLS 200-1510] Running: create_clock -period 10 -name default 
+INFO: [HLS 200-1510] Running: set_directive_top -name mvm_sa mvm_sa 
+INFO: [HLS 200-1510] Running: csynth_design 
+INFO: [HLS 200-111] Finished File checks and directory preparation: CPU user time: 0 seconds. CPU system time: 0 seconds. Elapsed time: 0 seconds; current allocated memory: 1.203 GB.
+INFO: [HLS 200-10] Analyzing design file 'mvm_sa.cpp' ... 
+INFO: [HLS 200-111] Finished Source Code Analysis and Preprocessing: CPU user time: 2.84 seconds. CPU system time: 0.26 seconds. Elapsed time: 2.37 seconds; current allocated memory: 294.652 MB.
+INFO: [HLS 200-777] Using interface defaults for 'Vivado' flow target.
+INFO: [HLS 214-284] Auto array partition mode is set into default.
+INFO: [HLS 214-291] Loop 'write_y_loop' is marked as complete unroll implied by the pipeline pragma (mvm_sa.cpp:39:2)
+INFO: [HLS 214-291] Loop 'VITIS_LOOP_41_3' is marked as complete unroll implied by the pipeline pragma (mvm_sa.cpp:41:20)
+INFO: [HLS 214-291] Loop 'VITIS_LOOP_44_4' is marked as complete unroll implied by the pipeline pragma (mvm_sa.cpp:44:20)
+INFO: [HLS 214-291] Loop 'read_x_loop' is marked as complete unroll implied by the pipeline pragma (mvm_sa.cpp:22:2)
+INFO: [HLS 214-291] Loop 'VITIS_LOOP_26_1' is marked as complete unroll implied by the pipeline pragma (mvm_sa.cpp:26:20)
+INFO: [HLS 214-291] Loop 'VITIS_LOOP_30_2' is marked as complete unroll implied by the pipeline pragma (mvm_sa.cpp:30:20)
+INFO: [HLS 214-186] Unrolling loop 'write_y_loop' (mvm_sa.cpp:39:2) in function 'mvm_sa' completely with a factor of 4 (mvm_sa.cpp:4:0)
+INFO: [HLS 214-186] Unrolling loop 'VITIS_LOOP_44_4' (mvm_sa.cpp:44:20) in function 'mvm_sa' completely with a factor of 4 (mvm_sa.cpp:4:0)
+INFO: [HLS 214-186] Unrolling loop 'VITIS_LOOP_41_3' (mvm_sa.cpp:41:20) in function 'mvm_sa' completely with a factor of 2 (mvm_sa.cpp:4:0)
+INFO: [HLS 214-186] Unrolling loop 'read_x_loop' (mvm_sa.cpp:22:2) in function 'mvm_sa' completely with a factor of 4 (mvm_sa.cpp:4:0)
+INFO: [HLS 214-186] Unrolling loop 'VITIS_LOOP_30_2' (mvm_sa.cpp:30:20) in function 'mvm_sa' completely with a factor of 4 (mvm_sa.cpp:4:0)
+INFO: [HLS 214-186] Unrolling loop 'VITIS_LOOP_26_1' (mvm_sa.cpp:26:20) in function 'mvm_sa' completely with a factor of 2 (mvm_sa.cpp:4:0)
+INFO: [HLS 214-248] Applying array_partition to '_ZZ6mvm_saRN3hls6streamINS_4axisIiLm0ELm0ELm0EEELi0EEES4_E7x_local': Complete partitioning on dimension 1. (mvm_sa.cpp:15:0)
+INFO: [HLS 214-270] Starting automatic array partition analysis...
+INFO: [HLS 214-131] Inlining function '_llvm.fpga.unpack.none.i32.i32' into 'mvm_sa(hls::stream<hls::axis<int, 0ul, 0ul, 0ul>, 0>&, hls::stream<hls::axis<int, 0ul, 0ul, 0ul>, 0>&)' (/tools/Xilinx/Vitis_HLS/2021.2/common/technology/autopilot/ap_axi_sdata.h:283:5)
+INFO: [HLS 214-131] Inlining function '_llvm.fpga.pack.none.i1.s_struct.ap_uint<1>s' into 'mvm_sa(hls::stream<hls::axis<int, 0ul, 0ul, 0ul>, 0>&, hls::stream<hls::axis<int, 0ul, 0ul, 0ul>, 0>&)' (/tools/Xilinx/Vitis_HLS/2021.2/common/technology/autopilot/ap_axi_sdata.h:304:5)
+INFO: [HLS 214-131] Inlining function '_llvm.fpga.pack.none.i4.s_struct.ap_uint<4>s' into 'mvm_sa(hls::stream<hls::axis<int, 0ul, 0ul, 0ul>, 0>&, hls::stream<hls::axis<int, 0ul, 0ul, 0ul>, 0>&)' (/tools/Xilinx/Vitis_HLS/2021.2/common/technology/autopilot/ap_axi_sdata.h:304:5)
+INFO: [HLS 214-131] Inlining function '_llvm.fpga.pack.none.i32.i32' into 'mvm_sa(hls::stream<hls::axis<int, 0ul, 0ul, 0ul>, 0>&, hls::stream<hls::axis<int, 0ul, 0ul, 0ul>, 0>&)' (/tools/Xilinx/Vitis_HLS/2021.2/common/technology/autopilot/ap_axi_sdata.h:304:5)
+INFO: [HLS 200-111] Finished Compiling Optimization and Transform: CPU user time: 2.09 seconds. CPU system time: 0.18 seconds. Elapsed time: 2.27 seconds; current allocated memory: 295.586 MB.
+INFO: [HLS 200-111] Finished Checking Pragmas: CPU user time: 0 seconds. CPU system time: 0 seconds. Elapsed time: 0.01 seconds; current allocated memory: 295.586 MB.
+INFO: [HLS 200-10] Starting code transformations ...
+INFO: [HLS 200-111] Finished Standard Transforms: CPU user time: 0.01 seconds. CPU system time: 0 seconds. Elapsed time: 0.01 seconds; current allocated memory: 300.988 MB.
+INFO: [HLS 200-10] Checking synthesizability ...
+INFO: [HLS 200-111] Finished Checking Synthesizability: CPU user time: 0.03 seconds. CPU system time: 0 seconds. Elapsed time: 0.03 seconds; current allocated memory: 307.484 MB.
+INFO: [HLS 200-111] Finished Loop, function and other optimizations: CPU user time: 0.04 seconds. CPU system time: 0.01 seconds. Elapsed time: 0.05 seconds; current allocated memory: 335.898 MB.
+INFO: [HLS 200-111] Finished Architecture Synthesis: CPU user time: 0.03 seconds. CPU system time: 0 seconds. Elapsed time: 0.02 seconds; current allocated memory: 336.773 MB.
+INFO: [HLS 200-10] Starting hardware synthesis ...
+INFO: [HLS 200-10] Synthesizing 'mvm_sa' ...
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-42] -- Implementing module 'mvm_sa' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [SCHED 204-11] Starting scheduling ...
+INFO: [SCHED 204-61] Pipelining function 'mvm_sa'.
+WARNING: [HLS 200-880] The II Violation in module 'mvm_sa' (function 'mvm_sa'): Unable to enforce a carried dependence constraint (II = 1, distance = 1, offset = 1) between axis read operation ('empty_6') on port 'x_stream_V_data_V' and axis read operation ('empty') on port 'x_stream_V_data_V'.
+Resolution: For help on HLS 200-880 see www.xilinx.com/cgi-bin/docs/rdoc?v=2021.2;t=hls+guidance;d=200-880.html
+WARNING: [HLS 200-880] The II Violation in module 'mvm_sa' (function 'mvm_sa'): Unable to enforce a carried dependence constraint (II = 2, distance = 1, offset = 1) between axis read operation ('empty_7') on port 'x_stream_V_data_V' and axis read operation ('empty') on port 'x_stream_V_data_V'.
+Resolution: For help on HLS 200-880 see www.xilinx.com/cgi-bin/docs/rdoc?v=2021.2;t=hls+guidance;d=200-880.html
+WARNING: [HLS 200-880] The II Violation in module 'mvm_sa' (function 'mvm_sa'): Unable to enforce a carried dependence constraint (II = 3, distance = 1, offset = 1) between axis read operation ('empty_8') on port 'x_stream_V_data_V' and axis read operation ('empty') on port 'x_stream_V_data_V'.
+Resolution: For help on HLS 200-880 see www.xilinx.com/cgi-bin/docs/rdoc?v=2021.2;t=hls+guidance;d=200-880.html
+INFO: [HLS 200-1470] Pipelining result : Target II = NA, Final II = 4, Depth = 8, function 'mvm_sa'
+INFO: [SCHED 204-11] Finished scheduling.
+INFO: [HLS 200-111] Finished Scheduling: CPU user time: 0.03 seconds. CPU system time: 0.01 seconds. Elapsed time: 0.03 seconds; current allocated memory: 336.773 MB.
+INFO: [BIND 205-100] Starting micro-architecture generation ...
+INFO: [BIND 205-101] Performing variable lifetime analysis.
+INFO: [BIND 205-101] Exploring resource sharing.
+INFO: [BIND 205-101] Binding ...
+INFO: [BIND 205-100] Finished micro-architecture generation.
+INFO: [HLS 200-111] Finished Binding: CPU user time: 0.02 seconds. CPU system time: 0 seconds. Elapsed time: 0.03 seconds; current allocated memory: 336.773 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-10] -- Generating RTL for module 'mvm_sa' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+WARNING: [RTGEN 206-101] Design contains AXI ports. Reset is fixed to synchronous and active low.
+INFO: [RTGEN 206-500] Setting interface mode on port 'mvm_sa/x_stream_V_data_V' to 'axis' (register, both mode).
+INFO: [RTGEN 206-500] Setting interface mode on port 'mvm_sa/x_stream_V_keep_V' to 'axis' (register, both mode).
+INFO: [RTGEN 206-500] Setting interface mode on port 'mvm_sa/x_stream_V_strb_V' to 'axis' (register, both mode).
+INFO: [RTGEN 206-500] Setting interface mode on port 'mvm_sa/x_stream_V_last_V' to 'axis' (register, both mode).
+INFO: [RTGEN 206-500] Setting interface mode on port 'mvm_sa/y_stream_V_data_V' to 'axis' (register, both mode).
+INFO: [RTGEN 206-500] Setting interface mode on port 'mvm_sa/y_stream_V_keep_V' to 'axis' (register, both mode).
+INFO: [RTGEN 206-500] Setting interface mode on port 'mvm_sa/y_stream_V_strb_V' to 'axis' (register, both mode).
+INFO: [RTGEN 206-500] Setting interface mode on port 'mvm_sa/y_stream_V_last_V' to 'axis' (register, both mode).
+INFO: [RTGEN 206-500] Setting interface mode on function 'mvm_sa' to 'ap_ctrl_none'.
+INFO: [HLS 200-1030] Apply Unified Pipeline Control on module 'mvm_sa' pipeline 'mvm_sa' pipeline type 'function pipeline'
+WARNING: [HLS 200-1553] Disabling free running pipeline (frp) architecture on pipeline 'mvm_sa' in module 'mvm_sa', because it has multiple AXIS/AP_HS input ports: x_stream_V_data_V, x_stream_V_keep_V, x_stream_V_strb_V, x_stream_V_last_V.
+Resolution: For help on HLS 200-1553 see www.xilinx.com/cgi-bin/docs/rdoc?v=2021.2;t=hls+guidance;d=200-1553.html
+INFO: [RTGEN 206-100] Finished creating RTL model for 'mvm_sa'.
+INFO: [HLS 200-111] Finished Creating RTL model: CPU user time: 0.02 seconds. CPU system time: 0 seconds. Elapsed time: 0.02 seconds; current allocated memory: 336.773 MB.
+INFO: [HLS 200-111] Finished Generating all RTL models: CPU user time: 0.15 seconds. CPU system time: 0.01 seconds. Elapsed time: 0.16 seconds; current allocated memory: 336.773 MB.
+INFO: [HLS 200-111] Finished Updating report files: CPU user time: 0.13 seconds. CPU system time: 0.01 seconds. Elapsed time: 0.13 seconds; current allocated memory: 337.324 MB.
+INFO: [VHDL 208-304] Generating VHDL RTL for mvm_sa.
+INFO: [VLOG 209-307] Generating Verilog RTL for mvm_sa.
+INFO: [HLS 200-789] **** Estimated Fmax: 144.45 MHz
+INFO: [HLS 200-111] Finished Command csynth_design CPU user time: 5.39 seconds. CPU system time: 0.48 seconds. Elapsed time: 5.14 seconds; current allocated memory: -894.281 MB.
+INFO: [HLS 200-112] Total CPU user time: 6.93 seconds. Total CPU system time: 0.86 seconds. Total elapsed time: 6.32 seconds; peak allocated memory: 1.203 GB.

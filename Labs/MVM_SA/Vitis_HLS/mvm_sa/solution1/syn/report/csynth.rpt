@@ -1,0 +1,108 @@
+
+
+================================================================
+== Synthesis Summary Report of 'mvm_sa'
+================================================================
++ General Information: 
+    * Date:           Wed Jul  6 17:05:41 2022
+    * Version:        2021.2 (Build 3367213 on Tue Oct 19 02:47:39 MDT 2021)
+    * Project:        mvm_sa
+    * Solution:       solution1 (Vivado IP Flow Target)
+    * Product family: zynq
+    * Target device:  xc7z020-clg400-1
+    
+
++ Performance & Resource Estimates: 
+    
+    PS: '+' for module; 'o' for loop; '*' for dataflow
+    +----------+------+------+---------+--------+----------+---------+------+----------+------+----+----------+-----------+-----+
+    |  Modules | Issue|      | Latency | Latency| Iteration|         | Trip |          |      |    |          |           |     |
+    |  & Loops | Type | Slack| (cycles)|  (ns)  |  Latency | Interval| Count| Pipelined| BRAM | DSP|    FF    |    LUT    | URAM|
+    +----------+------+------+---------+--------+----------+---------+------+----------+------+----+----------+-----------+-----+
+    |+ mvm_sa  |    II|  0.38|        7|  70.000|         -|        4|     -|       yes|     -|   -|  69 (~0%)|  184 (~0%)|    -|
+    +----------+------+------+---------+--------+----------+---------+------+----------+------+----+----------+-----------+-----+
+
+
+================================================================
+== HW Interfaces
+================================================================
+* AXIS
++-----------+---------------+-------+-------+-------+--------+-------+--------+
+| Interface | Register Mode | TDATA | TKEEP | TLAST | TREADY | TSTRB | TVALID |
++-----------+---------------+-------+-------+-------+--------+-------+--------+
+| x_stream  | both          | 32    | 4     | 1     | 1      | 4     | 1      |
+| y_stream  | both          | 32    | 4     | 1     | 1      | 4     | 1      |
++-----------+---------------+-------+-------+-------+--------+-------+--------+
+
+* TOP LEVEL CONTROL
++-----------+--------------+----------+
+| Interface | Type         | Ports    |
++-----------+--------------+----------+
+| ap_clk    | clock        | ap_clk   |
+| ap_rst_n  | reset        | ap_rst_n |
+| ap_ctrl   | ap_ctrl_none |          |
++-----------+--------------+----------+
+
+
+================================================================
+== SW I/O Information
+================================================================
+* Top Function Arguments
++----------+-----------+-------------------------------------+
+| Argument | Direction | Datatype                            |
++----------+-----------+-------------------------------------+
+| x_stream | in        | stream<hls::axis<int, 0, 0, 0>, 0>& |
+| y_stream | out       | stream<hls::axis<int, 0, 0, 0>, 0>& |
++----------+-----------+-------------------------------------+
+
+* SW-to-HW Mapping
++----------+--------------+-----------+
+| Argument | HW Interface | HW Type   |
++----------+--------------+-----------+
+| x_stream | x_stream     | interface |
+| y_stream | y_stream     | interface |
++----------+--------------+-----------+
+
+
+================================================================
+== M_AXI Burst Information
+================================================================
+ Note: All burst requests might be further partitioned into multiple requests during RTL generation based on max_read_burst_length or max_write_burst_length settings.
+
+  No burst in design
+
+================================================================
+== Bind Op Report
+================================================================
++----------------------+-----+--------+----------+-----+--------+---------+
+| Name                 | DSP | Pragma | Variable | Op  | Impl   | Latency |
++----------------------+-----+--------+----------+-----+--------+---------+
+| + mvm_sa             | 0   |        |          |     |        |         |
+|   sub_ln34_fu_104_p2 | -   |        | sub_ln34 | sub | fabric | 0       |
+|   add_ln34_fu_110_p2 | -   |        | add_ln34 | add | tadder | 0       |
+|   last_fu_116_p2     | -   |        | last     | add | tadder | 0       |
++----------------------+-----+--------+----------+-----+--------+---------+
+
+
+================================================================
+== Bind Storage Report
+================================================================
+  No bind storage info in design
+
+================================================================
+== User Pragma Report
+================================================================
+* Valid Pragma Syntax
++-----------------+--------------------------------------+----------------------------------+
+| Type            | Options                              | Location                         |
++-----------------+--------------------------------------+----------------------------------+
+| interface       | mode=ap_ctrl_none port=return        | mvm_sa.cpp:5 in mvm_sa, return   |
+| interface       | mode=axis port=x_stream              | mvm_sa.cpp:6 in mvm_sa, x_stream |
+| interface       | mode=axis port=y_stream              | mvm_sa.cpp:7 in mvm_sa, y_stream |
+| array_partition | variable=A_local dim=1 type=complete | mvm_sa.cpp:14 in mvm_sa, A_local |
+| array_partition | variable=x_local dim=1 type=complete | mvm_sa.cpp:16 in mvm_sa, x_local |
+| array_partition | variable=acc dim=1 type=complete     | mvm_sa.cpp:18 in mvm_sa, acc     |
+| pipeline        | style=frp                            | mvm_sa.cpp:20 in mvm_sa          |
++-----------------+--------------------------------------+----------------------------------+
+
+
