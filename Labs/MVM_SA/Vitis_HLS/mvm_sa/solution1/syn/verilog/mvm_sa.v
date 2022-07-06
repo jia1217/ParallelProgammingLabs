@@ -7,19 +7,13 @@
 
 `timescale 1 ns / 1 ps 
 
-(* CORE_GENERATION_INFO="mvm_sa_mvm_sa,hls_ip_2021_2,{HLS_INPUT_TYPE=cxx,HLS_INPUT_FLOAT=0,HLS_INPUT_FIXED=0,HLS_INPUT_PART=xc7z020-clg400-1,HLS_INPUT_CLOCK=10.000000,HLS_INPUT_ARCH=others,HLS_SYN_CLOCK=6.912000,HLS_SYN_LAT=21,HLS_SYN_TPT=none,HLS_SYN_MEM=0,HLS_SYN_DSP=0,HLS_SYN_FF=719,HLS_SYN_LUT=847,HLS_VERSION=2021_2}" *)
+(* CORE_GENERATION_INFO="mvm_sa_mvm_sa,hls_ip_2021_2,{HLS_INPUT_TYPE=cxx,HLS_INPUT_FLOAT=0,HLS_INPUT_FIXED=0,HLS_INPUT_PART=xc7z020-clg400-1,HLS_INPUT_CLOCK=10.000000,HLS_INPUT_ARCH=pipeline,HLS_SYN_CLOCK=6.923000,HLS_SYN_LAT=7,HLS_SYN_TPT=4,HLS_SYN_MEM=0,HLS_SYN_DSP=0,HLS_SYN_FF=69,HLS_SYN_LUT=184,HLS_VERSION=2021_2}" *)
 
 module mvm_sa (
         ap_local_block,
         ap_local_deadlock,
         ap_clk,
         ap_rst_n,
-        A_stream_TDATA,
-        A_stream_TVALID,
-        A_stream_TREADY,
-        A_stream_TKEEP,
-        A_stream_TSTRB,
-        A_stream_TLAST,
         x_stream_TDATA,
         x_stream_TVALID,
         x_stream_TREADY,
@@ -34,25 +28,15 @@ module mvm_sa (
         y_stream_TLAST
 );
 
-parameter    ap_ST_fsm_state1 = 8'd1;
-parameter    ap_ST_fsm_state2 = 8'd2;
-parameter    ap_ST_fsm_state3 = 8'd4;
-parameter    ap_ST_fsm_state4 = 8'd8;
-parameter    ap_ST_fsm_state5 = 8'd16;
-parameter    ap_ST_fsm_state6 = 8'd32;
-parameter    ap_ST_fsm_state7 = 8'd64;
-parameter    ap_ST_fsm_state8 = 8'd128;
+parameter    ap_ST_fsm_pp0_stage0 = 4'd1;
+parameter    ap_ST_fsm_pp0_stage1 = 4'd2;
+parameter    ap_ST_fsm_pp0_stage2 = 4'd4;
+parameter    ap_ST_fsm_pp0_stage3 = 4'd8;
 
 output   ap_local_block;
 output   ap_local_deadlock;
 input   ap_clk;
 input   ap_rst_n;
-input  [31:0] A_stream_TDATA;
-input   A_stream_TVALID;
-output   A_stream_TREADY;
-input  [3:0] A_stream_TKEEP;
-input  [3:0] A_stream_TSTRB;
-input  [0:0] A_stream_TLAST;
 input  [31:0] x_stream_TDATA;
 input   x_stream_TVALID;
 output   x_stream_TREADY;
@@ -67,91 +51,50 @@ output  [3:0] y_stream_TSTRB;
 output  [0:0] y_stream_TLAST;
 
  reg    ap_rst_n_inv;
-reg   [31:0] mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_A_local_0;
-reg   [31:0] mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_A_local_11;
-reg   [31:0] mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_A_local_22;
-reg   [31:0] mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_A_local_33;
-reg   [31:0] mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_acc;
-reg   [31:0] mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_acc_1;
-reg   [31:0] mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_acc_2;
-reg   [31:0] mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_acc_3;
-wire   [0:0] tmp_nbreadreq_fu_70_p6;
-reg   [0:0] tmp_reg_152;
-(* fsm_encoding = "none" *) reg   [7:0] ap_CS_fsm;
-wire    ap_CS_fsm_state1;
-wire    grp_mvm_sa_Pipeline_read_x_loop_fu_84_ap_start;
-wire    grp_mvm_sa_Pipeline_read_x_loop_fu_84_ap_done;
-wire    grp_mvm_sa_Pipeline_read_x_loop_fu_84_ap_idle;
-wire    grp_mvm_sa_Pipeline_read_x_loop_fu_84_ap_ready;
-wire    grp_mvm_sa_Pipeline_read_x_loop_fu_84_x_stream_TREADY;
-wire   [31:0] grp_mvm_sa_Pipeline_read_x_loop_fu_84_mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_acc_o;
-wire    grp_mvm_sa_Pipeline_read_x_loop_fu_84_mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_acc_o_ap_vld;
-wire   [31:0] grp_mvm_sa_Pipeline_read_x_loop_fu_84_mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_acc_1_o;
-wire    grp_mvm_sa_Pipeline_read_x_loop_fu_84_mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_acc_1_o_ap_vld;
-wire   [31:0] grp_mvm_sa_Pipeline_read_x_loop_fu_84_mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_acc_2_o;
-wire    grp_mvm_sa_Pipeline_read_x_loop_fu_84_mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_acc_2_o_ap_vld;
-wire   [31:0] grp_mvm_sa_Pipeline_read_x_loop_fu_84_mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_acc_3_o;
-wire    grp_mvm_sa_Pipeline_read_x_loop_fu_84_mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_acc_3_o_ap_vld;
-wire    grp_mvm_sa_Pipeline_load_A_loop_fu_112_ap_start;
-wire    grp_mvm_sa_Pipeline_load_A_loop_fu_112_ap_done;
-wire    grp_mvm_sa_Pipeline_load_A_loop_fu_112_ap_idle;
-wire    grp_mvm_sa_Pipeline_load_A_loop_fu_112_ap_ready;
-wire    grp_mvm_sa_Pipeline_load_A_loop_fu_112_A_stream_TREADY;
-wire   [31:0] grp_mvm_sa_Pipeline_load_A_loop_fu_112_mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_A_local_0;
-wire    grp_mvm_sa_Pipeline_load_A_loop_fu_112_mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_A_local_0_ap_vld;
-wire   [31:0] grp_mvm_sa_Pipeline_load_A_loop_fu_112_mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_A_local_11;
-wire    grp_mvm_sa_Pipeline_load_A_loop_fu_112_mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_A_local_11_ap_vld;
-wire   [31:0] grp_mvm_sa_Pipeline_load_A_loop_fu_112_mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_A_local_22;
-wire    grp_mvm_sa_Pipeline_load_A_loop_fu_112_mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_A_local_22_ap_vld;
-wire   [31:0] grp_mvm_sa_Pipeline_load_A_loop_fu_112_mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_A_local_33;
-wire    grp_mvm_sa_Pipeline_load_A_loop_fu_112_mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_A_local_33_ap_vld;
-wire    grp_mvm_sa_Pipeline_write_y_loop_fu_132_ap_start;
-wire    grp_mvm_sa_Pipeline_write_y_loop_fu_132_ap_done;
-wire    grp_mvm_sa_Pipeline_write_y_loop_fu_132_ap_idle;
-wire    grp_mvm_sa_Pipeline_write_y_loop_fu_132_ap_ready;
-wire    grp_mvm_sa_Pipeline_write_y_loop_fu_132_y_stream_TREADY;
-wire   [31:0] grp_mvm_sa_Pipeline_write_y_loop_fu_132_y_stream_TDATA;
-wire    grp_mvm_sa_Pipeline_write_y_loop_fu_132_y_stream_TVALID;
-wire   [3:0] grp_mvm_sa_Pipeline_write_y_loop_fu_132_y_stream_TKEEP;
-wire   [3:0] grp_mvm_sa_Pipeline_write_y_loop_fu_132_y_stream_TSTRB;
-wire   [0:0] grp_mvm_sa_Pipeline_write_y_loop_fu_132_y_stream_TLAST;
-reg    grp_mvm_sa_Pipeline_read_x_loop_fu_84_ap_start_reg;
-wire    ap_CS_fsm_state2;
-wire    ap_CS_fsm_state3;
-reg    grp_mvm_sa_Pipeline_load_A_loop_fu_112_ap_start_reg;
-reg   [7:0] ap_NS_fsm;
-wire    ap_NS_fsm_state2;
-wire    ap_CS_fsm_state7;
-reg    grp_mvm_sa_Pipeline_write_y_loop_fu_132_ap_start_reg;
-wire    ap_CS_fsm_state5;
-wire    ap_CS_fsm_state6;
-wire    ap_ST_fsm_state1_blk;
-wire    ap_ST_fsm_state2_blk;
-reg    ap_ST_fsm_state3_blk;
-wire    ap_ST_fsm_state4_blk;
-wire    ap_ST_fsm_state5_blk;
-reg    ap_ST_fsm_state6_blk;
-reg    ap_ST_fsm_state7_blk;
-reg    ap_ST_fsm_state8_blk;
+reg    x_stream_TDATA_blk_n;
+(* fsm_encoding = "none" *) reg   [3:0] ap_CS_fsm;
+wire    ap_CS_fsm_pp0_stage0;
+wire    ap_block_pp0_stage0;
+wire    ap_CS_fsm_pp0_stage1;
+wire    ap_block_pp0_stage1;
+wire    ap_CS_fsm_pp0_stage2;
+wire    ap_block_pp0_stage2;
+wire    ap_CS_fsm_pp0_stage3;
+wire    ap_block_pp0_stage3;
+reg    y_stream_TDATA_blk_n;
+reg    ap_enable_reg_pp0_iter1;
+reg   [31:0] tmp_reg_122;
+reg    ap_block_state2_pp0_stage1_iter0;
+reg    ap_block_state6_pp0_stage1_iter1;
+reg    ap_block_pp0_stage1_11001;
+reg   [31:0] tmp_1_reg_127;
+reg    ap_block_state3_pp0_stage2_iter0;
+reg    ap_block_state7_pp0_stage2_iter1;
+reg    ap_block_pp0_stage2_11001;
+wire   [31:0] last_fu_116_p2;
+reg    ap_block_state4_pp0_stage3_iter0;
 wire    regslice_both_y_stream_V_data_V_U_apdone_blk;
-wire    ap_CS_fsm_state8;
-wire    regslice_both_A_stream_V_data_V_U_apdone_blk;
-wire   [31:0] A_stream_TDATA_int_regslice;
-wire    A_stream_TVALID_int_regslice;
-reg    A_stream_TREADY_int_regslice;
-wire    regslice_both_A_stream_V_data_V_U_ack_in;
-wire    regslice_both_A_stream_V_keep_V_U_apdone_blk;
-wire   [3:0] A_stream_TKEEP_int_regslice;
-wire    regslice_both_A_stream_V_keep_V_U_vld_out;
-wire    regslice_both_A_stream_V_keep_V_U_ack_in;
-wire    regslice_both_A_stream_V_strb_V_U_apdone_blk;
-wire   [3:0] A_stream_TSTRB_int_regslice;
-wire    regslice_both_A_stream_V_strb_V_U_vld_out;
-wire    regslice_both_A_stream_V_strb_V_U_ack_in;
-wire    regslice_both_A_stream_V_last_V_U_apdone_blk;
-wire   [0:0] A_stream_TLAST_int_regslice;
-wire    regslice_both_A_stream_V_last_V_U_vld_out;
-wire    regslice_both_A_stream_V_last_V_U_ack_in;
+reg    ap_block_state8_pp0_stage3_iter1;
+reg    ap_block_pp0_stage3_11001;
+reg    ap_block_pp0_stage3_subdone;
+reg    ap_block_state1_pp0_stage0_iter0;
+reg    ap_block_state5_pp0_stage0_iter1;
+reg    ap_block_pp0_stage0_11001;
+reg    ap_block_pp0_stage3_01001;
+reg    ap_block_pp0_stage0_01001;
+reg    ap_block_pp0_stage1_01001;
+reg    ap_block_pp0_stage2_01001;
+wire   [31:0] shl_ln34_1_fu_98_p2;
+wire   [31:0] shl_ln34_fu_93_p2;
+wire   [31:0] sub_ln34_fu_104_p2;
+wire   [31:0] add_ln34_fu_110_p2;
+reg   [3:0] ap_NS_fsm;
+reg    ap_block_pp0_stage0_subdone;
+reg    ap_block_pp0_stage1_subdone;
+reg    ap_block_pp0_stage2_subdone;
+wire    ap_reset_idle_pp0;
+reg    ap_idle_pp0;
+wire    ap_enable_pp0;
 wire    regslice_both_x_stream_V_data_V_U_apdone_blk;
 wire   [31:0] x_stream_TDATA_int_regslice;
 wire    x_stream_TVALID_int_regslice;
@@ -169,7 +112,8 @@ wire    regslice_both_x_stream_V_last_V_U_apdone_blk;
 wire   [0:0] x_stream_TLAST_int_regslice;
 wire    regslice_both_x_stream_V_last_V_U_vld_out;
 wire    regslice_both_x_stream_V_last_V_U_ack_in;
-wire    y_stream_TVALID_int_regslice;
+reg   [31:0] y_stream_TDATA_int_regslice;
+reg    y_stream_TVALID_int_regslice;
 wire    y_stream_TREADY_int_regslice;
 wire    regslice_both_y_stream_V_data_V_U_vld_out;
 wire    regslice_both_y_stream_V_keep_V_U_apdone_blk;
@@ -179,154 +123,16 @@ wire    regslice_both_y_stream_V_strb_V_U_apdone_blk;
 wire    regslice_both_y_stream_V_strb_V_U_ack_in_dummy;
 wire    regslice_both_y_stream_V_strb_V_U_vld_out;
 wire    regslice_both_y_stream_V_last_V_U_apdone_blk;
+reg   [0:0] y_stream_TLAST_int_regslice;
 wire    regslice_both_y_stream_V_last_V_U_ack_in_dummy;
 wire    regslice_both_y_stream_V_last_V_U_vld_out;
 wire    ap_ce_reg;
 
 // power-on initialization
 initial begin
-#0 mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_A_local_0 = 32'd0;
-#0 mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_A_local_11 = 32'd0;
-#0 mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_A_local_22 = 32'd0;
-#0 mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_A_local_33 = 32'd0;
-#0 mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_acc = 32'd0;
-#0 mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_acc_1 = 32'd0;
-#0 mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_acc_2 = 32'd0;
-#0 mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_acc_3 = 32'd0;
-#0 ap_CS_fsm = 8'd1;
-#0 grp_mvm_sa_Pipeline_read_x_loop_fu_84_ap_start_reg = 1'b0;
-#0 grp_mvm_sa_Pipeline_load_A_loop_fu_112_ap_start_reg = 1'b0;
-#0 grp_mvm_sa_Pipeline_write_y_loop_fu_132_ap_start_reg = 1'b0;
+#0 ap_CS_fsm = 4'd1;
+#0 ap_enable_reg_pp0_iter1 = 1'b0;
 end
-
-mvm_sa_mvm_sa_Pipeline_read_x_loop grp_mvm_sa_Pipeline_read_x_loop_fu_84(
-    .ap_clk(ap_clk),
-    .ap_rst(ap_rst_n_inv),
-    .ap_start(grp_mvm_sa_Pipeline_read_x_loop_fu_84_ap_start),
-    .ap_done(grp_mvm_sa_Pipeline_read_x_loop_fu_84_ap_done),
-    .ap_idle(grp_mvm_sa_Pipeline_read_x_loop_fu_84_ap_idle),
-    .ap_ready(grp_mvm_sa_Pipeline_read_x_loop_fu_84_ap_ready),
-    .x_stream_TVALID(x_stream_TVALID_int_regslice),
-    .x_stream_TDATA(x_stream_TDATA_int_regslice),
-    .x_stream_TREADY(grp_mvm_sa_Pipeline_read_x_loop_fu_84_x_stream_TREADY),
-    .x_stream_TKEEP(x_stream_TKEEP_int_regslice),
-    .x_stream_TSTRB(x_stream_TSTRB_int_regslice),
-    .x_stream_TLAST(x_stream_TLAST_int_regslice),
-    .mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_acc_i(mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_acc),
-    .mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_acc_o(grp_mvm_sa_Pipeline_read_x_loop_fu_84_mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_acc_o),
-    .mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_acc_o_ap_vld(grp_mvm_sa_Pipeline_read_x_loop_fu_84_mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_acc_o_ap_vld),
-    .mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_A_local_0(mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_A_local_0),
-    .mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_A_local_11(mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_A_local_11),
-    .mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_A_local_22(mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_A_local_22),
-    .mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_A_local_33(mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_A_local_33),
-    .mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_acc_1_i(mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_acc_1),
-    .mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_acc_1_o(grp_mvm_sa_Pipeline_read_x_loop_fu_84_mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_acc_1_o),
-    .mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_acc_1_o_ap_vld(grp_mvm_sa_Pipeline_read_x_loop_fu_84_mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_acc_1_o_ap_vld),
-    .mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_acc_2_i(mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_acc_2),
-    .mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_acc_2_o(grp_mvm_sa_Pipeline_read_x_loop_fu_84_mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_acc_2_o),
-    .mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_acc_2_o_ap_vld(grp_mvm_sa_Pipeline_read_x_loop_fu_84_mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_acc_2_o_ap_vld),
-    .mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_acc_3_i(mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_acc_3),
-    .mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_acc_3_o(grp_mvm_sa_Pipeline_read_x_loop_fu_84_mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_acc_3_o),
-    .mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_acc_3_o_ap_vld(grp_mvm_sa_Pipeline_read_x_loop_fu_84_mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_acc_3_o_ap_vld)
-);
-
-mvm_sa_mvm_sa_Pipeline_load_A_loop grp_mvm_sa_Pipeline_load_A_loop_fu_112(
-    .ap_clk(ap_clk),
-    .ap_rst(ap_rst_n_inv),
-    .ap_start(grp_mvm_sa_Pipeline_load_A_loop_fu_112_ap_start),
-    .ap_done(grp_mvm_sa_Pipeline_load_A_loop_fu_112_ap_done),
-    .ap_idle(grp_mvm_sa_Pipeline_load_A_loop_fu_112_ap_idle),
-    .ap_ready(grp_mvm_sa_Pipeline_load_A_loop_fu_112_ap_ready),
-    .A_stream_TVALID(A_stream_TVALID_int_regslice),
-    .A_stream_TDATA(A_stream_TDATA_int_regslice),
-    .A_stream_TREADY(grp_mvm_sa_Pipeline_load_A_loop_fu_112_A_stream_TREADY),
-    .A_stream_TKEEP(A_stream_TKEEP_int_regslice),
-    .A_stream_TSTRB(A_stream_TSTRB_int_regslice),
-    .A_stream_TLAST(A_stream_TLAST_int_regslice),
-    .mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_A_local_0(grp_mvm_sa_Pipeline_load_A_loop_fu_112_mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_A_local_0),
-    .mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_A_local_0_ap_vld(grp_mvm_sa_Pipeline_load_A_loop_fu_112_mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_A_local_0_ap_vld),
-    .mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_A_local_11(grp_mvm_sa_Pipeline_load_A_loop_fu_112_mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_A_local_11),
-    .mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_A_local_11_ap_vld(grp_mvm_sa_Pipeline_load_A_loop_fu_112_mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_A_local_11_ap_vld),
-    .mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_A_local_22(grp_mvm_sa_Pipeline_load_A_loop_fu_112_mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_A_local_22),
-    .mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_A_local_22_ap_vld(grp_mvm_sa_Pipeline_load_A_loop_fu_112_mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_A_local_22_ap_vld),
-    .mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_A_local_33(grp_mvm_sa_Pipeline_load_A_loop_fu_112_mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_A_local_33),
-    .mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_A_local_33_ap_vld(grp_mvm_sa_Pipeline_load_A_loop_fu_112_mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_A_local_33_ap_vld)
-);
-
-mvm_sa_mvm_sa_Pipeline_write_y_loop grp_mvm_sa_Pipeline_write_y_loop_fu_132(
-    .ap_clk(ap_clk),
-    .ap_rst(ap_rst_n_inv),
-    .ap_start(grp_mvm_sa_Pipeline_write_y_loop_fu_132_ap_start),
-    .ap_done(grp_mvm_sa_Pipeline_write_y_loop_fu_132_ap_done),
-    .ap_idle(grp_mvm_sa_Pipeline_write_y_loop_fu_132_ap_idle),
-    .ap_ready(grp_mvm_sa_Pipeline_write_y_loop_fu_132_ap_ready),
-    .y_stream_TREADY(grp_mvm_sa_Pipeline_write_y_loop_fu_132_y_stream_TREADY),
-    .y_stream_TDATA(grp_mvm_sa_Pipeline_write_y_loop_fu_132_y_stream_TDATA),
-    .y_stream_TVALID(grp_mvm_sa_Pipeline_write_y_loop_fu_132_y_stream_TVALID),
-    .y_stream_TKEEP(grp_mvm_sa_Pipeline_write_y_loop_fu_132_y_stream_TKEEP),
-    .y_stream_TSTRB(grp_mvm_sa_Pipeline_write_y_loop_fu_132_y_stream_TSTRB),
-    .y_stream_TLAST(grp_mvm_sa_Pipeline_write_y_loop_fu_132_y_stream_TLAST),
-    .mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_acc(mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_acc),
-    .mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_acc_1(mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_acc_1),
-    .mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_acc_2(mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_acc_2),
-    .mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_acc_3(mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_acc_3)
-);
-
-mvm_sa_regslice_both #(
-    .DataWidth( 32 ))
-regslice_both_A_stream_V_data_V_U(
-    .ap_clk(ap_clk),
-    .ap_rst(ap_rst_n_inv),
-    .data_in(A_stream_TDATA),
-    .vld_in(A_stream_TVALID),
-    .ack_in(regslice_both_A_stream_V_data_V_U_ack_in),
-    .data_out(A_stream_TDATA_int_regslice),
-    .vld_out(A_stream_TVALID_int_regslice),
-    .ack_out(A_stream_TREADY_int_regslice),
-    .apdone_blk(regslice_both_A_stream_V_data_V_U_apdone_blk)
-);
-
-mvm_sa_regslice_both #(
-    .DataWidth( 4 ))
-regslice_both_A_stream_V_keep_V_U(
-    .ap_clk(ap_clk),
-    .ap_rst(ap_rst_n_inv),
-    .data_in(A_stream_TKEEP),
-    .vld_in(A_stream_TVALID),
-    .ack_in(regslice_both_A_stream_V_keep_V_U_ack_in),
-    .data_out(A_stream_TKEEP_int_regslice),
-    .vld_out(regslice_both_A_stream_V_keep_V_U_vld_out),
-    .ack_out(A_stream_TREADY_int_regslice),
-    .apdone_blk(regslice_both_A_stream_V_keep_V_U_apdone_blk)
-);
-
-mvm_sa_regslice_both #(
-    .DataWidth( 4 ))
-regslice_both_A_stream_V_strb_V_U(
-    .ap_clk(ap_clk),
-    .ap_rst(ap_rst_n_inv),
-    .data_in(A_stream_TSTRB),
-    .vld_in(A_stream_TVALID),
-    .ack_in(regslice_both_A_stream_V_strb_V_U_ack_in),
-    .data_out(A_stream_TSTRB_int_regslice),
-    .vld_out(regslice_both_A_stream_V_strb_V_U_vld_out),
-    .ack_out(A_stream_TREADY_int_regslice),
-    .apdone_blk(regslice_both_A_stream_V_strb_V_U_apdone_blk)
-);
-
-mvm_sa_regslice_both #(
-    .DataWidth( 1 ))
-regslice_both_A_stream_V_last_V_U(
-    .ap_clk(ap_clk),
-    .ap_rst(ap_rst_n_inv),
-    .data_in(A_stream_TLAST),
-    .vld_in(A_stream_TVALID),
-    .ack_in(regslice_both_A_stream_V_last_V_U_ack_in),
-    .data_out(A_stream_TLAST_int_regslice),
-    .vld_out(regslice_both_A_stream_V_last_V_U_vld_out),
-    .ack_out(A_stream_TREADY_int_regslice),
-    .apdone_blk(regslice_both_A_stream_V_last_V_U_apdone_blk)
-);
 
 mvm_sa_regslice_both #(
     .DataWidth( 32 ))
@@ -389,8 +195,8 @@ mvm_sa_regslice_both #(
 regslice_both_y_stream_V_data_V_U(
     .ap_clk(ap_clk),
     .ap_rst(ap_rst_n_inv),
-    .data_in(grp_mvm_sa_Pipeline_write_y_loop_fu_132_y_stream_TDATA),
-    .vld_in(grp_mvm_sa_Pipeline_write_y_loop_fu_132_y_stream_TVALID),
+    .data_in(y_stream_TDATA_int_regslice),
+    .vld_in(y_stream_TVALID_int_regslice),
     .ack_in(y_stream_TREADY_int_regslice),
     .data_out(y_stream_TDATA),
     .vld_out(regslice_both_y_stream_V_data_V_U_vld_out),
@@ -403,8 +209,8 @@ mvm_sa_regslice_both #(
 regslice_both_y_stream_V_keep_V_U(
     .ap_clk(ap_clk),
     .ap_rst(ap_rst_n_inv),
-    .data_in(grp_mvm_sa_Pipeline_write_y_loop_fu_132_y_stream_TKEEP),
-    .vld_in(grp_mvm_sa_Pipeline_write_y_loop_fu_132_y_stream_TVALID),
+    .data_in(4'd15),
+    .vld_in(y_stream_TVALID_int_regslice),
     .ack_in(regslice_both_y_stream_V_keep_V_U_ack_in_dummy),
     .data_out(y_stream_TKEEP),
     .vld_out(regslice_both_y_stream_V_keep_V_U_vld_out),
@@ -417,8 +223,8 @@ mvm_sa_regslice_both #(
 regslice_both_y_stream_V_strb_V_U(
     .ap_clk(ap_clk),
     .ap_rst(ap_rst_n_inv),
-    .data_in(grp_mvm_sa_Pipeline_write_y_loop_fu_132_y_stream_TSTRB),
-    .vld_in(grp_mvm_sa_Pipeline_write_y_loop_fu_132_y_stream_TVALID),
+    .data_in(4'd0),
+    .vld_in(y_stream_TVALID_int_regslice),
     .ack_in(regslice_both_y_stream_V_strb_V_U_ack_in_dummy),
     .data_out(y_stream_TSTRB),
     .vld_out(regslice_both_y_stream_V_strb_V_U_vld_out),
@@ -431,8 +237,8 @@ mvm_sa_regslice_both #(
 regslice_both_y_stream_V_last_V_U(
     .ap_clk(ap_clk),
     .ap_rst(ap_rst_n_inv),
-    .data_in(grp_mvm_sa_Pipeline_write_y_loop_fu_132_y_stream_TLAST),
-    .vld_in(grp_mvm_sa_Pipeline_write_y_loop_fu_132_y_stream_TVALID),
+    .data_in(y_stream_TLAST_int_regslice),
+    .vld_in(y_stream_TVALID_int_regslice),
     .ack_in(regslice_both_y_stream_V_last_V_U_ack_in_dummy),
     .data_out(y_stream_TLAST),
     .vld_out(regslice_both_y_stream_V_last_V_U_vld_out),
@@ -442,7 +248,7 @@ regslice_both_y_stream_V_last_V_U(
 
 always @ (posedge ap_clk) begin
     if (ap_rst_n_inv == 1'b1) begin
-        ap_CS_fsm <= ap_ST_fsm_state1;
+        ap_CS_fsm <= ap_ST_fsm_pp0_stage0;
     end else begin
         ap_CS_fsm <= ap_NS_fsm;
     end
@@ -450,194 +256,116 @@ end
 
 always @ (posedge ap_clk) begin
     if (ap_rst_n_inv == 1'b1) begin
-        grp_mvm_sa_Pipeline_load_A_loop_fu_112_ap_start_reg <= 1'b0;
+        ap_enable_reg_pp0_iter1 <= 1'b0;
     end else begin
-        if (((1'b1 == ap_CS_fsm_state1) & (1'b1 == ap_NS_fsm_state2) & (tmp_nbreadreq_fu_70_p6 == 1'd1))) begin
-            grp_mvm_sa_Pipeline_load_A_loop_fu_112_ap_start_reg <= 1'b1;
-        end else if ((grp_mvm_sa_Pipeline_load_A_loop_fu_112_ap_ready == 1'b1)) begin
-            grp_mvm_sa_Pipeline_load_A_loop_fu_112_ap_start_reg <= 1'b0;
+        if (((1'b1 == ap_CS_fsm_pp0_stage3) & (1'b0 == ap_block_pp0_stage3_subdone))) begin
+            ap_enable_reg_pp0_iter1 <= 1'b1;
         end
     end
 end
 
 always @ (posedge ap_clk) begin
-    if (ap_rst_n_inv == 1'b1) begin
-        grp_mvm_sa_Pipeline_read_x_loop_fu_84_ap_start_reg <= 1'b0;
-    end else begin
-        if (((1'b1 == ap_CS_fsm_state2) & (tmp_reg_152 == 1'd0))) begin
-            grp_mvm_sa_Pipeline_read_x_loop_fu_84_ap_start_reg <= 1'b1;
-        end else if ((grp_mvm_sa_Pipeline_read_x_loop_fu_84_ap_ready == 1'b1)) begin
-            grp_mvm_sa_Pipeline_read_x_loop_fu_84_ap_start_reg <= 1'b0;
-        end
+    if (((1'b1 == ap_CS_fsm_pp0_stage2) & (1'b0 == ap_block_pp0_stage2_11001) & (1'b1 == 1'b1))) begin
+        tmp_1_reg_127 <= x_stream_TDATA_int_regslice;
     end
 end
 
 always @ (posedge ap_clk) begin
-    if (ap_rst_n_inv == 1'b1) begin
-        grp_mvm_sa_Pipeline_write_y_loop_fu_132_ap_start_reg <= 1'b0;
-    end else begin
-        if ((1'b1 == ap_CS_fsm_state5)) begin
-            grp_mvm_sa_Pipeline_write_y_loop_fu_132_ap_start_reg <= 1'b1;
-        end else if ((grp_mvm_sa_Pipeline_write_y_loop_fu_132_ap_ready == 1'b1)) begin
-            grp_mvm_sa_Pipeline_write_y_loop_fu_132_ap_start_reg <= 1'b0;
-        end
-    end
-end
-
-always @ (posedge ap_clk) begin
-    if (((grp_mvm_sa_Pipeline_load_A_loop_fu_112_mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_A_local_0_ap_vld == 1'b1) & (1'b1 == ap_CS_fsm_state7))) begin
-        mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_A_local_0 <= grp_mvm_sa_Pipeline_load_A_loop_fu_112_mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_A_local_0;
-    end
-end
-
-always @ (posedge ap_clk) begin
-    if (((grp_mvm_sa_Pipeline_load_A_loop_fu_112_mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_A_local_11_ap_vld == 1'b1) & (1'b1 == ap_CS_fsm_state7))) begin
-        mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_A_local_11 <= grp_mvm_sa_Pipeline_load_A_loop_fu_112_mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_A_local_11;
-    end
-end
-
-always @ (posedge ap_clk) begin
-    if (((grp_mvm_sa_Pipeline_load_A_loop_fu_112_mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_A_local_22_ap_vld == 1'b1) & (1'b1 == ap_CS_fsm_state7))) begin
-        mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_A_local_22 <= grp_mvm_sa_Pipeline_load_A_loop_fu_112_mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_A_local_22;
-    end
-end
-
-always @ (posedge ap_clk) begin
-    if (((1'b1 == ap_CS_fsm_state7) & (grp_mvm_sa_Pipeline_load_A_loop_fu_112_mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_A_local_33_ap_vld == 1'b1))) begin
-        mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_A_local_33 <= grp_mvm_sa_Pipeline_load_A_loop_fu_112_mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_A_local_33;
-    end
-end
-
-always @ (posedge ap_clk) begin
-    if (((grp_mvm_sa_Pipeline_read_x_loop_fu_84_mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_acc_o_ap_vld == 1'b1) & (1'b1 == ap_CS_fsm_state3))) begin
-        mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_acc <= grp_mvm_sa_Pipeline_read_x_loop_fu_84_mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_acc_o;
-    end
-end
-
-always @ (posedge ap_clk) begin
-    if (((grp_mvm_sa_Pipeline_read_x_loop_fu_84_mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_acc_1_o_ap_vld == 1'b1) & (1'b1 == ap_CS_fsm_state3))) begin
-        mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_acc_1 <= grp_mvm_sa_Pipeline_read_x_loop_fu_84_mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_acc_1_o;
-    end
-end
-
-always @ (posedge ap_clk) begin
-    if (((grp_mvm_sa_Pipeline_read_x_loop_fu_84_mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_acc_2_o_ap_vld == 1'b1) & (1'b1 == ap_CS_fsm_state3))) begin
-        mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_acc_2 <= grp_mvm_sa_Pipeline_read_x_loop_fu_84_mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_acc_2_o;
-    end
-end
-
-always @ (posedge ap_clk) begin
-    if (((grp_mvm_sa_Pipeline_read_x_loop_fu_84_mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_acc_3_o_ap_vld == 1'b1) & (1'b1 == ap_CS_fsm_state3))) begin
-        mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_acc_3 <= grp_mvm_sa_Pipeline_read_x_loop_fu_84_mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_acc_3_o;
-    end
-end
-
-always @ (posedge ap_clk) begin
-    if ((1'b1 == ap_CS_fsm_state1)) begin
-        tmp_reg_152 <= tmp_nbreadreq_fu_70_p6;
+    if (((1'b1 == ap_CS_fsm_pp0_stage1) & (1'b0 == ap_block_pp0_stage1_11001) & (1'b1 == 1'b1))) begin
+        tmp_reg_122 <= x_stream_TDATA_int_regslice;
     end
 end
 
 always @ (*) begin
-    if ((1'b1 == ap_CS_fsm_state7)) begin
-        A_stream_TREADY_int_regslice = grp_mvm_sa_Pipeline_load_A_loop_fu_112_A_stream_TREADY;
+    if (((ap_enable_reg_pp0_iter1 == 1'b0) & (1'b1 == 1'b0))) begin
+        ap_idle_pp0 = 1'b1;
     end else begin
-        A_stream_TREADY_int_regslice = 1'b0;
+        ap_idle_pp0 = 1'b0;
     end
 end
 
-assign ap_ST_fsm_state1_blk = 1'b0;
-
-assign ap_ST_fsm_state2_blk = 1'b0;
+assign ap_reset_idle_pp0 = 1'b0;
 
 always @ (*) begin
-    if ((grp_mvm_sa_Pipeline_read_x_loop_fu_84_ap_done == 1'b0)) begin
-        ap_ST_fsm_state3_blk = 1'b1;
+    if ((((1'b1 == ap_CS_fsm_pp0_stage3) & (1'b0 == ap_block_pp0_stage3) & (1'b1 == 1'b1)) | ((1'b1 == ap_CS_fsm_pp0_stage2) & (1'b0 == ap_block_pp0_stage2) & (1'b1 == 1'b1)) | ((1'b1 == ap_CS_fsm_pp0_stage1) & (1'b0 == ap_block_pp0_stage1) & (1'b1 == 1'b1)) | ((1'b1 == ap_CS_fsm_pp0_stage0) & (1'b0 == ap_block_pp0_stage0) & (1'b1 == 1'b1)))) begin
+        x_stream_TDATA_blk_n = x_stream_TVALID_int_regslice;
     end else begin
-        ap_ST_fsm_state3_blk = 1'b0;
-    end
-end
-
-assign ap_ST_fsm_state4_blk = 1'b0;
-
-assign ap_ST_fsm_state5_blk = 1'b0;
-
-always @ (*) begin
-    if ((grp_mvm_sa_Pipeline_write_y_loop_fu_132_ap_done == 1'b0)) begin
-        ap_ST_fsm_state6_blk = 1'b1;
-    end else begin
-        ap_ST_fsm_state6_blk = 1'b0;
+        x_stream_TDATA_blk_n = 1'b1;
     end
 end
 
 always @ (*) begin
-    if ((grp_mvm_sa_Pipeline_load_A_loop_fu_112_ap_done == 1'b0)) begin
-        ap_ST_fsm_state7_blk = 1'b1;
-    end else begin
-        ap_ST_fsm_state7_blk = 1'b0;
-    end
-end
-
-always @ (*) begin
-    if ((regslice_both_y_stream_V_data_V_U_apdone_blk == 1'b1)) begin
-        ap_ST_fsm_state8_blk = 1'b1;
-    end else begin
-        ap_ST_fsm_state8_blk = 1'b0;
-    end
-end
-
-always @ (*) begin
-    if ((1'b1 == ap_CS_fsm_state3)) begin
-        x_stream_TREADY_int_regslice = grp_mvm_sa_Pipeline_read_x_loop_fu_84_x_stream_TREADY;
+    if ((((1'b1 == ap_CS_fsm_pp0_stage3) & (1'b0 == ap_block_pp0_stage3_11001) & (1'b1 == 1'b1)) | ((1'b1 == ap_CS_fsm_pp0_stage2) & (1'b0 == ap_block_pp0_stage2_11001) & (1'b1 == 1'b1)) | ((1'b1 == ap_CS_fsm_pp0_stage1) & (1'b0 == ap_block_pp0_stage1_11001) & (1'b1 == 1'b1)) | ((1'b1 == ap_CS_fsm_pp0_stage0) & (1'b0 == ap_block_pp0_stage0_11001) & (1'b1 == 1'b1)))) begin
+        x_stream_TREADY_int_regslice = 1'b1;
     end else begin
         x_stream_TREADY_int_regslice = 1'b0;
     end
 end
 
 always @ (*) begin
+    if ((((ap_enable_reg_pp0_iter1 == 1'b1) & (1'b1 == ap_CS_fsm_pp0_stage3) & (1'b0 == ap_block_pp0_stage3)) | ((ap_enable_reg_pp0_iter1 == 1'b1) & (1'b1 == ap_CS_fsm_pp0_stage2) & (1'b0 == ap_block_pp0_stage2)) | ((ap_enable_reg_pp0_iter1 == 1'b1) & (1'b1 == ap_CS_fsm_pp0_stage1) & (1'b0 == ap_block_pp0_stage1)) | ((ap_enable_reg_pp0_iter1 == 1'b1) & (1'b1 == ap_CS_fsm_pp0_stage0) & (1'b0 == ap_block_pp0_stage0)) | ((1'b1 == ap_CS_fsm_pp0_stage3) & (1'b0 == ap_block_pp0_stage3) & (1'b1 == 1'b1)))) begin
+        y_stream_TDATA_blk_n = y_stream_TREADY_int_regslice;
+    end else begin
+        y_stream_TDATA_blk_n = 1'b1;
+    end
+end
+
+always @ (*) begin
+    if ((((ap_enable_reg_pp0_iter1 == 1'b1) & (1'b1 == ap_CS_fsm_pp0_stage2) & (1'b0 == ap_block_pp0_stage2_01001)) | ((ap_enable_reg_pp0_iter1 == 1'b1) & (1'b1 == ap_CS_fsm_pp0_stage1) & (1'b0 == ap_block_pp0_stage1_01001)) | ((ap_enable_reg_pp0_iter1 == 1'b1) & (1'b1 == ap_CS_fsm_pp0_stage0) & (1'b0 == ap_block_pp0_stage0_01001)))) begin
+        y_stream_TDATA_int_regslice = 32'd0;
+    end else if (((1'b1 == ap_CS_fsm_pp0_stage3) & (1'b0 == ap_block_pp0_stage3_01001) & (1'b1 == 1'b1))) begin
+        y_stream_TDATA_int_regslice = last_fu_116_p2;
+    end else begin
+        y_stream_TDATA_int_regslice = 'bx;
+    end
+end
+
+always @ (*) begin
+    if (((ap_enable_reg_pp0_iter1 == 1'b1) & (1'b1 == ap_CS_fsm_pp0_stage2) & (1'b0 == ap_block_pp0_stage2_01001))) begin
+        y_stream_TLAST_int_regslice = 1'd1;
+    end else if ((((ap_enable_reg_pp0_iter1 == 1'b1) & (1'b1 == ap_CS_fsm_pp0_stage1) & (1'b0 == ap_block_pp0_stage1_01001)) | ((ap_enable_reg_pp0_iter1 == 1'b1) & (1'b1 == ap_CS_fsm_pp0_stage0) & (1'b0 == ap_block_pp0_stage0_01001)) | ((1'b1 == ap_CS_fsm_pp0_stage3) & (1'b0 == ap_block_pp0_stage3_01001) & (1'b1 == 1'b1)))) begin
+        y_stream_TLAST_int_regslice = 1'd0;
+    end else begin
+        y_stream_TLAST_int_regslice = 'bx;
+    end
+end
+
+always @ (*) begin
+    if ((((ap_enable_reg_pp0_iter1 == 1'b1) & (1'b1 == ap_CS_fsm_pp0_stage2) & (1'b0 == ap_block_pp0_stage2_11001)) | ((ap_enable_reg_pp0_iter1 == 1'b1) & (1'b1 == ap_CS_fsm_pp0_stage1) & (1'b0 == ap_block_pp0_stage1_11001)) | ((ap_enable_reg_pp0_iter1 == 1'b1) & (1'b1 == ap_CS_fsm_pp0_stage0) & (1'b0 == ap_block_pp0_stage0_11001)) | ((1'b1 == ap_CS_fsm_pp0_stage3) & (1'b0 == ap_block_pp0_stage3_11001) & (1'b1 == 1'b1)))) begin
+        y_stream_TVALID_int_regslice = 1'b1;
+    end else begin
+        y_stream_TVALID_int_regslice = 1'b0;
+    end
+end
+
+always @ (*) begin
     case (ap_CS_fsm)
-        ap_ST_fsm_state1 : begin
-            ap_NS_fsm = ap_ST_fsm_state2;
-        end
-        ap_ST_fsm_state2 : begin
-            if (((1'b1 == ap_CS_fsm_state2) & (tmp_reg_152 == 1'd1))) begin
-                ap_NS_fsm = ap_ST_fsm_state7;
+        ap_ST_fsm_pp0_stage0 : begin
+            if ((1'b0 == ap_block_pp0_stage0_subdone)) begin
+                ap_NS_fsm = ap_ST_fsm_pp0_stage1;
             end else begin
-                ap_NS_fsm = ap_ST_fsm_state3;
+                ap_NS_fsm = ap_ST_fsm_pp0_stage0;
             end
         end
-        ap_ST_fsm_state3 : begin
-            if (((grp_mvm_sa_Pipeline_read_x_loop_fu_84_ap_done == 1'b1) & (1'b1 == ap_CS_fsm_state3))) begin
-                ap_NS_fsm = ap_ST_fsm_state4;
+        ap_ST_fsm_pp0_stage1 : begin
+            if ((1'b0 == ap_block_pp0_stage1_subdone)) begin
+                ap_NS_fsm = ap_ST_fsm_pp0_stage2;
             end else begin
-                ap_NS_fsm = ap_ST_fsm_state3;
+                ap_NS_fsm = ap_ST_fsm_pp0_stage1;
             end
         end
-        ap_ST_fsm_state4 : begin
-            ap_NS_fsm = ap_ST_fsm_state5;
-        end
-        ap_ST_fsm_state5 : begin
-            ap_NS_fsm = ap_ST_fsm_state6;
-        end
-        ap_ST_fsm_state6 : begin
-            if (((1'b1 == ap_CS_fsm_state6) & (grp_mvm_sa_Pipeline_write_y_loop_fu_132_ap_done == 1'b1))) begin
-                ap_NS_fsm = ap_ST_fsm_state8;
+        ap_ST_fsm_pp0_stage2 : begin
+            if ((1'b0 == ap_block_pp0_stage2_subdone)) begin
+                ap_NS_fsm = ap_ST_fsm_pp0_stage3;
             end else begin
-                ap_NS_fsm = ap_ST_fsm_state6;
+                ap_NS_fsm = ap_ST_fsm_pp0_stage2;
             end
         end
-        ap_ST_fsm_state7 : begin
-            if (((grp_mvm_sa_Pipeline_load_A_loop_fu_112_ap_done == 1'b1) & (1'b1 == ap_CS_fsm_state7))) begin
-                ap_NS_fsm = ap_ST_fsm_state8;
+        ap_ST_fsm_pp0_stage3 : begin
+            if ((((1'b0 == ap_block_pp0_stage3_subdone) & (ap_reset_idle_pp0 == 1'b0)) | ((1'b0 == ap_block_pp0_stage3_subdone) & (ap_reset_idle_pp0 == 1'b1)))) begin
+                ap_NS_fsm = ap_ST_fsm_pp0_stage0;
             end else begin
-                ap_NS_fsm = ap_ST_fsm_state7;
-            end
-        end
-        ap_ST_fsm_state8 : begin
-            if (((1'b1 == ap_CS_fsm_state8) & (regslice_both_y_stream_V_data_V_U_apdone_blk == 1'b0))) begin
-                ap_NS_fsm = ap_ST_fsm_state1;
-            end else begin
-                ap_NS_fsm = ap_ST_fsm_state8;
+                ap_NS_fsm = ap_ST_fsm_pp0_stage3;
             end
         end
         default : begin
@@ -646,23 +374,105 @@ always @ (*) begin
     endcase
 end
 
-assign A_stream_TREADY = regslice_both_A_stream_V_data_V_U_ack_in;
+assign add_ln34_fu_110_p2 = (shl_ln34_fu_93_p2 + sub_ln34_fu_104_p2);
 
-assign ap_CS_fsm_state1 = ap_CS_fsm[32'd0];
+assign ap_CS_fsm_pp0_stage0 = ap_CS_fsm[32'd0];
 
-assign ap_CS_fsm_state2 = ap_CS_fsm[32'd1];
+assign ap_CS_fsm_pp0_stage1 = ap_CS_fsm[32'd1];
 
-assign ap_CS_fsm_state3 = ap_CS_fsm[32'd2];
+assign ap_CS_fsm_pp0_stage2 = ap_CS_fsm[32'd2];
 
-assign ap_CS_fsm_state5 = ap_CS_fsm[32'd4];
+assign ap_CS_fsm_pp0_stage3 = ap_CS_fsm[32'd3];
 
-assign ap_CS_fsm_state6 = ap_CS_fsm[32'd5];
+assign ap_block_pp0_stage0 = ~(1'b1 == 1'b1);
 
-assign ap_CS_fsm_state7 = ap_CS_fsm[32'd6];
+always @ (*) begin
+    ap_block_pp0_stage0_01001 = (((ap_enable_reg_pp0_iter1 == 1'b1) & (y_stream_TREADY_int_regslice == 1'b0)) | ((1'b1 == 1'b1) & (x_stream_TVALID_int_regslice == 1'b0)));
+end
 
-assign ap_CS_fsm_state8 = ap_CS_fsm[32'd7];
+always @ (*) begin
+    ap_block_pp0_stage0_11001 = (((ap_enable_reg_pp0_iter1 == 1'b1) & (y_stream_TREADY_int_regslice == 1'b0)) | ((1'b1 == 1'b1) & (x_stream_TVALID_int_regslice == 1'b0)));
+end
 
-assign ap_NS_fsm_state2 = ap_NS_fsm[32'd1];
+always @ (*) begin
+    ap_block_pp0_stage0_subdone = (((ap_enable_reg_pp0_iter1 == 1'b1) & (y_stream_TREADY_int_regslice == 1'b0)) | ((1'b1 == 1'b1) & (x_stream_TVALID_int_regslice == 1'b0)));
+end
+
+assign ap_block_pp0_stage1 = ~(1'b1 == 1'b1);
+
+always @ (*) begin
+    ap_block_pp0_stage1_01001 = (((ap_enable_reg_pp0_iter1 == 1'b1) & (y_stream_TREADY_int_regslice == 1'b0)) | ((1'b1 == 1'b1) & (x_stream_TVALID_int_regslice == 1'b0)));
+end
+
+always @ (*) begin
+    ap_block_pp0_stage1_11001 = (((ap_enable_reg_pp0_iter1 == 1'b1) & (y_stream_TREADY_int_regslice == 1'b0)) | ((1'b1 == 1'b1) & (x_stream_TVALID_int_regslice == 1'b0)));
+end
+
+always @ (*) begin
+    ap_block_pp0_stage1_subdone = (((ap_enable_reg_pp0_iter1 == 1'b1) & (y_stream_TREADY_int_regslice == 1'b0)) | ((1'b1 == 1'b1) & (x_stream_TVALID_int_regslice == 1'b0)));
+end
+
+assign ap_block_pp0_stage2 = ~(1'b1 == 1'b1);
+
+always @ (*) begin
+    ap_block_pp0_stage2_01001 = (((ap_enable_reg_pp0_iter1 == 1'b1) & (y_stream_TREADY_int_regslice == 1'b0)) | ((1'b1 == 1'b1) & (x_stream_TVALID_int_regslice == 1'b0)));
+end
+
+always @ (*) begin
+    ap_block_pp0_stage2_11001 = (((ap_enable_reg_pp0_iter1 == 1'b1) & (y_stream_TREADY_int_regslice == 1'b0)) | ((1'b1 == 1'b1) & (x_stream_TVALID_int_regslice == 1'b0)));
+end
+
+always @ (*) begin
+    ap_block_pp0_stage2_subdone = (((ap_enable_reg_pp0_iter1 == 1'b1) & (y_stream_TREADY_int_regslice == 1'b0)) | ((1'b1 == 1'b1) & (x_stream_TVALID_int_regslice == 1'b0)));
+end
+
+assign ap_block_pp0_stage3 = ~(1'b1 == 1'b1);
+
+always @ (*) begin
+    ap_block_pp0_stage3_01001 = (((ap_enable_reg_pp0_iter1 == 1'b1) & ((y_stream_TREADY_int_regslice == 1'b0) | (regslice_both_y_stream_V_data_V_U_apdone_blk == 1'b1))) | ((1'b1 == 1'b1) & ((y_stream_TREADY_int_regslice == 1'b0) | (x_stream_TVALID_int_regslice == 1'b0))));
+end
+
+always @ (*) begin
+    ap_block_pp0_stage3_11001 = (((ap_enable_reg_pp0_iter1 == 1'b1) & ((y_stream_TREADY_int_regslice == 1'b0) | (regslice_both_y_stream_V_data_V_U_apdone_blk == 1'b1))) | ((1'b1 == 1'b1) & ((y_stream_TREADY_int_regslice == 1'b0) | (x_stream_TVALID_int_regslice == 1'b0))));
+end
+
+always @ (*) begin
+    ap_block_pp0_stage3_subdone = (((ap_enable_reg_pp0_iter1 == 1'b1) & ((y_stream_TREADY_int_regslice == 1'b0) | (regslice_both_y_stream_V_data_V_U_apdone_blk == 1'b1))) | ((1'b1 == 1'b1) & ((y_stream_TREADY_int_regslice == 1'b0) | (x_stream_TVALID_int_regslice == 1'b0))));
+end
+
+always @ (*) begin
+    ap_block_state1_pp0_stage0_iter0 = (x_stream_TVALID_int_regslice == 1'b0);
+end
+
+always @ (*) begin
+    ap_block_state2_pp0_stage1_iter0 = (x_stream_TVALID_int_regslice == 1'b0);
+end
+
+always @ (*) begin
+    ap_block_state3_pp0_stage2_iter0 = (x_stream_TVALID_int_regslice == 1'b0);
+end
+
+always @ (*) begin
+    ap_block_state4_pp0_stage3_iter0 = ((y_stream_TREADY_int_regslice == 1'b0) | (x_stream_TVALID_int_regslice == 1'b0));
+end
+
+always @ (*) begin
+    ap_block_state5_pp0_stage0_iter1 = (y_stream_TREADY_int_regslice == 1'b0);
+end
+
+always @ (*) begin
+    ap_block_state6_pp0_stage1_iter1 = (y_stream_TREADY_int_regslice == 1'b0);
+end
+
+always @ (*) begin
+    ap_block_state7_pp0_stage2_iter1 = (y_stream_TREADY_int_regslice == 1'b0);
+end
+
+always @ (*) begin
+    ap_block_state8_pp0_stage3_iter1 = ((y_stream_TREADY_int_regslice == 1'b0) | (regslice_both_y_stream_V_data_V_U_apdone_blk == 1'b1));
+end
+
+assign ap_enable_pp0 = (ap_idle_pp0 ^ 1'b1);
 
 assign ap_local_block = 1'b0;
 
@@ -672,20 +482,16 @@ always @ (*) begin
     ap_rst_n_inv = ~ap_rst_n;
 end
 
-assign grp_mvm_sa_Pipeline_load_A_loop_fu_112_ap_start = grp_mvm_sa_Pipeline_load_A_loop_fu_112_ap_start_reg;
+assign last_fu_116_p2 = (add_ln34_fu_110_p2 + tmp_reg_122);
 
-assign grp_mvm_sa_Pipeline_read_x_loop_fu_84_ap_start = grp_mvm_sa_Pipeline_read_x_loop_fu_84_ap_start_reg;
+assign shl_ln34_1_fu_98_p2 = x_stream_TDATA_int_regslice << 32'd2;
 
-assign grp_mvm_sa_Pipeline_write_y_loop_fu_132_ap_start = grp_mvm_sa_Pipeline_write_y_loop_fu_132_ap_start_reg;
+assign shl_ln34_fu_93_p2 = tmp_1_reg_127 << 32'd1;
 
-assign grp_mvm_sa_Pipeline_write_y_loop_fu_132_y_stream_TREADY = (y_stream_TREADY_int_regslice & ap_CS_fsm_state6);
-
-assign tmp_nbreadreq_fu_70_p6 = A_stream_TVALID_int_regslice;
+assign sub_ln34_fu_104_p2 = (shl_ln34_1_fu_98_p2 - x_stream_TDATA_int_regslice);
 
 assign x_stream_TREADY = regslice_both_x_stream_V_data_V_U_ack_in;
 
 assign y_stream_TVALID = regslice_both_y_stream_V_data_V_U_vld_out;
-
-assign y_stream_TVALID_int_regslice = grp_mvm_sa_Pipeline_write_y_loop_fu_132_y_stream_TVALID;
 
 endmodule //mvm_sa

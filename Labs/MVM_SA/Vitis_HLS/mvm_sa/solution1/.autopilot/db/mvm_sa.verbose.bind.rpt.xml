@@ -1,7 +1,7 @@
 <profile>
 
 <section name = "Vitis HLS Report for 'mvm_sa'" level="0">
-<item name = "Date">Wed Jul  6 15:16:20 2022
+<item name = "Date">Wed Jul  6 17:05:41 2022
 </item>
 <item name = "Version">2021.2 (Build 3367213 on Tue Oct 19 02:47:39 MDT 2021)</item>
 <item name = "Project">mvm_sa</item>
@@ -15,7 +15,7 @@
 <section name = "" level="1">
 <item name = "Summary"><table name="" hasTotal="0">
 <keys size="4">Clock, Target, Estimated, Uncertainty</keys>
-<column name="ap_clk">10.00 ns, 6.912 ns, 2.70 ns</column>
+<column name="ap_clk">10.00 ns, 6.923 ns, 2.70 ns</column>
 </table>
 </item>
 </section>
@@ -24,16 +24,13 @@
 <section name = "" level="1">
 <item name = "Summary"><table name="" hasTotal="0">
 <keys size="8">, min, max, min, max, min, max, Type</keys>
-<column name="">20, 21, 0.200 us, 0.210 us, 21, 22, no</column>
+<column name="">7, 7, 70.000 ns, 70.000 ns, 4, 4, yes(frp)</column>
 </table>
 </item>
 <item name = "Detail">
 <section name = "" level="1">
 <item name = "Instance"><table name="" hasTotal="0">
 <keys size="9">Instance, Module, min, max, min, max, min, max, Type</keys>
-<column name="grp_mvm_sa_Pipeline_read_x_loop_fu_84">mvm_sa_Pipeline_read_x_loop, 8, 8, 80.000 ns, 80.000 ns, 8, 8, no</column>
-<column name="grp_mvm_sa_Pipeline_load_A_loop_fu_112">mvm_sa_Pipeline_load_A_loop, 18, 18, 0.180 us, 0.180 us, 18, 18, no</column>
-<column name="grp_mvm_sa_Pipeline_write_y_loop_fu_132">mvm_sa_Pipeline_write_y_loop, 6, 6, 60.000 ns, 60.000 ns, 6, 6, no</column>
 </table>
 </item>
 <item name = "Loop"><table name="" hasTotal="0">

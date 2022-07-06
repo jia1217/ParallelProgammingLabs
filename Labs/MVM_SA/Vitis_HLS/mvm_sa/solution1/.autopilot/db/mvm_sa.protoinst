@@ -3,36 +3,6 @@
 	"modules": {
 		"mvm_sa": {
 			"proto_instances": {
-				"grp_mvm_sa_Pipeline_load_A_loop_fu_112/grp_mvm_sa_Pipeline_load_A_loop_fu_112_activity": {
-					"interface": "xilinx.com:interface:internal_hls_dataflow:1.0",
-					"ports": {
-						"AP_CLK": { "actual": "ap_clk"},
-						"AP_DONE": { "actual": "ap_done"},
-						"AP_READY": { "actual": "ap_ready"},
-						"AP_RESET": { "actual": "ap_rst"},
-						"AP_START": { "actual": "ap_start"}
-					}
-				},
-				"grp_mvm_sa_Pipeline_read_x_loop_fu_84/grp_mvm_sa_Pipeline_read_x_loop_fu_84_activity": {
-					"interface": "xilinx.com:interface:internal_hls_dataflow:1.0",
-					"ports": {
-						"AP_CLK": { "actual": "ap_clk"},
-						"AP_DONE": { "actual": "ap_done"},
-						"AP_READY": { "actual": "ap_ready"},
-						"AP_RESET": { "actual": "ap_rst"},
-						"AP_START": { "actual": "ap_start"}
-					}
-				},
-				"grp_mvm_sa_Pipeline_write_y_loop_fu_132/grp_mvm_sa_Pipeline_write_y_loop_fu_132_activity": {
-					"interface": "xilinx.com:interface:internal_hls_dataflow:1.0",
-					"ports": {
-						"AP_CLK": { "actual": "ap_clk"},
-						"AP_DONE": { "actual": "ap_done"},
-						"AP_READY": { "actual": "ap_ready"},
-						"AP_RESET": { "actual": "ap_rst"},
-						"AP_START": { "actual": "ap_start"}
-					}
-				}
 			}
 		}
 	}

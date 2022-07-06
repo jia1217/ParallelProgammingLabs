@@ -15,12 +15,6 @@ port (
     ap_local_deadlock : OUT STD_LOGIC;
     ap_clk : IN STD_LOGIC;
     ap_rst_n : IN STD_LOGIC;
-    A_stream_TDATA : IN STD_LOGIC_VECTOR (31 downto 0);
-    A_stream_TVALID : IN STD_LOGIC;
-    A_stream_TREADY : OUT STD_LOGIC;
-    A_stream_TKEEP : IN STD_LOGIC_VECTOR (3 downto 0);
-    A_stream_TSTRB : IN STD_LOGIC_VECTOR (3 downto 0);
-    A_stream_TLAST : IN STD_LOGIC_VECTOR (0 downto 0);
     x_stream_TDATA : IN STD_LOGIC_VECTOR (31 downto 0);
     x_stream_TVALID : IN STD_LOGIC;
     x_stream_TREADY : OUT STD_LOGIC;
@@ -39,123 +33,75 @@ end;
 architecture behav of mvm_sa is 
     attribute CORE_GENERATION_INFO : STRING;
     attribute CORE_GENERATION_INFO of behav : architecture is
-    "mvm_sa_mvm_sa,hls_ip_2021_2,{HLS_INPUT_TYPE=cxx,HLS_INPUT_FLOAT=0,HLS_INPUT_FIXED=0,HLS_INPUT_PART=xc7z020-clg400-1,HLS_INPUT_CLOCK=10.000000,HLS_INPUT_ARCH=others,HLS_SYN_CLOCK=6.912000,HLS_SYN_LAT=21,HLS_SYN_TPT=none,HLS_SYN_MEM=0,HLS_SYN_DSP=0,HLS_SYN_FF=719,HLS_SYN_LUT=847,HLS_VERSION=2021_2}";
+    "mvm_sa_mvm_sa,hls_ip_2021_2,{HLS_INPUT_TYPE=cxx,HLS_INPUT_FLOAT=0,HLS_INPUT_FIXED=0,HLS_INPUT_PART=xc7z020-clg400-1,HLS_INPUT_CLOCK=10.000000,HLS_INPUT_ARCH=pipeline,HLS_SYN_CLOCK=6.923000,HLS_SYN_LAT=7,HLS_SYN_TPT=4,HLS_SYN_MEM=0,HLS_SYN_DSP=0,HLS_SYN_FF=69,HLS_SYN_LUT=184,HLS_VERSION=2021_2}";
     constant ap_const_logic_0 : STD_LOGIC := '0';
     constant ap_const_logic_1 : STD_LOGIC := '1';
-    constant ap_ST_fsm_state1 : STD_LOGIC_VECTOR (7 downto 0) := "00000001";
-    constant ap_ST_fsm_state2 : STD_LOGIC_VECTOR (7 downto 0) := "00000010";
-    constant ap_ST_fsm_state3 : STD_LOGIC_VECTOR (7 downto 0) := "00000100";
-    constant ap_ST_fsm_state4 : STD_LOGIC_VECTOR (7 downto 0) := "00001000";
-    constant ap_ST_fsm_state5 : STD_LOGIC_VECTOR (7 downto 0) := "00010000";
-    constant ap_ST_fsm_state6 : STD_LOGIC_VECTOR (7 downto 0) := "00100000";
-    constant ap_ST_fsm_state7 : STD_LOGIC_VECTOR (7 downto 0) := "01000000";
-    constant ap_ST_fsm_state8 : STD_LOGIC_VECTOR (7 downto 0) := "10000000";
-    constant ap_const_lv32_0 : STD_LOGIC_VECTOR (31 downto 0) := "00000000000000000000000000000000";
+    constant ap_ST_fsm_pp0_stage0 : STD_LOGIC_VECTOR (3 downto 0) := "0001";
+    constant ap_ST_fsm_pp0_stage1 : STD_LOGIC_VECTOR (3 downto 0) := "0010";
+    constant ap_ST_fsm_pp0_stage2 : STD_LOGIC_VECTOR (3 downto 0) := "0100";
+    constant ap_ST_fsm_pp0_stage3 : STD_LOGIC_VECTOR (3 downto 0) := "1000";
     constant ap_const_boolean_1 : BOOLEAN := true;
+    constant ap_const_lv32_0 : STD_LOGIC_VECTOR (31 downto 0) := "00000000000000000000000000000000";
+    constant ap_const_boolean_0 : BOOLEAN := false;
     constant ap_const_lv32_1 : STD_LOGIC_VECTOR (31 downto 0) := "00000000000000000000000000000001";
-    constant ap_const_lv1_0 : STD_LOGIC_VECTOR (0 downto 0) := "0";
     constant ap_const_lv32_2 : STD_LOGIC_VECTOR (31 downto 0) := "00000000000000000000000000000010";
+    constant ap_const_lv32_3 : STD_LOGIC_VECTOR (31 downto 0) := "00000000000000000000000000000011";
+    constant ap_const_lv4_F : STD_LOGIC_VECTOR (3 downto 0) := "1111";
+    constant ap_const_lv4_0 : STD_LOGIC_VECTOR (3 downto 0) := "0000";
+    constant ap_const_lv1_0 : STD_LOGIC_VECTOR (0 downto 0) := "0";
     constant ap_const_lv1_1 : STD_LOGIC_VECTOR (0 downto 0) := "1";
-    constant ap_const_lv32_6 : STD_LOGIC_VECTOR (31 downto 0) := "00000000000000000000000000000110";
-    constant ap_const_lv32_4 : STD_LOGIC_VECTOR (31 downto 0) := "00000000000000000000000000000100";
-    constant ap_const_lv32_5 : STD_LOGIC_VECTOR (31 downto 0) := "00000000000000000000000000000101";
-    constant ap_const_lv32_7 : STD_LOGIC_VECTOR (31 downto 0) := "00000000000000000000000000000111";
 
     signal ap_rst_n_inv : STD_LOGIC;
-    signal mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_A_local_0 : STD_LOGIC_VECTOR (31 downto 0) := "00000000000000000000000000000000";
-    signal mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_A_local_11 : STD_LOGIC_VECTOR (31 downto 0) := "00000000000000000000000000000000";
-    signal mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_A_local_22 : STD_LOGIC_VECTOR (31 downto 0) := "00000000000000000000000000000000";
-    signal mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_A_local_33 : STD_LOGIC_VECTOR (31 downto 0) := "00000000000000000000000000000000";
-    signal mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_acc : STD_LOGIC_VECTOR (31 downto 0) := "00000000000000000000000000000000";
-    signal mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_acc_1 : STD_LOGIC_VECTOR (31 downto 0) := "00000000000000000000000000000000";
-    signal mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_acc_2 : STD_LOGIC_VECTOR (31 downto 0) := "00000000000000000000000000000000";
-    signal mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_acc_3 : STD_LOGIC_VECTOR (31 downto 0) := "00000000000000000000000000000000";
-    signal tmp_nbreadreq_fu_70_p6 : STD_LOGIC_VECTOR (0 downto 0);
-    signal tmp_reg_152 : STD_LOGIC_VECTOR (0 downto 0);
-    signal ap_CS_fsm : STD_LOGIC_VECTOR (7 downto 0) := "00000001";
+    signal x_stream_TDATA_blk_n : STD_LOGIC;
+    signal ap_CS_fsm : STD_LOGIC_VECTOR (3 downto 0) := "0001";
     attribute fsm_encoding : string;
     attribute fsm_encoding of ap_CS_fsm : signal is "none";
-    signal ap_CS_fsm_state1 : STD_LOGIC;
-    attribute fsm_encoding of ap_CS_fsm_state1 : signal is "none";
-    signal grp_mvm_sa_Pipeline_read_x_loop_fu_84_ap_start : STD_LOGIC;
-    signal grp_mvm_sa_Pipeline_read_x_loop_fu_84_ap_done : STD_LOGIC;
-    signal grp_mvm_sa_Pipeline_read_x_loop_fu_84_ap_idle : STD_LOGIC;
-    signal grp_mvm_sa_Pipeline_read_x_loop_fu_84_ap_ready : STD_LOGIC;
-    signal grp_mvm_sa_Pipeline_read_x_loop_fu_84_x_stream_TREADY : STD_LOGIC;
-    signal grp_mvm_sa_Pipeline_read_x_loop_fu_84_mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_acc_o : STD_LOGIC_VECTOR (31 downto 0);
-    signal grp_mvm_sa_Pipeline_read_x_loop_fu_84_mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_acc_o_ap_vld : STD_LOGIC;
-    signal grp_mvm_sa_Pipeline_read_x_loop_fu_84_mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_acc_1_o : STD_LOGIC_VECTOR (31 downto 0);
-    signal grp_mvm_sa_Pipeline_read_x_loop_fu_84_mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_acc_1_o_ap_vld : STD_LOGIC;
-    signal grp_mvm_sa_Pipeline_read_x_loop_fu_84_mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_acc_2_o : STD_LOGIC_VECTOR (31 downto 0);
-    signal grp_mvm_sa_Pipeline_read_x_loop_fu_84_mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_acc_2_o_ap_vld : STD_LOGIC;
-    signal grp_mvm_sa_Pipeline_read_x_loop_fu_84_mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_acc_3_o : STD_LOGIC_VECTOR (31 downto 0);
-    signal grp_mvm_sa_Pipeline_read_x_loop_fu_84_mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_acc_3_o_ap_vld : STD_LOGIC;
-    signal grp_mvm_sa_Pipeline_load_A_loop_fu_112_ap_start : STD_LOGIC;
-    signal grp_mvm_sa_Pipeline_load_A_loop_fu_112_ap_done : STD_LOGIC;
-    signal grp_mvm_sa_Pipeline_load_A_loop_fu_112_ap_idle : STD_LOGIC;
-    signal grp_mvm_sa_Pipeline_load_A_loop_fu_112_ap_ready : STD_LOGIC;
-    signal grp_mvm_sa_Pipeline_load_A_loop_fu_112_A_stream_TREADY : STD_LOGIC;
-    signal grp_mvm_sa_Pipeline_load_A_loop_fu_112_mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_A_local_0 : STD_LOGIC_VECTOR (31 downto 0);
-    signal grp_mvm_sa_Pipeline_load_A_loop_fu_112_mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_A_local_0_ap_vld : STD_LOGIC;
-    signal grp_mvm_sa_Pipeline_load_A_loop_fu_112_mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_A_local_11 : STD_LOGIC_VECTOR (31 downto 0);
-    signal grp_mvm_sa_Pipeline_load_A_loop_fu_112_mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_A_local_11_ap_vld : STD_LOGIC;
-    signal grp_mvm_sa_Pipeline_load_A_loop_fu_112_mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_A_local_22 : STD_LOGIC_VECTOR (31 downto 0);
-    signal grp_mvm_sa_Pipeline_load_A_loop_fu_112_mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_A_local_22_ap_vld : STD_LOGIC;
-    signal grp_mvm_sa_Pipeline_load_A_loop_fu_112_mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_A_local_33 : STD_LOGIC_VECTOR (31 downto 0);
-    signal grp_mvm_sa_Pipeline_load_A_loop_fu_112_mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_A_local_33_ap_vld : STD_LOGIC;
-    signal grp_mvm_sa_Pipeline_write_y_loop_fu_132_ap_start : STD_LOGIC;
-    signal grp_mvm_sa_Pipeline_write_y_loop_fu_132_ap_done : STD_LOGIC;
-    signal grp_mvm_sa_Pipeline_write_y_loop_fu_132_ap_idle : STD_LOGIC;
-    signal grp_mvm_sa_Pipeline_write_y_loop_fu_132_ap_ready : STD_LOGIC;
-    signal grp_mvm_sa_Pipeline_write_y_loop_fu_132_y_stream_TREADY : STD_LOGIC;
-    signal grp_mvm_sa_Pipeline_write_y_loop_fu_132_y_stream_TDATA : STD_LOGIC_VECTOR (31 downto 0);
-    signal grp_mvm_sa_Pipeline_write_y_loop_fu_132_y_stream_TVALID : STD_LOGIC;
-    signal grp_mvm_sa_Pipeline_write_y_loop_fu_132_y_stream_TKEEP : STD_LOGIC_VECTOR (3 downto 0);
-    signal grp_mvm_sa_Pipeline_write_y_loop_fu_132_y_stream_TSTRB : STD_LOGIC_VECTOR (3 downto 0);
-    signal grp_mvm_sa_Pipeline_write_y_loop_fu_132_y_stream_TLAST : STD_LOGIC_VECTOR (0 downto 0);
-    signal grp_mvm_sa_Pipeline_read_x_loop_fu_84_ap_start_reg : STD_LOGIC := '0';
-    signal ap_CS_fsm_state2 : STD_LOGIC;
-    attribute fsm_encoding of ap_CS_fsm_state2 : signal is "none";
-    signal ap_CS_fsm_state3 : STD_LOGIC;
-    attribute fsm_encoding of ap_CS_fsm_state3 : signal is "none";
-    signal grp_mvm_sa_Pipeline_load_A_loop_fu_112_ap_start_reg : STD_LOGIC := '0';
-    signal ap_NS_fsm : STD_LOGIC_VECTOR (7 downto 0);
-    signal ap_NS_fsm_state2 : STD_LOGIC;
-    signal ap_CS_fsm_state7 : STD_LOGIC;
-    attribute fsm_encoding of ap_CS_fsm_state7 : signal is "none";
-    signal grp_mvm_sa_Pipeline_write_y_loop_fu_132_ap_start_reg : STD_LOGIC := '0';
-    signal ap_CS_fsm_state5 : STD_LOGIC;
-    attribute fsm_encoding of ap_CS_fsm_state5 : signal is "none";
-    signal ap_CS_fsm_state6 : STD_LOGIC;
-    attribute fsm_encoding of ap_CS_fsm_state6 : signal is "none";
-    signal ap_ST_fsm_state1_blk : STD_LOGIC;
-    signal ap_ST_fsm_state2_blk : STD_LOGIC;
-    signal ap_ST_fsm_state3_blk : STD_LOGIC;
-    signal ap_ST_fsm_state4_blk : STD_LOGIC;
-    signal ap_ST_fsm_state5_blk : STD_LOGIC;
-    signal ap_ST_fsm_state6_blk : STD_LOGIC;
-    signal ap_ST_fsm_state7_blk : STD_LOGIC;
-    signal ap_ST_fsm_state8_blk : STD_LOGIC;
+    signal ap_CS_fsm_pp0_stage0 : STD_LOGIC;
+    attribute fsm_encoding of ap_CS_fsm_pp0_stage0 : signal is "none";
+    signal ap_block_pp0_stage0 : BOOLEAN;
+    signal ap_CS_fsm_pp0_stage1 : STD_LOGIC;
+    attribute fsm_encoding of ap_CS_fsm_pp0_stage1 : signal is "none";
+    signal ap_block_pp0_stage1 : BOOLEAN;
+    signal ap_CS_fsm_pp0_stage2 : STD_LOGIC;
+    attribute fsm_encoding of ap_CS_fsm_pp0_stage2 : signal is "none";
+    signal ap_block_pp0_stage2 : BOOLEAN;
+    signal ap_CS_fsm_pp0_stage3 : STD_LOGIC;
+    attribute fsm_encoding of ap_CS_fsm_pp0_stage3 : signal is "none";
+    signal ap_block_pp0_stage3 : BOOLEAN;
+    signal y_stream_TDATA_blk_n : STD_LOGIC;
+    signal ap_enable_reg_pp0_iter1 : STD_LOGIC := '0';
+    signal tmp_reg_122 : STD_LOGIC_VECTOR (31 downto 0);
+    signal ap_block_state2_pp0_stage1_iter0 : BOOLEAN;
+    signal ap_block_state6_pp0_stage1_iter1 : BOOLEAN;
+    signal ap_block_pp0_stage1_11001 : BOOLEAN;
+    signal tmp_1_reg_127 : STD_LOGIC_VECTOR (31 downto 0);
+    signal ap_block_state3_pp0_stage2_iter0 : BOOLEAN;
+    signal ap_block_state7_pp0_stage2_iter1 : BOOLEAN;
+    signal ap_block_pp0_stage2_11001 : BOOLEAN;
+    signal last_fu_116_p2 : STD_LOGIC_VECTOR (31 downto 0);
+    signal ap_block_state4_pp0_stage3_iter0 : BOOLEAN;
     signal regslice_both_y_stream_V_data_V_U_apdone_blk : STD_LOGIC;
-    signal ap_CS_fsm_state8 : STD_LOGIC;
-    attribute fsm_encoding of ap_CS_fsm_state8 : signal is "none";
-    signal regslice_both_A_stream_V_data_V_U_apdone_blk : STD_LOGIC;
-    signal A_stream_TDATA_int_regslice : STD_LOGIC_VECTOR (31 downto 0);
-    signal A_stream_TVALID_int_regslice : STD_LOGIC;
-    signal A_stream_TREADY_int_regslice : STD_LOGIC;
-    signal regslice_both_A_stream_V_data_V_U_ack_in : STD_LOGIC;
-    signal regslice_both_A_stream_V_keep_V_U_apdone_blk : STD_LOGIC;
-    signal A_stream_TKEEP_int_regslice : STD_LOGIC_VECTOR (3 downto 0);
-    signal regslice_both_A_stream_V_keep_V_U_vld_out : STD_LOGIC;
-    signal regslice_both_A_stream_V_keep_V_U_ack_in : STD_LOGIC;
-    signal regslice_both_A_stream_V_strb_V_U_apdone_blk : STD_LOGIC;
-    signal A_stream_TSTRB_int_regslice : STD_LOGIC_VECTOR (3 downto 0);
-    signal regslice_both_A_stream_V_strb_V_U_vld_out : STD_LOGIC;
-    signal regslice_both_A_stream_V_strb_V_U_ack_in : STD_LOGIC;
-    signal regslice_both_A_stream_V_last_V_U_apdone_blk : STD_LOGIC;
-    signal A_stream_TLAST_int_regslice : STD_LOGIC_VECTOR (0 downto 0);
-    signal regslice_both_A_stream_V_last_V_U_vld_out : STD_LOGIC;
-    signal regslice_both_A_stream_V_last_V_U_ack_in : STD_LOGIC;
+    signal ap_block_state8_pp0_stage3_iter1 : BOOLEAN;
+    signal ap_block_pp0_stage3_11001 : BOOLEAN;
+    signal ap_block_pp0_stage3_subdone : BOOLEAN;
+    signal ap_block_state1_pp0_stage0_iter0 : BOOLEAN;
+    signal ap_block_state5_pp0_stage0_iter1 : BOOLEAN;
+    signal ap_block_pp0_stage0_11001 : BOOLEAN;
+    signal ap_block_pp0_stage3_01001 : BOOLEAN;
+    signal ap_block_pp0_stage0_01001 : BOOLEAN;
+    signal ap_block_pp0_stage1_01001 : BOOLEAN;
+    signal ap_block_pp0_stage2_01001 : BOOLEAN;
+    signal shl_ln34_1_fu_98_p2 : STD_LOGIC_VECTOR (31 downto 0);
+    signal shl_ln34_fu_93_p2 : STD_LOGIC_VECTOR (31 downto 0);
+    signal sub_ln34_fu_104_p2 : STD_LOGIC_VECTOR (31 downto 0);
+    signal add_ln34_fu_110_p2 : STD_LOGIC_VECTOR (31 downto 0);
+    signal ap_NS_fsm : STD_LOGIC_VECTOR (3 downto 0);
+    signal ap_block_pp0_stage0_subdone : BOOLEAN;
+    signal ap_block_pp0_stage1_subdone : BOOLEAN;
+    signal ap_block_pp0_stage2_subdone : BOOLEAN;
+    signal ap_reset_idle_pp0 : STD_LOGIC;
+    signal ap_idle_pp0 : STD_LOGIC;
+    signal ap_enable_pp0 : STD_LOGIC;
     signal regslice_both_x_stream_V_data_V_U_apdone_blk : STD_LOGIC;
     signal x_stream_TDATA_int_regslice : STD_LOGIC_VECTOR (31 downto 0);
     signal x_stream_TVALID_int_regslice : STD_LOGIC;
@@ -173,6 +119,7 @@ architecture behav of mvm_sa is
     signal x_stream_TLAST_int_regslice : STD_LOGIC_VECTOR (0 downto 0);
     signal regslice_both_x_stream_V_last_V_U_vld_out : STD_LOGIC;
     signal regslice_both_x_stream_V_last_V_U_ack_in : STD_LOGIC;
+    signal y_stream_TDATA_int_regslice : STD_LOGIC_VECTOR (31 downto 0);
     signal y_stream_TVALID_int_regslice : STD_LOGIC;
     signal y_stream_TREADY_int_regslice : STD_LOGIC;
     signal regslice_both_y_stream_V_data_V_U_vld_out : STD_LOGIC;
@@ -183,88 +130,10 @@ architecture behav of mvm_sa is
     signal regslice_both_y_stream_V_strb_V_U_ack_in_dummy : STD_LOGIC;
     signal regslice_both_y_stream_V_strb_V_U_vld_out : STD_LOGIC;
     signal regslice_both_y_stream_V_last_V_U_apdone_blk : STD_LOGIC;
+    signal y_stream_TLAST_int_regslice : STD_LOGIC_VECTOR (0 downto 0);
     signal regslice_both_y_stream_V_last_V_U_ack_in_dummy : STD_LOGIC;
     signal regslice_both_y_stream_V_last_V_U_vld_out : STD_LOGIC;
     signal ap_ce_reg : STD_LOGIC;
-
-    component mvm_sa_mvm_sa_Pipeline_read_x_loop IS
-    port (
-        ap_clk : IN STD_LOGIC;
-        ap_rst : IN STD_LOGIC;
-        ap_start : IN STD_LOGIC;
-        ap_done : OUT STD_LOGIC;
-        ap_idle : OUT STD_LOGIC;
-        ap_ready : OUT STD_LOGIC;
-        x_stream_TVALID : IN STD_LOGIC;
-        x_stream_TDATA : IN STD_LOGIC_VECTOR (31 downto 0);
-        x_stream_TREADY : OUT STD_LOGIC;
-        x_stream_TKEEP : IN STD_LOGIC_VECTOR (3 downto 0);
-        x_stream_TSTRB : IN STD_LOGIC_VECTOR (3 downto 0);
-        x_stream_TLAST : IN STD_LOGIC_VECTOR (0 downto 0);
-        mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_acc_i : IN STD_LOGIC_VECTOR (31 downto 0);
-        mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_acc_o : OUT STD_LOGIC_VECTOR (31 downto 0);
-        mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_acc_o_ap_vld : OUT STD_LOGIC;
-        mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_A_local_0 : IN STD_LOGIC_VECTOR (31 downto 0);
-        mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_A_local_11 : IN STD_LOGIC_VECTOR (31 downto 0);
-        mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_A_local_22 : IN STD_LOGIC_VECTOR (31 downto 0);
-        mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_A_local_33 : IN STD_LOGIC_VECTOR (31 downto 0);
-        mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_acc_1_i : IN STD_LOGIC_VECTOR (31 downto 0);
-        mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_acc_1_o : OUT STD_LOGIC_VECTOR (31 downto 0);
-        mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_acc_1_o_ap_vld : OUT STD_LOGIC;
-        mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_acc_2_i : IN STD_LOGIC_VECTOR (31 downto 0);
-        mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_acc_2_o : OUT STD_LOGIC_VECTOR (31 downto 0);
-        mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_acc_2_o_ap_vld : OUT STD_LOGIC;
-        mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_acc_3_i : IN STD_LOGIC_VECTOR (31 downto 0);
-        mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_acc_3_o : OUT STD_LOGIC_VECTOR (31 downto 0);
-        mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_acc_3_o_ap_vld : OUT STD_LOGIC );
-    end component;
-
-
-    component mvm_sa_mvm_sa_Pipeline_load_A_loop IS
-    port (
-        ap_clk : IN STD_LOGIC;
-        ap_rst : IN STD_LOGIC;
-        ap_start : IN STD_LOGIC;
-        ap_done : OUT STD_LOGIC;
-        ap_idle : OUT STD_LOGIC;
-        ap_ready : OUT STD_LOGIC;
-        A_stream_TVALID : IN STD_LOGIC;
-        A_stream_TDATA : IN STD_LOGIC_VECTOR (31 downto 0);
-        A_stream_TREADY : OUT STD_LOGIC;
-        A_stream_TKEEP : IN STD_LOGIC_VECTOR (3 downto 0);
-        A_stream_TSTRB : IN STD_LOGIC_VECTOR (3 downto 0);
-        A_stream_TLAST : IN STD_LOGIC_VECTOR (0 downto 0);
-        mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_A_local_0 : OUT STD_LOGIC_VECTOR (31 downto 0);
-        mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_A_local_0_ap_vld : OUT STD_LOGIC;
-        mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_A_local_11 : OUT STD_LOGIC_VECTOR (31 downto 0);
-        mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_A_local_11_ap_vld : OUT STD_LOGIC;
-        mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_A_local_22 : OUT STD_LOGIC_VECTOR (31 downto 0);
-        mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_A_local_22_ap_vld : OUT STD_LOGIC;
-        mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_A_local_33 : OUT STD_LOGIC_VECTOR (31 downto 0);
-        mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_A_local_33_ap_vld : OUT STD_LOGIC );
-    end component;
-
-
-    component mvm_sa_mvm_sa_Pipeline_write_y_loop IS
-    port (
-        ap_clk : IN STD_LOGIC;
-        ap_rst : IN STD_LOGIC;
-        ap_start : IN STD_LOGIC;
-        ap_done : OUT STD_LOGIC;
-        ap_idle : OUT STD_LOGIC;
-        ap_ready : OUT STD_LOGIC;
-        y_stream_TREADY : IN STD_LOGIC;
-        y_stream_TDATA : OUT STD_LOGIC_VECTOR (31 downto 0);
-        y_stream_TVALID : OUT STD_LOGIC;
-        y_stream_TKEEP : OUT STD_LOGIC_VECTOR (3 downto 0);
-        y_stream_TSTRB : OUT STD_LOGIC_VECTOR (3 downto 0);
-        y_stream_TLAST : OUT STD_LOGIC_VECTOR (0 downto 0);
-        mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_acc : IN STD_LOGIC_VECTOR (31 downto 0);
-        mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_acc_1 : IN STD_LOGIC_VECTOR (31 downto 0);
-        mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_acc_2 : IN STD_LOGIC_VECTOR (31 downto 0);
-        mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_acc_3 : IN STD_LOGIC_VECTOR (31 downto 0) );
-    end component;
-
 
     component mvm_sa_regslice_both IS
     generic (
@@ -284,135 +153,6 @@ architecture behav of mvm_sa is
 
 
 begin
-    grp_mvm_sa_Pipeline_read_x_loop_fu_84 : component mvm_sa_mvm_sa_Pipeline_read_x_loop
-    port map (
-        ap_clk => ap_clk,
-        ap_rst => ap_rst_n_inv,
-        ap_start => grp_mvm_sa_Pipeline_read_x_loop_fu_84_ap_start,
-        ap_done => grp_mvm_sa_Pipeline_read_x_loop_fu_84_ap_done,
-        ap_idle => grp_mvm_sa_Pipeline_read_x_loop_fu_84_ap_idle,
-        ap_ready => grp_mvm_sa_Pipeline_read_x_loop_fu_84_ap_ready,
-        x_stream_TVALID => x_stream_TVALID_int_regslice,
-        x_stream_TDATA => x_stream_TDATA_int_regslice,
-        x_stream_TREADY => grp_mvm_sa_Pipeline_read_x_loop_fu_84_x_stream_TREADY,
-        x_stream_TKEEP => x_stream_TKEEP_int_regslice,
-        x_stream_TSTRB => x_stream_TSTRB_int_regslice,
-        x_stream_TLAST => x_stream_TLAST_int_regslice,
-        mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_acc_i => mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_acc,
-        mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_acc_o => grp_mvm_sa_Pipeline_read_x_loop_fu_84_mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_acc_o,
-        mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_acc_o_ap_vld => grp_mvm_sa_Pipeline_read_x_loop_fu_84_mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_acc_o_ap_vld,
-        mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_A_local_0 => mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_A_local_0,
-        mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_A_local_11 => mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_A_local_11,
-        mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_A_local_22 => mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_A_local_22,
-        mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_A_local_33 => mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_A_local_33,
-        mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_acc_1_i => mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_acc_1,
-        mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_acc_1_o => grp_mvm_sa_Pipeline_read_x_loop_fu_84_mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_acc_1_o,
-        mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_acc_1_o_ap_vld => grp_mvm_sa_Pipeline_read_x_loop_fu_84_mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_acc_1_o_ap_vld,
-        mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_acc_2_i => mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_acc_2,
-        mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_acc_2_o => grp_mvm_sa_Pipeline_read_x_loop_fu_84_mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_acc_2_o,
-        mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_acc_2_o_ap_vld => grp_mvm_sa_Pipeline_read_x_loop_fu_84_mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_acc_2_o_ap_vld,
-        mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_acc_3_i => mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_acc_3,
-        mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_acc_3_o => grp_mvm_sa_Pipeline_read_x_loop_fu_84_mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_acc_3_o,
-        mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_acc_3_o_ap_vld => grp_mvm_sa_Pipeline_read_x_loop_fu_84_mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_acc_3_o_ap_vld);
-
-    grp_mvm_sa_Pipeline_load_A_loop_fu_112 : component mvm_sa_mvm_sa_Pipeline_load_A_loop
-    port map (
-        ap_clk => ap_clk,
-        ap_rst => ap_rst_n_inv,
-        ap_start => grp_mvm_sa_Pipeline_load_A_loop_fu_112_ap_start,
-        ap_done => grp_mvm_sa_Pipeline_load_A_loop_fu_112_ap_done,
-        ap_idle => grp_mvm_sa_Pipeline_load_A_loop_fu_112_ap_idle,
-        ap_ready => grp_mvm_sa_Pipeline_load_A_loop_fu_112_ap_ready,
-        A_stream_TVALID => A_stream_TVALID_int_regslice,
-        A_stream_TDATA => A_stream_TDATA_int_regslice,
-        A_stream_TREADY => grp_mvm_sa_Pipeline_load_A_loop_fu_112_A_stream_TREADY,
-        A_stream_TKEEP => A_stream_TKEEP_int_regslice,
-        A_stream_TSTRB => A_stream_TSTRB_int_regslice,
-        A_stream_TLAST => A_stream_TLAST_int_regslice,
-        mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_A_local_0 => grp_mvm_sa_Pipeline_load_A_loop_fu_112_mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_A_local_0,
-        mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_A_local_0_ap_vld => grp_mvm_sa_Pipeline_load_A_loop_fu_112_mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_A_local_0_ap_vld,
-        mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_A_local_11 => grp_mvm_sa_Pipeline_load_A_loop_fu_112_mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_A_local_11,
-        mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_A_local_11_ap_vld => grp_mvm_sa_Pipeline_load_A_loop_fu_112_mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_A_local_11_ap_vld,
-        mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_A_local_22 => grp_mvm_sa_Pipeline_load_A_loop_fu_112_mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_A_local_22,
-        mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_A_local_22_ap_vld => grp_mvm_sa_Pipeline_load_A_loop_fu_112_mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_A_local_22_ap_vld,
-        mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_A_local_33 => grp_mvm_sa_Pipeline_load_A_loop_fu_112_mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_A_local_33,
-        mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_A_local_33_ap_vld => grp_mvm_sa_Pipeline_load_A_loop_fu_112_mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_A_local_33_ap_vld);
-
-    grp_mvm_sa_Pipeline_write_y_loop_fu_132 : component mvm_sa_mvm_sa_Pipeline_write_y_loop
-    port map (
-        ap_clk => ap_clk,
-        ap_rst => ap_rst_n_inv,
-        ap_start => grp_mvm_sa_Pipeline_write_y_loop_fu_132_ap_start,
-        ap_done => grp_mvm_sa_Pipeline_write_y_loop_fu_132_ap_done,
-        ap_idle => grp_mvm_sa_Pipeline_write_y_loop_fu_132_ap_idle,
-        ap_ready => grp_mvm_sa_Pipeline_write_y_loop_fu_132_ap_ready,
-        y_stream_TREADY => grp_mvm_sa_Pipeline_write_y_loop_fu_132_y_stream_TREADY,
-        y_stream_TDATA => grp_mvm_sa_Pipeline_write_y_loop_fu_132_y_stream_TDATA,
-        y_stream_TVALID => grp_mvm_sa_Pipeline_write_y_loop_fu_132_y_stream_TVALID,
-        y_stream_TKEEP => grp_mvm_sa_Pipeline_write_y_loop_fu_132_y_stream_TKEEP,
-        y_stream_TSTRB => grp_mvm_sa_Pipeline_write_y_loop_fu_132_y_stream_TSTRB,
-        y_stream_TLAST => grp_mvm_sa_Pipeline_write_y_loop_fu_132_y_stream_TLAST,
-        mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_acc => mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_acc,
-        mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_acc_1 => mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_acc_1,
-        mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_acc_2 => mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_acc_2,
-        mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_acc_3 => mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_acc_3);
-
-    regslice_both_A_stream_V_data_V_U : component mvm_sa_regslice_both
-    generic map (
-        DataWidth => 32)
-    port map (
-        ap_clk => ap_clk,
-        ap_rst => ap_rst_n_inv,
-        data_in => A_stream_TDATA,
-        vld_in => A_stream_TVALID,
-        ack_in => regslice_both_A_stream_V_data_V_U_ack_in,
-        data_out => A_stream_TDATA_int_regslice,
-        vld_out => A_stream_TVALID_int_regslice,
-        ack_out => A_stream_TREADY_int_regslice,
-        apdone_blk => regslice_both_A_stream_V_data_V_U_apdone_blk);
-
-    regslice_both_A_stream_V_keep_V_U : component mvm_sa_regslice_both
-    generic map (
-        DataWidth => 4)
-    port map (
-        ap_clk => ap_clk,
-        ap_rst => ap_rst_n_inv,
-        data_in => A_stream_TKEEP,
-        vld_in => A_stream_TVALID,
-        ack_in => regslice_both_A_stream_V_keep_V_U_ack_in,
-        data_out => A_stream_TKEEP_int_regslice,
-        vld_out => regslice_both_A_stream_V_keep_V_U_vld_out,
-        ack_out => A_stream_TREADY_int_regslice,
-        apdone_blk => regslice_both_A_stream_V_keep_V_U_apdone_blk);
-
-    regslice_both_A_stream_V_strb_V_U : component mvm_sa_regslice_both
-    generic map (
-        DataWidth => 4)
-    port map (
-        ap_clk => ap_clk,
-        ap_rst => ap_rst_n_inv,
-        data_in => A_stream_TSTRB,
-        vld_in => A_stream_TVALID,
-        ack_in => regslice_both_A_stream_V_strb_V_U_ack_in,
-        data_out => A_stream_TSTRB_int_regslice,
-        vld_out => regslice_both_A_stream_V_strb_V_U_vld_out,
-        ack_out => A_stream_TREADY_int_regslice,
-        apdone_blk => regslice_both_A_stream_V_strb_V_U_apdone_blk);
-
-    regslice_both_A_stream_V_last_V_U : component mvm_sa_regslice_both
-    generic map (
-        DataWidth => 1)
-    port map (
-        ap_clk => ap_clk,
-        ap_rst => ap_rst_n_inv,
-        data_in => A_stream_TLAST,
-        vld_in => A_stream_TVALID,
-        ack_in => regslice_both_A_stream_V_last_V_U_ack_in,
-        data_out => A_stream_TLAST_int_regslice,
-        vld_out => regslice_both_A_stream_V_last_V_U_vld_out,
-        ack_out => A_stream_TREADY_int_regslice,
-        apdone_blk => regslice_both_A_stream_V_last_V_U_apdone_blk);
-
     regslice_both_x_stream_V_data_V_U : component mvm_sa_regslice_both
     generic map (
         DataWidth => 32)
@@ -475,8 +215,8 @@ begin
     port map (
         ap_clk => ap_clk,
         ap_rst => ap_rst_n_inv,
-        data_in => grp_mvm_sa_Pipeline_write_y_loop_fu_132_y_stream_TDATA,
-        vld_in => grp_mvm_sa_Pipeline_write_y_loop_fu_132_y_stream_TVALID,
+        data_in => y_stream_TDATA_int_regslice,
+        vld_in => y_stream_TVALID_int_regslice,
         ack_in => y_stream_TREADY_int_regslice,
         data_out => y_stream_TDATA,
         vld_out => regslice_both_y_stream_V_data_V_U_vld_out,
@@ -489,8 +229,8 @@ begin
     port map (
         ap_clk => ap_clk,
         ap_rst => ap_rst_n_inv,
-        data_in => grp_mvm_sa_Pipeline_write_y_loop_fu_132_y_stream_TKEEP,
-        vld_in => grp_mvm_sa_Pipeline_write_y_loop_fu_132_y_stream_TVALID,
+        data_in => ap_const_lv4_F,
+        vld_in => y_stream_TVALID_int_regslice,
         ack_in => regslice_both_y_stream_V_keep_V_U_ack_in_dummy,
         data_out => y_stream_TKEEP,
         vld_out => regslice_both_y_stream_V_keep_V_U_vld_out,
@@ -503,8 +243,8 @@ begin
     port map (
         ap_clk => ap_clk,
         ap_rst => ap_rst_n_inv,
-        data_in => grp_mvm_sa_Pipeline_write_y_loop_fu_132_y_stream_TSTRB,
-        vld_in => grp_mvm_sa_Pipeline_write_y_loop_fu_132_y_stream_TVALID,
+        data_in => ap_const_lv4_0,
+        vld_in => y_stream_TVALID_int_regslice,
         ack_in => regslice_both_y_stream_V_strb_V_U_ack_in_dummy,
         data_out => y_stream_TSTRB,
         vld_out => regslice_both_y_stream_V_strb_V_U_vld_out,
@@ -517,8 +257,8 @@ begin
     port map (
         ap_clk => ap_clk,
         ap_rst => ap_rst_n_inv,
-        data_in => grp_mvm_sa_Pipeline_write_y_loop_fu_132_y_stream_TLAST,
-        vld_in => grp_mvm_sa_Pipeline_write_y_loop_fu_132_y_stream_TVALID,
+        data_in => y_stream_TLAST_int_regslice,
+        vld_in => y_stream_TVALID_int_regslice,
         ack_in => regslice_both_y_stream_V_last_V_U_ack_in_dummy,
         data_out => y_stream_TLAST,
         vld_out => regslice_both_y_stream_V_last_V_U_vld_out,
@@ -533,7 +273,7 @@ begin
     begin
         if (ap_clk'event and ap_clk =  '1') then
             if (ap_rst_n_inv = '1') then
-                ap_CS_fsm <= ap_ST_fsm_state1;
+                ap_CS_fsm <= ap_ST_fsm_pp0_stage0;
             else
                 ap_CS_fsm <= ap_NS_fsm;
             end if;
@@ -541,48 +281,14 @@ begin
     end process;
 
 
-    grp_mvm_sa_Pipeline_load_A_loop_fu_112_ap_start_reg_assign_proc : process(ap_clk)
+    ap_enable_reg_pp0_iter1_assign_proc : process(ap_clk)
     begin
         if (ap_clk'event and ap_clk =  '1') then
             if (ap_rst_n_inv = '1') then
-                grp_mvm_sa_Pipeline_load_A_loop_fu_112_ap_start_reg <= ap_const_logic_0;
+                ap_enable_reg_pp0_iter1 <= ap_const_logic_0;
             else
-                if (((ap_const_logic_1 = ap_CS_fsm_state1) and (ap_const_logic_1 = ap_NS_fsm_state2) and (tmp_nbreadreq_fu_70_p6 = ap_const_lv1_1))) then 
-                    grp_mvm_sa_Pipeline_load_A_loop_fu_112_ap_start_reg <= ap_const_logic_1;
-                elsif ((grp_mvm_sa_Pipeline_load_A_loop_fu_112_ap_ready = ap_const_logic_1)) then 
-                    grp_mvm_sa_Pipeline_load_A_loop_fu_112_ap_start_reg <= ap_const_logic_0;
-                end if; 
-            end if;
-        end if;
-    end process;
-
-
-    grp_mvm_sa_Pipeline_read_x_loop_fu_84_ap_start_reg_assign_proc : process(ap_clk)
-    begin
-        if (ap_clk'event and ap_clk =  '1') then
-            if (ap_rst_n_inv = '1') then
-                grp_mvm_sa_Pipeline_read_x_loop_fu_84_ap_start_reg <= ap_const_logic_0;
-            else
-                if (((ap_const_logic_1 = ap_CS_fsm_state2) and (tmp_reg_152 = ap_const_lv1_0))) then 
-                    grp_mvm_sa_Pipeline_read_x_loop_fu_84_ap_start_reg <= ap_const_logic_1;
-                elsif ((grp_mvm_sa_Pipeline_read_x_loop_fu_84_ap_ready = ap_const_logic_1)) then 
-                    grp_mvm_sa_Pipeline_read_x_loop_fu_84_ap_start_reg <= ap_const_logic_0;
-                end if; 
-            end if;
-        end if;
-    end process;
-
-
-    grp_mvm_sa_Pipeline_write_y_loop_fu_132_ap_start_reg_assign_proc : process(ap_clk)
-    begin
-        if (ap_clk'event and ap_clk =  '1') then
-            if (ap_rst_n_inv = '1') then
-                grp_mvm_sa_Pipeline_write_y_loop_fu_132_ap_start_reg <= ap_const_logic_0;
-            else
-                if ((ap_const_logic_1 = ap_CS_fsm_state5)) then 
-                    grp_mvm_sa_Pipeline_write_y_loop_fu_132_ap_start_reg <= ap_const_logic_1;
-                elsif ((grp_mvm_sa_Pipeline_write_y_loop_fu_132_ap_ready = ap_const_logic_1)) then 
-                    grp_mvm_sa_Pipeline_write_y_loop_fu_132_ap_start_reg <= ap_const_logic_0;
+                if (((ap_const_logic_1 = ap_CS_fsm_pp0_stage3) and (ap_const_boolean_0 = ap_block_pp0_stage3_subdone))) then 
+                    ap_enable_reg_pp0_iter1 <= ap_const_logic_1;
                 end if; 
             end if;
         end if;
@@ -591,206 +297,268 @@ begin
     process (ap_clk)
     begin
         if (ap_clk'event and ap_clk = '1') then
-            if (((grp_mvm_sa_Pipeline_load_A_loop_fu_112_mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_A_local_0_ap_vld = ap_const_logic_1) and (ap_const_logic_1 = ap_CS_fsm_state7))) then
-                mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_A_local_0 <= grp_mvm_sa_Pipeline_load_A_loop_fu_112_mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_A_local_0;
+            if (((ap_const_logic_1 = ap_CS_fsm_pp0_stage2) and (ap_const_boolean_0 = ap_block_pp0_stage2_11001) and (ap_const_logic_1 = ap_const_logic_1))) then
+                tmp_1_reg_127 <= x_stream_TDATA_int_regslice;
             end if;
         end if;
     end process;
     process (ap_clk)
     begin
         if (ap_clk'event and ap_clk = '1') then
-            if (((grp_mvm_sa_Pipeline_load_A_loop_fu_112_mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_A_local_11_ap_vld = ap_const_logic_1) and (ap_const_logic_1 = ap_CS_fsm_state7))) then
-                mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_A_local_11 <= grp_mvm_sa_Pipeline_load_A_loop_fu_112_mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_A_local_11;
-            end if;
-        end if;
-    end process;
-    process (ap_clk)
-    begin
-        if (ap_clk'event and ap_clk = '1') then
-            if (((grp_mvm_sa_Pipeline_load_A_loop_fu_112_mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_A_local_22_ap_vld = ap_const_logic_1) and (ap_const_logic_1 = ap_CS_fsm_state7))) then
-                mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_A_local_22 <= grp_mvm_sa_Pipeline_load_A_loop_fu_112_mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_A_local_22;
-            end if;
-        end if;
-    end process;
-    process (ap_clk)
-    begin
-        if (ap_clk'event and ap_clk = '1') then
-            if (((ap_const_logic_1 = ap_CS_fsm_state7) and (grp_mvm_sa_Pipeline_load_A_loop_fu_112_mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_A_local_33_ap_vld = ap_const_logic_1))) then
-                mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_A_local_33 <= grp_mvm_sa_Pipeline_load_A_loop_fu_112_mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_A_local_33;
-            end if;
-        end if;
-    end process;
-    process (ap_clk)
-    begin
-        if (ap_clk'event and ap_clk = '1') then
-            if (((grp_mvm_sa_Pipeline_read_x_loop_fu_84_mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_acc_o_ap_vld = ap_const_logic_1) and (ap_const_logic_1 = ap_CS_fsm_state3))) then
-                mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_acc <= grp_mvm_sa_Pipeline_read_x_loop_fu_84_mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_acc_o;
-            end if;
-        end if;
-    end process;
-    process (ap_clk)
-    begin
-        if (ap_clk'event and ap_clk = '1') then
-            if (((grp_mvm_sa_Pipeline_read_x_loop_fu_84_mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_acc_1_o_ap_vld = ap_const_logic_1) and (ap_const_logic_1 = ap_CS_fsm_state3))) then
-                mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_acc_1 <= grp_mvm_sa_Pipeline_read_x_loop_fu_84_mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_acc_1_o;
-            end if;
-        end if;
-    end process;
-    process (ap_clk)
-    begin
-        if (ap_clk'event and ap_clk = '1') then
-            if (((grp_mvm_sa_Pipeline_read_x_loop_fu_84_mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_acc_2_o_ap_vld = ap_const_logic_1) and (ap_const_logic_1 = ap_CS_fsm_state3))) then
-                mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_acc_2 <= grp_mvm_sa_Pipeline_read_x_loop_fu_84_mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_acc_2_o;
-            end if;
-        end if;
-    end process;
-    process (ap_clk)
-    begin
-        if (ap_clk'event and ap_clk = '1') then
-            if (((grp_mvm_sa_Pipeline_read_x_loop_fu_84_mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_acc_3_o_ap_vld = ap_const_logic_1) and (ap_const_logic_1 = ap_CS_fsm_state3))) then
-                mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_acc_3 <= grp_mvm_sa_Pipeline_read_x_loop_fu_84_mvm_sa_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_stream_axis_int_0ul_0ul_0ul_0_acc_3_o;
-            end if;
-        end if;
-    end process;
-    process (ap_clk)
-    begin
-        if (ap_clk'event and ap_clk = '1') then
-            if ((ap_const_logic_1 = ap_CS_fsm_state1)) then
-                tmp_reg_152 <= tmp_nbreadreq_fu_70_p6;
+            if (((ap_const_logic_1 = ap_CS_fsm_pp0_stage1) and (ap_const_boolean_0 = ap_block_pp0_stage1_11001) and (ap_const_logic_1 = ap_const_logic_1))) then
+                tmp_reg_122 <= x_stream_TDATA_int_regslice;
             end if;
         end if;
     end process;
 
-    ap_NS_fsm_assign_proc : process (tmp_reg_152, ap_CS_fsm, grp_mvm_sa_Pipeline_read_x_loop_fu_84_ap_done, grp_mvm_sa_Pipeline_load_A_loop_fu_112_ap_done, grp_mvm_sa_Pipeline_write_y_loop_fu_132_ap_done, ap_CS_fsm_state2, ap_CS_fsm_state3, ap_CS_fsm_state7, ap_CS_fsm_state6, regslice_both_y_stream_V_data_V_U_apdone_blk, ap_CS_fsm_state8)
+    ap_NS_fsm_assign_proc : process (ap_CS_fsm, ap_block_pp0_stage3_subdone, ap_block_pp0_stage0_subdone, ap_block_pp0_stage1_subdone, ap_block_pp0_stage2_subdone, ap_reset_idle_pp0)
     begin
         case ap_CS_fsm is
-            when ap_ST_fsm_state1 => 
-                ap_NS_fsm <= ap_ST_fsm_state2;
-            when ap_ST_fsm_state2 => 
-                if (((ap_const_logic_1 = ap_CS_fsm_state2) and (tmp_reg_152 = ap_const_lv1_1))) then
-                    ap_NS_fsm <= ap_ST_fsm_state7;
+            when ap_ST_fsm_pp0_stage0 => 
+                if ((ap_const_boolean_0 = ap_block_pp0_stage0_subdone)) then
+                    ap_NS_fsm <= ap_ST_fsm_pp0_stage1;
                 else
-                    ap_NS_fsm <= ap_ST_fsm_state3;
+                    ap_NS_fsm <= ap_ST_fsm_pp0_stage0;
                 end if;
-            when ap_ST_fsm_state3 => 
-                if (((grp_mvm_sa_Pipeline_read_x_loop_fu_84_ap_done = ap_const_logic_1) and (ap_const_logic_1 = ap_CS_fsm_state3))) then
-                    ap_NS_fsm <= ap_ST_fsm_state4;
+            when ap_ST_fsm_pp0_stage1 => 
+                if ((ap_const_boolean_0 = ap_block_pp0_stage1_subdone)) then
+                    ap_NS_fsm <= ap_ST_fsm_pp0_stage2;
                 else
-                    ap_NS_fsm <= ap_ST_fsm_state3;
+                    ap_NS_fsm <= ap_ST_fsm_pp0_stage1;
                 end if;
-            when ap_ST_fsm_state4 => 
-                ap_NS_fsm <= ap_ST_fsm_state5;
-            when ap_ST_fsm_state5 => 
-                ap_NS_fsm <= ap_ST_fsm_state6;
-            when ap_ST_fsm_state6 => 
-                if (((ap_const_logic_1 = ap_CS_fsm_state6) and (grp_mvm_sa_Pipeline_write_y_loop_fu_132_ap_done = ap_const_logic_1))) then
-                    ap_NS_fsm <= ap_ST_fsm_state8;
+            when ap_ST_fsm_pp0_stage2 => 
+                if ((ap_const_boolean_0 = ap_block_pp0_stage2_subdone)) then
+                    ap_NS_fsm <= ap_ST_fsm_pp0_stage3;
                 else
-                    ap_NS_fsm <= ap_ST_fsm_state6;
+                    ap_NS_fsm <= ap_ST_fsm_pp0_stage2;
                 end if;
-            when ap_ST_fsm_state7 => 
-                if (((grp_mvm_sa_Pipeline_load_A_loop_fu_112_ap_done = ap_const_logic_1) and (ap_const_logic_1 = ap_CS_fsm_state7))) then
-                    ap_NS_fsm <= ap_ST_fsm_state8;
+            when ap_ST_fsm_pp0_stage3 => 
+                if ((((ap_const_boolean_0 = ap_block_pp0_stage3_subdone) and (ap_reset_idle_pp0 = ap_const_logic_0)) or ((ap_const_boolean_0 = ap_block_pp0_stage3_subdone) and (ap_reset_idle_pp0 = ap_const_logic_1)))) then
+                    ap_NS_fsm <= ap_ST_fsm_pp0_stage0;
                 else
-                    ap_NS_fsm <= ap_ST_fsm_state7;
-                end if;
-            when ap_ST_fsm_state8 => 
-                if (((ap_const_logic_1 = ap_CS_fsm_state8) and (regslice_both_y_stream_V_data_V_U_apdone_blk = ap_const_logic_0))) then
-                    ap_NS_fsm <= ap_ST_fsm_state1;
-                else
-                    ap_NS_fsm <= ap_ST_fsm_state8;
+                    ap_NS_fsm <= ap_ST_fsm_pp0_stage3;
                 end if;
             when others =>  
-                ap_NS_fsm <= "XXXXXXXX";
+                ap_NS_fsm <= "XXXX";
         end case;
     end process;
-    A_stream_TREADY <= regslice_both_A_stream_V_data_V_U_ack_in;
+    add_ln34_fu_110_p2 <= std_logic_vector(unsigned(shl_ln34_fu_93_p2) + unsigned(sub_ln34_fu_104_p2));
+    ap_CS_fsm_pp0_stage0 <= ap_CS_fsm(0);
+    ap_CS_fsm_pp0_stage1 <= ap_CS_fsm(1);
+    ap_CS_fsm_pp0_stage2 <= ap_CS_fsm(2);
+    ap_CS_fsm_pp0_stage3 <= ap_CS_fsm(3);
+        ap_block_pp0_stage0 <= not((ap_const_boolean_1 = ap_const_boolean_1));
 
-    A_stream_TREADY_int_regslice_assign_proc : process(grp_mvm_sa_Pipeline_load_A_loop_fu_112_A_stream_TREADY, ap_CS_fsm_state7)
+    ap_block_pp0_stage0_01001_assign_proc : process(ap_enable_reg_pp0_iter1, x_stream_TVALID_int_regslice, y_stream_TREADY_int_regslice)
     begin
-        if ((ap_const_logic_1 = ap_CS_fsm_state7)) then 
-            A_stream_TREADY_int_regslice <= grp_mvm_sa_Pipeline_load_A_loop_fu_112_A_stream_TREADY;
-        else 
-            A_stream_TREADY_int_regslice <= ap_const_logic_0;
-        end if; 
-    end process;
-
-    ap_CS_fsm_state1 <= ap_CS_fsm(0);
-    ap_CS_fsm_state2 <= ap_CS_fsm(1);
-    ap_CS_fsm_state3 <= ap_CS_fsm(2);
-    ap_CS_fsm_state5 <= ap_CS_fsm(4);
-    ap_CS_fsm_state6 <= ap_CS_fsm(5);
-    ap_CS_fsm_state7 <= ap_CS_fsm(6);
-    ap_CS_fsm_state8 <= ap_CS_fsm(7);
-    ap_NS_fsm_state2 <= ap_NS_fsm(1);
-    ap_ST_fsm_state1_blk <= ap_const_logic_0;
-    ap_ST_fsm_state2_blk <= ap_const_logic_0;
-
-    ap_ST_fsm_state3_blk_assign_proc : process(grp_mvm_sa_Pipeline_read_x_loop_fu_84_ap_done)
-    begin
-        if ((grp_mvm_sa_Pipeline_read_x_loop_fu_84_ap_done = ap_const_logic_0)) then 
-            ap_ST_fsm_state3_blk <= ap_const_logic_1;
-        else 
-            ap_ST_fsm_state3_blk <= ap_const_logic_0;
-        end if; 
-    end process;
-
-    ap_ST_fsm_state4_blk <= ap_const_logic_0;
-    ap_ST_fsm_state5_blk <= ap_const_logic_0;
-
-    ap_ST_fsm_state6_blk_assign_proc : process(grp_mvm_sa_Pipeline_write_y_loop_fu_132_ap_done)
-    begin
-        if ((grp_mvm_sa_Pipeline_write_y_loop_fu_132_ap_done = ap_const_logic_0)) then 
-            ap_ST_fsm_state6_blk <= ap_const_logic_1;
-        else 
-            ap_ST_fsm_state6_blk <= ap_const_logic_0;
-        end if; 
+                ap_block_pp0_stage0_01001 <= (((ap_enable_reg_pp0_iter1 = ap_const_logic_1) and (y_stream_TREADY_int_regslice = ap_const_logic_0)) or ((ap_const_logic_1 = ap_const_logic_1) and (x_stream_TVALID_int_regslice = ap_const_logic_0)));
     end process;
 
 
-    ap_ST_fsm_state7_blk_assign_proc : process(grp_mvm_sa_Pipeline_load_A_loop_fu_112_ap_done)
+    ap_block_pp0_stage0_11001_assign_proc : process(ap_enable_reg_pp0_iter1, x_stream_TVALID_int_regslice, y_stream_TREADY_int_regslice)
     begin
-        if ((grp_mvm_sa_Pipeline_load_A_loop_fu_112_ap_done = ap_const_logic_0)) then 
-            ap_ST_fsm_state7_blk <= ap_const_logic_1;
-        else 
-            ap_ST_fsm_state7_blk <= ap_const_logic_0;
-        end if; 
+                ap_block_pp0_stage0_11001 <= (((ap_enable_reg_pp0_iter1 = ap_const_logic_1) and (y_stream_TREADY_int_regslice = ap_const_logic_0)) or ((ap_const_logic_1 = ap_const_logic_1) and (x_stream_TVALID_int_regslice = ap_const_logic_0)));
     end process;
 
 
-    ap_ST_fsm_state8_blk_assign_proc : process(regslice_both_y_stream_V_data_V_U_apdone_blk)
+    ap_block_pp0_stage0_subdone_assign_proc : process(ap_enable_reg_pp0_iter1, x_stream_TVALID_int_regslice, y_stream_TREADY_int_regslice)
     begin
-        if ((regslice_both_y_stream_V_data_V_U_apdone_blk = ap_const_logic_1)) then 
-            ap_ST_fsm_state8_blk <= ap_const_logic_1;
+                ap_block_pp0_stage0_subdone <= (((ap_enable_reg_pp0_iter1 = ap_const_logic_1) and (y_stream_TREADY_int_regslice = ap_const_logic_0)) or ((ap_const_logic_1 = ap_const_logic_1) and (x_stream_TVALID_int_regslice = ap_const_logic_0)));
+    end process;
+
+        ap_block_pp0_stage1 <= not((ap_const_boolean_1 = ap_const_boolean_1));
+
+    ap_block_pp0_stage1_01001_assign_proc : process(ap_enable_reg_pp0_iter1, x_stream_TVALID_int_regslice, y_stream_TREADY_int_regslice)
+    begin
+                ap_block_pp0_stage1_01001 <= (((ap_enable_reg_pp0_iter1 = ap_const_logic_1) and (y_stream_TREADY_int_regslice = ap_const_logic_0)) or ((ap_const_logic_1 = ap_const_logic_1) and (x_stream_TVALID_int_regslice = ap_const_logic_0)));
+    end process;
+
+
+    ap_block_pp0_stage1_11001_assign_proc : process(ap_enable_reg_pp0_iter1, x_stream_TVALID_int_regslice, y_stream_TREADY_int_regslice)
+    begin
+                ap_block_pp0_stage1_11001 <= (((ap_enable_reg_pp0_iter1 = ap_const_logic_1) and (y_stream_TREADY_int_regslice = ap_const_logic_0)) or ((ap_const_logic_1 = ap_const_logic_1) and (x_stream_TVALID_int_regslice = ap_const_logic_0)));
+    end process;
+
+
+    ap_block_pp0_stage1_subdone_assign_proc : process(ap_enable_reg_pp0_iter1, x_stream_TVALID_int_regslice, y_stream_TREADY_int_regslice)
+    begin
+                ap_block_pp0_stage1_subdone <= (((ap_enable_reg_pp0_iter1 = ap_const_logic_1) and (y_stream_TREADY_int_regslice = ap_const_logic_0)) or ((ap_const_logic_1 = ap_const_logic_1) and (x_stream_TVALID_int_regslice = ap_const_logic_0)));
+    end process;
+
+        ap_block_pp0_stage2 <= not((ap_const_boolean_1 = ap_const_boolean_1));
+
+    ap_block_pp0_stage2_01001_assign_proc : process(ap_enable_reg_pp0_iter1, x_stream_TVALID_int_regslice, y_stream_TREADY_int_regslice)
+    begin
+                ap_block_pp0_stage2_01001 <= (((ap_enable_reg_pp0_iter1 = ap_const_logic_1) and (y_stream_TREADY_int_regslice = ap_const_logic_0)) or ((ap_const_logic_1 = ap_const_logic_1) and (x_stream_TVALID_int_regslice = ap_const_logic_0)));
+    end process;
+
+
+    ap_block_pp0_stage2_11001_assign_proc : process(ap_enable_reg_pp0_iter1, x_stream_TVALID_int_regslice, y_stream_TREADY_int_regslice)
+    begin
+                ap_block_pp0_stage2_11001 <= (((ap_enable_reg_pp0_iter1 = ap_const_logic_1) and (y_stream_TREADY_int_regslice = ap_const_logic_0)) or ((ap_const_logic_1 = ap_const_logic_1) and (x_stream_TVALID_int_regslice = ap_const_logic_0)));
+    end process;
+
+
+    ap_block_pp0_stage2_subdone_assign_proc : process(ap_enable_reg_pp0_iter1, x_stream_TVALID_int_regslice, y_stream_TREADY_int_regslice)
+    begin
+                ap_block_pp0_stage2_subdone <= (((ap_enable_reg_pp0_iter1 = ap_const_logic_1) and (y_stream_TREADY_int_regslice = ap_const_logic_0)) or ((ap_const_logic_1 = ap_const_logic_1) and (x_stream_TVALID_int_regslice = ap_const_logic_0)));
+    end process;
+
+        ap_block_pp0_stage3 <= not((ap_const_boolean_1 = ap_const_boolean_1));
+
+    ap_block_pp0_stage3_01001_assign_proc : process(ap_enable_reg_pp0_iter1, regslice_both_y_stream_V_data_V_U_apdone_blk, x_stream_TVALID_int_regslice, y_stream_TREADY_int_regslice)
+    begin
+                ap_block_pp0_stage3_01001 <= (((ap_enable_reg_pp0_iter1 = ap_const_logic_1) and ((y_stream_TREADY_int_regslice = ap_const_logic_0) or (regslice_both_y_stream_V_data_V_U_apdone_blk = ap_const_logic_1))) or ((ap_const_logic_1 = ap_const_logic_1) and ((y_stream_TREADY_int_regslice = ap_const_logic_0) or (x_stream_TVALID_int_regslice = ap_const_logic_0))));
+    end process;
+
+
+    ap_block_pp0_stage3_11001_assign_proc : process(ap_enable_reg_pp0_iter1, regslice_both_y_stream_V_data_V_U_apdone_blk, x_stream_TVALID_int_regslice, y_stream_TREADY_int_regslice)
+    begin
+                ap_block_pp0_stage3_11001 <= (((ap_enable_reg_pp0_iter1 = ap_const_logic_1) and ((y_stream_TREADY_int_regslice = ap_const_logic_0) or (regslice_both_y_stream_V_data_V_U_apdone_blk = ap_const_logic_1))) or ((ap_const_logic_1 = ap_const_logic_1) and ((y_stream_TREADY_int_regslice = ap_const_logic_0) or (x_stream_TVALID_int_regslice = ap_const_logic_0))));
+    end process;
+
+
+    ap_block_pp0_stage3_subdone_assign_proc : process(ap_enable_reg_pp0_iter1, regslice_both_y_stream_V_data_V_U_apdone_blk, x_stream_TVALID_int_regslice, y_stream_TREADY_int_regslice)
+    begin
+                ap_block_pp0_stage3_subdone <= (((ap_enable_reg_pp0_iter1 = ap_const_logic_1) and ((y_stream_TREADY_int_regslice = ap_const_logic_0) or (regslice_both_y_stream_V_data_V_U_apdone_blk = ap_const_logic_1))) or ((ap_const_logic_1 = ap_const_logic_1) and ((y_stream_TREADY_int_regslice = ap_const_logic_0) or (x_stream_TVALID_int_regslice = ap_const_logic_0))));
+    end process;
+
+
+    ap_block_state1_pp0_stage0_iter0_assign_proc : process(x_stream_TVALID_int_regslice)
+    begin
+                ap_block_state1_pp0_stage0_iter0 <= (x_stream_TVALID_int_regslice = ap_const_logic_0);
+    end process;
+
+
+    ap_block_state2_pp0_stage1_iter0_assign_proc : process(x_stream_TVALID_int_regslice)
+    begin
+                ap_block_state2_pp0_stage1_iter0 <= (x_stream_TVALID_int_regslice = ap_const_logic_0);
+    end process;
+
+
+    ap_block_state3_pp0_stage2_iter0_assign_proc : process(x_stream_TVALID_int_regslice)
+    begin
+                ap_block_state3_pp0_stage2_iter0 <= (x_stream_TVALID_int_regslice = ap_const_logic_0);
+    end process;
+
+
+    ap_block_state4_pp0_stage3_iter0_assign_proc : process(x_stream_TVALID_int_regslice, y_stream_TREADY_int_regslice)
+    begin
+                ap_block_state4_pp0_stage3_iter0 <= ((y_stream_TREADY_int_regslice = ap_const_logic_0) or (x_stream_TVALID_int_regslice = ap_const_logic_0));
+    end process;
+
+
+    ap_block_state5_pp0_stage0_iter1_assign_proc : process(y_stream_TREADY_int_regslice)
+    begin
+                ap_block_state5_pp0_stage0_iter1 <= (y_stream_TREADY_int_regslice = ap_const_logic_0);
+    end process;
+
+
+    ap_block_state6_pp0_stage1_iter1_assign_proc : process(y_stream_TREADY_int_regslice)
+    begin
+                ap_block_state6_pp0_stage1_iter1 <= (y_stream_TREADY_int_regslice = ap_const_logic_0);
+    end process;
+
+
+    ap_block_state7_pp0_stage2_iter1_assign_proc : process(y_stream_TREADY_int_regslice)
+    begin
+                ap_block_state7_pp0_stage2_iter1 <= (y_stream_TREADY_int_regslice = ap_const_logic_0);
+    end process;
+
+
+    ap_block_state8_pp0_stage3_iter1_assign_proc : process(regslice_both_y_stream_V_data_V_U_apdone_blk, y_stream_TREADY_int_regslice)
+    begin
+                ap_block_state8_pp0_stage3_iter1 <= ((y_stream_TREADY_int_regslice = ap_const_logic_0) or (regslice_both_y_stream_V_data_V_U_apdone_blk = ap_const_logic_1));
+    end process;
+
+    ap_enable_pp0 <= (ap_idle_pp0 xor ap_const_logic_1);
+
+    ap_idle_pp0_assign_proc : process(ap_enable_reg_pp0_iter1)
+    begin
+        if (((ap_enable_reg_pp0_iter1 = ap_const_logic_0) and (ap_const_logic_1 = ap_const_logic_0))) then 
+            ap_idle_pp0 <= ap_const_logic_1;
         else 
-            ap_ST_fsm_state8_blk <= ap_const_logic_0;
+            ap_idle_pp0 <= ap_const_logic_0;
         end if; 
     end process;
 
     ap_local_block <= ap_const_logic_0;
     ap_local_deadlock <= ap_const_logic_0;
+    ap_reset_idle_pp0 <= ap_const_logic_0;
 
     ap_rst_n_inv_assign_proc : process(ap_rst_n)
     begin
                 ap_rst_n_inv <= not(ap_rst_n);
     end process;
 
-    grp_mvm_sa_Pipeline_load_A_loop_fu_112_ap_start <= grp_mvm_sa_Pipeline_load_A_loop_fu_112_ap_start_reg;
-    grp_mvm_sa_Pipeline_read_x_loop_fu_84_ap_start <= grp_mvm_sa_Pipeline_read_x_loop_fu_84_ap_start_reg;
-    grp_mvm_sa_Pipeline_write_y_loop_fu_132_ap_start <= grp_mvm_sa_Pipeline_write_y_loop_fu_132_ap_start_reg;
-    grp_mvm_sa_Pipeline_write_y_loop_fu_132_y_stream_TREADY <= (y_stream_TREADY_int_regslice and ap_CS_fsm_state6);
-    tmp_nbreadreq_fu_70_p6 <= (0=>(A_stream_TVALID_int_regslice), others=>'-');
+    last_fu_116_p2 <= std_logic_vector(unsigned(add_ln34_fu_110_p2) + unsigned(tmp_reg_122));
+    shl_ln34_1_fu_98_p2 <= std_logic_vector(shift_left(unsigned(x_stream_TDATA_int_regslice),to_integer(unsigned('0' & ap_const_lv32_2(31-1 downto 0)))));
+    shl_ln34_fu_93_p2 <= std_logic_vector(shift_left(unsigned(tmp_1_reg_127),to_integer(unsigned('0' & ap_const_lv32_1(31-1 downto 0)))));
+    sub_ln34_fu_104_p2 <= std_logic_vector(unsigned(shl_ln34_1_fu_98_p2) - unsigned(x_stream_TDATA_int_regslice));
+
+    x_stream_TDATA_blk_n_assign_proc : process(ap_CS_fsm_pp0_stage0, ap_block_pp0_stage0, ap_CS_fsm_pp0_stage1, ap_block_pp0_stage1, ap_CS_fsm_pp0_stage2, ap_block_pp0_stage2, ap_CS_fsm_pp0_stage3, ap_block_pp0_stage3, x_stream_TVALID_int_regslice)
+    begin
+        if ((((ap_const_logic_1 = ap_CS_fsm_pp0_stage3) and (ap_const_boolean_0 = ap_block_pp0_stage3) and (ap_const_logic_1 = ap_const_logic_1)) or ((ap_const_logic_1 = ap_CS_fsm_pp0_stage2) and (ap_const_boolean_0 = ap_block_pp0_stage2) and (ap_const_logic_1 = ap_const_logic_1)) or ((ap_const_logic_1 = ap_CS_fsm_pp0_stage1) and (ap_const_boolean_0 = ap_block_pp0_stage1) and (ap_const_logic_1 = ap_const_logic_1)) or ((ap_const_logic_1 = ap_CS_fsm_pp0_stage0) and (ap_const_boolean_0 = ap_block_pp0_stage0) and (ap_const_logic_1 = ap_const_logic_1)))) then 
+            x_stream_TDATA_blk_n <= x_stream_TVALID_int_regslice;
+        else 
+            x_stream_TDATA_blk_n <= ap_const_logic_1;
+        end if; 
+    end process;
+
     x_stream_TREADY <= regslice_both_x_stream_V_data_V_U_ack_in;
 
-    x_stream_TREADY_int_regslice_assign_proc : process(grp_mvm_sa_Pipeline_read_x_loop_fu_84_x_stream_TREADY, ap_CS_fsm_state3)
+    x_stream_TREADY_int_regslice_assign_proc : process(ap_CS_fsm_pp0_stage0, ap_CS_fsm_pp0_stage1, ap_CS_fsm_pp0_stage2, ap_CS_fsm_pp0_stage3, ap_block_pp0_stage1_11001, ap_block_pp0_stage2_11001, ap_block_pp0_stage3_11001, ap_block_pp0_stage0_11001)
     begin
-        if ((ap_const_logic_1 = ap_CS_fsm_state3)) then 
-            x_stream_TREADY_int_regslice <= grp_mvm_sa_Pipeline_read_x_loop_fu_84_x_stream_TREADY;
+        if ((((ap_const_logic_1 = ap_CS_fsm_pp0_stage3) and (ap_const_boolean_0 = ap_block_pp0_stage3_11001) and (ap_const_logic_1 = ap_const_logic_1)) or ((ap_const_logic_1 = ap_CS_fsm_pp0_stage2) and (ap_const_boolean_0 = ap_block_pp0_stage2_11001) and (ap_const_logic_1 = ap_const_logic_1)) or ((ap_const_logic_1 = ap_CS_fsm_pp0_stage1) and (ap_const_boolean_0 = ap_block_pp0_stage1_11001) and (ap_const_logic_1 = ap_const_logic_1)) or ((ap_const_logic_1 = ap_CS_fsm_pp0_stage0) and (ap_const_boolean_0 = ap_block_pp0_stage0_11001) and (ap_const_logic_1 = ap_const_logic_1)))) then 
+            x_stream_TREADY_int_regslice <= ap_const_logic_1;
         else 
             x_stream_TREADY_int_regslice <= ap_const_logic_0;
         end if; 
     end process;
 
+
+    y_stream_TDATA_blk_n_assign_proc : process(ap_CS_fsm_pp0_stage0, ap_block_pp0_stage0, ap_CS_fsm_pp0_stage1, ap_block_pp0_stage1, ap_CS_fsm_pp0_stage2, ap_block_pp0_stage2, ap_CS_fsm_pp0_stage3, ap_block_pp0_stage3, ap_enable_reg_pp0_iter1, y_stream_TREADY_int_regslice)
+    begin
+        if ((((ap_enable_reg_pp0_iter1 = ap_const_logic_1) and (ap_const_logic_1 = ap_CS_fsm_pp0_stage3) and (ap_const_boolean_0 = ap_block_pp0_stage3)) or ((ap_enable_reg_pp0_iter1 = ap_const_logic_1) and (ap_const_logic_1 = ap_CS_fsm_pp0_stage2) and (ap_const_boolean_0 = ap_block_pp0_stage2)) or ((ap_enable_reg_pp0_iter1 = ap_const_logic_1) and (ap_const_logic_1 = ap_CS_fsm_pp0_stage1) and (ap_const_boolean_0 = ap_block_pp0_stage1)) or ((ap_enable_reg_pp0_iter1 = ap_const_logic_1) and (ap_const_logic_1 = ap_CS_fsm_pp0_stage0) and (ap_const_boolean_0 = ap_block_pp0_stage0)) or ((ap_const_logic_1 = ap_CS_fsm_pp0_stage3) and (ap_const_boolean_0 = ap_block_pp0_stage3) and (ap_const_logic_1 = ap_const_logic_1)))) then 
+            y_stream_TDATA_blk_n <= y_stream_TREADY_int_regslice;
+        else 
+            y_stream_TDATA_blk_n <= ap_const_logic_1;
+        end if; 
+    end process;
+
+
+    y_stream_TDATA_int_regslice_assign_proc : process(ap_CS_fsm_pp0_stage0, ap_CS_fsm_pp0_stage1, ap_CS_fsm_pp0_stage2, ap_CS_fsm_pp0_stage3, ap_enable_reg_pp0_iter1, last_fu_116_p2, ap_block_pp0_stage3_01001, ap_block_pp0_stage0_01001, ap_block_pp0_stage1_01001, ap_block_pp0_stage2_01001)
+    begin
+        if ((((ap_enable_reg_pp0_iter1 = ap_const_logic_1) and (ap_const_logic_1 = ap_CS_fsm_pp0_stage2) and (ap_const_boolean_0 = ap_block_pp0_stage2_01001)) or ((ap_enable_reg_pp0_iter1 = ap_const_logic_1) and (ap_const_logic_1 = ap_CS_fsm_pp0_stage1) and (ap_const_boolean_0 = ap_block_pp0_stage1_01001)) or ((ap_enable_reg_pp0_iter1 = ap_const_logic_1) and (ap_const_logic_1 = ap_CS_fsm_pp0_stage0) and (ap_const_boolean_0 = ap_block_pp0_stage0_01001)))) then 
+            y_stream_TDATA_int_regslice <= ap_const_lv32_0;
+        elsif (((ap_const_logic_1 = ap_CS_fsm_pp0_stage3) and (ap_const_boolean_0 = ap_block_pp0_stage3_01001) and (ap_const_logic_1 = ap_const_logic_1))) then 
+            y_stream_TDATA_int_regslice <= last_fu_116_p2;
+        else 
+            y_stream_TDATA_int_regslice <= "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX";
+        end if; 
+    end process;
+
+
+    y_stream_TLAST_int_regslice_assign_proc : process(ap_CS_fsm_pp0_stage0, ap_CS_fsm_pp0_stage1, ap_CS_fsm_pp0_stage2, ap_CS_fsm_pp0_stage3, ap_enable_reg_pp0_iter1, ap_block_pp0_stage3_01001, ap_block_pp0_stage0_01001, ap_block_pp0_stage1_01001, ap_block_pp0_stage2_01001)
+    begin
+        if (((ap_enable_reg_pp0_iter1 = ap_const_logic_1) and (ap_const_logic_1 = ap_CS_fsm_pp0_stage2) and (ap_const_boolean_0 = ap_block_pp0_stage2_01001))) then 
+            y_stream_TLAST_int_regslice <= ap_const_lv1_1;
+        elsif ((((ap_enable_reg_pp0_iter1 = ap_const_logic_1) and (ap_const_logic_1 = ap_CS_fsm_pp0_stage1) and (ap_const_boolean_0 = ap_block_pp0_stage1_01001)) or ((ap_enable_reg_pp0_iter1 = ap_const_logic_1) and (ap_const_logic_1 = ap_CS_fsm_pp0_stage0) and (ap_const_boolean_0 = ap_block_pp0_stage0_01001)) or ((ap_const_logic_1 = ap_CS_fsm_pp0_stage3) and (ap_const_boolean_0 = ap_block_pp0_stage3_01001) and (ap_const_logic_1 = ap_const_logic_1)))) then 
+            y_stream_TLAST_int_regslice <= ap_const_lv1_0;
+        else 
+            y_stream_TLAST_int_regslice <= "X";
+        end if; 
+    end process;
+
     y_stream_TVALID <= regslice_both_y_stream_V_data_V_U_vld_out;
-    y_stream_TVALID_int_regslice <= grp_mvm_sa_Pipeline_write_y_loop_fu_132_y_stream_TVALID;
+
+    y_stream_TVALID_int_regslice_assign_proc : process(ap_CS_fsm_pp0_stage0, ap_CS_fsm_pp0_stage1, ap_CS_fsm_pp0_stage2, ap_CS_fsm_pp0_stage3, ap_enable_reg_pp0_iter1, ap_block_pp0_stage1_11001, ap_block_pp0_stage2_11001, ap_block_pp0_stage3_11001, ap_block_pp0_stage0_11001)
+    begin
+        if ((((ap_enable_reg_pp0_iter1 = ap_const_logic_1) and (ap_const_logic_1 = ap_CS_fsm_pp0_stage2) and (ap_const_boolean_0 = ap_block_pp0_stage2_11001)) or ((ap_enable_reg_pp0_iter1 = ap_const_logic_1) and (ap_const_logic_1 = ap_CS_fsm_pp0_stage1) and (ap_const_boolean_0 = ap_block_pp0_stage1_11001)) or ((ap_enable_reg_pp0_iter1 = ap_const_logic_1) and (ap_const_logic_1 = ap_CS_fsm_pp0_stage0) and (ap_const_boolean_0 = ap_block_pp0_stage0_11001)) or ((ap_const_logic_1 = ap_CS_fsm_pp0_stage3) and (ap_const_boolean_0 = ap_block_pp0_stage3_11001) and (ap_const_logic_1 = ap_const_logic_1)))) then 
+            y_stream_TVALID_int_regslice <= ap_const_logic_1;
+        else 
+            y_stream_TVALID_int_regslice <= ap_const_logic_0;
+        end if; 
+    end process;
+
 end behav;

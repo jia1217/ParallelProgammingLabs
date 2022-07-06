@@ -3,7 +3,6 @@
 
 void mvm_sa(data_stream& x_stream, acc_stream& y_stream){
 #pragma HLS INTERFACE mode=ap_ctrl_none port=return
-#pragma HLS INTERFACE mode=axis port=A_stream
 #pragma HLS INTERFACE mode=axis port=x_stream
 #pragma HLS INTERFACE mode=axis port=y_stream
 	static const data_t A_local[N][N] = {
@@ -18,7 +17,7 @@ void mvm_sa(data_stream& x_stream, acc_stream& y_stream){
 	static data_t acc[N];
 #pragma HLS ARRAY_PARTITION variable=acc dim=1 type=complete
 
-#pragma HLS DATAFLOW
+#pragma HLS pipeline style=frp
 read_x_loop:
 	for (int i = 0; i < N;i++){
 		data_axis_dp temp;

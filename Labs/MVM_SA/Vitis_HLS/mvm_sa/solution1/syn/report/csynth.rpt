@@ -4,7 +4,7 @@
 == Synthesis Summary Report of 'mvm_sa'
 ================================================================
 + General Information: 
-    * Date:           Wed Jul  6 15:16:20 2022
+    * Date:           Wed Jul  6 17:05:41 2022
     * Version:        2021.2 (Build 3367213 on Tue Oct 19 02:47:39 MDT 2021)
     * Project:        mvm_sa
     * Solution:       solution1 (Vivado IP Flow Target)
@@ -15,18 +15,12 @@
 + Performance & Resource Estimates: 
     
     PS: '+' for module; 'o' for loop; '*' for dataflow
-    +---------------------------------+------+------+---------+---------+----------+---------+------+----------+------+--------+-----------+-----------+-----+
-    |             Modules             | Issue|      | Latency | Latency | Iteration|         | Trip |          |      |        |           |           |     |
-    |             & Loops             | Type | Slack| (cycles)|   (ns)  |  Latency | Interval| Count| Pipelined| BRAM |   DSP  |     FF    |    LUT    | URAM|
-    +---------------------------------+------+------+---------+---------+----------+---------+------+----------+------+--------+-----------+-----------+-----+
-    |+ mvm_sa                         |     -|  0.39|       21|  210.000|         -|       22|     -|        no|     -|  3 (1%)|  719 (~0%)|   847 (1%)|    -|
-    | + mvm_sa_Pipeline_read_x_loop   |     -|  0.39|        8|   80.000|         -|        8|     -|        no|     -|  3 (1%)|  336 (~0%)|  408 (~0%)|    -|
-    |  o read_x_loop                  |     -|  7.30|        6|   60.000|         4|        1|     4|       yes|     -|       -|          -|          -|    -|
-    | + mvm_sa_Pipeline_load_A_loop   |     -|  2.46|       18|  180.000|         -|       18|     -|        no|     -|       -|  105 (~0%)|  269 (~0%)|    -|
-    |  o load_A_loop                  |     -|  7.30|       16|  160.000|         2|        1|    16|       yes|     -|       -|          -|          -|    -|
-    | + mvm_sa_Pipeline_write_y_loop  |     -|  3.98|        6|   60.000|         -|        6|     -|        no|     -|       -|   10 (~0%)|  100 (~0%)|    -|
-    |  o write_y_loop                 |     -|  7.30|        4|   40.000|         2|        1|     4|       yes|     -|       -|          -|          -|    -|
-    +---------------------------------+------+------+---------+---------+----------+---------+------+----------+------+--------+-----------+-----------+-----+
+    +----------+------+------+---------+--------+----------+---------+------+----------+------+----+----------+-----------+-----+
+    |  Modules | Issue|      | Latency | Latency| Iteration|         | Trip |          |      |    |          |           |     |
+    |  & Loops | Type | Slack| (cycles)|  (ns)  |  Latency | Interval| Count| Pipelined| BRAM | DSP|    FF    |    LUT    | URAM|
+    +----------+------+------+---------+--------+----------+---------+------+----------+------+----+----------+-----------+-----+
+    |+ mvm_sa  |    II|  0.38|        7|  70.000|         -|        4|     -|       yes|     -|   -|  69 (~0%)|  184 (~0%)|    -|
+    +----------+------+------+---------+--------+----------+---------+------+----------+------+----+----------+-----------+-----+
 
 
 ================================================================
@@ -36,7 +30,6 @@
 +-----------+---------------+-------+-------+-------+--------+-------+--------+
 | Interface | Register Mode | TDATA | TKEEP | TLAST | TREADY | TSTRB | TVALID |
 +-----------+---------------+-------+-------+-------+--------+-------+--------+
-| A_stream  | both          | 32    | 4     | 1     | 1      | 4     | 1      |
 | x_stream  | both          | 32    | 4     | 1     | 1      | 4     | 1      |
 | y_stream  | both          | 32    | 4     | 1     | 1      | 4     | 1      |
 +-----------+---------------+-------+-------+-------+--------+-------+--------+
@@ -58,7 +51,6 @@
 +----------+-----------+-------------------------------------+
 | Argument | Direction | Datatype                            |
 +----------+-----------+-------------------------------------+
-| A_stream | in        | stream<hls::axis<int, 0, 0, 0>, 0>& |
 | x_stream | in        | stream<hls::axis<int, 0, 0, 0>, 0>& |
 | y_stream | out       | stream<hls::axis<int, 0, 0, 0>, 0>& |
 +----------+-----------+-------------------------------------+
@@ -67,7 +59,6 @@
 +----------+--------------+-----------+
 | Argument | HW Interface | HW Type   |
 +----------+--------------+-----------+
-| A_stream | A_stream     | interface |
 | x_stream | x_stream     | interface |
 | y_stream | y_stream     | interface |
 +----------+--------------+-----------+
@@ -83,21 +74,14 @@
 ================================================================
 == Bind Op Report
 ================================================================
-+---------------------------------+-----+--------+----------+-----+--------+---------+
-| Name                            | DSP | Pragma | Variable | Op  | Impl   | Latency |
-+---------------------------------+-----+--------+----------+-----+--------+---------+
-| + mvm_sa                        | 3   |        |          |     |        |         |
-|  + mvm_sa_Pipeline_read_x_loop  | 3   |        |          |     |        |         |
-|    add_ln33_fu_94_p2            | -   |        | add_ln33 | add | fabric | 0       |
-|    mul_32s_32s_32_2_1_U2        | 3   |        | mul_ln45 | mul | auto   | 1       |
-|    add_ln45_fu_236_p2           | -   |        | add_ln45 | add | fabric | 0       |
-|  + mvm_sa_Pipeline_load_A_loop  | 0   |        |          |     |        |         |
-|    loc_2_fu_104_p2              | -   |        | loc_2    | add | fabric | 0       |
-|    add_ln22_fu_122_p2           | -   |        | add_ln22 | add | fabric | 0       |
-|    j_2_fu_196_p2                | -   |        | j_2      | add | fabric | 0       |
-|  + mvm_sa_Pipeline_write_y_loop | 0   |        |          |     |        |         |
-|    add_ln50_fu_104_p2           | -   |        | add_ln50 | add | fabric | 0       |
-+---------------------------------+-----+--------+----------+-----+--------+---------+
++----------------------+-----+--------+----------+-----+--------+---------+
+| Name                 | DSP | Pragma | Variable | Op  | Impl   | Latency |
++----------------------+-----+--------+----------+-----+--------+---------+
+| + mvm_sa             | 0   |        |          |     |        |         |
+|   sub_ln34_fu_104_p2 | -   |        | sub_ln34 | sub | fabric | 0       |
+|   add_ln34_fu_110_p2 | -   |        | add_ln34 | add | tadder | 0       |
+|   last_fu_116_p2     | -   |        | last     | add | tadder | 0       |
++----------------------+-----+--------+----------+-----+--------+---------+
 
 
 ================================================================
@@ -108,26 +92,17 @@
 ================================================================
 == User Pragma Report
 ================================================================
-* Pragmas with Warnings
-+----------+---------+-------------------------+---------------------------------------------------+
-| Type     | Options | Location                | Messages                                          |
-+----------+---------+-------------------------+---------------------------------------------------+
-| dataflow |         | mvm_sa.cpp:31 in mvm_sa | Only for-loops and functions support the dataflow |
-|          |         |                         | Only for-loops and functions support the dataflow |
-+----------+---------+-------------------------+---------------------------------------------------+
-
 * Valid Pragma Syntax
 +-----------------+--------------------------------------+----------------------------------+
 | Type            | Options                              | Location                         |
 +-----------------+--------------------------------------+----------------------------------+
 | interface       | mode=ap_ctrl_none port=return        | mvm_sa.cpp:5 in mvm_sa, return   |
-| interface       | mode=axis port=A_stream              | mvm_sa.cpp:6 in mvm_sa, A_stream |
-| interface       | mode=axis port=x_stream              | mvm_sa.cpp:7 in mvm_sa, x_stream |
-| interface       | mode=axis port=y_stream              | mvm_sa.cpp:8 in mvm_sa, y_stream |
-| array_partition | variable=A_local dim=1 type=complete | mvm_sa.cpp:11 in mvm_sa, A_local |
-| array_partition | variable=x_local dim=1 type=complete | mvm_sa.cpp:13 in mvm_sa, x_local |
-| array_partition | variable=acc dim=1 type=complete     | mvm_sa.cpp:15 in mvm_sa, acc     |
-| pipeline        |                                      | mvm_sa.cpp:20 in mvm_sa          |
+| interface       | mode=axis port=x_stream              | mvm_sa.cpp:6 in mvm_sa, x_stream |
+| interface       | mode=axis port=y_stream              | mvm_sa.cpp:7 in mvm_sa, y_stream |
+| array_partition | variable=A_local dim=1 type=complete | mvm_sa.cpp:14 in mvm_sa, A_local |
+| array_partition | variable=x_local dim=1 type=complete | mvm_sa.cpp:16 in mvm_sa, x_local |
+| array_partition | variable=acc dim=1 type=complete     | mvm_sa.cpp:18 in mvm_sa, acc     |
+| pipeline        | style=frp                            | mvm_sa.cpp:20 in mvm_sa          |
 +-----------------+--------------------------------------+----------------------------------+
 
 

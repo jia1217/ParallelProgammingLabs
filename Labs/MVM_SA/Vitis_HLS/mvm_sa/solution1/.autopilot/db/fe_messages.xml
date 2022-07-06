@@ -1,8 +1,4 @@
 <xilinx:hls_fe_msgs>
-    <msg msg_groups="PRAGMA_INVALID" msg_id="207-5554" msg_severity="WARNING" msg_loc="mvm_sa.cpp:31:9" msg_body="Only for-loops and functions support the dataflow">
-        <args ClangWarningOption="ignored-hls-dataflow-attribute"/>
-    </msg>
-    <msg msg_groups="PRAGMA_DATAFLOW" msg_id="214-104" msg_severity="WARNING" msg_loc="mvm_sa.cpp:31:9" msg_body="Only for-loops and functions support the dataflow"/>
     <msg msg_groups="PRAGMA_VERBOSE_DUMP" msg_id="207-5471" msg_severity="WARNING" msg_loc="/tools/Xilinx/Vitis_HLS/2021.2/common/technology/autopilot/ap_int_ref.h:718:9" msg_body="HLS pragma dump">
         <args ARG_PragmaFunction="and_reduce" ARG_PragmaIsValid="1" ARG_PragmaType="unroll" ClangWarningOption="dump-hls-pragmas"/>
     </msg>
@@ -121,49 +117,73 @@
         <args ARG_PragmaFunction="mvm_sa" ARG_PragmaIsValid="1" ARG_PragmaOptions="mode=ap_ctrl_none port=return" ARG_PragmaType="interface" ClangWarningOption="dump-hls-pragmas"/>
     </msg>
     <msg msg_groups="PRAGMA_VERBOSE_DUMP" msg_id="207-5471" msg_severity="WARNING" msg_loc="mvm_sa.cpp:6:9" msg_body="HLS pragma dump">
-        <args ARG_PragmaFunction="mvm_sa" ARG_PragmaIsValid="1" ARG_PragmaOptions="mode=axis port=A_stream" ARG_PragmaType="interface" ClangWarningOption="dump-hls-pragmas"/>
-    </msg>
-    <msg msg_groups="PRAGMA_VERBOSE_DUMP" msg_id="207-5471" msg_severity="WARNING" msg_loc="mvm_sa.cpp:7:9" msg_body="HLS pragma dump">
         <args ARG_PragmaFunction="mvm_sa" ARG_PragmaIsValid="1" ARG_PragmaOptions="mode=axis port=x_stream" ARG_PragmaType="interface" ClangWarningOption="dump-hls-pragmas"/>
     </msg>
-    <msg msg_groups="PRAGMA_VERBOSE_DUMP" msg_id="207-5471" msg_severity="WARNING" msg_loc="mvm_sa.cpp:8:9" msg_body="HLS pragma dump">
+    <msg msg_groups="PRAGMA_VERBOSE_DUMP" msg_id="207-5471" msg_severity="WARNING" msg_loc="mvm_sa.cpp:7:9" msg_body="HLS pragma dump">
         <args ARG_PragmaFunction="mvm_sa" ARG_PragmaIsValid="1" ARG_PragmaOptions="mode=axis port=y_stream" ARG_PragmaType="interface" ClangWarningOption="dump-hls-pragmas"/>
     </msg>
-    <msg msg_groups="PRAGMA_VERBOSE_DUMP" msg_id="207-5471" msg_severity="WARNING" msg_loc="mvm_sa.cpp:11:9" msg_body="HLS pragma dump">
+    <msg msg_groups="PRAGMA_VERBOSE_DUMP" msg_id="207-5471" msg_severity="WARNING" msg_loc="mvm_sa.cpp:14:9" msg_body="HLS pragma dump">
         <args ARG_PragmaFunction="mvm_sa" ARG_PragmaIsValid="1" ARG_PragmaOptions="variable=A_local dim=1 type=complete" ARG_PragmaType="array_partition" ClangWarningOption="dump-hls-pragmas"/>
     </msg>
-    <msg msg_groups="PRAGMA_VERBOSE_DUMP" msg_id="207-5471" msg_severity="WARNING" msg_loc="mvm_sa.cpp:13:9" msg_body="HLS pragma dump">
+    <msg msg_groups="PRAGMA_VERBOSE_DUMP" msg_id="207-5471" msg_severity="WARNING" msg_loc="mvm_sa.cpp:16:9" msg_body="HLS pragma dump">
         <args ARG_PragmaFunction="mvm_sa" ARG_PragmaIsValid="1" ARG_PragmaOptions="variable=x_local dim=1 type=complete" ARG_PragmaType="array_partition" ClangWarningOption="dump-hls-pragmas"/>
     </msg>
-    <msg msg_groups="PRAGMA_VERBOSE_DUMP" msg_id="207-5471" msg_severity="WARNING" msg_loc="mvm_sa.cpp:15:9" msg_body="HLS pragma dump">
+    <msg msg_groups="PRAGMA_VERBOSE_DUMP" msg_id="207-5471" msg_severity="WARNING" msg_loc="mvm_sa.cpp:18:9" msg_body="HLS pragma dump">
         <args ARG_PragmaFunction="mvm_sa" ARG_PragmaIsValid="1" ARG_PragmaOptions="variable=acc dim=1 type=complete" ARG_PragmaType="array_partition" ClangWarningOption="dump-hls-pragmas"/>
     </msg>
     <msg msg_groups="PRAGMA_VERBOSE_DUMP" msg_id="207-5471" msg_severity="WARNING" msg_loc="mvm_sa.cpp:20:9" msg_body="HLS pragma dump">
-        <args ARG_PragmaFunction="mvm_sa" ARG_PragmaIsValid="1" ARG_PragmaType="pipeline" ClangWarningOption="dump-hls-pragmas"/>
+        <args ARG_PragmaFunction="mvm_sa" ARG_PragmaIsValid="1" ARG_PragmaOptions="style=frp" ARG_PragmaType="pipeline" ClangWarningOption="dump-hls-pragmas"/>
     </msg>
-    <msg msg_groups="PRAGMA_VERBOSE_DUMP" msg_id="207-5471" msg_severity="WARNING" msg_loc="mvm_sa.cpp:31:9" msg_body="HLS pragma dump">
-        <args ARG_PragmaFunction="mvm_sa" ARG_PragmaIsValid="1" ARG_PragmaType="dataflow" ClangWarningOption="dump-hls-pragmas"/>
+    <msg msg_groups="PRAGMA_UNROLL" msg_id="214-291" msg_severity="INFO" msg_loc="mvm_sa.cpp:39:2" msg_body="Loop 'write_y_loop' is marked as complete unroll implied by the pipeline pragma">
+        <args LoopName="write_y_loop"/>
     </msg>
-    <msg msg_groups="PRAGMA_MISC" msg_id="214-248" msg_severity="INFO" msg_loc="mvm_sa.cpp:14:0" msg_body="Applying array_partition to '_ZZ6mvm_saRN3hls6streamINS_4axisIiLm0ELm0ELm0EEELi0EEES4_S4_E3acc': Complete partitioning on dimension 1.">
-        <args Dim="1" Mode="Complete" UOName="_ZZ6mvm_saRN3hls6streamINS_4axisIiLm0ELm0ELm0EEELi0EEES4_S4_E3acc"/>
+    <msg msg_groups="PRAGMA_UNROLL" msg_id="214-291" msg_severity="INFO" msg_loc="mvm_sa.cpp:41:20" msg_body="Loop 'VITIS_LOOP_41_3' is marked as complete unroll implied by the pipeline pragma">
+        <args LoopName="VITIS_LOOP_41_3"/>
     </msg>
-    <msg msg_groups="PRAGMA_MISC" msg_id="214-248" msg_severity="INFO" msg_loc="mvm_sa.cpp:12:0" msg_body="Applying array_partition to '_ZZ6mvm_saRN3hls6streamINS_4axisIiLm0ELm0ELm0EEELi0EEES4_S4_E7x_local': Complete partitioning on dimension 1.">
-        <args Dim="1" Mode="Complete" UOName="_ZZ6mvm_saRN3hls6streamINS_4axisIiLm0ELm0ELm0EEELi0EEES4_S4_E7x_local"/>
+    <msg msg_groups="PRAGMA_UNROLL" msg_id="214-291" msg_severity="INFO" msg_loc="mvm_sa.cpp:44:20" msg_body="Loop 'VITIS_LOOP_44_4' is marked as complete unroll implied by the pipeline pragma">
+        <args LoopName="VITIS_LOOP_44_4"/>
     </msg>
-    <msg msg_groups="PRAGMA_MISC" msg_id="214-248" msg_severity="INFO" msg_loc="mvm_sa.cpp:10:0" msg_body="Applying array_partition to '_ZZ6mvm_saRN3hls6streamINS_4axisIiLm0ELm0ELm0EEELi0EEES4_S4_E7A_local': Complete partitioning on dimension 1.">
-        <args Dim="1" Mode="Complete" UOName="_ZZ6mvm_saRN3hls6streamINS_4axisIiLm0ELm0ELm0EEELi0EEES4_S4_E7A_local"/>
+    <msg msg_groups="PRAGMA_UNROLL" msg_id="214-291" msg_severity="INFO" msg_loc="mvm_sa.cpp:22:2" msg_body="Loop 'read_x_loop' is marked as complete unroll implied by the pipeline pragma">
+        <args LoopName="read_x_loop"/>
     </msg>
-    <msg msg_groups="CODE_UNSUPPORTED" msg_id="214-131" msg_severity="INFO" msg_loc="/tools/Xilinx/Vitis_HLS/2021.2/common/technology/autopilot/ap_axi_sdata.h:283:5" msg_body="Inlining function '_llvm.fpga.unpack.none.i32.i32' into 'mvm_sa(hls::stream&lt;hls::axis&lt;int, 0ul, 0ul, 0ul&gt;, 0&gt;&amp;, hls::stream&lt;hls::axis&lt;int, 0ul, 0ul, 0ul&gt;, 0&gt;&amp;, hls::stream&lt;hls::axis&lt;int, 0ul, 0ul, 0ul&gt;, 0&gt;&amp;)'">
-        <args Callee="_llvm.fpga.unpack.none.i32.i32" Caller="mvm_sa(hls::stream&lt;hls::axis&lt;int, 0ul, 0ul, 0ul&gt;, 0&gt;&amp;, hls::stream&lt;hls::axis&lt;int, 0ul, 0ul, 0ul&gt;, 0&gt;&amp;, hls::stream&lt;hls::axis&lt;int, 0ul, 0ul, 0ul&gt;, 0&gt;&amp;)"/>
+    <msg msg_groups="PRAGMA_UNROLL" msg_id="214-291" msg_severity="INFO" msg_loc="mvm_sa.cpp:26:20" msg_body="Loop 'VITIS_LOOP_26_1' is marked as complete unroll implied by the pipeline pragma">
+        <args LoopName="VITIS_LOOP_26_1"/>
     </msg>
-    <msg msg_groups="CODE_UNSUPPORTED" msg_id="214-131" msg_severity="INFO" msg_loc="/tools/Xilinx/Vitis_HLS/2021.2/common/technology/autopilot/ap_axi_sdata.h:304:5" msg_body="Inlining function '_llvm.fpga.pack.none.i1.s_struct.ap_uint&lt;1&gt;s' into 'mvm_sa(hls::stream&lt;hls::axis&lt;int, 0ul, 0ul, 0ul&gt;, 0&gt;&amp;, hls::stream&lt;hls::axis&lt;int, 0ul, 0ul, 0ul&gt;, 0&gt;&amp;, hls::stream&lt;hls::axis&lt;int, 0ul, 0ul, 0ul&gt;, 0&gt;&amp;)'">
-        <args Callee="_llvm.fpga.pack.none.i1.s_struct.ap_uint&lt;1&gt;s" Caller="mvm_sa(hls::stream&lt;hls::axis&lt;int, 0ul, 0ul, 0ul&gt;, 0&gt;&amp;, hls::stream&lt;hls::axis&lt;int, 0ul, 0ul, 0ul&gt;, 0&gt;&amp;, hls::stream&lt;hls::axis&lt;int, 0ul, 0ul, 0ul&gt;, 0&gt;&amp;)"/>
+    <msg msg_groups="PRAGMA_UNROLL" msg_id="214-291" msg_severity="INFO" msg_loc="mvm_sa.cpp:30:20" msg_body="Loop 'VITIS_LOOP_30_2' is marked as complete unroll implied by the pipeline pragma">
+        <args LoopName="VITIS_LOOP_30_2"/>
     </msg>
-    <msg msg_groups="CODE_UNSUPPORTED" msg_id="214-131" msg_severity="INFO" msg_loc="/tools/Xilinx/Vitis_HLS/2021.2/common/technology/autopilot/ap_axi_sdata.h:304:5" msg_body="Inlining function '_llvm.fpga.pack.none.i4.s_struct.ap_uint&lt;4&gt;s' into 'mvm_sa(hls::stream&lt;hls::axis&lt;int, 0ul, 0ul, 0ul&gt;, 0&gt;&amp;, hls::stream&lt;hls::axis&lt;int, 0ul, 0ul, 0ul&gt;, 0&gt;&amp;, hls::stream&lt;hls::axis&lt;int, 0ul, 0ul, 0ul&gt;, 0&gt;&amp;)'">
-        <args Callee="_llvm.fpga.pack.none.i4.s_struct.ap_uint&lt;4&gt;s" Caller="mvm_sa(hls::stream&lt;hls::axis&lt;int, 0ul, 0ul, 0ul&gt;, 0&gt;&amp;, hls::stream&lt;hls::axis&lt;int, 0ul, 0ul, 0ul&gt;, 0&gt;&amp;, hls::stream&lt;hls::axis&lt;int, 0ul, 0ul, 0ul&gt;, 0&gt;&amp;)"/>
+    <msg msg_groups="PRAGMA_UNROLL" msg_id="214-186" msg_severity="INFO" msg_loc="mvm_sa.cpp:4:0" msg_body="Unrolling loop 'write_y_loop' (mvm_sa.cpp:39:2) in function 'mvm_sa' completely with a factor of 4">
+        <args Factor="4" LoopLoc="mvm_sa.cpp:39:2" LoopName="write_y_loop"/>
     </msg>
-    <msg msg_groups="CODE_UNSUPPORTED" msg_id="214-131" msg_severity="INFO" msg_loc="/tools/Xilinx/Vitis_HLS/2021.2/common/technology/autopilot/ap_axi_sdata.h:304:5" msg_body="Inlining function '_llvm.fpga.pack.none.i32.i32' into 'mvm_sa(hls::stream&lt;hls::axis&lt;int, 0ul, 0ul, 0ul&gt;, 0&gt;&amp;, hls::stream&lt;hls::axis&lt;int, 0ul, 0ul, 0ul&gt;, 0&gt;&amp;, hls::stream&lt;hls::axis&lt;int, 0ul, 0ul, 0ul&gt;, 0&gt;&amp;)'">
-        <args Callee="_llvm.fpga.pack.none.i32.i32" Caller="mvm_sa(hls::stream&lt;hls::axis&lt;int, 0ul, 0ul, 0ul&gt;, 0&gt;&amp;, hls::stream&lt;hls::axis&lt;int, 0ul, 0ul, 0ul&gt;, 0&gt;&amp;, hls::stream&lt;hls::axis&lt;int, 0ul, 0ul, 0ul&gt;, 0&gt;&amp;)"/>
+    <msg msg_groups="PRAGMA_UNROLL" msg_id="214-186" msg_severity="INFO" msg_loc="mvm_sa.cpp:4:0" msg_body="Unrolling loop 'VITIS_LOOP_44_4' (mvm_sa.cpp:44:20) in function 'mvm_sa' completely with a factor of 4">
+        <args Factor="4" LoopLoc="mvm_sa.cpp:44:20" LoopName="VITIS_LOOP_44_4"/>
+    </msg>
+    <msg msg_groups="PRAGMA_UNROLL" msg_id="214-186" msg_severity="INFO" msg_loc="mvm_sa.cpp:4:0" msg_body="Unrolling loop 'VITIS_LOOP_41_3' (mvm_sa.cpp:41:20) in function 'mvm_sa' completely with a factor of 2">
+        <args Factor="2" LoopLoc="mvm_sa.cpp:41:20" LoopName="VITIS_LOOP_41_3"/>
+    </msg>
+    <msg msg_groups="PRAGMA_UNROLL" msg_id="214-186" msg_severity="INFO" msg_loc="mvm_sa.cpp:4:0" msg_body="Unrolling loop 'read_x_loop' (mvm_sa.cpp:22:2) in function 'mvm_sa' completely with a factor of 4">
+        <args Factor="4" LoopLoc="mvm_sa.cpp:22:2" LoopName="read_x_loop"/>
+    </msg>
+    <msg msg_groups="PRAGMA_UNROLL" msg_id="214-186" msg_severity="INFO" msg_loc="mvm_sa.cpp:4:0" msg_body="Unrolling loop 'VITIS_LOOP_30_2' (mvm_sa.cpp:30:20) in function 'mvm_sa' completely with a factor of 4">
+        <args Factor="4" LoopLoc="mvm_sa.cpp:30:20" LoopName="VITIS_LOOP_30_2"/>
+    </msg>
+    <msg msg_groups="PRAGMA_UNROLL" msg_id="214-186" msg_severity="INFO" msg_loc="mvm_sa.cpp:4:0" msg_body="Unrolling loop 'VITIS_LOOP_26_1' (mvm_sa.cpp:26:20) in function 'mvm_sa' completely with a factor of 2">
+        <args Factor="2" LoopLoc="mvm_sa.cpp:26:20" LoopName="VITIS_LOOP_26_1"/>
+    </msg>
+    <msg msg_groups="PRAGMA_MISC" msg_id="214-248" msg_severity="INFO" msg_loc="mvm_sa.cpp:15:0" msg_body="Applying array_partition to '_ZZ6mvm_saRN3hls6streamINS_4axisIiLm0ELm0ELm0EEELi0EEES4_E7x_local': Complete partitioning on dimension 1.">
+        <args Dim="1" Mode="Complete" UOName="_ZZ6mvm_saRN3hls6streamINS_4axisIiLm0ELm0ELm0EEELi0EEES4_E7x_local"/>
+    </msg>
+    <msg msg_groups="CODE_UNSUPPORTED" msg_id="214-131" msg_severity="INFO" msg_loc="/tools/Xilinx/Vitis_HLS/2021.2/common/technology/autopilot/ap_axi_sdata.h:283:5" msg_body="Inlining function '_llvm.fpga.unpack.none.i32.i32' into 'mvm_sa(hls::stream&lt;hls::axis&lt;int, 0ul, 0ul, 0ul&gt;, 0&gt;&amp;, hls::stream&lt;hls::axis&lt;int, 0ul, 0ul, 0ul&gt;, 0&gt;&amp;)'">
+        <args Callee="_llvm.fpga.unpack.none.i32.i32" Caller="mvm_sa(hls::stream&lt;hls::axis&lt;int, 0ul, 0ul, 0ul&gt;, 0&gt;&amp;, hls::stream&lt;hls::axis&lt;int, 0ul, 0ul, 0ul&gt;, 0&gt;&amp;)"/>
+    </msg>
+    <msg msg_groups="CODE_UNSUPPORTED" msg_id="214-131" msg_severity="INFO" msg_loc="/tools/Xilinx/Vitis_HLS/2021.2/common/technology/autopilot/ap_axi_sdata.h:304:5" msg_body="Inlining function '_llvm.fpga.pack.none.i1.s_struct.ap_uint&lt;1&gt;s' into 'mvm_sa(hls::stream&lt;hls::axis&lt;int, 0ul, 0ul, 0ul&gt;, 0&gt;&amp;, hls::stream&lt;hls::axis&lt;int, 0ul, 0ul, 0ul&gt;, 0&gt;&amp;)'">
+        <args Callee="_llvm.fpga.pack.none.i1.s_struct.ap_uint&lt;1&gt;s" Caller="mvm_sa(hls::stream&lt;hls::axis&lt;int, 0ul, 0ul, 0ul&gt;, 0&gt;&amp;, hls::stream&lt;hls::axis&lt;int, 0ul, 0ul, 0ul&gt;, 0&gt;&amp;)"/>
+    </msg>
+    <msg msg_groups="CODE_UNSUPPORTED" msg_id="214-131" msg_severity="INFO" msg_loc="/tools/Xilinx/Vitis_HLS/2021.2/common/technology/autopilot/ap_axi_sdata.h:304:5" msg_body="Inlining function '_llvm.fpga.pack.none.i4.s_struct.ap_uint&lt;4&gt;s' into 'mvm_sa(hls::stream&lt;hls::axis&lt;int, 0ul, 0ul, 0ul&gt;, 0&gt;&amp;, hls::stream&lt;hls::axis&lt;int, 0ul, 0ul, 0ul&gt;, 0&gt;&amp;)'">
+        <args Callee="_llvm.fpga.pack.none.i4.s_struct.ap_uint&lt;4&gt;s" Caller="mvm_sa(hls::stream&lt;hls::axis&lt;int, 0ul, 0ul, 0ul&gt;, 0&gt;&amp;, hls::stream&lt;hls::axis&lt;int, 0ul, 0ul, 0ul&gt;, 0&gt;&amp;)"/>
+    </msg>
+    <msg msg_groups="CODE_UNSUPPORTED" msg_id="214-131" msg_severity="INFO" msg_loc="/tools/Xilinx/Vitis_HLS/2021.2/common/technology/autopilot/ap_axi_sdata.h:304:5" msg_body="Inlining function '_llvm.fpga.pack.none.i32.i32' into 'mvm_sa(hls::stream&lt;hls::axis&lt;int, 0ul, 0ul, 0ul&gt;, 0&gt;&amp;, hls::stream&lt;hls::axis&lt;int, 0ul, 0ul, 0ul&gt;, 0&gt;&amp;)'">
+        <args Callee="_llvm.fpga.pack.none.i32.i32" Caller="mvm_sa(hls::stream&lt;hls::axis&lt;int, 0ul, 0ul, 0ul&gt;, 0&gt;&amp;, hls::stream&lt;hls::axis&lt;int, 0ul, 0ul, 0ul&gt;, 0&gt;&amp;)"/>
     </msg>
 </xilinx:hls_fe_msgs>
 

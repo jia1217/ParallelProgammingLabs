@@ -6241,80 +6241,74 @@ const int N = 4;
 typedef int data_t;
 typedef int acc_t;
 
+typedef struct{
+ data_t a[N];
+}matrix_col;
+
 typedef hls::axis<data_t,0,0,0> data_axis_dp;
 typedef hls::axis<acc_t,0,0,0> acc_axis_dp;
+typedef hls::axis<matrix_col,0,0,0> col_axis_dp;
 typedef hls::stream<data_axis_dp> data_stream;
 typedef hls::stream<acc_axis_dp> acc_stream;
+typedef hls::stream<col_axis_dp> col_stream;
 
-__attribute__((sdx_kernel("mvm_sa", 0))) void mvm_sa(data_stream& A_stream, data_stream& x_stream, acc_stream& y_stream);
+void mvm_sa(col_stream& A_stream, data_stream& x_stream, acc_stream& y_stream);
 # 2 "mvm_sa.cpp" 2
 
 
-__attribute__((sdx_kernel("mvm_sa", 0))) void mvm_sa(data_stream& A_stream, data_stream& x_stream, acc_stream& y_stream){
+__attribute__((sdx_kernel("mvm_sa", 0))) void mvm_sa(data_stream& x_stream, acc_stream& y_stream){
 #pragma HLSDIRECTIVE TOP name=mvm_sa
 # 4 "mvm_sa.cpp"
 
 #pragma HLS INTERFACE mode=ap_ctrl_none port=return
-#pragma HLS INTERFACE mode=axis port=A_stream
 #pragma HLS INTERFACE mode=axis port=x_stream
 #pragma HLS INTERFACE mode=axis port=y_stream
-
- static data_t A_local[N][N];
+ static const data_t A_local[N][N] = {
+   0,1,2,3,
+   4,5,6,7,
+   8,9,10,11,
+   12,13,14,15
+ };
 #pragma HLS ARRAY_PARTITION variable=A_local dim=1 type=complete
  static data_t x_local[N];
 #pragma HLS ARRAY_PARTITION variable=x_local dim=1 type=complete
  static data_t acc[N];
 #pragma HLS ARRAY_PARTITION variable=acc dim=1 type=complete
 
- if(!A_stream.empty()){
-load_A_loop:
-  for (int loc = 0, i = 0, j = 0; loc < N * N; loc++, j++) {
-#pragma HLS PIPELINE
- if (j == N) {
-    i++;
-    j = 0;
-   }
-   data_axis_dp temp;
-   A_stream >> temp;
-   A_local[i][j] = temp.data;
+#pragma HLS pipeline style=frp
+read_x_loop:
+ for (int i = 0; i < N;i++){
+  data_axis_dp temp;
+  x_stream >> temp;
+
+  VITIS_LOOP_26_1: for (int j = N-1; j > 1;j--){
+   x_local[j] = x_local[j - 1];
+  }
+  x_local[0] = temp.data;
+  VITIS_LOOP_30_2: for (int j = 0; j < N; j++){
+   acc_t last = (i == j)? 0:acc[j];
+   data_t x = x_local[j];
+   data_t a = (i >= j)?A_local[j][i - j]:0;
+   acc[j] = last + a * x;
   }
  }
- else{
-#pragma HLS DATAFLOW
-read_x_loop:
-  for (int i = 0; i < N;i++){
-   data_axis_dp temp;
-   x_stream >> temp;
-
-   VITIS_LOOP_37_1: for (int j = N-1; j > 1;j--){
-    x_local[j] = x_local[j - 1];
-   }
-   x_local[0] = temp.data;
-   VITIS_LOOP_41_2: for (int j = 0; j < N; j++){
-    acc_t last = (i == j)? 0:acc[j];
-    data_t x = x_local[j];
-    data_t a = (i >= j)?A_local[j][i - j]:0;
-    acc[j] = last + a * x;
-   }
-  }
 
 write_y_loop:
-  for (int i = N; i < 2 * N;i++){
+ for (int i = N; i < 2 * N;i++){
 
-   VITIS_LOOP_52_3: for (int j = N-1; j > 1;j--){
-    x_local[j] = x_local[j - 1];
-   }
-   VITIS_LOOP_55_4: for (int j = 0; j < N; j++){
-    acc_t last = acc[j];
-    data_t x = x_local[j];
-    data_t a = (j > i - N)? A_local[j][i - j] : 0;
-    acc[j] = last + a * x;
-   }
-   acc_axis_dp temp;
-   temp.data = acc[i - N];
-   temp.keep = -1;
-   temp.last = (i == (2 * N-1));
-   y_stream << temp;
+  VITIS_LOOP_41_3: for (int j = N-1; j > 1;j--){
+   x_local[j] = x_local[j - 1];
   }
+  VITIS_LOOP_44_4: for (int j = 0; j < N; j++){
+   acc_t last = acc[j];
+   data_t x = x_local[j];
+   data_t a = (j > i - N)? A_local[j][i - j] : 0;
+   acc[j] = last + a * x;
+  }
+  acc_axis_dp temp;
+  temp.data = acc[i - N];
+  temp.keep = -1;
+  temp.last = (i == (2 * N-1));
+  y_stream << temp;
  }
 }
