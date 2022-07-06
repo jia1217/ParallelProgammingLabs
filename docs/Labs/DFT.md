@@ -2,6 +2,8 @@
 sort: 3
 ---
 
+# DFT
+
 <script type="text/x-mathjax-config">
   MathJax.Hub.Config({
     tex2jax: {
@@ -15,8 +17,6 @@ sort: 3
 <script type="text/javascript"
         src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
 </script>
-
-# DFT
 
 
 ## Introduction
@@ -268,7 +268,7 @@ int main () {
 
 The waveform is shown below:
 
-<img src="./imgs/mvm_vhls.png" alt="drawing" width="600"/>
+<img src="./imgs/mvm_vhls.png" alt="drawing" width="800"/>
 
 The waveform shows that the module has very low efficiency. Firstly, matrix A is reloaded every time. For an AXI stream bus, it requires $N^2$ clock cycles to reload the matrix, while the computation only requires $N$ cycles. This stops vector $x$ from being received continuously. Since in most cases, the matrix remains the same while the input vector varies (for example, DFT has a constant transform matrix). Secondly, this structure makes the new input $x$ be accessed by all rows, which means one FF in the final implementation is fanned out to $N$ receivers. When $N$ is small, it is still Okay, but when $N$ goes to hundreds or even thousands, it leads to high load capacitance that will slow down the circuit. Xilinx Vivado may use redundant resources to avoid too large a fanout, but it consequently increases the difficulty of routing.  
 The systolic array is a typical way to solve the problem. The systolic array uses interconnected independent data processing elements to achieve the final algorithm. The input of a PE comes from the outside or other PEs; the input from the outside and the output of PE are only fanned out to one receiver. Thus, a chain or a network of PEs is formed. In MVM, each PE can simply do the inner product (one row vector times one column vector). However, the input $x$ is only sent to the first PE (the first row) rather than all PEs like the simply unrolled implementation. The first PE then registers the input $x$ and sends it to the next PE (the second row). Therefore, PE can be simply described with the following figure and formula, where acc has to be cleared every time the calculation starts:
