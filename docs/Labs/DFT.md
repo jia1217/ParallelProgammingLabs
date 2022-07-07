@@ -2,6 +2,8 @@
 sort: 3
 ---
 
+# DFT
+
 <script type="text/x-mathjax-config">
   MathJax.Hub.Config({
     tex2jax: {
@@ -15,8 +17,6 @@ sort: 3
 <script type="text/javascript"
         src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
 </script>
-
-# DFT
 
 
 ## Introduction
