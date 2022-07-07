@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<autopilotfilemapping:AutoPilotFileMapping xmlns:autopilotfilemapping="www.autoesl.com/autopilotfilemapping">
-  <source>
-    <originFiles name="mvm_sa.hpp" path="/home/alfred/Projects/ParallelComputingLab/GitPage/Labs/MVM_SA/Vitis_HLS/mvm_sa.hpp"/>
-    <originFiles name="mvm_sa.cpp" path="/home/alfred/Projects/ParallelComputingLab/GitPage/Labs/MVM_SA/Vitis_HLS/mvm_sa.cpp"/>
-  </source>
-  <testbench/>
-</autopilotfilemapping:AutoPilotFileMapping>
