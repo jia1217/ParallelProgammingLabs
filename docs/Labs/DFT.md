@@ -645,8 +645,8 @@ systolic_array_gen_loop:
 
 In this implementation, the whole module is pipelined and the II is 1, which means it has the same performance as the DATAFLOW implementation. The PE and entire structure generated with this code are shown below:
 
-<img src="./imgs/PE_p.png" alt="drawing" width="300"/>
-<img src="./imgs/SA.png" alt="drawing" width="300"/>
+<img src="./imgs/PE_p.png" alt="drawing" width="350"/>
+<img src="./imgs/SA.png" alt="drawing" width="350"/>
 
 With the same specification ($N = 4$), the utilization is shown below:
 
