@@ -348,7 +348,6 @@ Disadvantages:
 > Not flushable:  
 >> Lead to deadlock in the dataflow.  
 >> Prevent already calculated output data from being delivered, if the inputs to the next iterations are missing.  
-
 > Timing issues due to high fanout on pipeline controls ("enable" signal distributed to all processing elements, or stages, in a pipeline structure).  
 
 Let us take a pipeline structure with three stages as an example. As is shown in the following figure, one "enable" signal is shared with three stages (this causes a fanout issue of the pipeline control signal). If the input data continuously comes in, a stalled pipeline should work properly. Now, considering a stream of data with a fixed length, after the last data arrives, the input valid becomes '0'. Since no valid data comes in after this, the first stage of the pipeline is closed (set "enable" to 0). Consequently, the second and third stages of the pipeline are also closed, stopping the data from flowing out from the pipeline (not flushable). 
