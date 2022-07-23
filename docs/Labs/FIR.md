@@ -390,7 +390,7 @@ The "enable" signal for the first stage is optional. It is only required when a 
 
 > (Important) Free-running kernel and free-running pipeline are different concepts. The free-running kernel means the entire module doesn't require any 'start' signal and is always ready to receive new data. The free-running pipeline is one structure to implement the pipeline.  
 
-### Optimization 5: Bitwidth optimization
+### Optimization 5: Bitwidth Optimization
 
 In C language supports variables with the following types:
 
