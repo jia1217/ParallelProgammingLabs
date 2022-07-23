@@ -128,7 +128,8 @@ The II = 2 comes from a fake data dependency. Since the hardware circuit is alwa
 
 >  The II Violation in module ... Unable to enforce a carried dependence constraint (II = 1, distance = 1, offset = 1) between '**store**' operation of variable 'shift_reg_load', ./srcs/fir.cpp:25 on array 'shift_reg' and '**store**' operation ('0_write_ln22', ./srcs/fir.cpp:22) of variable 'tmp_data_1_read' on array 'shift_reg'.
  
-### Optimization 1: Loop hoisting
+### Optimization 1
+: Loop hoisting
 
 The if/else operation is inefficient in for loop. Loop hoisted can be carried out.  "HLS tool creates logical hardware that checks if the condition is met, which is executed in every iteration of the loop. Furthermore, this conditional structure limits the execution of the statements in either the if or else branches; these statements can only be executed after the if condition statement is resolved."([Ref](https://kastner.ucsd.edu/hlsbook/)) Now the "Shift_Accum_Loop" becomes:
 
@@ -306,7 +307,7 @@ Without pipelining, the operations are executed one by one, and new data can onl
 
 Notice that no resources can be shared if the function is pipelined. Circuits at different stages are processing data simultaneously. For example, the circuit at the first stage is always processing the newest data, while the circuit at the second stage is always processing the data input (via shift register) from the previous cycle and the output from the first stage circuit. Hence, pipelining mostly requires more resources.
 
-To pipelining the loop, we can simply add a pragma to the source file (under the function or loop header). The syntax is: ([Ref](https://docs.xilinx.com/r/en-US/ug1399-vitis-hls/pragma-HLS-pipeline))
+To pipeline the loop, we can simply add a pragma to the source file (under the function or loop header). The syntax is: ([Ref](https://docs.xilinx.com/r/en-US/ug1399-vitis-hls/pragma-HLS-pipeline))
 
 ```
 #pragma HLS pipeline II=<int> off rewind style=<stp, frp, flp>
@@ -345,7 +346,6 @@ Advantages:
 
 Disadvantages:
 > Not flushable:  
-
 >> Lead to deadlock in the dataflow.  
 >> Prevent already calculated output data from being delivered, if the inputs to the next iterations are missing.  
 
