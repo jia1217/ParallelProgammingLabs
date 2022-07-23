@@ -604,7 +604,7 @@ make all IMPL=0
 vitis_hls -p fir
 ```
 
-The 'make' operation simply copies the correct file into the folder and then creates the Vitis_HLS project, synthesis the design and generates the Vivado IP (the IP is also extracted into the IP folder). The IMPL specifies which is optimization step has been done, the possible value is listed below, '0' is the final design: 
+The 'make' operation simply copies the correct file into the folder and then creates the Vitis_HLS project, synthesizes the design and generates the Vivado IP (the IP is also extracted into the IP folder). The IMPL specifies which is optimization step has been done, the possible value is listed below, '0' is the final design: 
 
 |  Version   | Description  |
 |  ----  | ----  |
