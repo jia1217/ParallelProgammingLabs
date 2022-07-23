@@ -375,13 +375,12 @@ In the FIR application, unless the input data comes directly from an ADC (infini
 Though the FLP reduces some fanout of the pipeline controlling signal, it is still not perfect as one pipeline may have hundreds of FFs to control. Free running pipeline further simplifies it.   
 Advantages:
 > Flushable
-
 > Better Timing:  
 >> Less fanout  
 >> simpler pipeline control logic  
 
 Disadvantages:
-> Moderate resource increase due to FIFOs added on outputs
+> Moderate resource increase due to FIFOs added on outputs; 
 > Energy inefficient  
 
 The structure is shown below:
