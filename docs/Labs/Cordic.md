@@ -79,7 +79,7 @@ $$
 \phi_i=\arctan(2^{-i}),i = 0,1,2,...
 $$
 
-We can get the corresponding angles as $45\degree, 26.57\degree, 14.04\degree, ...$. It can be proved that any angle with $0\to90\degree$ can be represented as the sum of these angles, which means with enough $\phi_i$ summed up, we can calculate any $\cos$ and $\sin$ values.  
+We can get the corresponding angles as $45\degree$, 26.57\degree, 14.04\degree, ...$. It can be proved that any angle with $0\to90\degree$ can be represented as the sum of these angles, which means with enough $\phi_i$ summed up, we can calculate any $\cos$ and $\sin$ values.  
 
 However, the multiplication with $\cos(\phi_i)$ hasn't been solved yet. Since
 
