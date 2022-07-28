@@ -105,7 +105,7 @@ void bit_reverse(cplx x_in[N],cplx x_out[N]){
 }
 ```
 
-Notice that the code put the original data into new places, which means the $x_{in}$ is accessed in order. This matches the nature of a stream interface so that the bit reverse operation can start immediately after the input comes and finish immediately after the input is received.
+Notice that the code put the original data into new places, which means the $x_{in}$ is accessed in order. This matches the nature of a stream interface so that the bit reverse operation can start immediately after the input comes and finish immediately after the input is received. The ```#ifndef __SYNTHESIS__``` and ```#endif``` is used to wrap the code that should be only used in the simulation. For example, the printf here is used to show the original index and the bit reversed index for debugging. This is an especially important skill when the function is complex and hard to deduce what is happening. Notice that standard C printf doesn't support fixed-point numbers, so we have to do a format transform when using fixed point numbers with either ```%d``` or ```%f```.
 
 The second code to write is the butterfly operation. Here is a simple implementation where **w_r** (**w_i**) is the real (imaginary) part of $W_N^k$:
 
@@ -133,8 +133,178 @@ void butterfly(cplx& y_l, cplx& y_h,cplx x_l, cplx x_h, dtype wr, dtype wi){
 }
 ```
 
-The INLINE pragma is used to avoid the overhead caused by function calling (function calling in hardware requires handshake logic, which requires extra logic and adds latency).
+The INLINE pragma ([Ref](https://docs.xilinx.com/r/en-US/ug1399-vitis-hls/pragma-HLS-inline)) is used to avoid the overhead caused by function calling (function calling in hardware requires handshake logic, which requires extra logic and adds latency) and reduce the hierarchy.
 
-# Implementation
+Since we are implementing 1024 point FFT on PYNQ Z2 (xz7z020) which has only 220 DSP slices, we have to carefully consider if the DSPs are enough. According to the final report, if we only use DSP slices to do the floating point multiplication, 234 DSP slices are required, which is over the capability of the board. Therefore, BIND_OP pragma ([Ref](https://docs.xilinx.com/r/en-US/ug1399-vitis-hls/pragma-HLS-bind_op)) is used to specify which resource to use when implementing the floating point multiplication. This pragma is applied to the result of the mathematical operation. For example, the code forces all floating point multiplication (fmul) used to generate **r_temp** to use medium DSP resource, which means partly use DSP and partly use logic fabric. This pragma can reduce the requirement of DSP resources and make the final implementation possible.
+
+Then the next step is to implement each stage in the FFT. Since different states have different structures, the stage number should also be one of the inputs of the stage function, and the stage function should be able to generate the butterflies according to the stage and $N$. Here is the implementation:
+
+```c++
+void fft_stage(cplx x_in[N], cplx x_out[N], int stage){
+    int butters_per_block = 1 << (stage - 1);
+    int points_per_block = 1 << (stage);
+    int blocks = 1 << (S - stage);
+#ifndef __SYNTHESIS__
+    printf("Stage %d, blocks = %d, butters per block = %d, points per block = %d\n",stage,blocks,butters_per_block,points_per_block);
+#endif
+    for (int j = 0; j < butters_per_block;j++){
+        idx_type k = j * blocks;
+        dtype wr = W_real[k];
+        dtype wi = W_imag[k];
+        for (int i = 0; i < blocks;i++){
+#pragma HLS pipeline
+            idx_type idx = points_per_block * i + j;
+#ifndef __SYNTHESIS__
+            printf("butter %d,%d\n",(int(idx)), int(idx+butters_per_block));
+#endif
+            butterfly(x_out[idx],x_out[idx + butters_per_block],x_in[idx],x_in[idx + butters_per_block], wr, wi);
+        }
+    }
+}
+```
+
+The first thing to determine is how many small FFT blocks are inside the stage. For example, the first stage of the $N=1024=2^{10}$ FFT should have 512 blocks of 2-point FFTs; and the second stage is then 256 blocks of 4-point FFT. Hence, we can decide that the number of blocks equals $2^{TotalStages - stage}$ (stage counts from 1). Then we have to decide how many points inside each block and obviously, it equals $N/(number of blocks) = 2^{stage} = 1 << stage$. Then, it is time to build the structure. Since the $W_N^k$ used in all FFT blocks are identical, the outer loop is the number of butterflies in each block so that we don't have to read from the ROM that saves $W_N^k$ all the time. Then, in each block, we apply the butterfly structure the according to data. Notice that, we only pipelined the inner loop, which means it always needs $N/2$ trip counts to finish one stage, which is slow compares to any unrolled structure. However, considering that the FFT always requires $N$ clock cycles to load that data and $N$ clock cycles to write out the result, it doesn't make sense to make the tasks inside FFT to be faster than $N$ clock cycles. For example, an $8$ point FFT has 3 stages, and we treat the bit reversal and each stage as a task. DATAFLOW pragma was introduced in DFT section to pipelining the tasks. As long as the middle tasks are no slower than the input/output stages, the FFT kernel can always receive new data and start processing. Therefore, unless we need minimum latency from the input to the output, we don't have to make the middle tasks too fast. That is why the loop is not unrolled here even when there is no data dependency exists between the loops, as you can see in the FFT structure (each source data is only read once and each output data is also only written once).
+
+
+The final step is to construct the entire FFT. Here is the final top function and the test bench:
+
+top:
+
+```c++
+void FFT(cplx_stream& x_in, cplx_stream& y_out){
+#pragma HLS INTERFACE mode=ap_ctrl_none port=return
+#pragma HLS INTERFACE mode=axis register_mode=both port=y_out register
+#pragma HLS INTERFACE mode=axis register_mode=both port=x_in register
+#pragma HLS DATAFLOW
+    cplx x_local[N];
+    cplx x_local_s[S+1][N];
+#pragma HLS ARRAY_PARTITION dim=1 variable=x_local_s type=complete
+
+    for (int i = 0; i < N; i++){
+        cplx_dp temp;
+        x_in >> temp;
+        x_local[i].real = temp.data.real;
+        x_local[i].imag = temp.data.imag;
+    }
+
+    bit_reverse(x_local, x_local_s[0]);
+#ifndef __SYNTHESIS__
+    for (int i = 0; i < N;i++){
+    	printf("%f, %f\n",x_local[i].real,x_local_s[0][i].real);
+    }
+#endif
+    for (int i = 1; i <= S; i++){
+#pragma HLS UNROLL
+    	fft_stage(x_local_s[i-1],x_local_s[i],i);
+    }
+
+    for (int i = 0; i < N; i++){
+        cplx_dp temp;
+        temp.data.real = x_local_s[S][i].real;
+        temp.data.imag = x_local_s[S][i].imag;
+        temp.keep = -1;
+        temp.last = (i == (N - 1));
+        y_out << temp;
+    }
+}
+```
+
+testbench:
+
+```c++
+#include "FFT.hpp"
+#include <math.h>
+
+#define PI (3.141592653f)
+
+int main(int argc, char* argv[]){
+    cplx_stream in_stream, out_stream;
+
+    float x[N];
+    float y[N];
+    for (int it = 0; it < 12;it++){
+		for (int i = 0;i < N;i++){
+			x[i] = cos(0.25 * PI * i);
+			cplx_dp temp;
+			temp.data.real = x[i];
+			temp.data.imag = 0;
+			temp.keep = -1;
+			temp.last = (i == (N - 1));
+			in_stream << temp;
+		}
+    }
+
+    for (int it = 0; it < 12;it++){
+    	FFT(in_stream,out_stream);
+    }
+
+    for (int it = 0; it < 12;it++){
+		for (int i = 0;i < N;i++){
+			cplx_dp temp;
+			out_stream >> temp;
+			y[i] = sqrt(temp.data.real * temp.data.real + temp.data.imag * temp.data.imag);
+		}
+    }
+    float max = y[0];
+    int max_idx = 0;
+    for (int i = 1;i < N;i++){
+    	if(y[i] > max){
+    		max = y[i];
+    		max_idx = i;
+    	}
+    }
+    if (max_idx / (float)N * 2 != 0.25){
+    	printf("Fail!\n");
+    	return 1;
+    }
+
+	printf("Pass!\n");
+    return 0;
+}
+```
+
+The top function is simple. It just links the bit reverse and all 10 FFT stages. As a DATAFLOW structure is used, a bunch of storage is required to connect all the stages. This is another advantage of FFT that in each transformation, the middle result from the stages is used and only used once. This enables the DATAFLOW structure as if the middle result is used by more than one following stage, the middle result has to be held in the registers and stops new data from coming.
 
 # Result
+
+In the simulation, we can see the waveform shown below:
+
+<img src="./imgs/fft_waveform.png" width="600"/>
+
+The kernel can receive data continuously and after $73.465\mu s$ latency, the result also comes continuously. Hence, the final average **II** is 1.
+
+
+After generating the bitstream (run ```make run``` in the Labs/FFT/Vivado/ folder). We can run it on PYNQ. Here is the code and result.
+
+```python
+from pynq import allocate
+from pynq import Overlay
+import numpy as np
+import matplotlib.pyplot as plt
+
+hw = Overlay("system.bit")
+dma = hw.axi_dma_0
+
+N = 1024
+ibuf = allocate((N,), dtype='csingle')
+obuf = allocate((N,), dtype='csingle')
+
+
+idx = np.arange(0,1024)
+ibuf[:] = np.cos(0.25 * np.pi * idx) + 0.5 * np.cos(0.125 * np.pi * idx) + 0.25 * np.cos(0.3765 * np.pi * idx)
+
+dma.sendchannel.transfer(ibuf)
+dma.recvchannel.transfer(obuf)
+
+nm_freq = idx[0:512]/512
+plt.figure(dpi=200)
+plt.stem(nm_freq,np.abs(obuf[0:512])/N,use_line_collection=True)
+plt.xlim([0,1])
+plt.xlabel('Normalzied frequency (0~1)')
+plt.ylabel('Magnitude')
+
+```
+
+<img src="./imgs/fft_exp.png" width="600"/>
+
+In this testing code, a signal with three frequency components is generated. The first two frequencies are at the bins so that they have a single peak at that frequency and the magnitude equals the time domain magnitude. The third frequency is not at the bins and therefore it has some leakages and the peak magnitude cannot fully represent the time domain magitude.
