@@ -159,14 +159,14 @@ load_A_loop:
     }
 
 COL_LOOP:
-	for (int i = 0; i < N; i++){
+	for (int j = 0; j < N; j++){
 #pragma HLS PIPELINE
 		data_axis_dp temp;
 		x_stream >> temp;
 ROW_LOOP:
-		for(int j = 0; j < N;j++){
+		for(int i = 0; i < N; i++){
 #pragma HLS UNROLL
-			local_y[j] += local_A[j][i] * temp.data;
+			local_y[i] += local_A[i][j] * temp.data;
 		}
 	}
 
