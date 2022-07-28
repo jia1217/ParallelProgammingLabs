@@ -26,7 +26,7 @@ $$
 X(k) = \sum_{n = 0}^{N - 1}x(n)e^{-j\frac{2\pi}{N}nk}
 $$
 
-Given a certain $k$, DFT is actully a inner product between series $x(n)$ and a complex rotating vector $e^{-j\frac{2k\pi}{N}n}$. Therefore, let $x(n)$ written as a column vector $\vec{x}$, and $e^{-j\frac{2k\pi}{N}n}$ written as a row vector $\vec T_k$, we have $X(k) = \vec T_k \cdot \vec x$. Hence, the entire transform becomes a Matrix-Vector Multiplication (MTV).
+Given a certain $k$, DFT is actully a inner product between series $x(n)$ and a complex rotating vector $e^{-j\frac{2k\pi}{N}n}$. Therefore, let $x(n)$ written as a column vector $\vec{x}$, and $e^{-j\frac{2k\pi}{N}n}$ written as a row vector $\vec T_k$, we have $X(k) = \vec T_k \cdot \vec x$. Hence, the entire transform becomes a Matrix-Vector Multiplication (MVM).
 
 $$
 \begin{equation}
@@ -54,7 +54,7 @@ Since DFT has a better implementation called FFT, in this experiment we focus on
 
 ## Inner product implementation
 
-The MTV can be treated as $N$ inner products between the row vectors in Matrix and the column vector. The inner product can be implemented with the following code:
+The MVM can be treated as $N$ inner products between the row vectors in Matrix and the column vector. The inner product can be implemented with the following code:
 
 ```c++
 int acc = 0;
@@ -67,9 +67,9 @@ The loop can either be pipelined or unrolled, depending on the data accessibilit
 
 <img src="./imgs/DotProduct.png" alt="drawing" width="600"/>
 
-## MTV Implementation
+## MVM Implementation
 
-The MTV is $N$ dot products. It can be realized with the following code:
+The MVM is $N$ dot products. It can be realized with the following code:
 
 ```c++
 int T[N][N];
