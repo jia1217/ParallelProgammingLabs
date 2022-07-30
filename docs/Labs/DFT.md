@@ -356,8 +356,8 @@ load_x_loop:
 			data_t a = (i >= j)?A_local[j][i - j]:0;
 			acc[j] = last + a * x;
 		}
-shift_x0_lopp:
-		for (int j = N-1; j > 0;j--){
+shift_x0_loop:
+		for (int j = N-1; j > 0; j--){
 #pragma HLS UNROLL
 			x_local[j] = x_local[j - 1];
 		}
