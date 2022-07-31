@@ -332,10 +332,10 @@ void mvm_sa(data_stream& x_stream, acc_stream& y_stream){
 #pragma HLS INTERFACE mode=axis port=y_stream
 #pragma HLS DATAFLOW
 	static const data_t A_local[N][N] = {
-			0,1,2,3,
-			4,5,6,7,
-			8,9,10,11,
-			12,13,14,15
+			0,    1,   2,   3,
+			4,    5,   6,   7,
+			8,    9,  10,  11,
+			12,  13,  14,  15
 	};
 #pragma HLS BIND_STORAGE variable=A_local type=rom_2p impl=bram latency=1
 #pragma HLS ARRAY_PARTITION variable=A_local dim=1 type=complete
