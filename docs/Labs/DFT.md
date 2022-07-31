@@ -495,10 +495,6 @@ Though the DATAFLOW can create the systolic array correctly, the DATAFLOW typica
 
 ```c++
 
-const int M = 4;
-const int Diodes = 6;
-const int Switches = 6;
-
 typedef ap_fixed<40,14> d_htype;
 typedef ap_fixed<80,14> d_htype_wide;
 typedef ap_fixed<80,28> d_htype_acc;
