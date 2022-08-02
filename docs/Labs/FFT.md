@@ -48,7 +48,7 @@ The two $\frac{N}{2}$ can be divided into two $\frac{N}{4}$ FFTs, and the struct
 
 <img src="./imgs/FFT_structure.png" width="600"/>
 
-Hence, to do FFT, we have to do the following steps:
+Hence, to perform FFT, we have to take the following steps:
 
 1. Resort the data, bit reverse.
 2. Calculate $W_N^0\to W_N^{\frac{N}{2}-1}$.
@@ -58,7 +58,7 @@ Hence, to do FFT, we have to do the following steps:
 
 ## Bit reverse
 
-The first step is to sort the input series differently. It is a little complex on software, but very easy on hardware. The software implementation is shown below:
+The first step is to sort the input series. It is a little complex on software, but very easy on hardware. The software implementation is shown below:
 
 ```c++
 unsigned int reverse_bits(unsigned int input) {
@@ -71,7 +71,7 @@ unsigned int reverse_bits(unsigned int input) {
 }
 ```
 
-This implementation is very slow as there is a data dependency between loops as the input is shifted right one by one. In hardware, bit reversing is simply reordering the wires. In HLS, the fixed point number defined by ap_fixed<> (or ap_ufixed<>) allows bitwise access, which means the fixed point number can also be viewed as an array of binary numbers ([Ref](https://docs.xilinx.com/r/en-US/ug1399-vitis-hls/Other-Class-Methods-Operators-and-Data-Members)). Therefore, we have the following simpler implementation:
+This implementation is slow as there is a data dependency between loops as the input is shifted right one by one. In hardware, bit reversing is simply reordering the wires. In HLS, the fixed point number defined by ap_fixed<> (or ap_ufixed<>) allows bitwise access, which means the fixed point number can also be viewed as an array of binary numbers ([Ref](https://docs.xilinx.com/r/en-US/ug1399-vitis-hls/Other-Class-Methods-Operators-and-Data-Members)). Therefore, we have the following simpler implementation:
 
 ```c++
 #define N 1024
@@ -90,7 +90,7 @@ idx_type idx_reverse(idx_type idx_in){
 }
 ```
 
-This code reverses the bit order and gets the new index value. This implementation is much better as the loop can be entirely unrolled, which gives minimum latency. It turned out that after synthesis, the index reverse function doesn't exist at all as it is nothing for hardware. Then, we can use the index to reorder the input series.
+This code reverses the bit order and outputs the new index value. This implementation is better as the loop can be entirely unrolled, which gives minimum latency. It turned out that after synthesis, the index reverse function doesn't exist at all as it is nothing for hardware (rewiring only). Then, we can use the index to reorder the input series.
 
 ```c++
 void bit_reverse(cplx x_in[N],cplx x_out[N]){
