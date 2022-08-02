@@ -39,7 +39,7 @@ X(k) &= \sum_{n = 0}^{N - 1}x(n)e^{-j\frac{2\pi}{N}nk}\\
 \end{aligned}
 $$
 
-Now, the $N$ point DFT is divided into two $\frac{N}{2}$ DFT. The combination of the two DFTs requires $N$ multiplications. Another trick is that $e^{j\pi}=-1$, so $W_N^k=e^{-j\frac{2\pi}{N}k}, k = 0\to N-1$ is an odd symetric series that $W_N^{k+\frac{N}{2}} = -W_N^k, k = 0\to \frac{N}{2}-1$. That gives the well-known radix-2 butterfly structure ([Ref](https://en.wikipedia.org/wiki/Butterfly_diagram)). Take 8 point FFT as an example, the stage is shown below:
+Now, the $N$ point DFT is divided into two $\frac{N}{2}$ DFT. The combination of the two DFTs requires $N$ multiplications. Another useful fact is that $W_N^{k+\frac{N}{2}} = -W_N^k$ ($k = 0\to \frac{N}{2}-1$). That gives the well-known radix-2 butterfly structure ([Ref](https://en.wikipedia.org/wiki/Butterfly_diagram)). Take 8 point FFT as an example, the stage is shown below:
 
 <img src="./imgs/EightPtFFTLastStage.png" width="600"/>
 
