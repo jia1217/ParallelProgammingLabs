@@ -90,7 +90,7 @@ idx_type idx_reverse(idx_type idx_in){
 }
 ```
 
-This code reverses the bit order and outputs the new index value. This implementation is better as the loop can be entirely unrolled, which gives minimum latency. It turned out that after synthesis, the index reverse function doesn't exist at all as it is nothing for hardware (rewiring only). Then, we can use the index to reorder the input series.
+This code reverses the bit order and outputs the new index value. This implementation is better as the loop can be entirely unrolled, which imposes minimum latency. It turns out that after synthesis, the index reverse function doesn't exist at all as it is nothing for hardware (rewiring only). Then, we can use the index to reorder the input series.
 
 ```c++
 void bit_reverse(cplx x_in[N],cplx x_out[N]){
@@ -105,9 +105,9 @@ void bit_reverse(cplx x_in[N],cplx x_out[N]){
 }
 ```
 
-Notice that the code put the original data into new places, which means the $x_{in}$ is accessed in order. This matches the nature of a stream interface so that the bit reverse operation can start immediately after the input comes and finish immediately after the input is received. The ```#ifndef __SYNTHESIS__``` and ```#endif``` is used to wrap the code that should be only used in the simulation. For example, the printf here is used to show the original index and the bit reversed index for debugging. This is an especially important skill when the function is complex and hard to deduce what is happening. Notice that standard C printf doesn't support fixed-point numbers, so we have to do a format transform when using fixed point numbers with either ```%d``` or ```%f```.
+Notice that the code puts the original data into new places, which means the $x_{in}$ is accessed in order. This matches the nature of a stream interface so that the bit reverse operation can start immediately after the first input data comes and finish immediately after the the last input data is received. The ```#ifndef __SYNTHESIS__``` and ```#endif``` is used to wrap the code that it only synthesizable in the simulation. For example, the printf here is used to show the original index and the bit reversed index for debugging. This is an especially important skill when the function is complex and hard to deduce what is happening. Notice that standard C printf doesn't support fixed-point numbers, so we have to do a format transform when using fixed point numbers with either ```%d``` or ```%f```.
 
-The second code to write is the butterfly operation. Here is a simple implementation where **w_r** (**w_i**) is the real (imaginary) part of $W_N^k$:
+The second script is the butterfly operation. Here is a simple implementation where **w_r** (**w_i**) is the real (imaginary) part of $W_N^k$:
 
 ```c++
 typedef float dtype;
