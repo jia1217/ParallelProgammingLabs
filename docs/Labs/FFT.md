@@ -271,8 +271,7 @@ In the simulation, we can see the waveform shown below:
 
 <img src="./imgs/fft_waveform.png" width="600"/>
 
-The kernel can receive data continuously and after $73.465\mu s$ latency, the result also comes continuously. Hence, the final average **II** is 1.
-
+The kernel can receive data in a batch (1024 data in a batch in this example) continuously and after $73.465\mu s$ (latency needed to process 1 batch), the result comes out continuously. Hence, the final **II** in a batch of data is 1. However, the **II** between different batches is not 1. A new batch needs to wait for about $73.465\mu s$ (latency needed to process 1 batch) to stream into the kernel.
 
 After generating the bitstream (run ```make run``` in the Labs/FFT/Vivado/ folder). We can run it on PYNQ. Here is the code and result.
 
