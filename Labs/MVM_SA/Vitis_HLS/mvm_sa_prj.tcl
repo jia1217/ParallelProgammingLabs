@@ -18,5 +18,5 @@ create_clock -period 10 -name default
 csynth_design
 #cosim_design
 
-export_design -rtl verilog -format ip_catalog -output ./IP
+export_design -rtl verilog -format ip_catalog -output ./IP/export.zip
 exit
