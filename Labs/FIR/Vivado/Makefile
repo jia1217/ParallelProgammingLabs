@@ -13,6 +13,6 @@ clean:
 
 
 move:
-	-@cp prj/$(PRJ_NAME).runs/impl_1/*.bit ./fir.bit
-	-@cp prj/fir/hw_handoff/fir.hwh ./
+	-@cp prj/$(PRJ_NAME).runs/impl_1/*.bit ./system.bit
+	-@cp prj/fir/hw_handoff/fir.hwh ./system.hwh
 
