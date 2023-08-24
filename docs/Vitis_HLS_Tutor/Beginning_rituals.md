@@ -11,22 +11,22 @@ Step 1: Open a new tab, search "palmetto documentation", and click the first lin
 
 Step 2: Click "Open onDemand" which appears in a black bar at the bottom of the screen:
 
-<img src="Images/Open_onDemand.png" alt="drawing" width="600"/>
+.<div align=center><img src="Images/Open_onDemand.png" alt="drawing" width="600"/></div>
 
 Step 3: Click "Interactive Apps" and choose "Palmetto Desktop" which is in an orange bar at the top of the screen
 
-<img src="Images/palmetto.png" alt="drawing" width="600"/>
+.<div align=center><img src="Images/palmetto.png" alt="drawing" width="600"/></div>
 
 Step 4: Choose the resolution, number of resource chunks, CPU cores per chunk, and amount of memory per chunk.
 Notice that: "Interconnect" should be set to "any".
 
-<img src="Images/Launch.png" alt="drawing" width="600"/>
+.<div align=center><img src="Images/Launch.png" alt="drawing" width="600"/></div>
 
 Step 5: Click "Launch".
 
 Step 6: In the following window, click "Launch Palmetto Desktop".
 
-<img src="Images/desktop.png" alt="drawing" width="600"/>
+.<div align=center><img src="Images/desktop.png" alt="drawing" width="600"/></div>
 
 ## Ritual 2
 
