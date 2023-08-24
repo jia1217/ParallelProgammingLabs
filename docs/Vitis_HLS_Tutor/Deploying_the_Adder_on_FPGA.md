@@ -13,13 +13,13 @@ If you have not used the PYNQ before, check the following link for setup:
 
 ## Step 2
 
-If you already have a basic idea of Jupyter on these boards, upload the '.bit' file and the '.hwh' file to Jupyter. In the same folder, create a new '.ipynb' file for writing the script.
+If you already have a basic idea of Jupyter on these boards, upload the `.bit` file and the `.hwh` file to Jupyter. In the same folder, create a new `.ipynb` file for writing the script.
 
 -[Overall Tutorial](https://pynq.readthedocs.io/en/v2.0/overlay_design_methodology/overlay_tutorial.html)
 
 ## Step 3
 
-Find the address offset of the memory ports ('a', 'b', and 'sum', in this example). This information can be found in the 'xtop_hw.h' file under 'solution1/impl/misc/drivers/top_v1_0/src' directory.
+Find the address offset of the memory ports (`a`, `b`, and `sum`, in this example). This information can be found in the `xtop_hw.h` file under `solution1/impl/misc/drivers/top_v1_0/src` directory.
 
 <div align=center><img src="Images/40.png" alt="drawing" width="600"/></div>
 
