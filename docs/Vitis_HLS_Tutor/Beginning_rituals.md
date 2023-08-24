@@ -34,7 +34,6 @@ Step 6: In the following window, click "Launch Palmetto Desktop".
 Open a terminal, run the shell command:
 
 ```bash
-cd workspace
 source /project/twei2/vitis/vitinstall/Vitis/2022.2/settings64.sh
 ```
 
@@ -45,7 +44,7 @@ To avoid this ritual every time you log in, you can create a file (for example v
 vim vitis_setup.sh
 ```
 
-In the ``` vitis_setup.sh``` file, we can input the following command:
+In the `vitis_setup.sh` file, we can input the following command:
 
 ```bash
 #!/bin/bash
@@ -62,8 +61,9 @@ source vitis_setup.sh
 ## Ritual 3
 
 Run the shell command:
+
 ```bash
 vitis_hls
 ```
-Then we open the vitis_hls gui.
+Then we open the vitis_hls GUI.
 

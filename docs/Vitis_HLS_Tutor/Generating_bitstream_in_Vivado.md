@@ -9,6 +9,6 @@ sort: 4
 Invoke Vivado GUI, run the shell commond:
 
 ```bash
-    vivado
+vivado
 ```
 
