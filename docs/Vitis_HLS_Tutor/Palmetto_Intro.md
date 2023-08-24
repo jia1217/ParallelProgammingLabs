@@ -6,6 +6,7 @@ sort: 1
 # Clemson Palmetto Server Introduction
 
 ## Create an account
+
 Step 1: Apply for a palmetto account on CCIT using the following link;
 
 - [Create palmetto account](http://clemson.cherwellondemand.com/CherwellPortal/IT/One-Step/CITIAccount)
