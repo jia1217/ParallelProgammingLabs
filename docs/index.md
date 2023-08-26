@@ -1,7 +1,5 @@
 # Parallel Progamming
 
-Documents for "Parallel Programming for FPGAs"
-
 ## Contents:
 
 - [Preparation](https://uri-nextlab.github.io/ParallelProgammingLabs/Vitis_HLS_Tutor)
