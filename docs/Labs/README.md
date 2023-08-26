@@ -3,7 +3,7 @@ sort: 2
 ---
 
 
-# Parallel Programming Labs
+# Labs
 
 <!-- {% include list.liquid %} -->
 
