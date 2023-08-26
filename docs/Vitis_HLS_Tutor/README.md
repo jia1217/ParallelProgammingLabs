@@ -7,7 +7,6 @@ sort: 1
 
 <!-- {% include list.liquid %} -->
 
-To get started
 - [Clemson Palmetto Server Introduction](https://uri-nextlab.github.io/ParallelProgammingLabs/Vitis_HLS_Tutor/Palmetto_Intro.html)
 - [Beginning Rituals](https://uri-nextlab.github.io/ParallelProgammingLabs/Vitis_HLS_Tutor/Beginning_rituals.html)
 - [Create Vitis HLS Project](https://uri-nextlab.github.io/ParallelProgammingLabs/Vitis_HLS_Tutor/Create_Vitis_HLS_prj.html)
