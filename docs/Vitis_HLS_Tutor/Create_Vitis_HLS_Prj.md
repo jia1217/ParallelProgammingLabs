@@ -1,9 +1,9 @@
 ---
 sort: 3
 ---
-
+<!--
 -[HLS Tutotial](https://akshaykamath.notion.site/HLS-Tutorial-dc7e388dc31641fba5002012e3e69204)
-
+-->
 # Create_Vitis_HLS_Project
 
 Vitis GUI should open as shown below.
