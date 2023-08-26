@@ -21,6 +21,6 @@ Step 3: The `/project/twei2` is a folder shared by Nextlab. Hence, your personal
 
 Take myself as an example, 
 
-'''bash
+```bash
     mkdir -p /project/twei2/home/michelle
-'''
+```
