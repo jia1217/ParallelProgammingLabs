@@ -4,7 +4,7 @@ Documents for "Parallel Programming for FPGAs"
 
 ## Contents:
 
-- [Labs](https://uri-nextlab.github.io/ParallelProgammingLabs/Vitis_HLS_Tutor)
+- [Preparation](https://uri-nextlab.github.io/ParallelProgammingLabs/Vitis_HLS_Tutor)
 
 - [Labs](https://uri-nextlab.github.io/ParallelProgammingLabs/Labs/)
 
