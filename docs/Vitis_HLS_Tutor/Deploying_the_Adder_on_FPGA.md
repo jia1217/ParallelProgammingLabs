@@ -15,7 +15,7 @@ If you have not used the PYNQ before, check the following link for setup:
 
 If you already have a basic idea of Jupyter on these boards, upload the `.bit` file and the `.hwh` file to Jupyter. In the same folder, create a new `.ipynb` file for writing the script.
 
--[Overall Tutorial](https://pynq.readthedocs.io/en/v2.0/overlay_design_methodology/overlay_tutorial.html)
+-[Overlay Tutorial](https://pynq.readthedocs.io/en/v2.0/overlay_design_methodology/overlay_tutorial.html)
 
 ## Step 3
 
