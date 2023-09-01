@@ -9,7 +9,7 @@ all:
 clean:
 	-@rm -f ./system.bit
 	-@rm -f ./system.hwh
-	-@rm -rf ./prj/*
+	-@rm -rf ./prj
 
 
 move:

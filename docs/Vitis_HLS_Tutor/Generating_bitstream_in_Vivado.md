@@ -3,7 +3,7 @@ sort: 4
 ---
 
 
-# Generating Bitstream in vivado
+# Generating Bitstream in Vivado
 
 ## Step 1
 
