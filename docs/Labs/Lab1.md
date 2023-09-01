@@ -35,13 +35,13 @@ After completing this lab, you will be able to:
 
 1. Launch Palmetto Desktop
 
-2. Open a new terminal. Notice that when you open a new terminal, the first step is sourcing the environment variables to run Vitis and Vivado.
+1. Open a new terminal. Notice that when you open a new terminal, the first step is sourcing the environment variables to run Vitis and Vivado.
 
 ```bash
     source /project/twei2/vitis/vitinstall/Vitis/2022.2/settings64.sh
 ```
 
-3. You can create a folder first for making the file path more clearly or run `vivado` directly, it up to you.
+1. You can create a folder first for making the file path more clearly or run `vivado` directly, it up to you.
 
 ```bash
     mkdir Lab1
@@ -49,9 +49,9 @@ After completing this lab, you will be able to:
     vivado
 ```
 
-4. Click *Create New Project*, and click *Next*. Then, give your project a name (i.e. project_1) and choose *RTL Project*. Making sure the *Project location* is the correct path that you want to save the project.
+1. Click *Create New Project*, and click *Next*. Then, give your project a name (i.e. project_1) and choose *RTL Project*. Making sure the *Project location* is the correct path that you want to save the project.
 
-5. Select the board, search `pynq` and choose `pynq-z2`, then click *Next* and *Finish*.
+1. Select the board, search `pynq` and choose `pynq-z2`, then click *Next* and *Finish*.
 
 <div align=center><img src="imgs/1_21.png" alt="drawing" width="600"/></div>
 
