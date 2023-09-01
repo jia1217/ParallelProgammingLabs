@@ -33,15 +33,15 @@ After completing this lab, you will be able to:
 
 ### Create a Vivado Project
 
-1. Launch Palmetto Desktop
+* Launch Palmetto Desktop
 
-2. Open a new terminal. Notice that when you open a new terminal, the first step is sourcing the environment variables to run Vitis and Vivado.
+* Open a new terminal. Notice that when you open a new terminal, the first step is sourcing the environment variables to run Vitis and Vivado.
 
 ```bash
     source /project/twei2/vitis/vitinstall/Vitis/2022.2/settings64.sh
 ```
 
-3. You can create a folder first for making the file path more clearly or run `vivado` directly, it up to you.
+* You can create a folder first for making the file path more clearly or run `vivado` directly, it up to you.
 
 ```bash
     mkdir Lab1
@@ -49,9 +49,9 @@ After completing this lab, you will be able to:
     vivado
 ```
 
-4. Click *Create New Project*, and click *Next*. Then, give your project a name (i.e. project_1) and choose *RTL Project*. Making sure the *Project location* is the correct path that you want to save the project.
+* Click *Create New Project*, and click *Next*. Then, give your project a name (i.e. project_1) and choose *RTL Project*. Making sure the *Project location* is the correct path that you want to save the project.
 
-5. Select the board, search `pynq` and choose `pynq-z2`, then click *Next* and *Finish*.
+* Select the board, search `pynq` and choose `pynq-z2`, then click *Next* and *Finish*.
 
 <div align=center><img src="imgs/1_21.png" alt="drawing" width="600"/></div>
 
@@ -71,7 +71,7 @@ There are three kinds of source files: constrains file, design source file and s
 
 ### Add code
 
-1. *Add design source code:* Double click the `lab1.v` file, and input the following code:
+* *Add design source code:* Double click the `lab1.v` file, and input the following code:
 
 ```verilog
     module lab1(
@@ -87,7 +87,7 @@ There are three kinds of source files: constrains file, design source file and s
     endmodule
 ```
 
-2. *Add simulation code:* Double click `lab1_tb.v`.
+* *Add simulation code:* Double click `lab1_tb.v`.
 
 ```verilog
     module lab1_tb();
@@ -126,7 +126,7 @@ There are three kinds of source files: constrains file, design source file and s
     endmodule
 ```
 
-3. *Add constraints code:* Double click `lab1.xdc`.
+* *Add constraints code:* Double click `lab1.xdc`.
 
 ```verilog
 # PYNQ Pin Assignments
@@ -153,17 +153,17 @@ Lines 5-8 define the pin locations for the input buttons and lines 13-16 define 
 
 ###  Simulate the design using the Vivado simulator
 
-1. Select *Settings* under the *Project Manager* tasks of the *Flow Navigator* pane.
+* Select *Settings* under the *Project Manager* tasks of the *Flow Navigator* pane.
 
-    A *Settings* form will appear showing the *Simulation* properties form.
+A *Settings* form will appear showing the *Simulation* properties form.
 
-2. Select the *Simulation* tab, and set the *Simulation Run Time* value to 200 ns and click *OK*.
+* Select the *Simulation* tab, and set the *Simulation Run Time* value to 200 ns and click *OK*.
 
 <div align=center><img src="imgs/1_3.png" alt="drawing" width="600"/></div>
 
-3. Click on *Simulation > Run Simulation > Run Behavioral Simulation* Under the *Project Manager* tasks of the *Flow Navigator* pane.
+* Click on *Simulation > Run Simulation > Run Behavioral Simulation* Under the *Project Manager* tasks of the *Flow Navigator* pane.
 
-    The testbench and source files will be compiled and the Vivado simulator will be run (assuming no errors). You will see a simulator output like the one shown below.
+The testbench and source files will be compiled and the Vivado simulator will be run (assuming no errors). You will see a simulator output like the one shown below.
 
 <div align=center><img src="imgs/1_4.png" alt="drawing" width="600"/></div>
 
@@ -186,7 +186,7 @@ It will show like the following figure.
 
 <div align=center><img src="imgs/1_5.png" alt="drawing" width="600"/></div>
 
-4. Back to vivado, you will see several buttons next to the waveform window which can be used for the specific purpose as listed in the figure blow.
+* Back to vivado, you will see several buttons next to the waveform window which can be used for the specific purpose as listed in the figure blow.
 
 <div align=center><img src="imgs/1_6.png" alt="drawing" width="600"/></div>
 
@@ -202,19 +202,19 @@ Select *i[31: 0]* in the waveform window, right-click, select Radix, and then se
 
 ### Add more signals to monitor the lower-level signals and continue to run the simulation for *500 ns*.
 
-1. Expand the *lab1_tb* instance, if necessary, in the Scopes window and select the *dut* instance.
+* Expand the *lab1_tb* instance, if necessary, in the Scopes window and select the *dut* instance.
 
-    The btn[3:0] and led[3:0] signals will be displayed in the Objects window.
+The btn[3:0] and led[3:0] signals will be displayed in the Objects window.
 
-2. Select *btn[3:0]* and *led[3:0]* and drag them into the waveform window to monitor those lower-level signals. 
+* Select *btn[3:0]* and *led[3:0]* and drag them into the waveform window to monitor those lower-level signals. 
 
 <div align=center><img src="imgs/1_9.png" alt="drawing" width="600"/></div>
 
-3. On the simulator tool buttons ribbon bar, type 500 over in the somulation run time field, click on the drop-down button of the units field and select *ns* since we want to run for 500 ns (total of 700 ns), and click on the *Run for 500ns* button. The simulation will run for an addtional 500 ns. 
+* On the simulator tool buttons ribbon bar, type 500 over in the somulation run time field, click on the drop-down button of the units field and select *ns* since we want to run for 500 ns (total of 700 ns), and click on the *Run for 500ns* button. The simulation will run for an addtional 500 ns. 
 
 <div align=center><img src="imgs/1_10.png" alt="drawing" width="600"/></div>
 
-4. Click on the *Zoom Fit* button and observe the output.
+* Click on the *Zoom Fit* button and observe the output.
 
 <div align=center><img src="imgs/1_11.png" alt="drawing" width="600"/></div>
 
@@ -222,35 +222,35 @@ Observe the Tcl Console window and see the output is being displayed as the test
 
 <div align=center><img src="imgs/1_12.png" alt="drawing" width="600"/></div>
 
-5. Close the simulator by select *File > Close Simulation*.
+* Close the simulator by select *File > Close Simulation*.
 
-6. Click *Ok* and then click *Discard* to close it without saving the waveform.
+* Click *Ok* and then click *Discard* to close it without saving the waveform.
 
 ### Synthesize the Design and Analyze the Project Summary Output.Synthesize the Design and Analyze the Project Summary Output
 
-1. Click on *Run Synthesis* under the *SYNTHESIS* tasks of the *Flow Navigator* pane.
+* Click on *Run Synthesis* under the *SYNTHESIS* tasks of the *Flow Navigator* pane.
 
-   The synthesis process will be run on the `lab1.v` file (and all its hierarchical files if they exist). When the process is completed a Synthesis Completed dialog box with three options will be displayed.
+The synthesis process will be run on the `lab1.v` file (and all its hierarchical files if they exist). When the process is completed a Synthesis Completed dialog box with three options will be displayed.
 
-2. Select the *Open Synthesized Design* option and click *OK* as we want to look at the synthesis output before progressing to the implementation stage.
+* Select the *Open Synthesized Design* option and click *OK* as we want to look at the synthesis output before progressing to the implementation stage.
 
-    Click *Yes* to close the elaborated design if the dialog box is displayed.
+Click *Yes* to close the elaborated design if the dialog box is displayed.
 
-3. Select the *Project Summary* tab and understand the various windows.
+* Select the *Project Summary* tab and understand the various windows.
 
-    If you don't see the Project summary tab then select *Window > Project Summary* or click the *Project Summary* icon.
+If you don't see the Project summary tab then select *Window > Project Summary* or click the *Project Summary* icon.
 
 <div align=center><img src="imgs/1_13.png" alt="drawing" width="600"/></div>
 
 Click on the various links to see what information they provide and which allows you to change the synthesis settings.
 
-4. Click on the *Table* tab in the *Project Summary* tab at the *Utilization* small window.
+* Click on the *Table* tab in the *Project Summary* tab at the *Utilization* small window.
 
 Notice that there are an estimated 3 LUTs and 8 IOs (4 input and 4 output) that are used.
 
 <div align=center><img src="imgs/1_14.png" alt="drawing" width="600"/></div>
 
-5. In the Flow Navigator, under Synthesis (expand Open Synthesized Design if necessary), click on *Schematic* to view the synthesized design in a schematic view.
+* In the Flow Navigator, under Synthesis (expand Open Synthesized Design if necessary), click on *Schematic* to view the synthesized design in a schematic view.
 
 <div align=center><img src="imgs/1_15.png" alt="drawing" width="600"/></div>
 
@@ -260,55 +260,55 @@ Using Windows Explorer, verify that `project_1.runs (in my project)` directory i
 
 ### Implement the Design
 
-1. Click on `Run Implementation` under the Implementation tasks of the Flow Navigator pane.
+* Click on `Run Implementation` under the Implementation tasks of the Flow Navigator pane.
 
 The implementation process will be run on the synthesized design. When the process is completed an Implementation Completed dialog box with three options will be displayed. You can choose to use how many jobs you want to implement this design. In general, more jobs consumes more computing resources and less runtime.
 
 <div align=center><img src="imgs/1_17.png" alt="drawing" width="600"/></div>
 
-2. Select *Open implemented design* and click *OK* as we want to look at the implemented design in a Device view tab.
+* Select *Open implemented design* and click *OK* as we want to look at the implemented design in a Device view tab.
 
-3. Click *Yes*, if promoted, to close the synthesized design. The implemented design will be opened.
+* Click *Yes*, if promoted, to close the synthesized design. The implemented design will be opened.
 
-4. In the Netlist pane, select one of the nets (e.g. led_OBUF[3]) and notice that the net displayed in the X1Y2 clock region in the Device view tab (you may have to zoom in to see it).
+* In the Netlist pane, select one of the nets (e.g. led_OBUF[3]) and notice that the net displayed in the X1Y2 clock region in the Device view tab (you may have to zoom in to see it).
 
-5. If it is not selected, click the *Routing Resources icon* to show routing resources. For example, I highlighted the *led_OBUF* net.
+* If it is not selected, click the *Routing Resources icon* to show routing resources. For example, I highlighted the *led_OBUF* net.
 
 <div align=center><img src="imgs/1_18.png" alt="drawing" width="600"/></div>
 
-6. Close the implemented design view by selecting *File > Close Implemented Design*, and select the *Project Summary* tab (you may have to change to the Default Layout view) and observe the results.
+* Close the implemented design view by selecting *File > Close Implemented Design*, and select the *Project Summary* tab (you may have to change to the Default Layout view) and observe the results.
 
-7. Select the *Post-Implementation* tab.
+* Select the *Post-Implementation* tab.
 
-    *Notice* that the actual resource utilization is 3 LUTs and 8 IOs. Also, it indicates that no timing constraints were defined for this design (since the design is combinational).
+*Notice* that the actual resource utilization is 3 LUTs and 8 IOs. Also, it indicates that no timing constraints were defined for this design (since the design is combinational).
 
 <div align=center><img src="imgs/1_19.png" alt="drawing" width="600"/></div>
 
 Using the Windows Explorer, verify that *impl_1* directory is created at the same level as *synth_1* under the `project_1.runs` directory. The *impl_1* directory contains several files including the implementation report files.
 
-8. In Vivado, select the *Reports* tab in the bottom panel (if not visible, click Window in the menu bar and select *Reports*), and double-click on the Utilization Report entry under the Place Design section. The report will be displayed in the auxiliary view pane showing resource utilization. Note that since the design is combinatorial, no registers are used.
+* In Vivado, select the *Reports* tab in the bottom panel (if not visible, click Window in the menu bar and select *Reports*), and double-click on the Utilization Report entry under the Place Design section. The report will be displayed in the auxiliary view pane showing resource utilization. Note that since the design is combinatorial, no registers are used.
 
 ### Perform Timing Simulation
 
-1. Select *Run Simulation > Run Post-Implementation Timing Simulation* process under the Simulation tasks of the Flow Navigator pane.
+* Select *Run Simulation > Run Post-Implementation Timing Simulation* process under the Simulation tasks of the Flow Navigator pane.
 
-    The Vivado simulator will be launched using the implemented design and `lab1_tb` as the top-level module.
+The Vivado simulator will be launched using the implemented design and `lab1_tb` as the top-level module.
 
-    Using the Windows Explorer, verify that timing directory is created under the *project_1.sim > sim_1 > impl* directory. The timing directory contains generated files to run the timing simulation.
+Using the Windows Explorer, verify that timing directory is created under the *project_1.sim > sim_1 > impl* directory. The timing directory contains generated files to run the timing simulation.
 
-2. Click on the Zoom Fit button to see the waveform window from 0 to 200 ns.
+* Click on the Zoom Fit button to see the waveform window from 0 to 200 ns.
 
-3. Right-click at 50 ns (where the btns input is set to 0000b) and select *Markers > Add Marker*.
+* Right-click at 50 ns (where the btns input is set to 0000b) and select *Markers > Add Marker*.
 
-4. Similarly, right-click and add a marker at around 58.000 ns where the *leds* changes.
+* Similarly, right-click and add a marker at around 58.000 ns where the *leds* changes.
 
-5. You can also add a marker by clicking on the *Add Marker* button. Click on the *Add Marker* button and left-click at around 60 ns where *e_led* changes.
+* You can also add a marker by clicking on the *Add Marker* button. Click on the *Add Marker* button and left-click at around 60 ns where *e_led* changes.
 
 <div align=center><img src="imgs/1_20.png" alt="drawing" width="600"/></div>
 
-   Notice that we monitored the expected led output at 10 ns after the input is changed (see the testbench) whereas the actual delay is about 8 to 9.7 ns (depending on the board).
+Notice that we monitored the expected led output at 10 ns after the input is changed (see the testbench) whereas the actual delay is about 8 to 9.7 ns (depending on the board).
 
-6. Close the simulator by selecting *File > Close Simulation* without saving any changes.
+* Close the simulator by selecting *File > Close Simulation* without saving any changes.
 
 ### Generate the Bitstream
 
@@ -316,23 +316,23 @@ Using the Windows Explorer, verify that *impl_1* directory is created at the sam
 
 In order to let it work successfully, we need to add *PS* part first.
 
-1. Click *Create Block design* under *IP INTEGRATOR*, then click *OK*.
+* Click *Create Block design* under *IP INTEGRATOR*, then click *OK*.
 
-2. Click *+ (Add IP)*, search *zynq* and choose *ZYNQ7 Processing System*.
+* Click *+ (Add IP)*, search *zynq* and choose *ZYNQ7 Processing System*.
 
-3. Click `Run Block Automation`. Then connect the `FCLK_CLK0` and `M_AXI_GP0_ACLK` together.
+* Click `Run Block Automation`. Then connect the `FCLK_CLK0` and `M_AXI_GP0_ACLK` together.
 
 <div align=center><img src="imgs/1_22.png" alt="drawing" width="600"/></div>
 
-4. Right click `lab1` under the *Sources* window and choose `Add Module to Block Design`. In the Diagram window, you will see the *lab1_v1_0* module has been added to the block design, move the cursor to the *btn*, right click and choose *Make External*. Do the same thing on *led[3: 0]*. 
+* Right click `lab1` under the *Sources* window and choose `Add Module to Block Design`. In the Diagram window, you will see the *lab1_v1_0* module has been added to the block design, move the cursor to the *btn*, right click and choose *Make External*. Do the same thing on *led[3: 0]*. 
 
 <div align=center><img src="imgs/1_23.png" alt="drawing" width="600"/></div>
 
-5. Right click in the blank *Diagram* region and choose *Validate Design*, then click *OK*.
+* Right click in the blank *Diagram* region and choose *Validate Design*, then click *OK*.
 
-6. Right click `design_1` and choose *Create HDL wrapper*, then click *Set as top*.
+* Right click `design_1` and choose *Create HDL wrapper*, then click *Set as top*.
 
-7. Expand the `design_1_wrapper` and double click `design_1(design_1.v)`. Check the port of this module and change the constraints file.
+* Expand the `design_1_wrapper` and double click `design_1(design_1.v)`. Check the port of this module and change the constraints file.
 
 ```verilog
 module design_1
@@ -377,11 +377,11 @@ set_property -dict { PACKAGE_PIN N16   IOSTANDARD LVCMOS33 } [get_ports { led_0[
 set_property -dict { PACKAGE_PIN M14   IOSTANDARD LVCMOS33 } [get_ports { led_0[3] }];
 ```
 
-8. Click *Generate Bitstream* under *PROGRAM AND DEBUG*, then click *OK*. 
+* Click *Generate Bitstream* under *PROGRAM AND DEBUG*, then click *OK*. 
 
 This process will have generated a `design_1_wrapper.bit` file under the *project_1.runs > impl_1* directory.
 
-9. We need to download the `design_1_wrapper.bit` to local machine. Back to *dashboard-launch Palmetto Desktop*, click `Files` in the orange bar and choose `Home Directory`. Go to `Lab1/project_1/project_1.runs/impl_1` and download `design_1_wrapper.bit`.
+* We need to download the `design_1_wrapper.bit` to local machine. Back to *dashboard-launch Palmetto Desktop*, click `Files` in the orange bar and choose `Home Directory`. Go to `Lab1/project_1/project_1.runs/impl_1` and download `design_1_wrapper.bit`.
 
 ### Verify Functionality
 
@@ -397,6 +397,8 @@ This process will have generated a `design_1_wrapper.bit` file under the *projec
 
 6. The example code to download the *bit* file.
 
+7. Then you can verify the function. 
+
 ```python
     from pynq import Overlay
     from pynq import Bitstream
@@ -404,8 +406,6 @@ This process will have generated a `design_1_wrapper.bit` file under the *projec
     bit.download()
     bit.bitfile_name
 ```
-
-7. Then you can verify the function. 
 
 ## Conclusion
 
