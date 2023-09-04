@@ -76,7 +76,7 @@ class UartAXI:
             # Check timeout
             if time()>stop_time:
                 break
-            self.uart.write(TX_FIFO, ord(i))
+            self.uart.write(TX_FIFO, i)
             wr_count += 1
         return wr_count
 
