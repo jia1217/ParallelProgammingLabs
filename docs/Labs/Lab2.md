@@ -317,7 +317,27 @@ find . -name *.hwh
 
 -[PYNQ code](https://github.com/parthpower/axi_uartlite_pynq/tree/master)
 
-3. Following the similar step in the Lab1. Upload `.bit` and `.hwh`, make sure they are the same name. Copy `uartlite.py` from the upper github source to the folder.
+3. Following the similar step in the Lab1. Upload `.bit` and `.hwh`, make sure they are the same name. Copy `uartlite.py` from the upper github source to the folder. Here, we need to fix the `write function` to fit our project.
+
+```python
+def write(self, buf, timeout = 10):
+        """
+        buf: iterable
+        
+        """
+        stop_time = time() + timeout
+        wr_count = 0
+        for i in buf:
+            #Wait while TX FIFO is Full, stop waiting if timeout passes 
+            while (self.uart.read(STAT_REG) & 1<<TX_FULL) and (time()<stop_time):
+                pass
+            # Check timeout
+            if time()>stop_time:
+                break
+            self.uart.write(TX_FIFO, i)
+            wr_count += 1
+        return wr_count   
+```
 
 4. Create a new `Python3`.
 
