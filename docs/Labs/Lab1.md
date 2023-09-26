@@ -210,13 +210,13 @@ The btn[3:0] and led[3:0] signals will be displayed in the Objects window.
 
 <div align=center><img src="imgs/1_9.png" alt="drawing" width="600"/></div>
 
-* On the simulator tool buttons ribbon bar, type 500 over in the somulation run time field, click on the drop-down button of the units field and select *ns* since we want to run for 500 ns (total of 700 ns), and click on the *Run for 500ns* button. The simulation will run for an addtional 500 ns. 
+* On the simulator tool buttons ribbon bar, type 500 in the simulation run time field, click on the drop-down button of the units field and select *ns* since we want to run for 500 ns (total of 700 ns), and click on the *Run for 500ns* button. The simulation will run for an addtional 500 ns. 
 
-<div align=center><img src="imgs/1_10.png" alt="drawing" width="600"/></div>
+<div align=center><img src="imgs/1_10.png" alt="drawing" width="400"/></div>
 
 * Click on the *Zoom Fit* button and observe the output.
 
-<div align=center><img src="imgs/1_11.png" alt="drawing" width="600"/></div>
+<div align=center><img src="imgs/1_11.png" alt="drawing" width="1000"/></div>
 
 Observe the Tcl Console window and see the output is being displayed as the testbench uses the `$display` task.
 
@@ -238,9 +238,9 @@ Click *Yes* to close the elaborated design if the dialog box is displayed.
 
 * Select the *Project Summary* tab and understand the various windows.
 
-If you don't see the Project summary tab then select *Window > Project Summary* or click the *Project Summary* icon.
+If you don't see the Project Summary tab then select *Window > Project Summary* or click the *Project Summary* icon.
 
-<div align=center><img src="imgs/1_13.png" alt="drawing" width="600"/></div>
+<div align=center><img src="imgs/1_13.png" alt="drawing" width="1000"/></div>
 
 Click on the various links to see what information they provide and which allows you to change the synthesis settings.
 
@@ -252,11 +252,11 @@ Notice that there are an estimated 3 LUTs and 8 IOs (4 input and 4 output) that 
 
 * In the Flow Navigator, under Synthesis (expand Open Synthesized Design if necessary), click on *Schematic* to view the synthesized design in a schematic view.
 
-<div align=center><img src="imgs/1_15.png" alt="drawing" width="600"/></div>
+<div align=center><img src="imgs/1_15.png" alt="drawing" width="800"/></div>
 
 Using Windows Explorer, verify that `project_1.runs (in my project)` directory is created under project1. Under the runs directory, synth_1 directory is created which holds several files related to synthesis.
 
-<div align=center><img src="imgs/1_16.png" alt="drawing" width="600"/></div>
+<div align=center><img src="imgs/1_16.png" alt="drawing" width="300"/></div>
 
 ### Implement the Design
 
@@ -264,7 +264,7 @@ Using Windows Explorer, verify that `project_1.runs (in my project)` directory i
 
 The implementation process will be run on the synthesized design. When the process is completed an Implementation Completed dialog box with three options will be displayed. You can choose to use how many jobs you want to implement this design. In general, more jobs consumes more computing resources and less runtime.
 
-<div align=center><img src="imgs/1_17.png" alt="drawing" width="600"/></div>
+<div align=center><img src="imgs/1_17.png" alt="drawing" width="400"/></div>
 
 * Select *Open implemented design* and click *OK* as we want to look at the implemented design in a Device view tab.
 
@@ -274,7 +274,7 @@ The implementation process will be run on the synthesized design. When the proce
 
 * If it is not selected, click the *Routing Resources icon* to show routing resources. For example, I highlighted the *led_OBUF* net.
 
-<div align=center><img src="imgs/1_18.png" alt="drawing" width="600"/></div>
+<div align=center><img src="imgs/1_18.png" alt="drawing" width="1000"/></div>
 
 * Close the implemented design view by selecting *File > Close Implemented Design*, and select the *Project Summary* tab (you may have to change to the Default Layout view) and observe the results.
 
@@ -282,7 +282,7 @@ The implementation process will be run on the synthesized design. When the proce
 
 *Notice* that the actual resource utilization is 3 LUTs and 8 IOs. Also, it indicates that no timing constraints were defined for this design (since the design is combinational).
 
-<div align=center><img src="imgs/1_19.png" alt="drawing" width="600"/></div>
+<div align=center><img src="imgs/1_19.png" alt="drawing" width="1000"/></div>
 
 Using the Windows Explorer, verify that *impl_1* directory is created at the same level as *synth_1* under the `project_1.runs` directory. The *impl_1* directory contains several files including the implementation report files.
 
@@ -304,7 +304,7 @@ Using the Windows Explorer, verify that timing directory is created under the *p
 
 * You can also add a marker by clicking on the *Add Marker* button. Click on the *Add Marker* button and left-click at around 60 ns where *e_led* changes.
 
-<div align=center><img src="imgs/1_20.png" alt="drawing" width="600"/></div>
+<div align=center><img src="imgs/1_20.png" alt="drawing" width="1000"/></div>
 
 Notice that we monitored the expected led output at 10 ns after the input is changed (see the testbench) whereas the actual delay is about 8 to 9.7 ns (depending on the board).
 
@@ -322,7 +322,7 @@ In order to let it work successfully, we need to add *PS* part first.
 
 * Click `Run Block Automation`. Then connect the `FCLK_CLK0` and `M_AXI_GP0_ACLK` together.
 
-<div align=center><img src="imgs/1_22.png" alt="drawing" width="600"/></div>
+<div align=center><img src="imgs/1_22.png" alt="drawing" width="400"/></div>
 
 * Right click `lab1` under the *Sources* window and choose `Add Module to Block Design`. In the Diagram window, you will see the *lab1_v1_0* module has been added to the block design, move the cursor to the *btn*, right click and choose *Make External*. Do the same thing on *led[3: 0]*. 
 
