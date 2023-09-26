@@ -13,6 +13,8 @@ The design consists of a uart receiver receiving the input typed on a keyboard a
 
 After completing this lab, you will be able to:
 
+* Use the provided Xilinx Design Constraint (XDC) file to constrain the timing of the circuit.
+
 * Elaborate on the design and understand the output.
 
 * Analyze the output of the synthesized design.
@@ -286,7 +288,7 @@ A Create New Run dialog box will appear asking you if a new run should be create
 
 <div align=center><img src="imgs/2_26.png" alt="drawing" width="600"/></div>
 
-#### Implement the Design
+### Implement the Design
 
 * Click *Create Block Design* under *IP INTEGRATOR*. Click *+ (Add IP)* and search *zynq*, add *ZYNQ7 Processing Syatem* into the block design.
 
@@ -316,11 +318,12 @@ Double click `util_vector_logic` and set the `C_SIZE` as 1 and select the *not* 
 
 * Following the left steps in the Lab1.
 
-#### Generate the Bitstream
+
+### Generate the Bitstream
 
 * Click *Generate Bitstream* under *PROGRAM AND DEBUG*
 
-#### Verify the Functionality
+### Verify the Functionality
 
 1. Download the `.bit` file and `.hwh` file to your local PC. If you cannot find these two files, open a new terminal and go the project path, then run the shell command:
 
