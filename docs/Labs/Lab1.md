@@ -67,7 +67,7 @@ There are three kinds of source files: constrains file, design source file and s
 
 2. Execute similar steps to add both the constraints file and the simulation sources file.
 
-<div align=center><img src="imgs/1_2.png" alt="drawing" width="250"/></div>
+<div align=center><img src="imgs/1_2.png" alt="drawing" width="300"/></div>
 
 ### Add code
 
@@ -182,9 +182,9 @@ For example, I create a new folder named *Lab1*, and name the project *project_1
     cd Lab1/project_1
     tree project_1.sim
 ```
-It will show like the following figure.
+The display will resemble the figure below.
 
-<div align=center><img src="imgs/1_5.png" alt="drawing" width="300"/></div>
+<div align=center><img src="imgs/1_5.png" alt="drawing" width="250"/></div>
 
 * Back to vivado, you will see several buttons next to the waveform window which can be used for the specific purpose as listed in the figure blow.
 
