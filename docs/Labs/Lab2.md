@@ -262,8 +262,6 @@ Select File > Checkpoint > Write to save the processed design so it can be opene
 
 * In the netlist tab, select the top-level instance, uart_led, right-click and select Show Hierarchy. You will see how the blocks are hierarchically connected.
 
-* Select Reports > Timing > Report Timing Summary and click OK to see the report you saw previously.
-
 * Select Reports > Report Utilization and click OK to see the utilization report you saw previously.
 
 * Select File > Open Checkpoint, select uart_led.dcp.
@@ -296,23 +294,26 @@ A Create New Run dialog box will appear asking you if a new run should be create
 
 * In the `Sources` under *BlOCK DESIGN*, right click `uart_led` and choose *Add module to block design*.
 
-* Back to *Diagram* window, add `axi uartlite` module.
+<div align=center><img src="imgs/2_31.png" alt="drawing" width="600"/></div>
+
+* Back to *Diagram* window, add `axi uartlite` module. Double click this module, and config it as the following figure.
 
 <div align=center><img src="imgs/2_28.png" alt="drawing" width="600"/></div>
 
-* Right click in the blank part and choose *Create port*. Set the port name to be *clk_pin_0*, set the *Type* as *Clock* and the *Frequency* as 125 MHz. And connect this port to `uart_led's clk_pin` and `ZYNQ7 Processing System's M_AXI_GP0_ACLK`. In order to provent the `rx` port of `AXI Uartlite` from hanging, connect the `rx` and the `FCLK_RESET0_N` of `ZYNQ& PROCESSING SYSTEM`. We need to consider other ports, like `interrupt` of `AXI Uartlite`, because this port is the output port.
+* Right click in the blank part and choose *Create port*. Set the port name to be *clk_pin_0*, set the *Type* as *Clock* and the *Frequency* as 125 MHz. And connect this port to `uart_led's clk_pin` and `ZYNQ7 Processing System's M_AXI_GP0_ACLK`.
 
 <div align=center><img src="imgs/2_23.png" alt="drawing" width="600"/></div>
 
 * The `rst_pin` of `uart_led` module is active high. So add `util_vector_logic` as a bridge that connect the `peripheral_areset` of `Processor System Reset`.
 
-Double click `util_vector_logic` and set the `C_SIZE` as 1 and select the *not* operation.
+  Double click `util_vector_logic` and set the `C_SIZE` as 1 and select the *not* operation.
 
 <div align=center><img src="imgs/2_24.png" alt="drawing" width="600"/></div>
 
 * Expand `UART` in the `axi_uartlite` module, and connect `tx` to `rxd_pin` port of `uart_led` module. Connect `rx` to the `FCLK_RESET0_N` of `ZYNQ7 Processing System`.
 
-* Click `Run Connection Automation` and `Run Block Automation`, remember that don't choose UART, then click *OK*.
+* Click `Run Connection Automation` and `Run Block Automation`, remember that don't choose UART, then click *OK*. In order to provent the `rx` port of `AXI Uartlite` from hanging, connect the `rx` and the `FCLK_RESET0_N` of `ZYNQ& PROCESSING SYSTEM`. We need to consider other ports, like `interrupt` of `AXI Uartlite`, because this port is the output port.
+
 
 <div align=center><img src="imgs/2_22.png" alt="drawing" width="600"/></div>
 
