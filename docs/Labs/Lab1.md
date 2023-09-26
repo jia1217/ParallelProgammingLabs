@@ -202,7 +202,7 @@ Select *i[31: 0]* in the waveform window, right-click, select Radix, and then se
 
 ### Add more signals to monitor the lower-level signals and continue to run the simulation for *500 ns*.
 
-* Expand the *lab1_tb* instance, if necessary, in the Scopes window and select the *dut* instance.
+* Expand the *lab1_tb* instance, if necessary, in the Scopes window and select the *dut* (Device Under Test) instance.
 
 The btn[3:0] and led[3:0] signals will be displayed in the Objects window.
 
