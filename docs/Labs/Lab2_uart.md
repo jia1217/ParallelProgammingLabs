@@ -250,21 +250,21 @@ Change the name from synth_1_copy_1 to synth_flatten and click OK. Click Run Syn
 
 #### Write the checkpoint in order to analyze the results without going through the actual synthesis process.
 
-Select File > Checkpoint > Write to save the processed design so it can be opened later for further analysis. A dialog box will appear showing the default name of the file in the current project directory. Click OK.
+* Select *File > Checkpoint > Write* to save the processed design so it can be opened later for further analysis. A dialog box will appear showing the default name of the file in the current project directory. Click OK.
 
 ### Read the Checkpoints: Read the previously saved checkpoint (checkpoint_1) in order to analyze the results without going through the actual synthesis process.
 
-* Launch Vivado and select *File > Checkpoint > Open ** at the *Getting Started Screen. Browse to {TUTORIAL}/lab2 and select uart_led.dcp or system_wrapper.dcp. Click OK.
+* Launch Vivado and select *File > Checkpoint > Open* at the *Getting Started* Screen. Browse to {TUTORIAL}/lab2 and select uart_led.dcp or system_wrapper.dcp. Click OK.
 
 * If the schematic isn’t open by default, in the netlist tab, select the top-level instance, uart_led/system_wrapper, right-click and select Schematic. You will see the hierarchical blocks. You can double-click on any of the first-level block and see the underlying blocks. You can also select any lower-level block in the netlist tab, right-click and select Schematic to see the corresponding level design.
 
 * In the netlist tab, select the top-level instance, uart_led, right-click and select Show Hierarchy. You will see how the blocks are hierarchically connected.
 
-* Select Reports > Timing > Report Timing Summary and click OK to see the report you saw previously.
+* Select *Reports > Timing > Report Timing Summary* and click OK to see the report you saw previously.
 
-* Select Reports > Report Utilization and click OK to see the utilization report you saw previously.
+* Select *Reports > Report Utilization* and click OK to see the utilization report you saw previously.
 
-* Select File > Open Checkpoint, browse to {TUTORIAL}/lab2 and select uart_led.dcp or system_wrapper.dcp.
+* Select *File > Open Checkpoint*, browse to {TUTORIAL}/lab2 and select uart_led.dcp or system_wrapper.dcp.
 
 * Click No to keep the Checkpoint_1 open. This will invoke second Vivado GUI.
 
