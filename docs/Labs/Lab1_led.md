@@ -3,7 +3,7 @@ sort: 1
 ---
 
 
-# Lab1 led 
+# Lab1_led 
 
 This lab guides you through the process of using Vivado IDE to create a simple HDL design targeting the PYNQ-Z2. You will simulate, synthesize, and implement the design with default settings. Finally, you will generate the bitstream and download it into the hardware to verify the design functionality.
 
