@@ -194,7 +194,7 @@ We can click the fifth pattern (Zoom Fit) to see the entire waveform. Notice tha
 
 <div align=center><img src="imgs/1_7.png" alt="drawing" width="600"/></div>
 
-<div align=center><img src="imgs/1_8.png" alt="drawing" width="600"/></div>
+<div align=center><img src="imgs/1_8.png" alt="drawing" width="200"/></div>
 
 ### Change display format if desired
 
