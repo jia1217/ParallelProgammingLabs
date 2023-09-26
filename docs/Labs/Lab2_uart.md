@@ -45,11 +45,11 @@ After completing this lab, you will be able to:
 
 * Because there are only 4 leds on PYNQ_Z2 board, so we need to fix the code in three files: `led_ctl.v`, `uart_led.v` and `uart_led_pins_pynq.xdc`.
 
-* We don't need to add `uart_led_timing_pynq.xdc` file, it will lead to `setup timing problem`. While one of objectives of this lab was to instruct us on timing analysis for such issues, I believe adding timing constraints to LEDs is not essential in this context. However, if you're interested in learning more about timing analysis, please refer to the document provided.
+* We don't need to add `uart_led_timing_pynq.xdc` file, it will lead to `setup timing problem`. While one of objectives of this lab was to instruct us on timing analysis for such issues, I believe adding timing constraints to LEDs is not essential. However, if you're interested in learning more about timing analysis and constaints, please refer to the document provided.
 
 -[Document timing](https://docs.xilinx.com/r/en-US/ug949-vivado-design-methodology/Defining-Timing-Constraints-in-Four-Steps)
 
-* Double click `led_ctl.v`.
+* Double click on `led_ctl.v`.
 
 ```verilog
 module led_ctl(
@@ -178,7 +178,7 @@ set_property PACKAGE_PIN W6 [get_ports rxd_pin]
 
 * Expand the Open Elaborated Design entry under the RTL Analysis tasks of the Flow Navigator pane and click on Schematic. The model (design) will be elaborated and a logical view of the design is displayed.
 
-<div align=center><img src="imgs/2_2.png" alt="drawing" width="600"/></div>
+<div align=center><img src="imgs/2_2.png" alt="drawing" width="1000"/></div>
 
 You will see four components at the top-level, 2 instances of meta_harden, one instance of uart_rx, and one instance of led_ctl.
 
@@ -186,7 +186,7 @@ You will see four components at the top-level, 2 instances of meta_harden, one i
 
 * Double-click on the uart_rx_i0 instance in the schematic diagram to see the underlying components.
 
-<div align=center><img src="imgs/2_3.png" alt="drawing" width="600"/></div>
+<div align=center><img src="imgs/2_3.png" alt="drawing" width="1000"/></div>
 
 * Click on Report Noise under the Open Elaborated Design entry of the RTL Analysis tasks of the Flow Navigator pane. Click Ok to generate the report named `ssn_1`. View the `ssn_1` report and observe the unplaced ports. 
 
@@ -210,7 +210,7 @@ The synthesis process will be run on the uart_led.v and all its hierarchical fil
 
 * Click on Schematic under the Open Synthesized Design tasks of Synthesis tasks of the Flow Navigator pane to view the synthesized design in a schematic view.
 
-<div align=center><img src="imgs/2_6.png" alt="drawing" width="600"/></div>
+<div align=center><img src="imgs/2_6.png" alt="drawing" width="1000"/></div>
 
 Notice that IBUF and OBUF are automatically instantiated (added) to the design as the input and output are buffered. There are still four lower level modules instantiated.
 
@@ -232,7 +232,7 @@ Notice that IBUF and OBUF are automatically instantiated (added) to the design a
 
 * Click Report Power under the Synthesized Design, and click OK to generate the estimated power consumption report using default values. Note that this is just an estimate as no simulation run data was provided and no accurate activity rate, or environment information was entered. 
 
-<div align=center><img src="imgs/2_12.png" alt="drawing" width="600"/></div>
+<div align=center><img src="imgs/2_12.png" alt="drawing" width="1000"/></div>
 
 #### Write the checkpoint in order to analyze the results without going through the actual synthesis process.
 
@@ -246,7 +246,7 @@ Notice that IBUF and OBUF are automatically instantiated (added) to the design a
 
 Change the name from synth_1_copy_1 to synth_flatten and click OK. Click Run Synthesis to synthesize the design. Click OK to open the synthesized design when synthesis process is completed. Click on Schematic under the Open Synthesized Design tasks of Synthesis tasks of the Flow Navigator pane to view the synthesized design in a schematic view. Notice that the design is completely flattened. Click on Report Utilization and observe that the hierarchical utilization is no longer available. Also note that the number of Slice Registers is 38.
 
-<div align=center><img src="imgs/2_14.png" alt="drawing" width="600"/></div>
+<div align=center><img src="imgs/2_14.png" alt="drawing" width="1000"/></div>
 
 #### Write the checkpoint in order to analyze the results without going through the actual synthesis process.
 
@@ -298,7 +298,7 @@ A Create New Run dialog box will appear asking you if a new run should be create
 
 * Right click and choose *Create port*. Set the port name to be *clk_pin_0*, set the *Type* as *Clock* and the *Frequency* as 125 MHz. And connect this port to `uart_led's clk_pin` and `ZYNQ7 Processing System's M_AXI_GP0_ACLK`.
 
-<div align=center><img src="imgs/2_23.png" alt="drawing" width="600"/></div>
+<div align=center><img src="imgs/2_23.png" alt="drawing" width="400"/></div>
 
 * The `rst_pin` of `uart_led` module is active high. So add `util_vector_logic` as a bridge that connect the `FCLK_RESET0_N` of `ZYNQ7 Processing System` and `rst_pin` of `uart_led` together.
 
@@ -314,7 +314,7 @@ Double click `util_vector_logic` and set the `C_SIZE` as 1 and select the *not* 
 
 * The whole system diagram is shown in the following figure.
 
-<div align=center><img src="imgs/2_25.png" alt="drawing" width="600"/></div>
+<div align=center><img src="imgs/2_25.png" alt="drawing" width="1000"/></div>
 
 * Following the left steps in the Lab1.
 
