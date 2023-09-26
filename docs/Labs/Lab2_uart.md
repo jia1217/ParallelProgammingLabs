@@ -308,7 +308,7 @@ Double click `util_vector_logic` and set the `C_SIZE` as 1 and select the *not* 
 
 * Expand `UART` in the `axi_uartlite` module, and connect `tx` to `rxd_pin` port of `uart_led` module. Connect `rx` to the `FCLK_RESET0_N` of `ZYNQ7 Processing System`.
 
-* Click `Run Connection Automation` and `Run Block Automation`, remember that don't choose UART, then click *OK*.
+* Click `Run Connection Automation` and `Run Block Automation`, remember that don't choose UART, then click OK.
 
 <div align=center><img src="imgs/2_22.png" alt="drawing" width="600"/></div>
 
