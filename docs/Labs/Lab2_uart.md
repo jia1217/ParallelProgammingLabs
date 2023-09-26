@@ -270,7 +270,7 @@ Change the name from synth_1_copy_1 to synth_flatten and click OK. Click Run Syn
 
 * If the schematic isn’t open by default, in the netlist tab, select the top-level instance, uart_led, right-click and select Schematic. You will see the flattened design. You can generate the desired reports on this checkpoint as you wish. Close the Vivado program by selecting File > Exit and click OK.
 
-### Continues with the previous lab
+### Continue with the previous lab
 
 #### Open a Vivado Project
 
