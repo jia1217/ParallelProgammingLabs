@@ -298,7 +298,8 @@ A Create New Run dialog box will appear asking you if a new run should be create
 
 <div align=center><img src="imgs/2_31.png" alt="drawing" width="600"/></div>
 
-* Back to *Diagram* window, add `axi uartlite` module. Double click this module, and config it as the following figure.
+* Back to *Diagram* window, add `axi uartlite` module. We want to send data to the uart_led module through its `rx` port. To do this, we will use the UART from Ps, which is connected to the ARM core by the AXI protocal. Then, we will connect the tx port of the UART to the uart_led module in PL. Double click this module, and config it as the following figure. In order to provent the `rx` port of `AXI Uartlite` from hanging, add `1` to the `rx` port (making it always IDLE). We don't need to consider other ports, like `interrupt` of `AXI Uartlite`, because this port is the output port.
+
 
 <div align=center><img src="imgs/2_28.png" alt="drawing" width="600"/></div>
 
@@ -314,8 +315,7 @@ A Create New Run dialog box will appear asking you if a new run should be create
 
 * Expand `UART` in the `axi_uartlite` module, and connect `tx` to `rxd_pin` port of `uart_led` module. Connect `rx` to the `FCLK_RESET0_N` of `ZYNQ7 Processing System`.
 
-* Click `Run Connection Automation` and `Run Block Automation`, remember that don't choose UART, then click *OK*. In order to provent the `rx` port of `AXI Uartlite` from hanging, connect the `rx` and the `FCLK_RESET0_N` of `ZYNQ& PROCESSING SYSTEM`. We need to consider other ports, like `interrupt` of `AXI Uartlite`, because this port is the output port.
-
+* Click `Run Connection Automation` and `Run Block Automation`, remember that don't choose UART, then click *OK*. 
 
 <div align=center><img src="imgs/2_22.png" alt="drawing" width="600"/></div>
 
