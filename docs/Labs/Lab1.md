@@ -165,7 +165,7 @@ A *Settings* form will appear showing the *Simulation* properties form.
 
 The testbench and source files will be compiled and the Vivado simulator will be run (assuming no errors). You will see a simulator output like the one shown below.
 
-<div align=center><img src="imgs/1_4.png" alt="drawing" width="600"/></div>
+<div align=center><img src="imgs/1_4.png" alt="drawing" width="1000"/></div>
 
 You will see four main views: (i) Scopes, where the testbench hierarchy as well as glbl instances are displayed, (ii) Objects, where top-level signals are displayed, (iii) the waveform window, and (iv) Tcl Console where the simulation activities are displayed. Notice that since the testbench used is self-checking, the results are displayed as the simulation is run.
 
