@@ -7,7 +7,7 @@ sort: 1
 
 This lab guides you through the process of using Vivado IDE to create a simple HDL design targeting the PYNQ-Z2. You will simulate, synthesize, and implement the design with default settings. Finally, you will generate the bitstream and download it into the hardware to verify the design functionality.
 
-<div align=center><img src="imgs/lab1.png" alt="drawing" width="600"/></div>
+<div align=center><img src="imgs/lab1.png" alt="drawing" width="400"/></div>
 
 ## Objectives
 
@@ -65,13 +65,13 @@ There are three kinds of source files: constrains file, design source file and s
 
 <div align=center><img src="imgs/1_1.png" alt="drawing" width="600"/></div>
 
-2. Do the almost same operations to add constraints file and simulation sources file.
+2. Execute similar steps to add both the constraints file and the simulation sources file.
 
-<div align=center><img src="imgs/1_2.png" alt="drawing" width="600"/></div>
+<div align=center><img src="imgs/1_2.png" alt="drawing" width="400"/></div>
 
 ### Add code
 
-* *Add design source code:* Double click the `lab1.v` file, and input the following code:
+* *Add design source code:* Double click on the `lab1.v` file, and enter the following code:
 
 ```verilog
     module lab1(
