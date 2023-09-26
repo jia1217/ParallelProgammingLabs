@@ -254,9 +254,11 @@ Change the name from synth_1_copy_1 to synth_flatten and click OK. Click Run Syn
 
 Select File > Checkpoint > Write to save the processed design so it can be opened later for further analysis. A dialog box will appear showing the default name of the file in the current project directory.Click OK.
 
+<div align=center><img src="imgs/2_29.png" alt="drawing" width="600"/></div>
+
 ### Read the Checkpoints: Read the previously saved checkpoint (checkpoint_1) in order to analyze the results without going through the actual synthesis process.
 
-* Launch Vivado and select *File > Checkpoint > Open* at the *Getting Started Screen*. Select uart_led.dcp. Click OK.
+* Launch Vivado and select *File > Checkpoint > Open* at the *Getting Started Screen*. Select checkpoint_1.dcp. Click OK.
 
 * If the schematic isn’t open by default, in the netlist tab, select the top-level instance, uart_led, right-click and select Schematic. You will see the hierarchical blocks. You can double-click on any of the first-level block and see the underlying blocks. You can also select any lower-level block in the netlist tab, right-click and select Schematic to see the corresponding level design.
 
@@ -264,7 +266,7 @@ Select File > Checkpoint > Write to save the processed design so it can be opene
 
 * Select Reports > Report Utilization and click OK to see the utilization report you saw previously.
 
-* Select File > Open Checkpoint, select uart_led.dcp.
+* Select File > Open Checkpoint, select checkpoint_2.dcp.
 
 * Click No to keep the Checkpoint_1 open. This will invoke second Vivado GUI.
 
