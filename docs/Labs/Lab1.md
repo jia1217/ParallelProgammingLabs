@@ -67,7 +67,7 @@ There are three kinds of source files: constrains file, design source file and s
 
 2. Execute similar steps to add both the constraints file and the simulation sources file.
 
-<div align=center><img src="imgs/1_2.png" alt="drawing" width="400"/></div>
+<div align=center><img src="imgs/1_2.png" alt="drawing" width="250"/></div>
 
 ### Add code
 
