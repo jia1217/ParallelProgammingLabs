@@ -3,7 +3,7 @@ sort: 3
 ---
 
 
-# Lab3 
+# Lab3_IPI 
 
 In this lab you will use the IP Catalog to generate a clock resource. You will instantiate the generated clock core in the provided waveform generator design. You will also use IP Integrator to generate a FIFO core and then use it in the HDL design.
 
