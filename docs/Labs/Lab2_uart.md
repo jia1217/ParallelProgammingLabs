@@ -198,7 +198,7 @@ You will see four components at the top-level, 2 instances of meta_harden, one i
 
 * Click on Run Synthesis under the Synthesis tasks of the Flow Navigator pane.
 
-The synthesis process will be run on the uart_led.v and all its hierarchical files. When the process is completed a Synthesis Completed dialog box with three options will be displayed.
+The synthesis process will be run on the uart_led.v and all its hierarchical files. When the process is completed, a Synthesis Completed dialog box with three options will be displayed.
 
 * Select the Open Synthesized Design option and click OK as we want to look at the synthesis output. Click Yes to close the elabrated design if the dialog box is displayed.
 
