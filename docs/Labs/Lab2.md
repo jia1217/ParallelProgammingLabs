@@ -254,8 +254,6 @@ Change the name from synth_1_copy_1 to synth_flatten and click OK. Click Run Syn
 
 Select File > Checkpoint > Write to save the processed design so it can be opened later for further analysis. A dialog box will appear showing the default name of the file in the current project directory.Click OK.
 
-<div align=center><img src="imgs/2_14.png" alt="drawing" width="600"/></div>
-
 ### Read the Checkpoints: Read the previously saved checkpoint (checkpoint_1) in order to analyze the results without going through the actual synthesis process.
 
 * Launch Vivado and select *File > Checkpoint > Open ** at the *Getting Started Screen. Select uart_led.dcp. Click OK.
