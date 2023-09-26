@@ -169,7 +169,7 @@ The testbench and source files will be compiled and the Vivado simulator will be
 
 You will see four main views: (i) Scopes, where the testbench hierarchy as well as glbl instances are displayed, (ii) Objects, where top-level signals are displayed, (iii) the waveform window, and (iv) Tcl Console where the simulation activities are displayed. Notice that since the testbench used is self-checking, the results are displayed as the simulation is run.
 
-Notice that the `<project_name>.sim` directory is created under the `<project_name>` directory, along with several low-level directories. If you want to check, you can open a new terminor and run the shell command:
+Notice that the `<project_name>.sim` directory is created under the `<project_name>` directory, along with several low-level directories. To verify, open a new terminal and execute the following shell command:
 
 ```bash
     cd <project path>
