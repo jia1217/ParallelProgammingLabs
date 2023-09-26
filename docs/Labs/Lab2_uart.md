@@ -268,7 +268,7 @@ Change the name from synth_1_copy_1 to synth_flatten and click OK. Click Run Syn
 
 * Click No to keep the Checkpoint_1 open. This will invoke second Vivado GUI.
 
-* If the schematic isn’t open by default, in the netlist tab, select the top-level instance, uart_led, right-click and select Schematic. You will see the flattened design. You can generate the desired reports on this checkpoint as you wish. Close the Vivado program by selecting *File >* Exit and click OK.
+* If the schematic isn’t open by default, in the netlist tab, select the top-level instance, uart_led, right-click and select Schematic. You will see the flattened design. You can generate the desired reports on this checkpoint as you wish. Close the Vivado program by selecting *File > Exit* and click OK.
 
 ### Continue with the previous lab
 
@@ -292,7 +292,7 @@ A Create New Run dialog box will appear asking you if a new run should be create
 
 * Click *Create Block Design* under *IP INTEGRATOR*. Click *+ (Add IP)* and search *zynq*, add *ZYNQ7 Processing Syatem* into the block design.
 
-* In the `Sources` under *BlOCK DESIGN*, right click `uart_led` and choose *Add module to block design*.
+* In the `Sources` under *BLOCK DESIGN*, right click `uart_led` and choose *Add module to block design*.
 
 * Back to *Diagram* window, add `axi uartlite` module.
 
@@ -308,7 +308,7 @@ Double click `util_vector_logic` and set the `C_SIZE` as 1 and select the *not* 
 
 * Expand `UART` in the `axi_uartlite` module, and connect `tx` to `rxd_pin` port of `uart_led` module. Connect `rx` to the `FCLK_RESET0_N` of `ZYNQ7 Processing System`.
 
-* Click `Run Connection Automation` and `Run Block Automation`, remember that don't choose UART, then click OK.
+* Click `Run Connection Automation` and `Run Block Automation`, don't choose UART, then click OK.
 
 <div align=center><img src="imgs/2_22.png" alt="drawing" width="600"/></div>
 
@@ -316,7 +316,7 @@ Double click `util_vector_logic` and set the `C_SIZE` as 1 and select the *not* 
 
 <div align=center><img src="imgs/2_25.png" alt="drawing" width="1000"/></div>
 
-* Following the left steps in the Lab1.
+* Continue with the remaining steps in Lab1.
 
 
 ### Generate the Bitstream
