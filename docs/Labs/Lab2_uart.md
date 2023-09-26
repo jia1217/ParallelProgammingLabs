@@ -236,7 +236,7 @@ Notice that IBUF and OBUF are automatically instantiated (added) to the design a
 
 #### Write the checkpoint in order to analyze the results without going through the actual synthesis process.
 
-* Select *File > Checkpoint > Write* to save the processed design so it can be opened later for further analysis. A dialog box will appear showing the default name of the file in the current project directory.Click *OK*.
+* Select *File > Checkpoint > Write* to save the processed design so it can be opened later for further analysis. A dialog box will appear showing the default name of the file in the current project directory. Click *OK*.
 
 #### Change the synthesis settings to flatten the design. Re-synthesize the design and analyze the results.
 
