@@ -250,7 +250,7 @@ Change the name from synth_1_copy_1 to synth_flatten and click OK. Click Run Syn
 
 #### Write the checkpoint in order to analyze the results without going through the actual synthesis process.
 
-Select File > Checkpoint > Write to save the processed design so it can be opened later for further analysis. A dialog box will appear showing the default name of the file in the current project directory.Click OK.
+Select File > Checkpoint > Write to save the processed design so it can be opened later for further analysis. A dialog box will appear showing the default name of the file in the current project directory. Click OK.
 
 ### Read the Checkpoints: Read the previously saved checkpoint (checkpoint_1) in order to analyze the results without going through the actual synthesis process.
 
