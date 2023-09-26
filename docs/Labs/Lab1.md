@@ -184,7 +184,7 @@ For example, I create a new folder named *Lab1*, and name the project *project_1
 ```
 The display will resemble the figure below.
 
-<div align=center><img src="imgs/1_5.png" alt="drawing" width="250"/></div>
+<div align=center><img src="imgs/1_5.png" alt="drawing" width="300"/></div>
 
 * Back to vivado, you will see several buttons next to the waveform window which can be used for the specific purpose as listed in the figure blow.
 
