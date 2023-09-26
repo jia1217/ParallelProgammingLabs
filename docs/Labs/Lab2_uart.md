@@ -268,7 +268,7 @@ Change the name from synth_1_copy_1 to synth_flatten and click OK. Click Run Syn
 
 * Click No to keep the Checkpoint_1 open. This will invoke second Vivado GUI.
 
-* If the schematic isn’t open by default, in the netlist tab, select the top-level instance, uart_led, right-click and select Schematic. You will see the flattened design. You can generate the desired reports on this checkpoint as you wish. Close the Vivado program by selecting File > Exit and click OK.
+* If the schematic isn’t open by default, in the netlist tab, select the top-level instance, uart_led, right-click and select Schematic. You will see the flattened design. You can generate the desired reports on this checkpoint as you wish. Close the Vivado program by selecting *File >* Exit and click OK.
 
 ### Continue with the previous lab
 
@@ -276,7 +276,7 @@ Change the name from synth_1_copy_1 to synth_flatten and click OK. Click Run Syn
 
 1. Start the Vivado, if necessary, and open either the lab2 project (lab2.xpr) you created in the previous lab or the lab2 project in the labsolution directory using the Open Project link in the Getting Started page.
 
-2. Select *File > Project > Save As …* to open the Save Project As dialog box. Enter *lab3* as the project name. Make sure that the Create Project Subdirectory option is checked and click OK.
+2. Select *File > Project > Save As …* to open the Save Project As dialog box. Enter *lab2_p2* as the project name. Make sure that the Create Project Subdirectory option is checked and click OK.
 
 3. Click on the Settings in the Flow Navigator pane, select Project Settings > Synthesis.
 
