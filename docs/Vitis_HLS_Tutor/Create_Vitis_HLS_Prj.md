@@ -1,16 +1,18 @@
----
-sort: 3
----
 <!--
 -[HLS Tutotial](https://akshaykamath.notion.site/HLS-Tutorial-dc7e388dc31641fba5002012e3e69204)
 -->
+---
+sort: 3
+---
+
 # Create Vitis HLS Project
+
+## Step 1
 
 Vitis GUI should open as shown below.
 
 <div align=center><img src="Images/beginning.png" alt="drawing" width="600"/></div>
 
-## Step 1
 
 Create a new project and specify the project name `vector_add`.
 
