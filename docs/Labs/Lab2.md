@@ -280,6 +280,7 @@ Select File > Checkpoint > Write to save the processed design so it can be opene
 
 2. Select *File > Project > Save As …* to open the Save Project As dialog box. Enter *lab2_new* as the project name. Make sure that the Create Project Subdirectory option is checked and click OK.
 
+
 3. Click on the Settings in the Flow Navigator pane, select Project Settings > Synthesis.
 
 4. Make sure that the flatten_hierarchy is set to rebuilt, which allows the design hierarchy to be preserved for synthesis, and then rebuilt which is more useful for design analysis because many logical references will be maintained.
@@ -291,6 +292,7 @@ A Create New Run dialog box will appear asking you if a new run should be create
 <div align=center><img src="imgs/2_26.png" alt="drawing" width="600"/></div>
 
 #### Implement the Design
+
 
 * Click *Create Block Design* under *IP INTEGRATOR*. Click *+ (Add IP)* and search *zynq*, add *ZYNQ7 Processing Syatem* into the block design.
 
@@ -326,6 +328,7 @@ A Create New Run dialog box will appear asking you if a new run should be create
 * Following the left steps in the Lab1.
 
 #### Generate the Bitstream
+
 
 * Click *Generate Bitstream* under *PROGRAM AND DEBUG*
 

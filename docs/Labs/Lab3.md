@@ -60,6 +60,7 @@ The provided design places the UART (RX and TX) pins of the PS (processing syste
 
 <div align=center><img src="imgs/3_1.png" alt="drawing" width="600"/></div>
 
+
 Note: There is no lab4 code under PYNQ folder, we can use the code under boolean folder. However, we need to fix the code to meet the PYNQ board. For example, the clock frequency is 125 Mhz for PYNQ-Z2 and only 4 leds on the board.
 
 ### Generate and Instantiate Clock Generator Module
