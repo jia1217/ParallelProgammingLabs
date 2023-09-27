@@ -3,7 +3,7 @@ sort: 2
 ---
 
 
-# Lab2 
+# Lab2_uart
 
 The design consists of a uart receiver receiving the input typed on a keyboard and displaying the binary equivalent of the typed character on the 4 LEDs. When a push botton is pressed, the lower and upper nibbles are swapped. The block diagram is as shown in the following figure.
 
@@ -236,7 +236,7 @@ Notice that IBUF and OBUF are automatically instantiated (added) to the design a
 
 * Select *File > Checkpoint > Write* to save the processed design so it can be opened later for further analysis. A dialog box will appear showing the default name of the file in the current project directory. Click *OK*.
 
-<div align=center><img src="imgs/2_27.png" alt="drawing" width="600"/></div>
+<div align=center><img src="imgs/2_27.png" alt="drawing" width="400"/></div>
 
 #### Change the synthesis settings to flatten the design. Re-synthesize the design and analyze the results.
 
@@ -254,7 +254,7 @@ Change the name from synth_1_copy_1 to synth_flatten and click OK. Click Run Syn
 
 Select File > Checkpoint > Write to save the processed design so it can be opened later for further analysis. A dialog box will appear showing the default name of the file in the current project directory.Click OK.
 
-<div align=center><img src="imgs/2_29.png" alt="drawing" width="600"/></div>
+<div align=center><img src="imgs/2_29.png" alt="drawing" width="400"/></div>
 
 ### Read the Checkpoints: Read the previously saved checkpoint (checkpoint_1) in order to analyze the results without going through the actual synthesis process.
 
@@ -266,13 +266,13 @@ Select File > Checkpoint > Write to save the processed design so it can be opene
 
 * Select Reports > Report Utilization and click OK to see the utilization report you saw previously.
 
-* Select File > Open Checkpoint, select checkpoint_2.dcp.
+* Select *File > Open Checkpoint*, select checkpoint_2.dcp.
 
 * Click No to keep the Checkpoint_1 open. This will invoke second Vivado GUI.
 
 * If the schematic isn’t open by default, in the netlist tab, select the top-level instance, uart_led, right-click and select Schematic. You will see the flattened design. You can generate the desired reports on this checkpoint as you wish. Close the Vivado program by selecting File > Exit and click OK.
 
-### Continues with the previous lab
+### Continue with the previous lab
 
 #### Open a Vivado Project
 
@@ -280,8 +280,7 @@ Select File > Checkpoint > Write to save the processed design so it can be opene
 
 2. Select *File > Project > Save As …* to open the Save Project As dialog box. Enter *lab2_p2* as the project name. Make sure that the Create Project Subdirectory option is checked and click OK.
 
-
-3. Click on the Settings in the Flow Navigator pane, select Project Settings > Synthesis.
+3. Click on the Settings in the Flow Navigator pane, select *Project Settings > Synthesis*.
 
 4. Make sure that the flatten_hierarchy is set to rebuilt, which allows the design hierarchy to be preserved for synthesis, and then rebuilt which is more useful for design analysis because many logical references will be maintained.
 
@@ -289,7 +288,7 @@ Select File > Checkpoint > Write to save the processed design so it can be opene
 
 A Create New Run dialog box will appear asking you if a new run should be created. Click Yes and then OK to create the new run with synth_2 name.
 
-<div align=center><img src="imgs/2_26.png" alt="drawing" width="400"/></div>
+<div align=center><img src="imgs/2_26.png" alt="drawing" width="600"/></div>
 
 #### Implement the Design
 
@@ -298,26 +297,25 @@ A Create New Run dialog box will appear asking you if a new run should be create
 
 * In the `Sources` under *BlOCK DESIGN*, right click `uart_led` and choose *Add module to block design*.
 
-<div align=center><img src="imgs/2_31.png" alt="drawing" width="600"/></div>
+<div align=center><img src="imgs/2_31.png" alt="drawing" width="500"/></div>
 
-* Back to *Diagram* window, add `axi uartlite` module. We want to send data to the uart_led module through its `rx` port. To do this, we will use the UART from Ps, which is connected to the ARM core by the AXI protocal. Then, we will connect the tx port of the UART to the uart_led module in PL. Double click this module, and config it as the following figure. In order to provent the `rx` port of `AXI Uartlite` from hanging, add `1` to the `rx` port (making it always IDLE). We don't need to consider other ports, like `interrupt` of `AXI Uartlite`, because this port is the output port.
-
+* Back to *Diagram* window, add `axi uartlite` module. We want to send data to the uart_led module through its `rx` port. To do this, we will use the UART from Ps, which is connected to the ARM core by the AXI protocal. Then, we will connect the `tx` port of the UART on the PS side to the uart_led module in PL. Double-click on this module and configure it as shown in the subsequent figure. To prevent the `rx` port of AXI Uartlite from becoming floating, set the rx port to 1 (ensuring it remains in the IDLE state). We can disregard other ports, such as the interrupt of AXI Uartlite, since it's an output port.
 
 <div align=center><img src="imgs/2_28.png" alt="drawing" width="600"/></div>
 
 * Right click in the blank part and choose *Create port*. Set the port name to be *clk_pin_0*, set the *Type* as *Clock* and the *Frequency* as 125 MHz. And connect this port to `uart_led's clk_pin` and `ZYNQ7 Processing System's M_AXI_GP0_ACLK`.
 
-<div align=center><img src="imgs/2_23.png" alt="drawing" width="600"/></div>
+<div align=center><img src="imgs/2_23.png" alt="drawing" width="400"/></div>
 
-* The `rst_pin` of `uart_led` module is active high. So add `util_vector_logic` as a bridge that connect the `peripheral_areset` of `Processor System Reset`.
+* The `rst_pin` of `uart_led` module is active high. You will need to convert it to active low for uart_led module. So add `util_vector_logic` as a bridge that connect the `peripheral_areset` of `Processor System Reset`.
 
-  Double click `util_vector_logic` and set the `C_SIZE` as 1 and select the *not* operation.
+* Double click on `util_vector_logic` and set the `C_SIZE` as 1 and select the *not* operation.
 
 <div align=center><img src="imgs/2_24.png" alt="drawing" width="600"/></div>
 
 * Expand `UART` in the `axi_uartlite` module, and connect `tx` to `rxd_pin` port of `uart_led` module. Connect `rx` to the `FCLK_RESET0_N` of `ZYNQ7 Processing System`.
 
-* Click `Run Connection Automation` and `Run Block Automation`, remember that don't choose UART, then click *OK*. 
+* Click `Run Connection Automation` and `Run Block Automation`, Keep in mind not to opt for UART (you do not want to use auto-connection for UART), then click *OK*. 
 
 <div align=center><img src="imgs/2_22.png" alt="drawing" width="600"/></div>
 
@@ -328,7 +326,6 @@ A Create New Run dialog box will appear asking you if a new run should be create
 * Continue with the remaining steps in the Lab1.
 
 #### Generate the Bitstream
-
 
 * Click *Generate Bitstream* under *PROGRAM AND DEBUG*
 
