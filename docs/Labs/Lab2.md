@@ -13,8 +13,6 @@ The design consists of a uart receiver receiving the input typed on a keyboard a
 
 After completing this lab, you will be able to:
 
-* Use the provided Xilinx Design Constraint (XDC) file to constrain the timing of the circuit.
-
 * Elaborate on the design and understand the output.
 
 * Analyze the output of the synthesized design.
@@ -236,13 +234,17 @@ Notice that IBUF and OBUF are automatically instantiated (added) to the design a
 
 #### Write the checkpoint in order to analyze the results without going through the actual synthesis process.
 
-* Select *File > Checkpoint > Write* to save the processed design so it can be opened later for further analysis. A dialog box will appear showing the default name of the file in the current project directory.Click *OK*.
+* Select *File > Checkpoint > Write* to save the processed design so it can be opened later for further analysis. A dialog box will appear showing the default name of the file in the current project directory. Click *OK*.
+
+<div align=center><img src="imgs/2_27.png" alt="drawing" width="600"/></div>
 
 #### Change the synthesis settings to flatten the design. Re-synthesize the design and analyze the results.
 
 * Click on the Settings under the Project Manager, and select Synthesis. Click on the flatten_hierarchy drop-down button and select full to flatten the design. Click OK. A Create New Run dialog box will appear asking you whether you want to create a new run since the settings have been changed.
 
 <div align=center><img src="imgs/2_13.png" alt="drawing" width="600"/></div>
+
+<div align=center><img src="imgs/2_30.png" alt="drawing" width="600"/></div>
 
 Change the name from synth_1_copy_1 to synth_flatten and click OK. Click Run Synthesis to synthesize the design. Click OK to open the synthesized design when synthesis process is completed. Click on Schematic under the Open Synthesized Design tasks of Synthesis tasks of the Flow Navigator pane to view the synthesized design in a schematic view. Notice that the design is completely flattened. Click on Report Utilization and observe that the hierarchical utilization is no longer available. Also note that the number of Slice Registers is 38.
 
@@ -252,19 +254,19 @@ Change the name from synth_1_copy_1 to synth_flatten and click OK. Click Run Syn
 
 Select File > Checkpoint > Write to save the processed design so it can be opened later for further analysis. A dialog box will appear showing the default name of the file in the current project directory.Click OK.
 
+<div align=center><img src="imgs/2_29.png" alt="drawing" width="600"/></div>
+
 ### Read the Checkpoints: Read the previously saved checkpoint (checkpoint_1) in order to analyze the results without going through the actual synthesis process.
 
-* Launch Vivado and select *File > Checkpoint > Open ** at the *Getting Started Screen. Browse to {TUTORIAL}/lab2 and select uart_led.dcp or system_wrapper.dcp. Click OK.
+* Launch Vivado and select *File > Checkpoint > Open* at the *Getting Started Screen*. Select checkpoint_1.dcp. Click OK.
 
-* If the schematic isn’t open by default, in the netlist tab, select the top-level instance, uart_led/system_wrapper, right-click and select Schematic. You will see the hierarchical blocks. You can double-click on any of the first-level block and see the underlying blocks. You can also select any lower-level block in the netlist tab, right-click and select Schematic to see the corresponding level design.
+* If the schematic isn’t open by default, in the netlist tab, select the top-level instance, uart_led, right-click and select Schematic. You will see the hierarchical blocks. You can double-click on any of the first-level block and see the underlying blocks. You can also select any lower-level block in the netlist tab, right-click and select Schematic to see the corresponding level design.
 
 * In the netlist tab, select the top-level instance, uart_led, right-click and select Show Hierarchy. You will see how the blocks are hierarchically connected.
 
-* Select Reports > Timing > Report Timing Summary and click OK to see the report you saw previously.
-
 * Select Reports > Report Utilization and click OK to see the utilization report you saw previously.
 
-* Select File > Open Checkpoint, browse to {TUTORIAL}/lab2 and select uart_led.dcp or system_wrapper.dcp.
+* Select File > Open Checkpoint, select checkpoint_2.dcp.
 
 * Click No to keep the Checkpoint_1 open. This will invoke second Vivado GUI.
 
@@ -276,7 +278,8 @@ Select File > Checkpoint > Write to save the processed design so it can be opene
 
 1. Start the Vivado, if necessary, and open either the lab2 project (lab2.xpr) you created in the previous lab or the lab2 project in the labsolution directory using the Open Project link in the Getting Started page.
 
-2. Select *File > Project > Save As …* to open the Save Project As dialog box. Enter *lab3* as the project name. Make sure that the Create Project Subdirectory option is checked and click OK.
+2. Select *File > Project > Save As …* to open the Save Project As dialog box. Enter *lab2_new* as the project name. Make sure that the Create Project Subdirectory option is checked and click OK.
+
 
 3. Click on the Settings in the Flow Navigator pane, select Project Settings > Synthesis.
 
@@ -288,27 +291,33 @@ A Create New Run dialog box will appear asking you if a new run should be create
 
 <div align=center><img src="imgs/2_26.png" alt="drawing" width="600"/></div>
 
-### Implement the Design
+#### Implement the Design
+
 
 * Click *Create Block Design* under *IP INTEGRATOR*. Click *+ (Add IP)* and search *zynq*, add *ZYNQ7 Processing Syatem* into the block design.
 
 * In the `Sources` under *BlOCK DESIGN*, right click `uart_led` and choose *Add module to block design*.
 
-* Back to *Diagram* window, add `axi uartlite` module.
+<div align=center><img src="imgs/2_31.png" alt="drawing" width="600"/></div>
 
-* Right click and choose *Create port*. Set the port name to be *clk_pin_0*, set the *Type* as *Clock* and the *Frequency* as 125 MHz. And connect this port to `uart_led's clk_pin` and `ZYNQ7 Processing System's M_AXI_GP0_ACLK`.
+* Back to *Diagram* window, add `axi uartlite` module. We want to send data to the uart_led module through its `rx` port. To do this, we will use the UART from Ps, which is connected to the ARM core by the AXI protocal. Then, we will connect the tx port of the UART to the uart_led module in PL. Double click this module, and config it as the following figure. In order to provent the `rx` port of `AXI Uartlite` from hanging, add `1` to the `rx` port (making it always IDLE). We don't need to consider other ports, like `interrupt` of `AXI Uartlite`, because this port is the output port.
+
+
+<div align=center><img src="imgs/2_28.png" alt="drawing" width="600"/></div>
+
+* Right click in the blank part and choose *Create port*. Set the port name to be *clk_pin_0*, set the *Type* as *Clock* and the *Frequency* as 125 MHz. And connect this port to `uart_led's clk_pin` and `ZYNQ7 Processing System's M_AXI_GP0_ACLK`.
 
 <div align=center><img src="imgs/2_23.png" alt="drawing" width="600"/></div>
 
-* The `rst_pin` of `uart_led` module is active high. So add `util_vector_logic` as a bridge that connect the `FCLK_RESET0_N` of `ZYNQ7 Processing System` and `rst_pin` of `uart_led` together.
+* The `rst_pin` of `uart_led` module is active high. So add `util_vector_logic` as a bridge that connect the `peripheral_areset` of `Processor System Reset`.
 
-Double click `util_vector_logic` and set the `C_SIZE` as 1 and select the *not* operation.
+  Double click `util_vector_logic` and set the `C_SIZE` as 1 and select the *not* operation.
 
 <div align=center><img src="imgs/2_24.png" alt="drawing" width="600"/></div>
 
 * Expand `UART` in the `axi_uartlite` module, and connect `tx` to `rxd_pin` port of `uart_led` module. Connect `rx` to the `FCLK_RESET0_N` of `ZYNQ7 Processing System`.
 
-* Click `Run Connection Automation` and `Run Block Automation`, remember that don't choose UART, then click *OK*.
+* Click `Run Connection Automation` and `Run Block Automation`, remember that don't choose UART, then click *OK*. 
 
 <div align=center><img src="imgs/2_22.png" alt="drawing" width="600"/></div>
 
@@ -318,12 +327,12 @@ Double click `util_vector_logic` and set the `C_SIZE` as 1 and select the *not* 
 
 * Following the left steps in the Lab1.
 
+#### Generate the Bitstream
 
-### Generate the Bitstream
 
 * Click *Generate Bitstream* under *PROGRAM AND DEBUG*
 
-### Verify the Functionality
+#### Verify the Functionality
 
 1. Download the `.bit` file and `.hwh` file to your local PC. If you cannot find these two files, open a new terminal and go the project path, then run the shell command:
 
