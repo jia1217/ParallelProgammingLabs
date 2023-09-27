@@ -1,6 +1,3 @@
-<!--
--[HLS Tutotial](https://akshaykamath.notion.site/HLS-Tutorial-dc7e388dc31641fba5002012e3e69204)
--->
 ---
 sort: 3
 ---
@@ -8,6 +5,10 @@ sort: 3
 # Create Vitis HLS Project
 
 ## Step 1
+
+<!--
+-[HLS Tutotial](https://akshaykamath.notion.site/HLS-Tutorial-dc7e388dc31641fba5002012e3e69204)
+-->
 
 Vitis GUI should open as shown below.
 
