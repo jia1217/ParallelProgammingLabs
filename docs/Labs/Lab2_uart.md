@@ -23,7 +23,7 @@ After completing this lab, you will be able to:
 
 ## Source code
 
--[source code](https://github.com/Xilinx/xup_fpga_vivado_flow/tree/main/source/pynq-z2i/lab2)
+-[source code](https://github.com/Xilinx/xup_fpga_vivado_flow/tree/main/source/pynq-z2/lab2)
 
 ## Steps
 
