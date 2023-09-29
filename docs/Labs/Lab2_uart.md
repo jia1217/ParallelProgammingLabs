@@ -272,7 +272,7 @@ Select File > Checkpoint > Write to save the processed design so it can be opene
 
 * If the schematic isn’t open by default, in the netlist tab, select the top-level instance, uart_led, right-click and select Schematic. You will see the flattened design. You can generate the desired reports on this checkpoint as you wish. Close the Vivado program by selecting File > Exit and click OK.
 
-### Continue with the previous lab
+### Continues with the previous lab
 
 #### Open a Vivado Project
 
@@ -288,7 +288,7 @@ Select File > Checkpoint > Write to save the processed design so it can be opene
 
 A Create New Run dialog box will appear asking you if a new run should be created. Click Yes and then OK to create the new run with synth_2 name.
 
-<div align=center><img src="imgs/2_26.png" alt="drawing" width="600"/></div>
+<div align=center><img src="imgs/2_26.png" alt="drawing" width="400"/></div>
 
 #### Implement the Design
 
@@ -310,6 +310,12 @@ A Create New Run dialog box will appear asking you if a new run should be create
 * The `rst_pin` of `uart_led` module is active high. You will need to convert it to active low for uart_led module. So add `util_vector_logic` as a bridge that connect the `peripheral_areset` of `Processor System Reset`.
 
 * Double click on `util_vector_logic` and set the `C_SIZE` as 1 and select the *not* operation.
+
+<div align=center><img src="imgs/2_23.png" alt="drawing" width="600"/></div>
+
+* The `rst_pin` of `uart_led` module is active high. So add `util_vector_logic` as a bridge that connect the `peripheral_areset` of `Processor System Reset`.
+
+  Double click `util_vector_logic` and set the `C_SIZE` as 1 and select the *not* operation.
 
 <div align=center><img src="imgs/2_24.png" alt="drawing" width="600"/></div>
 

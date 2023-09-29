@@ -23,7 +23,6 @@ module uart_led (
   input            clk_pin,      // Clock input (from pin)
   input            rst_pin,      // Active HIGH reset (from pin)
   input            btn_pin,      // Button to swap high and low bits
-  input            rxd_pin,      // RS232 RXD pin - directly from pin
   output     [3:0] led_pins      // 8 LED outputs
 );
 
@@ -44,6 +43,7 @@ module uart_led (
   // Synchronized reset
   wire             rst_clk_rx;
 
+  wire            rxd_pin;      // RS232 RXD pin - directly from pin
   // Synchronized button
   wire             btn_clk_rx;
 
@@ -54,7 +54,7 @@ module uart_led (
 //***************************************************************************
 // Code
 //***************************************************************************
-
+assign rxd_pin = 1;
   // Metastability harden the rst - this is an asynchronous input to the
   // system (from a pushbutton), and is used in synchronous logic. Therefore
   // it must first be synchronized to the clock domain (clk_pin in this case)
@@ -98,4 +98,11 @@ module uart_led (
     .led_o       (led_pins)
   );
 
+    ila_led ila_led_i0 (
+        .clk(clk_pin), // input wire clk
+    
+    
+        .probe0(rx_data_rdy), // input wire [0:0]  probe0  
+        .probe1(led_pins) // input wire [3:0]  probe1
+    );
 endmodule
