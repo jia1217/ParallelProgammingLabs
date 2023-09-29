@@ -10,7 +10,6 @@ Vitis GUI should open as shown below.
 
 <div align=center><img src="Images/beginning.png" alt="drawing" width="600"/></div>
 
-## Step 1
 
 Create a new project and specify the project name `vector_add`.
 
