@@ -216,12 +216,12 @@ Launch the clocking wizard from the IP Catalog of Vivado and generate the clock 
 
 <div align=center><img src="imgs/3_17.png" alt="drawing" width="400"/></div>
 
-#### Run the synthesis
+#### Run the synthesis and Implementation 
 
 * Right click the `design_1` and select `create HDL Wrapper`.
 
-* Run Synthesis and Implementation.
+* Run Synthesis 
 
-#### Generate the bitstream 
+#### Generate the bitstream
 
-* Please following the instraction in Lab2.
+Please follow the instructions in Lab2.
