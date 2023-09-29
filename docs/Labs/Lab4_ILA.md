@@ -3,7 +3,7 @@ sort: 4
 ---
 
 
-# Lab4 
+# Lab4_ILA 
 
 In this lab, you need to install the Vivado locally.
 
