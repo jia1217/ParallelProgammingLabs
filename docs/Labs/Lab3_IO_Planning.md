@@ -3,7 +3,7 @@ sort: 3
 ---
 
 
-# Lab3 
+# Lab3_I/O_Planning  
 
 ## Introduction
 
@@ -101,10 +101,17 @@ The uart_led_{BOARDS}.xdc file will be created and added to the Sources tab.
 
 * Select the Hierarchy tab and notice that the uart_led.v file has been added to the project with top-level module name as ios. If you double-click the entry, you will see the module name with the ports listing.
 
+<<<<<<< HEAD
 <div align=center><img src="imgs/4_10.png" alt="drawing" width="600"/></div>
 
 * Add the provided source files (from Lab2/project_1/project_1.srcs/sources_1/new) to the project. Copy the uart_led.txt content into the source file.
 
+=======
+* Add the provided source files (from Lab2/project_1/project_1.srcs/sources_1/new) to the project. Copy the uart_led.txt content into the source file.
+
+<div align=center><img src="imgs/4_10.png" alt="drawing" width="600"/></div>
+
+>>>>>>> 50a9d279efa32add9e542021e923d5dfba3fd852
 ### Step 2 Synthesize the Design
 
 #### Synthesize the design. Use the Constraints Wizard to specify a clock frequency, and input and output delay constraints.
