@@ -337,7 +337,7 @@ A Create New Run dialog box will appear asking you if a new run should be create
 
 #### Verify the Functionality
 
-* Download the `.bit` file and `.hwh` file to your local PC. If you cannot find these two files, open a new terminal and go the project path, then run the shell command:
+1. Download the `.bit` file and `.hwh` file to your local PC. If you cannot find these two files, open a new terminal and go the project path, then run the shell command:
 
 ```bash
 find . -name *.bit
