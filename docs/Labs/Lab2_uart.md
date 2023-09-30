@@ -339,10 +339,10 @@ A Create New Run dialog box will appear asking you if a new run should be create
 
 1. Download the `.bit` file and `.hwh` file to your local PC. If you cannot find these two files, open a new terminal and go the project path, then run the shell command:
 
-```bash
+    ```bash
 find . -name *.bit
 find . -name *.hwh
-```
+    ```
 
 2. Power *PYNQ* on
 
@@ -350,7 +350,7 @@ find . -name *.hwh
 
 3. Following the similar step in the Lab1. Upload `.bit` and `.hwh`, make sure that they are the same name. Copy `uartlite.py` from the upper github source to the folder. Here, we need to fix the `write function` to fit our project.
 
-```python
+    ```python
 def write(self, buf, timeout = 10):
         """
         buf: iterable
@@ -368,11 +368,11 @@ def write(self, buf, timeout = 10):
             self.uart.write(TX_FIFO, i)
             wr_count += 1
         return wr_count   
-```
+    ```
 
 4. Create a new `Python3`.
 
-```python
+    ```python
 from pynq import MMIO
 from pynq import Overlay
 
@@ -394,6 +394,6 @@ uart.setupCtrlReg()
 # Loopback test
 l = [0xd3]
 uart.write(l)
-```
+    ```
 
 5. Then you can see the phenomenon that correspond to the input. 
