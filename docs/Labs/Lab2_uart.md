@@ -324,6 +324,7 @@ A Create New Run dialog box will appear asking you if a new run should be create
 <div align=center><img src="imgs/2_25.png" alt="drawing" width="1000"/></div>
 
 * You need to ensure that the wrapper file is set as the top-level module of your project before generating the bitstream file. This is because Vivado will only use the top-level module to create the bitstream file, and ignore any other files in your project.
+
 Right click design_1_wrapper and choose set to top.
 
 * Continue with the remaining steps in the Lab1.
