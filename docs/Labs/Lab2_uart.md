@@ -276,15 +276,15 @@ Select File > Checkpoint > Write to save the processed design so it can be opene
 
 #### Open a Vivado Project
 
-1. Start the Vivado, if necessary, and open either the lab2 project (lab2.xpr) you created in the previous lab or the lab2 project in the labsolution directory using the Open Project link in the Getting Started page.
+* Start the Vivado, if necessary, and open either the lab2 project (lab2.xpr) you created in the previous lab or the lab2 project in the labsolution directory using the Open Project link in the Getting Started page.
 
-2. Select *File > Project > Save As …* to open the Save Project As dialog box. Enter *lab2_p2* as the project name. Make sure that the Create Project Subdirectory option is checked and click OK.
+* Select *File > Project > Save As …* to open the Save Project As dialog box. Enter *lab2_p2* as the project name. Make sure that the Create Project Subdirectory option is checked and click OK.
 
-3. Click on the Settings in the Flow Navigator pane, select *Project Settings > Synthesis*.
+* Click on the Settings in the Flow Navigator pane, select *Project Settings > Synthesis*.
 
-4. Make sure that the flatten_hierarchy is set to rebuilt, which allows the design hierarchy to be preserved for synthesis, and then rebuilt which is more useful for design analysis because many logical references will be maintained.
+* Make sure that the flatten_hierarchy is set to rebuilt, which allows the design hierarchy to be preserved for synthesis, and then rebuilt which is more useful for design analysis because many logical references will be maintained.
 
-5. Click OK.
+* Click OK.
 
 A Create New Run dialog box will appear asking you if a new run should be created. Click Yes and then OK to create the new run with synth_2 name.
 
@@ -317,7 +317,7 @@ A Create New Run dialog box will appear asking you if a new run should be create
 
   Double click `util_vector_logic` and set the `C_SIZE` as 1 and select the *not* operation.
 
-<div align=center><img src="imgs/2_24.png" alt="drawing" width="600"/></div>
+<div align=center><img src="imgs/2_24.png" alt="drawing" width="400"/></div>
 
 * Expand `UART` in the `axi_uartlite` module, and connect `tx` to `rxd_pin` port of `uart_led` module. Connect `rx` to the `FCLK_RESET0_N` of `ZYNQ7 Processing System`.
 
