@@ -252,7 +252,7 @@ Change the name from synth_1_copy_1 to synth_flatten and click OK. Click Run Syn
 
 #### Write the checkpoint in order to analyze the results without going through the actual synthesis process.
 
-Select File > Checkpoint > Write to save the processed design so it can be opened later for further analysis. A dialog box will appear showing the default name of the file in the current project directory.Click OK.
+Select *File > Checkpoint > Write* to save the processed design so it can be opened later for further analysis. A dialog box will appear showing the default name of the file in the current project directory.Click OK.
 
 <div align=center><img src="imgs/2_29.png" alt="drawing" width="400"/></div>
 
@@ -264,7 +264,7 @@ Select File > Checkpoint > Write to save the processed design so it can be opene
 
 * In the netlist tab, select the top-level instance, uart_led, right-click and select Show Hierarchy. You will see how the blocks are hierarchically connected.
 
-* Select Reports > Report Utilization and click OK to see the utilization report you saw previously.
+* Select *Reports > Report Utilization* and click OK to see the utilization report you saw previously.
 
 * Select *File > Open Checkpoint*, select checkpoint_2.dcp.
 
