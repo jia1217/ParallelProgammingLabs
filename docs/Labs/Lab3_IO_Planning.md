@@ -7,7 +7,7 @@ sort: 3
 
 ## Introduction
 
-In this lab you will use the uart_led design that was introduced in the previous labs. You will start the project with I/O Planning type, enter pin locations, and export it to the rtl. You will then create the timing constraints and perform the timing analysis
+In this lab you will use the uart_led design that was introduced in the previous labs. You will start the project with I/O Planning, enter pin locations, and export it to the rtl. You will then create the timing constraints and perform the timing analysis.
 
 ## Objectives
 
@@ -25,69 +25,67 @@ After completing this lab, you will be able to:
 
 The design consists of a uart receiver receiving the input typed on a keyboard and displaying the binary equivalent of the typed character on the 4 LEDs. When a push button is pressed, the lower and upper nibbles are swapped. If you are using a PYNQ-Z2 development board, please make sure that you have a blank microSD card with FAT32 file system.
 
-*For PYNQ-Z2*
-
 In this design we will use board’s USB-UART which is controlled by the Zynq’s ARM Cortex-A9 processor. Our PL design needs access to this USB-UART. First thing we will do is to create a processing system design which will put the USB-UART connections in a simple GPIO-style and make it available to the PL section.
 
-The provided design places the UART (RX) pin of the PS (processing system) on the Cortex-A9 in a simple GPIO mode to allow the UART to be connected (passed through) to the Programmable Logic. The processor samples the RX signal and sends it to the EMIO channel 0 which is connected to Rx input of the HDL module provided in the Static directory.
+The provided design places the UART (rx) pin of the PS (processing system) on the Cortex-A9 in a simple GPIO mode to allow the UART to be connected (passed through) to the PL. The processor samples the rx signal and sends it to the EMIO channel 0 which is connected to rx input of the HDL module provided in the Static directory.
 
 ## Steps
 
 ### Step 1 Create a Vivado I/O Planning Project
 
-1. Click Create New Project to start the wizard. You will see Create A New Vivado Project dialog box. Click Next.
+* Click Create New Project to start the wizard. You will see Create A New Vivado Project dialog box. Click Next.
 
-2. Click the Browse button of the Project location field of the New Project form and click Select.
+* Click the Browse button of the Project location field of the New Project form and click Select.
 
-3. Enter lab4 in the Project name field. Make sure that the Create Project Subdirectory box is checked. Click Next.
+* Enter lab4 in the Project name field. Make sure that the Create Project Subdirectory box is checked. Click Next.
 
-4. Select the I/O Planning Project option in the Project Type form, and click Next.
+* Select the I/O Planning Project option in the Project Type form, and click Next.
 
-5. Select Do not import I/O ports at this time, and click Next.
+* Select Do not import I/O ports at this time, and click Next.
 
-6. In the Default Board form, select PYNQ-Z2.
+* In the Default Board form, select PYNQ-Z2.
 
-7. Click Next.
+* Click Next.
 
-8. Click Finish to create the Vivado project.
+* Click Finish to create the Vivado project.
 
     The device view window and package pins tab will be displayed.
 
 <div align=center><img src="imgs/4_1.png" alt="drawing" width="600"/></div>
 
-<div align=center><img src="imgs/4_2.png" alt="drawing" width="600"/></div>
+<div align=center><img src="imgs/4_2.png" alt="drawing" width="1000"/></div>
 
 ### Step 2 Create I/O Ports, Assign Various Pins and Add Source Files
 
 *Create input ports for clk_pin, btn_pin and rst_pin.*
 
-1. Select Flow Navigator > I/O PLANNING > Open I/O Design > Create > Create I/O Ports.
+* Select Flow Navigator > I/O PLANNING > Open I/O Design > Create > Create I/O Ports.
 
-2. Type clk_pin in the Name field, select Input for the Direction and select LVCMOS33 as the I/O Standard, and click OK.
+* Type clk_pin in the Name field, select Input for the Direction and select LVCMOS33 as the I/O Standard, and click OK.
 
-3. Similarly, create the btn_pin, rxd_pin and rst_pin input ports.
+* Similarly, create the btn_pin, rxd_pin and rst_pin input ports.
 
 <div align=center><img src="imgs/4_3.png" alt="drawing" width="600"/></div>
 
 Assign input pins clk_pin, btn_pin and rst_pin to H16, D19 and D20 locations using the Device view and package pins.
 
-<div align=center><img src="imgs/4_4.png" alt="drawing" width="600"/></div>
+<div align=center><img src="imgs/4_4.png" alt="drawing" width="1000"/></div>
 
 Do the same operations and assign output pins led_pins[0] to led_pins[3] to locations R14, P14, N16, M14. They all will be LVCMOS33.
 
-<div align=center><img src="imgs/4_5.png" alt="drawing" width="600"/></div>
+<div align=center><img src="imgs/4_5.png" alt="drawing" width="400"/></div>
 
-<div align=center><img src="imgs/4_6.png" alt="drawing" width="600"/></div>
+<div align=center><img src="imgs/4_6.png" alt="drawing" width="1000"/></div>
 
-* Select File > Constraints > Save. Enter uart_led_{BOARDS} in the File name field, and click OK.
+* *Select File > Constraints > Save*. Enter uart_led_{BOARDS} in the File name field, and click OK.
 
-<div align=center><img src="imgs/4_7.png" alt="drawing" width="600"/></div>
+<div align=center><img src="imgs/4_7.png" alt="drawing" width="400"/></div>
 
 The uart_led_{BOARDS}.xdc file will be created and added to the Sources tab.
 
-<div align=center><img src="imgs/4_8.png" alt="drawing" width="600"/></div>
+<div align=center><img src="imgs/4_8.png" alt="drawing" width="400"/></div>
 
-* Expand the Flow Navigator > I/O PLANNING > Open I/O Design > Report DRC.
+* Expand the *Flow Navigator > I/O PLANNING > Open I/O Design > Report DRC*.
 
 * Click OK. Notice the design rules checker has run and warnings are reported. Ignore the warnings.
 
