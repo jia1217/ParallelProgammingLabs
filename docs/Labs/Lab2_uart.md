@@ -299,7 +299,7 @@ A Create New Run dialog box will appear asking you if a new run should be create
 
 <div align=center><img src="imgs/2_31.png" alt="drawing" width="500"/></div>
 
-* Back to *Diagram* window, add `axi uartlite` module. We want to send data to the uart_led module through its `rx` port. To do this, we will use the UART from Ps, which is connected to the ARM core by the AXI protocal. Then, we will connect the `tx` port of the UART on the PS side to the uart_led module in PL. Double-click on this module and configure it as shown in the subsequent figure. To prevent the `rx` port of AXI Uartlite from becoming floating, set the rx port to 1 (ensuring it remains in the IDLE state). We can disregard other ports, such as the interrupt of AXI Uartlite, since it's an output port.
+* Back to *Diagram* window, add `axi uartlite` module. We want to send data to the uart_led module through its `rx` port. To do this, we will use the UART from PS side, which is connected to the ARM core by the AXI protocal. Then, we will connect the `tx` port of the UART on the PS side to the uart_led module in PL. Double-click on this module and configure it as shown in the subsequent figure. To prevent the `rx` port of AXI Uartlite from becoming floating, set the rx port to 1 (ensuring it remains in the IDLE state). We can disregard other ports, such as the interrupt of AXI Uartlite, since it's an output port.
 
 <div align=center><img src="imgs/2_28.png" alt="drawing" width="600"/></div>
 
@@ -310,12 +310,6 @@ A Create New Run dialog box will appear asking you if a new run should be create
 * The `rst_pin` of `uart_led` module is active high. You will need to convert it to active low for uart_led module. So add `util_vector_logic` as a bridge that connect the `peripheral_areset` of `Processor System Reset`.
 
 * Double click on `util_vector_logic` and set the `C_SIZE` as 1 and select the *not* operation.
-
-<div align=center><img src="imgs/2_23.png" alt="drawing" width="400"/></div>
-
-* The `rst_pin` of `uart_led` module is active high. So add `util_vector_logic` as a bridge that connect the `peripheral_areset` of `Processor System Reset`.
-
-  Double click `util_vector_logic` and set the `C_SIZE` as 1 and select the *not* operation.
 
 <div align=center><img src="imgs/2_24.png" alt="drawing" width="600"/></div>
 
