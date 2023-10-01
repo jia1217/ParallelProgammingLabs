@@ -99,12 +99,9 @@ The uart_led_{BOARDS}.xdc file will be created and added to the Sources tab.
 
 * Select the Hierarchy tab and notice that the uart_led.v file has been added to the project with top-level module name as ios. If you double-click the entry, you will see the module name with the ports listing.
 
-<<<<<<< HEAD
 <div align=center><img src="imgs/4_10.png" alt="drawing" width="600"/></div>
 
 * Add the provided source files (from Lab2/project_1/project_1.srcs/sources_1/new) to the project. Copy the uart_led.txt content into the source file.
-
->>>>>>> 50a9d279efa32add9e542021e923d5dfba3fd852
 
 ### Step 2 Synthesize the Design
 
@@ -152,15 +149,15 @@ The uart_led_{BOARDS}.xdc file will be created and added to the Sources tab.
 
 <div align=center><img src="imgs/4_14.png" alt="drawing" width="600"/></div>
 
-* Note the wizard generated the clk_pin constraint for a 8 ns period (or 125 MHz)(PYNQ-Z2). Notice in the All Constraints window, 7/9 constraints will be created. There is no need to click Apply since the constraints have already been applied in the Constraints Wizard.
+* Note the wizard generated the clk_pin constraint for a 8 ns period (or 125 MHz) (PYNQ-Z2). Notice in the All Constraints window, 7/9 constraints will be created. There is no need to click Apply since the constraints have already been applied in the Constraints Wizard.
 
-<div align=center><img src="imgs/4_15.png" alt="drawing" width="600"/></div>
+<div align=center><img src="imgs/4_15.png" alt="drawing" width="1000"/></div>
 
 * Open **uart_led_.xdc** (if it was already opened, click **Reload** in the yellow status bar) and notice additional constraints were added to the last line of the file.
 
 #### Generate an estimated Timing Report showing both the setup and hold paths in the design.
 
-* Select Flow Navigator > SYNTHESIS > Open Synthesized Design > Report Timing Summary.
+* Select *Flow Navigator > SYNTHESIS > Open Synthesized Design > Report Timing Summary*.
 
 * In the Options tab, select min_max from the Path delay type drop-down list.
 
@@ -194,7 +191,7 @@ The uart_led_{BOARDS}.xdc file will be created and added to the Sources tab.
 
 #### Generate a timing summary report
 
-* Select Flow Navigator > IMPLEMENTATION > Open Implemented Design > Report Timing Summary.
+* Select *Flow Navigator > IMPLEMENTATION > Open Implemented Design > Report Timing Summary*.
 
 * Click OK to generate the report using the default settings. The Design Timing Summary window opens at the bottom in the Timing tab. Note that failing timing paths are indicated in red.
 
@@ -204,11 +201,11 @@ The uart_led_{BOARDS}.xdc file will be created and added to the Sources tab.
 
 * Double-click on the first failing path from the top and see the detailed analysis. The output path delay can be reduced by placing the register in IOB.
 
-* Similiar to Lab2, we can just delete the constrains to the led_pin
+* Similiar to Lab2, we can just delete the constraints to the led_pin (timing constraint on leds is useless in practise). 
 
 <div align=center><img src="imgs/4_22.png" alt="drawing" width="600"/></div>
 
-* Select File > Constraints > Save. Click OK at the warning message. Click Yes to save the project.
+* Select *File > Constraints > Save*. Click OK at the warning message. Click Yes to save the project.
 
 * Click on Run Implementation.
 
@@ -218,7 +215,7 @@ The uart_led_{BOARDS}.xdc file will be created and added to the Sources tab.
 
 * Click Report Timing Summary, and observe that there are no failing paths.
 
-### Step 5 Generate the Bitstream and Verify the Functionality (Optional)
+### Step 5 Generate the Bitstream and Verify the Functionality
 
-Please following the Lab2.
+Please following the Lab2 to complete the steps yourself.
 
