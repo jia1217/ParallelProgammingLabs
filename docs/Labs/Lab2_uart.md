@@ -327,7 +327,7 @@ A Create New Run dialog box will appear asking you if a new run should be create
 
 Right click design_1_wrapper and choose set to top.
 
-* Continue with the remaining steps in the Lab1.
+* Continue with the remaining steps in the Lab1 (i.e., Check the port of this module and change the constraints file as needed.). Try to figure it out yourself this time.
 
 #### Generate the Bitstream
 
