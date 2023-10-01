@@ -59,7 +59,7 @@ The provided design places the UART (rx) pin of the PS (processing system) on th
 
 *Create input ports for clk_pin, btn_pin and rst_pin.*
 
-* Select Flow Navigator > I/O PLANNING > Open I/O Design > Create > Create I/O Ports.
+* *Select Flow Navigator > I/O PLANNING > Open I/O Design > Create > Create I/O Ports*.
 
 * Type clk_pin in the Name field, select Input for the Direction and select LVCMOS33 as the I/O Standard, and click OK.
 
@@ -67,11 +67,11 @@ The provided design places the UART (rx) pin of the PS (processing system) on th
 
 <div align=center><img src="imgs/4_3.png" alt="drawing" width="600"/></div>
 
-Assign input pins clk_pin, btn_pin and rst_pin to H16, D19 and D20 locations using the Device view and package pins.
+* Assign input pins clk_pin, btn_pin and rst_pin to H16, D19 and D20 locations using the Device view and package pins.
 
 <div align=center><img src="imgs/4_4.png" alt="drawing" width="1000"/></div>
 
-Do the same operations and assign output pins led_pins[0] to led_pins[3] to locations R14, P14, N16, M14. They all will be LVCMOS33.
+* Do the same operations and assign output pins led_pins[0] to led_pins[3] to locations R14, P14, N16, M14. They all will be LVCMOS33.
 
 <div align=center><img src="imgs/4_5.png" alt="drawing" width="400"/></div>
 
@@ -89,11 +89,11 @@ The uart_led_{BOARDS}.xdc file will be created and added to the Sources tab.
 
 * Click OK. Notice the design rules checker has run and warnings are reported. Ignore the warnings.
 
-* Expand the Flow Navigator > I/O PLANNING > Open I/O Design > Report Noise and click OK. Notice the noise analysis is done on the output pins only (led_pins) and the results are displayed.
+* Expand the *Flow Navigator > I/O PLANNING > Open I/O Design > Report Noise* and click OK. Notice the noise analysis is done on the output pins only (led_pins) and the results are displayed.
 
 * Click on Migrate to RTL.
 
-* The Migrate to RTL form will be displayed with Top RTL file field showing {TUTORIAL}/io_1.v entry. Change io_1.v to uart_led.v(for PYNQ-Z2) or uart_top.v(for Boolean), and click OK.
+* The Migrate to RTL form will be displayed with Top RTL file field showing {TUTORIAL}/io_1.v entry. Change io_1.v to uart_led.v(for PYNQ-Z2), and click OK.
 
 <div align=center><img src="imgs/4_9.png" alt="drawing" width="600"/></div>
 
@@ -104,12 +104,8 @@ The uart_led_{BOARDS}.xdc file will be created and added to the Sources tab.
 
 * Add the provided source files (from Lab2/project_1/project_1.srcs/sources_1/new) to the project. Copy the uart_led.txt content into the source file.
 
-=======
-* Add the provided source files (from Lab2/project_1/project_1.srcs/sources_1/new) to the project. Copy the uart_led.txt content into the source file.
-
-<div align=center><img src="imgs/4_10.png" alt="drawing" width="600"/></div>
-
 >>>>>>> 50a9d279efa32add9e542021e923d5dfba3fd852
+
 ### Step 2 Synthesize the Design
 
 #### Synthesize the design. Use the Constraints Wizard to specify a clock frequency, and input and output delay constraints.
