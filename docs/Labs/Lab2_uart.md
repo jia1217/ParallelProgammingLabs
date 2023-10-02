@@ -5,7 +5,7 @@ sort: 2
 
 # Lab2_uart
 
-The design consists of a uart receiver receiving the input typed on a keyboard and displaying the binary equivalent of the typed character on the 4 LEDs. When a push botton is pressed, the lower and upper nibbles are swapped. The block diagram is as shown in the following figure.
+The design consists of a uart receiver receiving the input typed on a keyboard and displaying the binary equivalent of the typed character on the 4 LEDs. When a push button is pressed, the lower and upper nibbles are XOR. The block diagram is as shown in the following figure.
 
 <div align=center><img src="imgs/lab2.png" alt="drawing" width="600"/></div>
 
