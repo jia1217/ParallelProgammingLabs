@@ -7,7 +7,7 @@ sort: 3
 
 ## Introduction
 
-In this lab you will use the uart_led design that was introduced in the previous labs. You will start the project with I/O Planning type, enter pin locations, and export it to the rtl. You will then create the timing constraints and perform the timing analysis
+In this lab you will use the uart_led design that was introduced in the previous labs. You will start the project with I/O Planning, enter pin locations, and export it to the rtl. You will then create the timing constraints and perform the timing analysis.
 
 ## Objectives
 
@@ -25,93 +25,84 @@ After completing this lab, you will be able to:
 
 The design consists of a uart receiver receiving the input typed on a keyboard and displaying the binary equivalent of the typed character on the 4 LEDs. When a push button is pressed, the lower and upper nibbles are swapped. If you are using a PYNQ-Z2 development board, please make sure that you have a blank microSD card with FAT32 file system.
 
-*For PYNQ-Z2*
-
 In this design we will use board’s USB-UART which is controlled by the Zynq’s ARM Cortex-A9 processor. Our PL design needs access to this USB-UART. First thing we will do is to create a processing system design which will put the USB-UART connections in a simple GPIO-style and make it available to the PL section.
 
-The provided design places the UART (RX) pin of the PS (processing system) on the Cortex-A9 in a simple GPIO mode to allow the UART to be connected (passed through) to the Programmable Logic. The processor samples the RX signal and sends it to the EMIO channel 0 which is connected to Rx input of the HDL module provided in the Static directory.
+The provided design places the UART (rx) pin of the PS (processing system) on the Cortex-A9 in a simple GPIO mode to allow the UART to be connected (passed through) to the PL. The processor samples the rx signal and sends it to the EMIO channel 0 which is connected to rx input of the HDL module provided in the Static directory.
 
 ## Steps
 
 ### Step 1 Create a Vivado I/O Planning Project
 
-1. Click Create New Project to start the wizard. You will see Create A New Vivado Project dialog box. Click Next.
+* Click Create New Project to start the wizard. You will see Create A New Vivado Project dialog box. Click Next.
 
-2. Click the Browse button of the Project location field of the New Project form and click Select.
+* Click the Browse button of the Project location field of the New Project form and click Select.
 
-3. Enter lab4 in the Project name field. Make sure that the Create Project Subdirectory box is checked. Click Next.
+* Enter lab4 in the Project name field. Make sure that the Create Project Subdirectory box is checked. Click Next.
 
-4. Select the I/O Planning Project option in the Project Type form, and click Next.
+* Select the I/O Planning Project option in the Project Type form, and click Next.
 
-5. Select Do not import I/O ports at this time, and click Next.
+* Select Do not import I/O ports at this time, and click Next.
 
-6. In the Default Board form, select PYNQ-Z2.
+* In the Default Board form, select PYNQ-Z2.
 
-7. Click Next.
+* Click Next.
 
-8. Click Finish to create the Vivado project.
+* Click Finish to create the Vivado project.
 
     The device view window and package pins tab will be displayed.
 
 <div align=center><img src="imgs/4_1.png" alt="drawing" width="600"/></div>
 
-<div align=center><img src="imgs/4_2.png" alt="drawing" width="600"/></div>
+<div align=center><img src="imgs/4_2.png" alt="drawing" width="1000"/></div>
 
 ### Step 2 Create I/O Ports, Assign Various Pins and Add Source Files
 
 *Create input ports for clk_pin, btn_pin and rst_pin.*
 
-1. Select Flow Navigator > I/O PLANNING > Open I/O Design > Create > Create I/O Ports.
+* *Select Flow Navigator > I/O PLANNING > Open I/O Design > Create > Create I/O Ports*.
 
-2. Type clk_pin in the Name field, select Input for the Direction and select LVCMOS33 as the I/O Standard, and click OK.
+* Type clk_pin in the Name field, select Input for the Direction and select LVCMOS33 as the I/O Standard, and click OK.
 
-3. Similarly, create the btn_pin, rxd_pin and rst_pin input ports.
+* Similarly, create the btn_pin, rxd_pin and rst_pin input ports.
 
 <div align=center><img src="imgs/4_3.png" alt="drawing" width="600"/></div>
 
-Assign input pins clk_pin, btn_pin and rst_pin to H16, D19 and D20 locations using the Device view and package pins.
+* Assign input pins clk_pin, btn_pin and rst_pin to H16, D19 and D20 locations using the Device view and package pins.
 
-<div align=center><img src="imgs/4_4.png" alt="drawing" width="600"/></div>
+<div align=center><img src="imgs/4_4.png" alt="drawing" width="1000"/></div>
 
-Do the same operations and assign output pins led_pins[0] to led_pins[3] to locations R14, P14, N16, M14. They all will be LVCMOS33.
+* Do the same operations and assign output pins led_pins[0] to led_pins[3] to locations R14, P14, N16, M14. They all will be LVCMOS33.
 
-<div align=center><img src="imgs/4_5.png" alt="drawing" width="600"/></div>
+<div align=center><img src="imgs/4_5.png" alt="drawing" width="400"/></div>
 
-<div align=center><img src="imgs/4_6.png" alt="drawing" width="600"/></div>
+<div align=center><img src="imgs/4_6.png" alt="drawing" width="1000"/></div>
 
-* Select File > Constraints > Save. Enter uart_led_{BOARDS} in the File name field, and click OK.
+* *Select File > Constraints > Save*. Enter uart_led_{BOARDS} in the File name field, and click OK.
 
-<div align=center><img src="imgs/4_7.png" alt="drawing" width="600"/></div>
+<div align=center><img src="imgs/4_7.png" alt="drawing" width="400"/></div>
 
 The uart_led_{BOARDS}.xdc file will be created and added to the Sources tab.
 
-<div align=center><img src="imgs/4_8.png" alt="drawing" width="600"/></div>
+<div align=center><img src="imgs/4_8.png" alt="drawing" width="400"/></div>
 
-* Expand the Flow Navigator > I/O PLANNING > Open I/O Design > Report DRC.
+* Expand the *Flow Navigator > I/O PLANNING > Open I/O Design > Report DRC*.
 
 * Click OK. Notice the design rules checker has run and warnings are reported. Ignore the warnings.
 
-* Expand the Flow Navigator > I/O PLANNING > Open I/O Design > Report Noise and click OK. Notice the noise analysis is done on the output pins only (led_pins) and the results are displayed.
+* Expand the *Flow Navigator > I/O PLANNING > Open I/O Design > Report Noise* and click OK. Notice the noise analysis is done on the output pins only (led_pins) and the results are displayed.
 
 * Click on Migrate to RTL.
 
-* The Migrate to RTL form will be displayed with Top RTL file field showing {TUTORIAL}/io_1.v entry. Change io_1.v to uart_led.v(for PYNQ-Z2) or uart_top.v(for Boolean), and click OK.
+* The Migrate to RTL form will be displayed with Top RTL file field showing {TUTORIAL}/io_1.v entry. Change io_1.v to uart_led.v(for PYNQ-Z2), and click OK.
 
 <div align=center><img src="imgs/4_9.png" alt="drawing" width="600"/></div>
 
 * Select the Hierarchy tab and notice that the uart_led.v file has been added to the project with top-level module name as ios. If you double-click the entry, you will see the module name with the ports listing.
 
-<<<<<<< HEAD
 <div align=center><img src="imgs/4_10.png" alt="drawing" width="600"/></div>
 
 * Add the provided source files (from Lab2/project_1/project_1.srcs/sources_1/new) to the project. Copy the uart_led.txt content into the source file.
 
-=======
-* Add the provided source files (from Lab2/project_1/project_1.srcs/sources_1/new) to the project. Copy the uart_led.txt content into the source file.
-
-<div align=center><img src="imgs/4_10.png" alt="drawing" width="600"/></div>
-
->>>>>>> 50a9d279efa32add9e542021e923d5dfba3fd852
 ### Step 2 Synthesize the Design
 
 #### Synthesize the design. Use the Constraints Wizard to specify a clock frequency, and input and output delay constraints.
@@ -158,15 +149,15 @@ The uart_led_{BOARDS}.xdc file will be created and added to the Sources tab.
 
 <div align=center><img src="imgs/4_14.png" alt="drawing" width="600"/></div>
 
-* Note the wizard generated the clk_pin constraint for a 8 ns period (or 125 MHz)(PYNQ-Z2). Notice in the All Constraints window, 7/9 constraints will be created. There is no need to click Apply since the constraints have already been applied in the Constraints Wizard.
+* Note the wizard generated the clk_pin constraint for a 8 ns period (or 125 MHz) (PYNQ-Z2). Notice in the All Constraints window, 7/9 constraints will be created. There is no need to click Apply since the constraints have already been applied in the Constraints Wizard.
 
-<div align=center><img src="imgs/4_15.png" alt="drawing" width="600"/></div>
+<div align=center><img src="imgs/4_15.png" alt="drawing" width="1000"/></div>
 
 * Open **uart_led_.xdc** (if it was already opened, click **Reload** in the yellow status bar) and notice additional constraints were added to the last line of the file.
 
 #### Generate an estimated Timing Report showing both the setup and hold paths in the design.
 
-* Select Flow Navigator > SYNTHESIS > Open Synthesized Design > Report Timing Summary.
+* Select *Flow Navigator > SYNTHESIS > Open Synthesized Design > Report Timing Summary*.
 
 * In the Options tab, select min_max from the Path delay type drop-down list.
 
@@ -200,7 +191,7 @@ The uart_led_{BOARDS}.xdc file will be created and added to the Sources tab.
 
 #### Generate a timing summary report
 
-* Select Flow Navigator > IMPLEMENTATION > Open Implemented Design > Report Timing Summary.
+* Select *Flow Navigator > IMPLEMENTATION > Open Implemented Design > Report Timing Summary*.
 
 * Click OK to generate the report using the default settings. The Design Timing Summary window opens at the bottom in the Timing tab. Note that failing timing paths are indicated in red.
 
@@ -210,11 +201,11 @@ The uart_led_{BOARDS}.xdc file will be created and added to the Sources tab.
 
 * Double-click on the first failing path from the top and see the detailed analysis. The output path delay can be reduced by placing the register in IOB.
 
-* Similiar to Lab2, we can just delete the constrains to the led_pin
+* Similiar to Lab2, we can just delete the constraints to the led_pin (timing constraint on leds is useless in practise). 
 
 <div align=center><img src="imgs/4_22.png" alt="drawing" width="600"/></div>
 
-* Select File > Constraints > Save. Click OK at the warning message. Click Yes to save the project.
+* Select *File > Constraints > Save*. Click OK at the warning message. Click Yes to save the project.
 
 * Click on Run Implementation.
 
@@ -224,7 +215,7 @@ The uart_led_{BOARDS}.xdc file will be created and added to the Sources tab.
 
 * Click Report Timing Summary, and observe that there are no failing paths.
 
-### Step 5 Generate the Bitstream and Verify the Functionality (Optional)
+### Step 5 Generate the Bitstream and Verify the Functionality
 
-Please following the Lab2.
+Please following the Lab2 to complete the steps yourself.
 
