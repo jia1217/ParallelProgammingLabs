@@ -106,7 +106,7 @@ module uart_led(
 
     wire rst_clk_rx;
     wire btn_clk_rx;
-    wire [7: 0] ra_data;
+    wire [7: 0] rx_data;
     wire rx_data_rdy;
     
      meta_harden meta_harden_rst_i0 (
@@ -330,6 +330,8 @@ A Create New Run dialog box will appear asking you if a new run should be create
 Right click design_1_wrapper and choose set to top.
 
 * Continue with the remaining steps in the Lab1 (i.e., Check the port of this module and change the constraints file as needed.). Try to figure it out yourself this time.
+
+* Remember to change the constrain file to match the name of the pin. Similiar as *Lab 1*.
 
 #### Generate the Bitstream
 
