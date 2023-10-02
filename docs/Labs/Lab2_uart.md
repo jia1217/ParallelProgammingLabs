@@ -396,7 +396,7 @@ l = [0xd3]
 uart.write(l)
 ```
 
-5. Then you can see the phenomenon that correspond to the input. 
+* Then you can observe the phenomenon that corresponds to the input.
 
 According to the code in `led_ctl.v`,
 
@@ -407,13 +407,10 @@ else
     led_pipeline_reg <= char_data[3:0];
 ```
 
-If I input `0xd3` and don't press the button, it will show like following figre,
+If you input 0xd3 and do not press the button, you should see.
 
-<div align=center><img src="imgs/2_32.png" alt="drawing" width="600"/></div>
+<div align=center><img src="imgs/2_32.png" alt="drawing" width="400"/></div>
 
-else, if I press the button, it will show like the following.
+Else, if you press the button, you should see.
 
-<div align=center><img src="imgs/2_33.png" alt="drawing" width="600"/></div>
-
-=======
-* Then you can see the phenomenon that correspond to the input. 
+<div align=center><img src="imgs/2_33.png" alt="drawing" width="400"/></div>
