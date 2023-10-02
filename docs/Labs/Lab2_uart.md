@@ -106,7 +106,7 @@ module uart_led(
 
     wire rst_clk_rx;
     wire btn_clk_rx;
-    wire [7: 0] ra_data;
+    wire [7: 0] rx_data;
     wire rx_data_rdy;
     
      meta_harden meta_harden_rst_i0 (
@@ -319,6 +319,8 @@ A Create New Run dialog box will appear asking you if a new run should be create
 
 <div align=center><img src="imgs/2_22.png" alt="drawing" width="600"/></div>
 
+* Right click `btn_pin` and `btn_pin`, select `make extern`
+
 * The whole system diagram is shown in the following figure.
 
 <div align=center><img src="imgs/2_25.png" alt="drawing" width="1000"/></div>
@@ -328,6 +330,8 @@ A Create New Run dialog box will appear asking you if a new run should be create
 Right click design_1_wrapper and choose set to top.
 
 * Continue with the remaining steps in the Lab1 (i.e., Check the port of this module and change the constraints file as needed.). Try to figure it out yourself this time.
+
+* Remember to change the constrain file to match the name of the pin. Similiar as *Lab 1*.
 
 #### Generate the Bitstream
 
@@ -394,7 +398,7 @@ l = [0xd3]
 uart.write(l)
 ```
 
-5. Then you can see the phenomenon that correspond to the input. 
+* Then you can observe the phenomenon that corresponds to the input.
 
 According to the code in `led_ctl.v`,
 
@@ -405,13 +409,10 @@ else
     led_pipeline_reg <= char_data[3:0];
 ```
 
-If I input `0xd3` and don't press the button, it will show like following figre,
+If you input 0xd3 and do not press the button, you should see.
 
-<div align=center><img src="imgs/2_32.png" alt="drawing" width="600"/></div>
+<div align=center><img src="imgs/2_32.png" alt="drawing" width="400"/></div>
 
-else, if I press the button, it will show like the following.
+Else, if you press the button, you should see.
 
-<div align=center><img src="imgs/2_33.png" alt="drawing" width="600"/></div>
-
-=======
-* Then you can see the phenomenon that correspond to the input. 
+<div align=center><img src="imgs/2_33.png" alt="drawing" width="400"/></div>
