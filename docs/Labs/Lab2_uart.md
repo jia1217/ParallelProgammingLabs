@@ -307,12 +307,6 @@ A Create New Run dialog box will appear asking you if a new run should be create
 
 <div align=center><img src="imgs/2_23.png" alt="drawing" width="400"/></div>
 
-* The `rst_pin` of `uart_led` module is active high. You will need to convert it to active low for uart_led module. So add `util_vector_logic` as a bridge that connect the `peripheral_areset` of `Processor System Reset`.
-
-* Double click on `util_vector_logic` and set the `C_SIZE` as 1 and select the *not* operation.
-
-<div align=center><img src="imgs/2_23.png" alt="drawing" width="600"/></div>
-
 * The `rst_pin` of `uart_led` module is active high. So add `util_vector_logic` as a bridge that connect the `peripheral_areset` of `Processor System Reset`.
 
   Double click `util_vector_logic` and set the `C_SIZE` as 1 and select the *not* operation.
@@ -397,3 +391,21 @@ uart.write(l)
 ```
 
 5. Then you can see the phenomenon that correspond to the input. 
+
+According to the code in `led_ctl.v`,
+
+```verilog
+if (btn_clk_rx)
+    led_pipeline_reg <= char_data[3:0]^char_data[7:4];
+else
+    led_pipeline_reg <= char_data[3:0];
+```
+
+If I input `0xd3` and don't press the button, it will show like following figre,
+
+<div align=center><img src="imgs/2_32.png" alt="drawing" width="600"/></div>
+
+else, if I press the button, it will show like the following.
+
+<div align=center><img src="imgs/2_33.png" alt="drawing" width="600"/></div>
+
