@@ -319,6 +319,8 @@ A Create New Run dialog box will appear asking you if a new run should be create
 
 <div align=center><img src="imgs/2_22.png" alt="drawing" width="600"/></div>
 
+* Right click `btn_pin` and `btn_pin`, select `make extern`
+
 * The whole system diagram is shown in the following figure.
 
 <div align=center><img src="imgs/2_25.png" alt="drawing" width="1000"/></div>
