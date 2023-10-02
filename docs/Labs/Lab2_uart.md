@@ -106,7 +106,7 @@ module uart_led(
 
     wire rst_clk_rx;
     wire btn_clk_rx;
-    wire [7: 0] ra_data;
+    wire [7: 0] rx_data;
     wire rx_data_rdy;
     
      meta_harden meta_harden_rst_i0 (
@@ -326,6 +326,8 @@ A Create New Run dialog box will appear asking you if a new run should be create
 <div align=center><img src="imgs/2_25.png" alt="drawing" width="1000"/></div>
 
 * Continue with the remaining steps in the Lab1.
+
+* Remember to change the constrain file to match the name of the pin. Similiar as *Lab 1*.
 
 #### Generate the Bitstream
 
