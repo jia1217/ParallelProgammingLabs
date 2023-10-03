@@ -99,9 +99,9 @@ The uart_led_{BOARDS}.xdc file will be created and added to the Sources tab.
 
 * Select the Hierarchy tab and notice that the uart_led.v file has been added to the project with top-level module name as ios. If you double-click the entry, you will see the module name with the ports listing.
 
-<div align=center><img src="imgs/4_10.png" alt="drawing" width="600"/></div>
-
 * Add the source files used in Lab2 (from Lab2/project_1/project_1.srcs/sources_1/new) to this project, please exclude `uart_led.v` and copy the uart_led.v content in Lab2 into the `uart_led.v` you created when do migrating operation.
+
+<div align=center><img src="imgs/4_10.png" alt="drawing" width="600"/></div>
 
 ### Step 2 Synthesize the Design
 
