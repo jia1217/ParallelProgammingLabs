@@ -37,7 +37,7 @@ The provided design places the UART (rx) pin of the PS (processing system) on th
 
 * Click the Browse button of the Project location field of the New Project form and click Select.
 
-* Enter lab4 in the Project name field. Make sure that the Create Project Subdirectory box is checked. Click Next.
+* Enter lab3 in the Project name field. Make sure that the Create Project Subdirectory box is checked. Click Next.
 
 * Select the I/O Planning Project option in the Project Type form, and click Next.
 
