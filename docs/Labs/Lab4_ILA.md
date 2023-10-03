@@ -29,7 +29,7 @@ The design consists of a uart receiver receiving the input typed on a keyboard a
 
 ### Step 1 Create new project and add source
 
-Please copy the whole Lab2 project and named it as *Lab5*:
+Please copy the whole Lab2 project and named it as *Lab4*:
 
 ### Step 2 Add the ILA Core
 
