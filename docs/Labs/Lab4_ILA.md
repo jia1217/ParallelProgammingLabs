@@ -58,11 +58,11 @@ Please copy the whole Lab2 project and named it as *Lab4*:
 
 <div align=center><img src="imgs/5_1.png" alt="drawing" width="600"/></div>
 
-* If you want to combina two wires into one ILA, we can delete one (for example, `system_ila_0`) and double click (i.e. `system_ila_1`). And set the `NUmber of Probes` as 2.
+* If you want to combina two ports into one ILA, we can delete one (for example, `system_ila_0`) and double click (i.e. `system_ila_1`). And set the `Number of Probes` as 2.
 
 <div align=center><img src="imgs/5_2.png" alt="drawing" width="600"/></div>
 
-* We need to connect the `clk` of ilas by ourself. We can connect them to the `clk_pin_0`. Just make sure that the clk signal is the sychronize.
+* We need to connect the `clk` of ilas by ourself. We can connect them to the `clk_pin_0`. Just make sure that the clk signal is the sychronized.
 
 <div align=center><img src="imgs/5_3.png" alt="drawing" width="600"/></div>
 
@@ -110,7 +110,7 @@ Please copy the whole Lab2 project and named it as *Lab4*:
 
 ### If you want to see more information about UART, please do the following
 
-* You can pull `baud_x16_en`,  `over_sample_cnt_done` and `rx_begin` out and set them as a trigger. The `rx_begin` sigal is to flag the start state. We can add one code in the `uart_rx_ctl` file. Don't forget to debug `tx` port. 
+* You can pull `baud_x16_en`,  `over_sample_cnt_done` and `rx_begin` out and set them as a trigger. The enable sigal is to flag the start state. We can add one code in the `uart_rx_ctl` file. Don't forget to debug `tx` port. 
 
 * Here we need to fix three files, `uart_rx_ctl.v`, `uart_rx.v` and `uart_led.v`.
 
@@ -207,7 +207,7 @@ module uart_led (
 
 ```python
 while True:
-    l = [0xA5]
+    l = [0xA5] #A5 is easier to be recognized
     uart.write(l)
 ```
 
