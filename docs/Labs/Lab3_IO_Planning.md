@@ -101,7 +101,7 @@ The uart_led_{BOARDS}.xdc file will be created and added to the Sources tab.
 
 <div align=center><img src="imgs/4_10.png" alt="drawing" width="600"/></div>
 
-* Add the provided source files (from Lab2/project_1/project_1.srcs/sources_1/new) to the project. Copy the uart_led.txt content into the source file.
+* Add the source files used in Lab2 (from Lab2/project_1/project_1.srcs/sources_1/new) to this project, please exclude `uart_led.v` and copy the uart_led.v content in Lab2 into the `uart_led.v` you created when do migrating operation.
 
 ### Step 2 Synthesize the Design
 
