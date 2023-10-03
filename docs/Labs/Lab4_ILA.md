@@ -35,7 +35,7 @@ Please copy the whole Lab2 project and named it as *Lab4*:
 
 * Click *Open Block Design* under *IP INTEGRATOR*.
 
-* Choose the Port you want to debug. If you can't find the port in the exist diagram, we can change the top file code and pull the port out. For example, I am interesting in `rx_data_rdy` and `rx_data`, but I can't find it. Then we can back to the `uart_led.v` , change it like following:
+* Choose the Port you want to debug. If you can't find the port in the exist diagram, we can change the top file code and pull the port out. For example, I am interested in `rx_data_rdy` and `rx_data`, but I can't find it. Then we can back to the `uart_led.v` , change it like following:
 
 ```verilog
     module uart_led (
