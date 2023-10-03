@@ -69,7 +69,7 @@ module led_ctl(
         begin
             old_rx_data_rdy <= 1'b0;
             char_data <= 8'b0;
-            led_0 <= 4'b0;
+            led_o <= 4'b0;
         end
         else
         begin
