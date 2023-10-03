@@ -35,7 +35,7 @@ Please copy the whole Lab2 project and named it as *Lab5*:
 
 * Click *Open Block Design* under *IP INTEGRATOR*.
 
-* Choose the Port you want to debug. If you can't find the port in the exist diagram, we can change the top file code and pull the port out. For example, I am interesting in `rx_data_rdy` and `rx_data`, but I can't find it. Then we can back to the code, change it like following:
+* Choose the Port you want to debug. If you can't find the port in the exist diagram, we can change the top file code and pull the port out. For example, I am interesting in `rx_data_rdy` and `rx_data`, but I can't find it. Then we can back to the `uart_led.v` , change it like following:
 
 ```verilog
     module uart_led (
@@ -106,13 +106,56 @@ Please copy the whole Lab2 project and named it as *Lab5*:
 
 * Open a new jupyter notebook, similar to Lab2, input a data (i.e 0xd3) and observe that the hw_ila_1 status changes from capturing to idle as the rx_data_rdy_out became 1. And on the *hw_ila_2*, it will show d3 after the trigger.
 
+<div align=center><img src="imgs/5_16.png" alt="drawing" width="600"/></div>
+
 ### If you want to see more information about UART, please do the following
 
 * You can pull `baud_x16_en`,  `over_sample_cnt_done` and `rx_begin` out and set them as a trigger. The `rx_begin` sigal is to flag the start state. We can add one code in the `uart_rx_ctl` file. Don't forget to debug `tx` port. 
 
+* Here we need to fix three files, `uart_rx_ctl.v`, `uart_rx.v` and `uart_led.v`.
+
+In the `uart_rx_ctl.v` file, please add the following code and pull `rx_begin` and `over_sample_cnt_done` out. Do this operation, please follow the previous description.
+
 ```verilog
 assign rx_begin = (state != IDLE);
 ```
+
+In the `uart_rx.v` file. 
+
+```verilog
+module uart_rx (
+    // Write side inputs
+    input            clk_rx,       // Clock input
+    input            rst_clk_rx,   // Active HIGH reset - synchronous to clk_rx
+
+    input            rxd_i,        // RS232 RXD pin - Directly from pad
+    output           rxd_clk_rx,   // RXD pin after synchronization to clk_rx
+
+    output     [7:0] rx_data,      // 8 bit data output
+    //  - valid when rx_data_rdy is asserted
+    output           rx_data_rdy,  // Ready signal for rx_data
+    output           frm_err,       // The STOP bit was not detected
+    output             baud_x16_en,  // 1-in-N enable for uart_rx_ctl FFs
+    output           over_sample_cnt_done,
+    output rx_begin
+);
+/* */
+uart_rx_ctl uart_rx_ctl_i0 (
+    .clk_rx      (clk_rx),
+    .rst_clk_rx  (rst_clk_rx),
+    .baud_x16_en (baud_x16_en),
+
+    .rxd_clk_rx  (rxd_clk_rx),
+
+    .rx_data_rdy (rx_data_rdy),
+    .rx_data     (rx_data),
+    .frm_err     (frm_err),
+    .over_sample_cnt_done (over_sample_cnt_done),
+    .rx_begin (rx_begin)
+);
+```
+
+In the `uart_led.v` file,
 
 ```verilog
 module uart_led (
@@ -128,56 +171,7 @@ module uart_led (
   output over_sample_cnt_done,
   output rx_begin
 );
-
-//***************************************************************************
-// Parameter definitions
-//***************************************************************************
-  parameter BAUD_RATE           = 115_200;   
-  parameter CLOCK_RATE          = 125_000_000;
-
-//***************************************************************************
-// Reg declarations
-//***************************************************************************
-
-//***************************************************************************
-// Wire declarations
-//***************************************************************************
-
-  // Synchronized reset
-  wire             rst_clk_rx;
-
-  // Synchronized button
-  wire             btn_clk_rx;
-
-  // Between uart_rx and led_ctl
-  wire [7:0]       rx_data;      // Data output of uart_rx
-  wire             rx_data_rdy;  // Data ready output of uart_rx
-  
-  wire             baud_x16_en;  // 1-in-N enable for uart_rx_ctl FFs
-  wire             over_sample_cnt_done;
-//***************************************************************************
-// Code
-//***************************************************************************
-
-  // Metastability harden the rst - this is an asynchronous input to the
-  // system (from a pushbutton), and is used in synchronous logic. Therefore
-  // it must first be synchronized to the clock domain (clk_pin in this case)
-  // prior to being used. A simple metastability hardener is appropriate here.
-  meta_harden meta_harden_rst_i0 (
-    .clk_dst      (clk_pin),
-    .rst_dst      (1'b0),    // No reset on the hardener for reset!
-    .signal_src   (rst_pin),
-    .signal_dst   (rst_clk_rx)
-  );
-
-  // And the button input
-  meta_harden meta_harden_btn_i0 (
-    .clk_dst      (clk_pin),
-    .rst_dst      (rst_clk_rx),
-    .signal_src   (btn_pin),
-    .signal_dst   (btn_clk_rx)
-  );
-
+/* */
   uart_rx #(
     .CLOCK_RATE   (CLOCK_RATE),
     .BAUD_RATE    (BAUD_RATE) 
@@ -195,17 +189,6 @@ module uart_led (
     .over_sample_cnt_done (over_sample_cnt_done),
     .rx_begin (rx_begin)
   );
-
-  led_ctl led_ctl_i0 (
-    .clk_rx      (clk_pin),
-    .rst_clk_rx  (rst_clk_rx),
-    .btn_clk_rx  (btn_clk_rx),
-    .rx_data     (rx_data),
-    .rx_data_rdy (rx_data_rdy),
-    .led_o       (led_pins)
-  );
-
-endmodule
 ```
 
 <div align=center><img src="imgs/5_11.png" alt="drawing" width="600"/></div>

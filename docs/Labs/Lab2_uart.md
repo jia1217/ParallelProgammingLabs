@@ -69,7 +69,7 @@ module led_ctl(
         begin
             old_rx_data_rdy <= 1'b0;
             char_data <= 8'b0;
-            led_0 <= 4'b0;
+            led_o <= 4'b0;
         end
         else
         begin
@@ -330,6 +330,8 @@ A Create New Run dialog box will appear asking you if a new run should be create
 Right click design_1_wrapper and choose set to top.
 
 * Continue with the remaining steps in the Lab1 (i.e., Check the port of this module and change the constraints file as needed.). Try to figure it out yourself this time.
+
+* Remember to change the constrain file to match the name of the pin. Similiar as *Lab 1*.
 
 * Remember to change the constrain file to match the name of the pin. Similiar as *Lab 1*.
 
