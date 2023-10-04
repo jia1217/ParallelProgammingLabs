@@ -215,7 +215,15 @@ The uart_led_{BOARDS}.xdc file will be created and added to the Sources tab.
 
 * Click Report Timing Summary, and observe that there are no failing paths.
 
-### Step 5 Generate the Bitstream and Verify the Functionality
+### Step 5 Create new block design, run the synthesis and Implementation
+
+Please following the instruction in Lab2.
+
+* Because in the `design_1_wrapper` top function, we only have two input ports: `clk_pin` and `btn_pin`. So we need to delete the `rxd_pin` and `rst_pin`.
+
+* Please click layout > I/O Planning, select these two ports and delete them. If it doesn't show the `I/O Planning` options, please click `Run Synthesis`.
+
+### Step 6 Generate the Bitstream and Verify the Functionality
 
 Please following the Lab2 to complete the steps yourself.
 
