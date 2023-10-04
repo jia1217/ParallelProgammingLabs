@@ -127,7 +127,7 @@ The uart_led_{BOARDS}.xdc file will be created and added to the Sources tab.
 
 * The wizard identifies Input Delays needed for the btn_pin and rst_pin pins. Do the following:
 
-    1. Press Ctrl and select the two rows.
+    1. Here you will see three rows: btn_pin, rst_pin, and rxd_pin. We only need to identify Input Delays for the btn_pin and rst_pin pins. Press Ctrl and select the two rows (btn_pin and rst_pin).
 
     2. Enter the tco_min value to be -0.5 ns and everything else as 0 ns. Click Apply.
 
@@ -149,7 +149,7 @@ The uart_led_{BOARDS}.xdc file will be created and added to the Sources tab.
 
 <div align=center><img src="imgs/4_14.png" alt="drawing" width="600"/></div>
 
-* Note the wizard generated the clk_pin constraint for a 8 ns period (or 125 MHz) (PYNQ-Z2). Notice in the All Constraints window, 7/9 constraints will be created. There is no need to click Apply since the constraints have already been applied in the Constraints Wizard.
+* Note the wizard generated the clk_pin constraint for an 8 ns period (or 125 MHz) (PYNQ-Z2). Notice in the All Constraints window, 7/9 constraints will be created. There is no need to click Apply since the constraints have already been applied in the Constraints Wizard.
 
 <div align=center><img src="imgs/4_15.png" alt="drawing" width="1000"/></div>
 
