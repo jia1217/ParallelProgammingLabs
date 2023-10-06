@@ -94,7 +94,7 @@ Launch the clocking wizard from the IP Catalog of Vivado and generate the clock 
 
 * Expand clk_wiz_0 > Instantiation Template and double-click on clk_core.veo to see the instantiation template.
 
-* Copy lines 72 through 81 and paste them at or around line 79 of the clk_gen.v file.
+* Copy lines 72 through 82 and paste them to the clk_gen.v file.
 
 * Change the instance name and net names to as shown in the figure below to match the names of existing signals in the design.
 
@@ -124,27 +124,27 @@ Launch the clocking wizard from the IP Catalog of Vivado and generate the clock 
 
 * Toggle line comments the instantiation of the char_fifo from the file around line 336.
 
-<div align=center><img src="imgs/3_18.png" alt="drawing" width="400"/></div>
+<div align=center><img src="imgs/3_18.png" alt="drawing" width="600"/></div>
 
 * Select File > Save File.
 
 * Click `IP Catalog` and search `fifo generator`.
 
-<div align=center><img src="imgs/3_6.png" alt="drawing" width="400"/></div>
+<div align=center><img src="imgs/3_6.png" alt="drawing" width="600"/></div>
 
 *Double click FIFO Generator*:
 
 * deselect show disbled port. Make sure that the default Native option is selected for the interface type. Select Independent Clocks Block RAM from the Fifo Implementation drop-down list.
 
-<div align=center><img src="imgs/3_7.png" alt="drawing" width="400"/></div>
+<div align=center><img src="imgs/3_7.png" alt="drawing" width="600"/></div>
 
 * Select the Native Ports tab. From the Native Ports tab you can configure the read mode, built-in FIFO options, data port parameters, and implementation options. Select First Word Fall Through as the read mode. Set the write width to be 8 bits. Click in the Read Width field to see it automatically to match the write width. Deselect the Enable Safety Circuit option. 
 
-<div align=center><img src="imgs/3_8.png" alt="drawing" width="400"/></div>
+<div align=center><img src="imgs/3_8.png" alt="drawing" width="600"/></div>
 
 * Browse through the settings of the Status Flags and Data Counts tabs. These tabs configure other options for the FIFO Generator. For this design, leave everything at their default settings. Select the Summary tab. This tab displays a summary of all the selected configuration options, as well as listing resources used for this configuration. Verify that the information is correct. For this configuration you are using one 18K block RAM. Click OK.
 
-<div align=center><img src="imgs/3_9.png" alt="drawing" width="400"/></div>
+<div align=center><img src="imgs/3_9.png" alt="drawing" width="600"/></div>
 
 * Click `IP Sources` in the Sources window, expand `fifo_generator_0` and `Instantiation Template`, click `fifo_generator_0.veo`. Copy the code and paste it to the `wave_gen.v`, and change the port as the following.
 
@@ -178,13 +178,13 @@ Launch the clocking wizard from the IP Catalog of Vivado and generate the clock 
 
 * Then click `Next` to the end, then click `finish`.
 
-* The next screen asks where you would like to keep the IP definition and any other files needed for saving options. Normally you would point this at a general location for all custom IP. For simplicity I'm going to leave it in the project directory. Select Include .xci Files and click Next. This is the end of the wizard so click Finish to save and exit. And give your IP a name.
+* The next screen asks where you would like to keep the IP definition and any other files needed for saving options. Normally you would point this at a general location for all custom IP. Give your IP a name.
 
-<div align=center><img src="imgs/3_11.png" alt="drawing" width="400"/></div>
+<div align=center><img src="imgs/3_11.png" alt="drawing" width="600"/></div>
 
 * Click `Review and Package` and choose `Package IP`. Then you will see the IP in the folder you created before.
 
-<div align=center><img src="imgs/3_12.png" alt="drawing" width="400"/></div>
+<div align=center><img src="imgs/3_12.png" alt="drawing" width="600"/></div>
 
 <div align=center><img src="imgs/3_19.png" alt="drawing" width="400"/></div>
 
@@ -196,13 +196,13 @@ Launch the clocking wizard from the IP Catalog of Vivado and generate the clock 
 
 * Click `Settings`,  expand `IP` and click `Reposity`. Click `+` and choose the folder where you put your IP. 
 
-<div align=center><img src="imgs/3_13.png" alt="drawing" width="400"/></div>
+<div align=center><img src="imgs/3_13.png" alt="drawing" width="600"/></div>
 
-<div align=center><img src="imgs/3_14.png" alt="drawing" width="400"/></div>
+<div align=center><img src="imgs/3_14.png" alt="drawing" width="600"/></div>
 
 * Click `Create Block Design`, click `+ (add IP)` and search `my_ip`, then it will show it. CLick it and add it to the block design.
 
-<div align=center><img src="imgs/3_20.png" alt="drawing" width="400"/></div>
+<div align=center><img src="imgs/3_20.png" alt="drawing" width="600"/></div>
 
 * Do the similiar operations as the perious labs. Add `ZYNQ`, `AXI UARTLITE`, set the port. After these operations, you will find that there are some port of `wave_gen_v1_0` left. 
 
@@ -210,11 +210,11 @@ Launch the clocking wizard from the IP Catalog of Vivado and generate the clock 
 
 <div align=center><img src="imgs/3_15.png" alt="drawing" width="400"/></div>
 
-<div align=center><img src="imgs/3_16.png" alt="drawing" width="400"/></div>
+<div align=center><img src="imgs/3_16.png" alt="drawing" width="600"/></div>
 
 * The system diagram will show like the following.
 
-<div align=center><img src="imgs/3_17.png" alt="drawing" width="400"/></div>
+<div align=center><img src="imgs/3_17.png" alt="drawing" width="1000"/></div>
 
 #### Run the synthesis and Implementation 
 
