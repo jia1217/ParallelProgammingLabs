@@ -1,4 +1,4 @@
-# Parallel Progamming
+# FPGA/SoC/Parallel Progamming
 
 ## Contents:
 
