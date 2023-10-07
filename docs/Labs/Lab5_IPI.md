@@ -200,9 +200,9 @@ Launch the clocking wizard from the IP Catalog of Vivado and generate the clock 
 
 <div align=center><img src="imgs/3_14.png" alt="drawing" width="600"/></div>
 
-* Click `Create Block Design`, click `+ (add IP)` and search `my_ip`, then it will show it. CLick it and add it to the block design.
+* Click `Create Block Design`, click `+ (add IP)` and search `my_ip`, then it will show it. Click it and add it to the block design.
 
-<div align=center><img src="imgs/3_20.png" alt="drawing" width="600"/></div>
+<div align=center><img src="imgs/3_20.png" alt="drawing" width="400"/></div>
 
 * Do the similiar operations as the perious labs. Add `ZYNQ`, `AXI UARTLITE`, set the port. After these operations, you will find that there are some port of `wave_gen_v1_0` left. 
 
@@ -210,7 +210,7 @@ Launch the clocking wizard from the IP Catalog of Vivado and generate the clock 
 
 <div align=center><img src="imgs/3_15.png" alt="drawing" width="400"/></div>
 
-<div align=center><img src="imgs/3_16.png" alt="drawing" width="600"/></div>
+<div align=center><img src="imgs/3_16.png" alt="drawing" width="1000"/></div>
 
 * The system diagram will show like the following.
 
