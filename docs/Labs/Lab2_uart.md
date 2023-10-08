@@ -252,7 +252,7 @@ Change the name from synth_1_copy_1 to synth_flatten and click OK. Click Run Syn
 
 #### Write the checkpoint in order to analyze the results without going through the actual synthesis process.
 
-Select File > Checkpoint > Write to save the processed design so it can be opened later for further analysis. A dialog box will appear showing the default name of the file in the current project directory.Click OK.
+Select *File > Checkpoint > Write* to save the processed design so it can be opened later for further analysis. A dialog box will appear showing the default name of the file in the current project directory.Click OK.
 
 <div align=center><img src="imgs/2_29.png" alt="drawing" width="400"/></div>
 
@@ -264,7 +264,7 @@ Select File > Checkpoint > Write to save the processed design so it can be opene
 
 * In the netlist tab, select the top-level instance, uart_led, right-click and select Show Hierarchy. You will see how the blocks are hierarchically connected.
 
-* Select Reports > Report Utilization and click OK to see the utilization report you saw previously.
+* Select *Reports > Report Utilization* and click OK to see the utilization report you saw previously.
 
 * Select *File > Open Checkpoint*, select checkpoint_2.dcp.
 
@@ -276,15 +276,15 @@ Select File > Checkpoint > Write to save the processed design so it can be opene
 
 #### Open a Vivado Project
 
-1. Start the Vivado, if necessary, and open either the lab2 project (lab2.xpr) you created in the previous lab or the lab2 project in the labsolution directory using the Open Project link in the Getting Started page.
+* Start the Vivado, if necessary, and open either the lab2 project (lab2.xpr) you created in the previous lab or the lab2 project in the labsolution directory using the Open Project link in the Getting Started page.
 
-2. Select *File > Project > Save As …* to open the Save Project As dialog box. Enter *lab2_p2* as the project name. Make sure that the Create Project Subdirectory option is checked and click OK.
+* Select *File > Project > Save As …* to open the Save Project As dialog box. Enter *lab2_p2* as the project name. Make sure that the Create Project Subdirectory option is checked and click OK.
 
-3. Click on the Settings in the Flow Navigator pane, select *Project Settings > Synthesis*.
+* Click on the Settings in the Flow Navigator pane, select *Project Settings > Synthesis*.
 
-4. Make sure that the flatten_hierarchy is set to rebuilt, which allows the design hierarchy to be preserved for synthesis, and then rebuilt which is more useful for design analysis because many logical references will be maintained.
+* Make sure that the flatten_hierarchy is set to rebuilt, which allows the design hierarchy to be preserved for synthesis, and then rebuilt which is more useful for design analysis because many logical references will be maintained.
 
-5. Click OK.
+* Click OK.
 
 A Create New Run dialog box will appear asking you if a new run should be created. Click Yes and then OK to create the new run with synth_2 name.
 
@@ -299,7 +299,7 @@ A Create New Run dialog box will appear asking you if a new run should be create
 
 <div align=center><img src="imgs/2_31.png" alt="drawing" width="500"/></div>
 
-* Back to *Diagram* window, add `axi uartlite` module. We want to send data to the uart_led module through its `rx` port. To do this, we will use the UART from Ps, which is connected to the ARM core by the AXI protocal. Then, we will connect the `tx` port of the UART on the PS side to the uart_led module in PL. Double-click on this module and configure it as shown in the subsequent figure. To prevent the `rx` port of AXI Uartlite from becoming floating, set the rx port to 1 (ensuring it remains in the IDLE state). We can disregard other ports, such as the interrupt of AXI Uartlite, since it's an output port.
+* Back to *Diagram* window, add `axi uartlite` module. We want to send data to the uart_led module through its `rx` port. To do this, we will use the UART from PS side, which is connected to the ARM core by the AXI protocal. Then, we will connect the `tx` port of the UART on the PS side to the uart_led module in PL. Double-click on this module and configure it as shown in the subsequent figure. To prevent the `rx` port of AXI Uartlite from becoming floating, set the rx port to 1 (ensuring it remains in the IDLE state). We can disregard other ports, such as the interrupt of AXI Uartlite, since it's an output port.
 
 <div align=center><img src="imgs/2_28.png" alt="drawing" width="600"/></div>
 
@@ -307,9 +307,9 @@ A Create New Run dialog box will appear asking you if a new run should be create
 
 <div align=center><img src="imgs/2_23.png" alt="drawing" width="400"/></div>
 
-* The `rst_pin` of `uart_led` module is active high. So add `util_vector_logic` as a bridge that connect the `peripheral_areset` of `Processor System Reset`.
+* The `rst_pin` of `uart_led` module is active high. You will need to convert it to active low for uart_led module. So add `util_vector_logic` as a bridge that connect the `peripheral_areset` of `Processor System Reset`.
 
-  Double click `util_vector_logic` and set the `C_SIZE` as 1 and select the *not* operation.
+* Double click on `util_vector_logic` and set the `C_SIZE` as 1 and select the *not* operation.
 
 <div align=center><img src="imgs/2_24.png" alt="drawing" width="600"/></div>
 
@@ -325,7 +325,15 @@ A Create New Run dialog box will appear asking you if a new run should be create
 
 <div align=center><img src="imgs/2_25.png" alt="drawing" width="1000"/></div>
 
-* Continue with the remaining steps in the Lab1.
+* You need to ensure that the wrapper file is set as the top-level module of your project before generating the bitstream file. This is because Vivado will only use the top-level module to create the bitstream file, and ignore any other files in your project.
+
+Right click design_1_wrapper and choose set to top.
+
+* Continue with the remaining steps in the Lab1 (i.e., Check the port of this module and change the constraints file as needed.). Try to figure it out yourself this time.
+
+* Remember to change the constrain file to match the name of the pin. Similiar as *Lab 1*.
+
+* Remember to change the constrain file to match the name of the pin. Similiar as *Lab 1*.
 
 * Remember to change the constrain file to match the name of the pin. Similiar as *Lab 1*.
 
@@ -335,18 +343,18 @@ A Create New Run dialog box will appear asking you if a new run should be create
 
 #### Verify the Functionality
 
-1. Download the `.bit` file and `.hwh` file to your local PC. If you cannot find these two files, open a new terminal and go the project path, then run the shell command:
+* Download the `.bit` file and `.hwh` file to your local PC. If you cannot find these two files, open a new terminal and go the project path, then run the shell command:
 
 ```bash
 find . -name *.bit
 find . -name *.hwh
 ```
 
-2. Power *PYNQ* on
+* Power *PYNQ* on
 
 -[PYNQ code](https://github.com/parthpower/axi_uartlite_pynq/tree/master)
 
-3. Following the similar step in the Lab1. Upload `.bit` and `.hwh`, make sure that they are the same name. Copy `uartlite.py` from the upper github source to the folder. Here, we need to fix the `write function` to fit our project.
+* Following the similar step in the Lab1. Upload `.bit` and `.hwh`, make sure that they are the same name. Copy `uartlite.py` from the upper github source to the folder. Here, we need to fix the `write function` to fit our project.
 
 ```python
 def write(self, buf, timeout = 10):
@@ -365,10 +373,10 @@ def write(self, buf, timeout = 10):
                 break
             self.uart.write(TX_FIFO, i)
             wr_count += 1
-        return wr_count   
+        return wr_count
 ```
 
-4. Create a new `Python3`.
+* Create a new `Python3`.
 
 ```python
 from pynq import MMIO
@@ -394,7 +402,7 @@ l = [0xd3]
 uart.write(l)
 ```
 
-5. Then you can see the phenomenon that correspond to the input. 
+* Then you can observe the phenomenon that corresponds to the input.
 
 According to the code in `led_ctl.v`,
 
@@ -405,11 +413,10 @@ else
     led_pipeline_reg <= char_data[3:0];
 ```
 
-If I input `0xd3` and don't press the button, it will show like following figre,
+If you input 0xd3 and do not press the button, you should see.
 
-<div align=center><img src="imgs/2_32.png" alt="drawing" width="600"/></div>
+<div align=center><img src="imgs/2_32.png" alt="drawing" width="400"/></div>
 
-else, if I press the button, it will show like the following.
+Else, if you press the button, you should see.
 
-<div align=center><img src="imgs/2_33.png" alt="drawing" width="600"/></div>
-
+<div align=center><img src="imgs/2_33.png" alt="drawing" width="400"/></div>

@@ -61,11 +61,11 @@ After completing this lab, you will be able to:
 
 There are three kinds of source files: constrains file, design source file and silumation source file. Simulation source file and constraints file specify the timing requirements for the design and physical constraints defining the Xilinx device resources used by the design.
 
-1. Click *Add Sources* under the *PROJECT MANAGER - Settings* and choose *Add or create design sources*. Then, click *Create File*, give the file name (i.e. lab1.v), and choose *Finish*. Later, you will see a window letting you define the I/O port. You don't need to change anything here, just click *OK* and choose *Yes*. Then, you will see the file under the *Design Sources* in the *Source* window. 
+* Click *Add Sources* under the *PROJECT MANAGER - Settings* and choose *Add or create design sources*. Then, click *Create File*, give the file name (i.e. lab1.v), and choose *Finish*. Later, you will see a window letting you define the I/O port. You don't need to change anything here, just click *OK* and choose *Yes*. Then, you will see the file under the *Design Sources* in the *Source* window. 
 
 <div align=center><img src="imgs/1_1.png" alt="drawing" width="600"/></div>
 
-2. Execute similar steps to add both the constraints file and the simulation sources file.
+* Execute similar steps to add both the constraints file and the simulation sources file.
 
 <div align=center><img src="imgs/1_2.png" alt="drawing" width="300"/></div>
 
@@ -149,7 +149,7 @@ set_property -dict { PACKAGE_PIN M14   IOSTANDARD LVCMOS33 } [get_ports { led[3]
 
 Lines 5-8 define the pin locations for the input buttons and lines 13-16 define pin locations for output LEDs. The pin layout of PYNQ_Z2 is shown in the following figure.
 
-<div align=center><img src="imgs/PINOUT.png" alt="drawing" width="600"/></div>
+<div align=center><img src="imgs/PINOUT.png" alt="drawing" width="1000"/></div>
 
 ###  Simulate the design using the Vivado simulator
 
@@ -385,19 +385,19 @@ This process will have generated a `design_1_wrapper.bit` file under the *projec
 
 ### Verify Functionality
 
-1. Power pynq_z2 on
+* Power pynq_z2 on
 
-2. Open a new tab and input 192.168.2.99
+* Open a new tab and input 192.168.2.99
 
-3. Expand `New` and create a new folder. Click this *Untitled Folder* and rename it (i.e. Lab1).
+* Expand `New` and create a new folder. Click this *Untitled Folder* and rename it (i.e. Lab1).
 
-4. Double click *Lab1*, then click `Upload` and uplaod *design_1_wrapper.bit* file
+* Double click *Lab1*, then click `Upload` and uplaod *design_1_wrapper.bit* file
 
-5. Expand `New` and choose `Python3 (ipykernel)`. 
+* Expand `New` and choose `Python3 (ipykernel)`. 
 
-6. The example code to download the *bit* file.
+* The example code to download the *bit* file.
 
-7. Then you can verify the function. 
+* Then you can verify the function. 
 
 ```python
     from pynq import Overlay
