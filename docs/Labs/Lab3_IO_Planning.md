@@ -101,7 +101,7 @@ The uart_led_{BOARDS}.xdc file will be created and added to the Sources tab.
 
 * Add the source files used in Lab2 (from Lab2/project_1/project_1.srcs/sources_1/new) to this project, please exclude `uart_led.v` and copy the uart_led.v content in Lab2 into the `uart_led.v` you created when do migrating operation.
 
-<div align=center><img src="imgs/4_10.png" alt="drawing" width="600"/></div>
+<div align=center><img src="imgs/4_10.png" alt="drawing" width="1000"/></div>
 
 ### Step 2 Synthesize the Design
 
@@ -165,7 +165,7 @@ The uart_led_{BOARDS}.xdc file will be created and added to the Sources tab.
 
 * Click OK to run the analysis. The Timing Results view opens at the bottom of the Vivado IDE.
 
-<div align=center><img src="imgs/4_17.png" alt="drawing" width="600"/></div>
+<div align=center><img src="imgs/4_17.png" alt="drawing" width="1000"/></div>
 
 * The Design Timing Summary report provides a brief worst Setup and Hold slack information and Number of failing endpoints to indicate whether the design has met timing or not. Note that there are two timing failures under the hold check. Click on the link next to Worst Hold Slack (WHS) to see the list of failing paths.
 
@@ -177,7 +177,7 @@ The uart_led_{BOARDS}.xdc file will be created and added to the Sources tab.
 
 * Select Path 11, right-click and select Schematic.
 
-<div align=center><img src="imgs/4_20.png" alt="drawing" width="600"/></div>
+<div align=center><img src="imgs/4_20.png" alt="drawing" width="1000"/></div>
 
 #### Implement the Design and analyze Timing Summary
 
@@ -195,7 +195,7 @@ The uart_led_{BOARDS}.xdc file will be created and added to the Sources tab.
 
 * Click OK to generate the report using the default settings. The Design Timing Summary window opens at the bottom in the Timing tab. Note that failing timing paths are indicated in red.
 
-<div align=center><img src="imgs/4_21.png" alt="drawing" width="600"/></div>
+<div align=center><img src="imgs/4_21.png" alt="drawing" width="1000"/></div>
 
 * Click on the WNS to see the failing paths.
 
@@ -214,16 +214,4 @@ The uart_led_{BOARDS}.xdc file will be created and added to the Sources tab.
 * Open the implemented design and observe that the number of failing paths in the Design Runs tab reported is 0.
 
 * Click Report Timing Summary, and observe that there are no failing paths.
-
-### Step 5 Create new block design, run the synthesis and Implementation
-
-Please following the instruction in Lab2.
-
-* Because in the `design_1_wrapper` top function, we only have two input ports: `clk_pin` and `btn_pin`. So we need to delete the `rxd_pin` and `rst_pin`.
-
-* Please click layout > I/O Planning, select these two ports and delete them. If it doesn't show the `I/O Planning` options, please click `Run Synthesis`.
-
-### Step 6 Generate the Bitstream and Verify the Functionality
-
-Please following the Lab2 to complete the steps yourself.
 
