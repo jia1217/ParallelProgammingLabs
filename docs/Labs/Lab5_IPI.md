@@ -224,4 +224,4 @@ Launch the clocking wizard from the IP Catalog of Vivado and generate the clock 
 
 #### Generate the bitstream
 
-Please follow the instructions in Lab2.
+Please follow the instructions in Lab 2. Here may exist some errors about constraints when generating bitstream, we can open Layout > I/O Planning to fix the errors. 
