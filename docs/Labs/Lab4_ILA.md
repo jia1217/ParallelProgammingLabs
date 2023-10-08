@@ -64,7 +64,7 @@ Please copy the whole Lab2 project and named it as *Lab4*:
 
 * We need to connect the `clk` of ilas by ourself. We can connect them to the `clk_pin_0`. Just make sure that the clk signal is the sychronized.
 
-<div align=center><img src="imgs/5_3.png" alt="drawing" width="600"/></div>
+<div align=center><img src="imgs/5_3.png" alt="drawing" width="1000"/></div>
 
 ### Step 3 Run synthesis, implementation and generate bitstream
 
@@ -82,7 +82,7 @@ Please copy the whole Lab2 project and named it as *Lab4*:
 
 * Select the target FPGA xc7z020_1, and click on the Run Trigger Immediate button to see the signals in the waveform window. Two waveform windows will be created, one for each ILA; one ILA window is for the instantiated ILA core and another for the MARK DEBUG method.
 
-<div align=center><img src="imgs/5_6.png" alt="drawing" width="600"/></div>
+<div align=center><img src="imgs/5_6.png" alt="drawing" width="1000"/></div>
 
 ### Setup trigger conditions to trigger on a write to led port (rx_data_rdy_out=1) and the trigger position to 512. Arm the trigger.
 
@@ -106,7 +106,7 @@ Please copy the whole Lab2 project and named it as *Lab4*:
 
 * Open a new jupyter notebook, similar to Lab2, input a data (i.e 0xd3) and observe that the hw_ila_1 status changes from capturing to idle as the rx_data_rdy_out became 1. And on the *hw_ila_2*, it will show d3 after the trigger.
 
-<div align=center><img src="imgs/5_16.png" alt="drawing" width="600"/></div>
+<div align=center><img src="imgs/5_16.png" alt="drawing" width="1000"/></div>
 
 ### If you want to see more information about UART, please do the following
 
@@ -191,7 +191,7 @@ module uart_led (
   );
 ```
 
-<div align=center><img src="imgs/5_11.png" alt="drawing" width="600"/></div>
+<div align=center><img src="imgs/5_11.png" alt="drawing" width="1000"/></div>
 
 * Generate the bitstream and load it to the board.
 

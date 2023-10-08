@@ -1,4 +1,4 @@
-# Parallel Progamming
+# FPGA/SoC/Verilog/HLS
 
 ## Contents:
 

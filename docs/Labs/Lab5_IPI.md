@@ -94,7 +94,7 @@ Launch the clocking wizard from the IP Catalog of Vivado and generate the clock 
 
 * Expand clk_wiz_0 > Instantiation Template and double-click on clk_core.veo to see the instantiation template.
 
-* Copy lines 72 through 82 and paste them at or around line 79 of the clk_gen.v file.
+* Copy lines 72 through 82 and paste them to the clk_gen.v file.
 
 * Change the instance name and net names to as shown in the figure below to match the names of existing signals in the design.
 
@@ -124,7 +124,7 @@ Launch the clocking wizard from the IP Catalog of Vivado and generate the clock 
 
 * Toggle line comments on the instantiation of the char_fifo from the file around line 336.
 
-<div align=center><img src="imgs/3_18.png" alt="drawing" width="400"/></div>
+<div align=center><img src="imgs/3_18.png" alt="drawing" width="600"/></div>
 
 * Select File > Save File.
 
@@ -178,7 +178,7 @@ Launch the clocking wizard from the IP Catalog of Vivado and generate the clock 
 
 * Then click `Next` to the end, then click `finish`.
 
-* The next screen asks where you would like to keep the IP definition and any other files needed for saving options. Normally you would point this at a general location for all custom IP. For simplicity, I'm going to leave it in the project directory. Select Include .xci Files and click Next. This is the end of the wizard so click Finish to save and exit. And give your IP a name.
+* The next screen asks where you would like to keep the IP definition and any other files needed for saving options. Normally you would point this at a general location for all custom IP. Give your IP a name.
 
 <div align=center><img src="imgs/3_11.png" alt="drawing" width="600"/></div>
 
@@ -210,7 +210,7 @@ Launch the clocking wizard from the IP Catalog of Vivado and generate the clock 
 
 <div align=center><img src="imgs/3_15.png" alt="drawing" width="400"/></div>
 
-<div align=center><img src="imgs/3_16.png" alt="drawing" width="600"/></div>
+<div align=center><img src="imgs/3_16.png" alt="drawing" width="1000"/></div>
 
 * The system diagram will show the following.
 
