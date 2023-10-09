@@ -27,7 +27,7 @@ The design consists of a uart receiver receiving the input typed on a keyboard a
 
 ## Steps
 
-### Step 1 Create new project and add source
+### Step 1 Create a new project and add source
 
 Please copy the whole Lab2 project and named it as *Lab4*:
 
@@ -35,7 +35,7 @@ Please copy the whole Lab2 project and named it as *Lab4*:
 
 * Click *Open Block Design* under *IP INTEGRATOR*.
 
-* Choose the Port you want to debug. If you can't find the port in the exist diagram, we can change the top file code and pull the port out. For example, I am interested in `rx_data_rdy` and `rx_data`, but I can't find it. Then we can back to the `uart_led.v` , change it like following:
+* Choose the Port you want to debug. If you can't find the port in the existing diagram, we can add two outputs to the top file to connect the internal signal out. For example, to check the waveform of `rx_data_rdy` and `rx_data`, but it is not available in the block design. Then we can go back to the `uart_led.v`, and change it like the following:
 
 ```verilog
     module uart_led (
@@ -50,19 +50,19 @@ Please copy the whole Lab2 project and named it as *Lab4*:
     );
 ```
 
-* Back to *Diagram* window, select `uart_led_0` module and right click `Refresh module`, then you can see the port. Select one port (like `rx_data_rdy`), right click it and choose `debug`.
+* Back to *Diagram* window, select `uart_led_0` module, and right click `Refresh module`, then you can see the port. Select one port (like `rx_data_rdy`), right click it and choose `debug`.
 
-* Similiar operation to the other port.
+* Similar operation to the other port.
 
 * Click `Run connection Automation` and choose all. 
 
 <div align=center><img src="imgs/5_1.png" alt="drawing" width="600"/></div>
 
-* If you want to combina two ports into one ILA, we can delete one (for example, `system_ila_0`) and double click (i.e. `system_ila_1`). And set the `Number of Probes` as 2.
+* If you want to combine two ports into one ILA, we can delete one (for example, `system_ila_0`) and double click (i.e. `system_ila_1`). And set the `Number of Probes` as 2.
 
 <div align=center><img src="imgs/5_2.png" alt="drawing" width="600"/></div>
 
-* We need to connect the `clk` of ilas by ourself. We can connect them to the `clk_pin_0`. Just make sure that the clk signal is the sychronized.
+* We need to connect the `clk` of ilas by ourselves. We can connect them to the `clk_pin_0`. Just make sure that the clk signal is the synchronized.
 
 <div align=center><img src="imgs/5_3.png" alt="drawing" width="1000"/></div>
 
@@ -110,11 +110,11 @@ Please copy the whole Lab2 project and named it as *Lab4*:
 
 ### If you want to see more information about UART, please do the following
 
-* You can pull `baud_x16_en`,  `over_sample_cnt_done` and `rx_begin` out and set them as a trigger. The enable sigal is to flag the start state. We can add one code in the `uart_rx_ctl` file. Don't forget to debug `tx` port. 
+* You can pull `baud_x16_en`,  `over_sample_cnt_done` and `rx_begin` out and set them as a trigger. The enable signal is to flag the start state. We can add one code in the `uart_rx_ctl` file. Don't forget to debug `tx` port. 
 
 * Here we need to fix three files, `uart_rx_ctl.v`, `uart_rx.v` and `uart_led.v`.
 
-In the `uart_rx_ctl.v` file, please add the following code and pull `rx_begin` and `over_sample_cnt_done` out. Do this operation, please follow the previous description.
+In the `uart_rx_ctl.v` file, please add the following code and connect `rx_begin` and `over_sample_cnt_done` out. To do this operation, please follow the previous description.
 
 ```verilog
 assign rx_begin = (state != IDLE);
@@ -211,7 +211,7 @@ while True:
     uart.write(l)
 ```
 
-* Back to waveform window,  you will see in the following first figure. For `axi_uartlite_0_tx`, between the *blue marker* and the *yellow marker*, it has a complete data. You will see that after 16 triggers, it starts to transmit the data and evey bit occupy 16 triggers.
+* Back to the waveform window,  you will see in the following first figure. For `axi_uartlite_0_tx`, between the *blue marker* and the *yellow marker*, it has complete data. You will see that after 16 triggers, it starts to transmit the data and every bit occupies 16 triggers.
 
 * In the following second figure, for the `rx` signal, we can see `uart_led_0_over_sample_cnt_done`, it will first count 1/2 bit period, then begin to read the data.
 
