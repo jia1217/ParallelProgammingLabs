@@ -335,6 +335,8 @@ Right click design_1_wrapper and choose set to top.
 
 * Remember to change the constrain file to match the name of the pin. Similiar as *Lab 1*.
 
+* Remember to change the constrain file to match the name of the pin. Similiar as *Lab 1*.
+
 #### Generate the Bitstream
 
 * Click *Generate Bitstream* under *PROGRAM AND DEBUG*

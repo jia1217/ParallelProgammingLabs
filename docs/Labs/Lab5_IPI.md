@@ -56,7 +56,7 @@ The provided design places the UART (RX and TX) pins of the PS (processing syste
 
 -[source code](https://github.com/Xilinx/xup_fpga_vivado_flow/tree/main/source/boolen/lab4)
 
-we may need to fix the code to match the pynq board, like clock frequency and the configuration of led_pins.
+we may need to fix the code to match the pynq board, like clock frequency and the configuration of led_pins. Some files include `clogb2.txt`, we need to copy the `clogb2.txt` content to the `.v` files, replacing the `include` part.
 
 ### Generate and Instantiate Clock Generator Module
 
@@ -70,11 +70,11 @@ Launch the clocking wizard from the IP Catalog of Vivado and generate the clock 
 
 * Click Customize IP on the following Add IP window. The clocking wizard will open.
 
-* Make sure that the Primary input clock frequency is 125.000 MHz(for PYNQ-Z2) or 100.000 MHz(for Boolean) and the primitive used is MMCM.
+* Make sure that the Primary input clock frequency is 125.000 MHz and the primitive used is MMCM.
 
 <div align=center><img src="imgs/3_2.png" alt="drawing" width="600"/></div>
 
-* Select the Output Clocks tab. Click on the check box to enable the second clock output. Make sure that the requested output frequency is 50 MHz(for PYNQ-Z2) or 100* MHz(for Boolean) for both clocks.
+* Select the Output Clocks tab. Click on the check box to enable the second clock output. Make sure that the requested output frequency is 50 MHz for both clocks.
 
 <div align=center><img src="imgs/3_3.png" alt="drawing" width="600"/></div>
 
@@ -90,7 +90,7 @@ Launch the clocking wizard from the IP Catalog of Vivado and generate the clock 
 
 * Select the IP Sources tab in the Sources pane.
 
-* Expand the IP branch. Notice the two IP entries. The char_fifo IP is the core that was included while creating project. The second core clk_core is the one that you have generated.
+* Expand the IP branch. Notice the two IP entries. The char_fifo IP is the core that was included while creating the project. The second core clk_core is the one that you have generated.
 
 * Expand clk_wiz_0 > Instantiation Template and double-click on clk_core.veo to see the instantiation template.
 
@@ -122,7 +122,7 @@ Launch the clocking wizard from the IP Catalog of Vivado and generate the clock 
 
 * Double-click on the wave_gen.v to open it in the editor window.
 
-* Toggle line comments the instantiation of the char_fifo from the file around line 336.
+* Toggle line comments on the instantiation of the char_fifo from the file around line 336.
 
 <div align=center><img src="imgs/3_18.png" alt="drawing" width="600"/></div>
 
@@ -134,19 +134,19 @@ Launch the clocking wizard from the IP Catalog of Vivado and generate the clock 
 
 *Double click FIFO Generator*:
 
-* deselect show disbled port. Make sure that the default Native option is selected for the interface type. Select Independent Clocks Block RAM from the Fifo Implementation drop-down list.
+* deselect show disabled port. Make sure that the default Native option is selected for the interface type. Select Independent Clocks Block RAM from the Fifo Implementation drop-down list.
 
 <div align=center><img src="imgs/3_7.png" alt="drawing" width="600"/></div>
 
-* Select the Native Ports tab. From the Native Ports tab you can configure the read mode, built-in FIFO options, data port parameters, and implementation options. Select First Word Fall Through as the read mode. Set the write width to be 8 bits. Click in the Read Width field to see it automatically to match the write width. Deselect the Enable Safety Circuit option. 
+* Select the Native Ports tab. From the Native Ports tab, you can configure the read mode, built-in FIFO options, data port parameters, and implementation options. Select First Word Fall Through as the read mode. Set the write width to be 8 bits. Click in the Read Width field to see it automatically to match the write width. Deselect the Enable Safety Circuit option. 
 
 <div align=center><img src="imgs/3_8.png" alt="drawing" width="600"/></div>
 
-* Browse through the settings of the Status Flags and Data Counts tabs. These tabs configure other options for the FIFO Generator. For this design, leave everything at their default settings. Select the Summary tab. This tab displays a summary of all the selected configuration options, as well as listing resources used for this configuration. Verify that the information is correct. For this configuration you are using one 18K block RAM. Click OK.
+* Browse through the settings of the Status Flags and Data Counts tabs. These tabs configure other options for the FIFO Generator. For this design, leave everything at their default settings. Select the Summary tab. This tab displays a summary of all the selected configuration options, as well as listing resources used for this configuration. Verify that the information is correct. For this configuration, you are using one 18K block RAM. Click OK.
 
 <div align=center><img src="imgs/3_9.png" alt="drawing" width="600"/></div>
 
-* Click `IP Sources` in the Sources window, expand `fifo_generator_0` and `Instantiation Template`, click `fifo_generator_0.veo`. Copy the code and paste it to the `wave_gen.v`, and change the port as the following.
+* Click `IP Sources` in the Sources window, expand `fifo_generator_0` and `Instantiation Template`, and click `fifo_generator_0.veo`. Copy the code and paste it to the `wave_gen.v`, and change the port as the following.
 
 ```verilog
     fifo_generator_0 char_fifo_i0 (
@@ -164,7 +164,7 @@ Launch the clocking wizard from the IP Catalog of Vivado and generate the clock 
 
 #### Run synthesis and Implementation.
 
-* Test and make sure that there is no errors.
+* Test and make sure that there are no errors.
 
 #### Create and package new IP
 
@@ -172,7 +172,7 @@ Launch the clocking wizard from the IP Catalog of Vivado and generate the clock 
 
 * Click `Tools` and choose `Create and Package New IP`.
 
-<div align=center><img src="imgs/3_10.png" alt="drawing" width="400"/></div>
+<div align=center><img src="imgs/3_10.png" alt="drawing" width="600"/></div>
 
 * Click double `Next` and save it to the path that we want to save. For example, we can create a new folder before, and then in this process choose this folder. 
 
@@ -186,7 +186,7 @@ Launch the clocking wizard from the IP Catalog of Vivado and generate the clock 
 
 <div align=center><img src="imgs/3_12.png" alt="drawing" width="600"/></div>
 
-<div align=center><img src="imgs/3_19.png" alt="drawing" width="400"/></div>
+<div align=center><img src="imgs/3_19.png" alt="drawing" width="600"/></div>
 
 * Now, we need to close the project and create a new project. And add the IP to a block design.
 
@@ -204,24 +204,24 @@ Launch the clocking wizard from the IP Catalog of Vivado and generate the clock 
 
 <div align=center><img src="imgs/3_20.png" alt="drawing" width="400"/></div>
 
-* Do the similiar operations as the perious labs. Add `ZYNQ`, `AXI UARTLITE`, set the port. After these operations, you will find that there are some port of `wave_gen_v1_0` left. 
+* Do similar operations as the previous labs. Add `ZYNQ`, `AXI UARTLITE`, set the port. After these operations, you will find that there are some ports like `wave_gen_v1_0` left. 
 
-* Now, we can add `system ila` and debug these port. This operation has no means, just don't want to leave them hanging.
+* Now, we can add `system ila` and debug these ports. This operation has no means, just don't want to leave them hanging. Because `spi_clk_pin` is an ODDR output, we can't connect it to the ILA, so we right-click this port and select make external.
 
 <div align=center><img src="imgs/3_15.png" alt="drawing" width="400"/></div>
 
 <div align=center><img src="imgs/3_16.png" alt="drawing" width="1000"/></div>
 
-* The system diagram will show like the following.
+* The system diagram will show the following.
 
 <div align=center><img src="imgs/3_17.png" alt="drawing" width="1000"/></div>
 
 #### Run the synthesis and Implementation 
 
-* Right click the `design_1` and select `create HDL Wrapper`.
+* Right-click the `design_1` and select `create HDL Wrapper`.
 
 * Run Synthesis 
 
 #### Generate the bitstream
 
-Please follow the instructions in Lab2.
+Please follow the instructions in Lab 2. Here may exist some errors about constraints when generating bitstream, we can open Layout > I/O Planning to fix the errors. 
