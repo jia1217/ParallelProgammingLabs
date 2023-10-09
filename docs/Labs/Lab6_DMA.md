@@ -68,13 +68,13 @@ An alternative to SG for large transfers is to segment your memory transfers in 
 
     When using the DMA if you try to do a transfer but only see that the first part of your buffer is transferred , check this value in your hardware design and check how much data you are transferring. Leaving the default with set to 14-bits is a common mistake which will limit the DMA to 16,384 byte transfers. If you try to send more than this the transfer will terminate once the maximum number of bytes supported is transferred. Remember to check the size of the transfer in bytes.
 
-* Check the address width is set to 32. In this example, I will connect the DMA to the PS memory which is 32-bit for Zynq. You can set this up to 64-bit if you are connecting this to a larger memory, for example if you are using a Zynq Ultrascale+ or if your DMA is connected to a PL connected memory.
+* Check the address width is set to 32. In this example, I will connect the DMA to the PS memory which is 32-bit for Zynq. You can set this up to 64-bit if you are connecting this to a larger memory, for example, if you are using a Zynq Ultrascale+ or if your DMA is connected to a PL connected memory.
 
-* For this design, leave both both read and write channels enabled
+* For this design, leave both read and write channels enabled
 
-* Set the memory mapped data width to 64 match the HP port (defined in the PYNQ image and applied at boot time)
+* Set the memory-mapped data width to 64 matches the HP port (defined in the PYNQ image and applied at boot time)
 
-* Set the stream data with to match your IP stream width. In this example I will leave it set to 32.
+* Set the stream data to match your IP stream width. In this example, I will leave it set to 32.
 
 * Make sure Allow unaligned transfers is NOT enabled
 
@@ -93,6 +93,8 @@ An alternative to SG for large transfers is to segment your memory transfers in 
 <div align=center><img src="imgs/6_5.png" alt="drawing" width="600"/></div>
 
 * In the *Output Clocks* option, change the output frequency to 125M Hz.
+  
+* Disable the `reset` under the output Clocks options. Connect the `locked` port to the `ext_reset_in` of `Processor System Reset`.
 
 * Click `Run Block Automation` and `Run connection automation`. Left the `reset` signal.
 
@@ -107,8 +109,6 @@ An alternative to SG for large transfers is to segment your memory transfers in 
 * Click `s_axi_lite_aclk`, change the `clock source` to `/clk_wiz_0/clk_out1`. Repeat this operation to other clock signals.
 
 <div align=center><img src="imgs/6_9.png" alt="drawing" width="600"/></div>
-
-* Double click `clocking Wizard` to disable the `reset` under the output Clocks options. Connect the `locked` port to the `ext_reset_in` of `Processor System Reset`.
 
 * Connect the `M_AXIS_Square` of `AXIS_Square_v1_0` to the `S_AXIS_S2MM` of `AXI Direcr Memory Access`, and `M_AXIS_MM2S` of DMA to `S_AXIS_Square` of `AXIS_Square`. Then click `Run Connection Automation`
 
