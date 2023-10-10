@@ -64,7 +64,7 @@ Launch the clocking wizard from the IP Catalog of Vivado and generate the clock 
 
 * Click on IP Catalog in the Flow Navigator pane. The IP Catalog will open in the auxiliary pane.
 
-* Expand the FPGA Features and Design > Clocking sub-folders and double-click on the Clocking Wizard entry.
+* Expand *FPGA Features and Design > Clocking sub-folders* and double-click on the Clocking Wizard entry.
 
 <div align=center><img src="imgs/3_1.png" alt="drawing" width="600"/></div>
 
@@ -92,7 +92,7 @@ Launch the clocking wizard from the IP Catalog of Vivado and generate the clock 
 
 * Expand the IP branch. Notice the two IP entries. The char_fifo IP is the core that was included while creating the project. The second core clk_core is the one that you have generated.
 
-* Expand clk_wiz_0 > Instantiation Template and double-click on clk_core.veo to see the instantiation template.
+* Expand *clk_wiz_0 > Instantiation Template* and double-click on clk_core.veo to see the instantiation template.
 
 * Copy lines 72 through 82 and paste them to the clk_gen.v file.
 
@@ -114,7 +114,7 @@ Launch the clocking wizard from the IP Catalog of Vivado and generate the clock 
 
 * Save `clk_gen.v`.
 
-* Select the Hierarchy tab, expand the wave_gen > clk_gen_i0 hierarchy and verify that clk_core.xci is in the hierarchy. The IP has a bordered yellow square icon next to it.
+* Select the Hierarchy tab, expand *wave_gen > clk_gen_i0 hierarchy* and verify that clk_core.xci is in the hierarchy. The IP has a bordered yellow square icon next to it.
 
 <div align=center><img src="imgs/3_5.png" alt="drawing" width="400"/></div>
 
@@ -126,7 +126,7 @@ Launch the clocking wizard from the IP Catalog of Vivado and generate the clock 
 
 <div align=center><img src="imgs/3_18.png" alt="drawing" width="600"/></div>
 
-* Select File > Save File.
+* Select *File > Save File*.
 
 * Click `IP Catalog` and search `fifo generator`.
 
