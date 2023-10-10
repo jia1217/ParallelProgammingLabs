@@ -102,9 +102,9 @@ An alternative to SG for large transfers is to segment your memory transfers in 
 
 * Delete the *orange line* shown in the following figure, and connect the `clk_out1` to the `M_AXI_GP0_ACLK` of `ZYNQ7 Processing System`. Then click `Run Connection Automation`.
 
-<div align=center><img src="imgs/6_7.png" alt="drawing" width="600"/></div>
+<div align=center><img src="imgs/6_7.png" alt="drawing" width="1000"/></div>
 
-<div align=center><img src="imgs/6_8.png" alt="drawing" width="600"/></div>
+<div align=center><img src="imgs/6_8.png" alt="drawing" width="1000"/></div>
 
 * Click `s_axi_lite_aclk`, change the `clock source` to `/clk_wiz_0/clk_out1`. Repeat this operation to other clock signals.
 
