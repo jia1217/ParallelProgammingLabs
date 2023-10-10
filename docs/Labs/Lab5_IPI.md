@@ -72,15 +72,15 @@ Launch the clocking wizard from the IP Catalog of Vivado and generate the clock 
 
 * Make sure that the Primary input clock frequency is 125.000 MHz and the primitive used is MMCM.
 
-<div align=center><img src="imgs/3_2.png" alt="drawing" width="600"/></div>
+<div align=center><img src="imgs/3_2.png" alt="drawing" width="1000"/></div>
 
 * Select the Output Clocks tab. Click on the check box to enable the second clock output. Make sure that the requested output frequency is 50 MHz for both clocks.
 
-<div align=center><img src="imgs/3_3.png" alt="drawing" width="600"/></div>
+<div align=center><img src="imgs/3_3.png" alt="drawing" width="1000"/></div>
 
 * Click on the Summary tab and check the information.
 
-<div align=center><img src="imgs/3_4.png" alt="drawing" width="600"/></div>
+<div align=center><img src="imgs/3_4.png" alt="drawing" width="1000"/></div>
 
 * Click OK to see the Generate Output Products form.
 
@@ -124,27 +124,27 @@ Launch the clocking wizard from the IP Catalog of Vivado and generate the clock 
 
 * Toggle line comments on the instantiation of the char_fifo from the file around line 336.
 
-<div align=center><img src="imgs/3_18.png" alt="drawing" width="600"/></div>
+<div align=center><img src="imgs/3_18.png" alt="drawing" width="400"/></div>
 
 * Select *File > Save File*.
 
 * Click `IP Catalog` and search `fifo generator`.
 
-<div align=center><img src="imgs/3_6.png" alt="drawing" width="600"/></div>
+<div align=center><img src="imgs/3_6.png" alt="drawing" width="1000"/></div>
 
 *Double click FIFO Generator*:
 
 * deselect show disabled port. Make sure that the default Native option is selected for the interface type. Select Independent Clocks Block RAM from the Fifo Implementation drop-down list.
 
-<div align=center><img src="imgs/3_7.png" alt="drawing" width="600"/></div>
+<div align=center><img src="imgs/3_7.png" alt="drawing" width="1000"/></div>
 
 * Select the Native Ports tab. From the Native Ports tab, you can configure the read mode, built-in FIFO options, data port parameters, and implementation options. Select First Word Fall Through as the read mode. Set the write width to be 8 bits. Click in the Read Width field to see it automatically to match the write width. Deselect the Enable Safety Circuit option. 
 
-<div align=center><img src="imgs/3_8.png" alt="drawing" width="600"/></div>
+<div align=center><img src="imgs/3_8.png" alt="drawing" width="1000"/></div>
 
 * Browse through the settings of the Status Flags and Data Counts tabs. These tabs configure other options for the FIFO Generator. For this design, leave everything at their default settings. Select the Summary tab. This tab displays a summary of all the selected configuration options, as well as listing resources used for this configuration. Verify that the information is correct. For this configuration, you are using one 18K block RAM. Click OK.
 
-<div align=center><img src="imgs/3_9.png" alt="drawing" width="600"/></div>
+<div align=center><img src="imgs/3_9.png" alt="drawing" width="1000"/></div>
 
 * Click `IP Sources` in the Sources window, expand `fifo_generator_0` and `Instantiation Template`, and click `fifo_generator_0.veo`. Copy the code and paste it to the `wave_gen.v`, and change the port as the following.
 
@@ -172,7 +172,7 @@ Launch the clocking wizard from the IP Catalog of Vivado and generate the clock 
 
 * Click `Tools` and choose `Create and Package New IP`.
 
-<div align=center><img src="imgs/3_10.png" alt="drawing" width="600"/></div>
+<div align=center><img src="imgs/3_10.png" alt="drawing" width="400"/></div>
 
 * Click double `Next` and save it to the path that we want to save. For example, we can create a new folder before, and then in this process choose this folder. 
 
