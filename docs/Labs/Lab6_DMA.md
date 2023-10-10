@@ -84,7 +84,7 @@ An alternative to SG for large transfers is to segment your memory transfers in 
 
 ### Connect the DMA
 
-*  Double click `ZYNQ7 Processing System`, `PS-PL Configuration > HP Slave AXI Interface > Select S AXI HP0 Interface`.
+*  Double click `ZYNQ7 Processing System`, *PS-PL Configuration > HP Slave AXI Interface > Select S AXI HP0 Interface*.
 
 <div align=center><img src="imgs/6_4.png" alt="drawing" width="600"/></div>
 
