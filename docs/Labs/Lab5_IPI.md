@@ -56,7 +56,7 @@ The provided design places the UART (RX and TX) pins of the PS (processing syste
 
 -[source code](https://github.com/Xilinx/xup_fpga_vivado_flow/tree/main/source/boolean/lab4)
 
-Because we only have the source code working on the boolean board, so we may need to fix the code to match the pynq board. For example, the clock frequency of boolean is 100 Mhz but the system clock frequency of pynq is 125 Mhz. Meanwhile, the different constraints for the ports. In some files, the code shows that ` include "clogb2.txt"`, which will cause some errors. Therefore, we need to copy the `clogb2.txt` content to the `.v` files, replacing the `include` part.
+Because we only have the source code working on the boolean board, so we may need to fix the code to match the pynq board. For example, the clock frequency of boolean is 100 Mhz but the system clock frequency of pynq is 125 Mhz. Meanwhile, the different constraints for the ports. In some files, the code shows that ` include "clogb2.txt"`, which will cause some errors. Therefore, we need to copy the `clogb2.txt` content to the `.v` files, replacing the `include` part
 
 ### Generate and Instantiate Clock Generator Module
 
