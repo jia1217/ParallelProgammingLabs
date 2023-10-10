@@ -54,7 +54,7 @@ The provided design places the UART (RX and TX) pins of the PS (processing syste
 
 ### Add source files 
 
--[source code](https://github.com/Xilinx/xup_fpga_vivado_flow/tree/main/source/boolen/lab4)
+-[source code](https://github.com/Xilinx/xup_fpga_vivado_flow/tree/main/source/boolean/lab4)
 
 we may need to fix the code to match the pynq board, like clock frequency and the configuration of led_pins. Some files include `clogb2.txt`, we need to copy the `clogb2.txt` content to the `.v` files, replacing the `include` part.
 
