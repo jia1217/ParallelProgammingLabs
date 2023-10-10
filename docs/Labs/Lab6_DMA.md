@@ -20,7 +20,7 @@ Please add the source file under `/ParallelProgammingLabs/Labs/Lab6/AXIS_Square.
 
 In the block diagram which should contain the ZYNQ PS block, add the *AXI Direct Memory Access* block to your design. 
 
-<div align=center><img src="imgs/6_1.png" alt="drawing" width="600"/></div>
+<div align=center><img src="imgs/6_1.png" alt="drawing" width="1000"/></div>
 
 ### DMA background
 
@@ -58,7 +58,7 @@ An alternative to SG for large transfers is to segment your memory transfers in 
 
 * Double click the DMA to open the configuration settings
 
-<div align=center><img src="imgs/6_2.png" alt="drawing" width="600"/></div>
+<div align=center><img src="imgs/6_2.png" alt="drawing" width="1000"/></div>
 
 * Uncheck Enable Scatter Gather Engine to disable Scatter Gather
 
@@ -80,13 +80,13 @@ An alternative to SG for large transfers is to segment your memory transfers in 
 
 * Click OK to accept the changes
 
-<div align=center><img src="imgs/6_3.png" alt="drawing" width="600"/></div>
+<div align=center><img src="imgs/6_3.png" alt="drawing" width="1000"/></div>
 
 ### Connect the DMA
 
 *  Double click `ZYNQ7 Processing System`, *PS-PL Configuration > HP Slave AXI Interface > Select S AXI HP0 Interface*.
 
-<div align=center><img src="imgs/6_4.png" alt="drawing" width="600"/></div>
+<div align=center><img src="imgs/6_4.png" alt="drawing" width="1000"/></div>
 
 * Add `Clocking Wizard`, double click it. In the *Board option*, change the *Board Interface* in the *CLK_IN1* row to `sys clock`.
 
