@@ -64,7 +64,7 @@ Launch the clocking wizard from the IP Catalog of Vivado and generate the clock 
 
 * Click on IP Catalog in the Flow Navigator pane. The IP Catalog will open in the auxiliary pane.
 
-* Expand *FPGA Features and Design > Clocking sub-folders* and double-click on the Clocking Wizard entry.
+* Expand *FPGA Features and Design > Clocking* and double-click on the Clocking Wizard entry.
 
 <div align=center><img src="imgs/3_1.png" alt="drawing" width="600"/></div>
 
