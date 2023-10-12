@@ -90,7 +90,7 @@ Launch the clocking wizard from the IP Catalog of Vivado and generate the clock 
 
 * Select the IP Sources tab in the Sources pane.
 
-* Expand the IP branch. Notice the two IP entries. The char_fifo IP is the core that was included while creating the project. The second core clk_core is the one that you have generated.
+* Expand the IP branch. Notice the two IP entries: the char_fifo IP and the clk_core. They are what you need to generate.
 
 * Expand *clk_wiz_0 > Instantiation Template* and double-click on clk_core.veo to see the instantiation template.
 
@@ -122,7 +122,7 @@ Launch the clocking wizard from the IP Catalog of Vivado and generate the clock 
 
 * Double-click on the wave_gen.v to open it in the editor window.
 
-* Toggle line comments on the instantiation of the char_fifo from the file around line 336.
+* Comment out line comments on the instantiation of the char_fifo from the file around line 336.
 
 <div align=center><img src="imgs/3_18.png" alt="drawing" width="400"/></div>
 
