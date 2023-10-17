@@ -100,7 +100,7 @@ An alternative to SG for large transfers is to segment your memory transfers in 
 
 <div align=center><img src="imgs/6_6.png" alt="drawing" width="600"/></div>
 
-* Delete the *orange line* shown in the following figure, and connect the `clk_out1` to the `M_AXI_GP0_ACLK` of `ZYNQ7 Processing System`. Then click `Run Connection Automation`.
+* Delete the *orange line* shown in the following figure, and connect the `clk_out1` to the `M_AXI_GP0_ACLK` and `S_AXI_HP0_ACLK` of `ZYNQ7 Processing System`. Then click `Run Connection Automation`.
 
 <div align=center><img src="imgs/6_7.png" alt="drawing" width="1000"/></div>
 
