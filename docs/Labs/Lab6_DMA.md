@@ -182,4 +182,4 @@ for i in range(20):
 
 We will see:
 
-<div align=center><img src="imgs/6_13.png" alt="drawing" width="400"/></div>
+<div align=center><img src="imgs/6_13.png" alt="drawing" width="600"/></div>
