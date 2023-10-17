@@ -96,7 +96,7 @@ An alternative to SG for large transfers is to segment your memory transfers in 
   
 * Disable the `reset` under the output Clocks options. Connect the `locked` port to the `ext_reset_in` of `Processor System Reset`.
 
-* Click `Run Block Automation` and `Run connection automation`. Left the `reset` signal.
+* Click `Run Block Automation` and `Run connection automation`.
 
 <div align=center><img src="imgs/6_6.png" alt="drawing" width="600"/></div>
 
