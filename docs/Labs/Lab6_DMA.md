@@ -13,8 +13,7 @@ Create a project, and add the ZYNQ PS block.
 
 ### Add the source file
 
-Please add the source file 
-- [here]([https://uri-nextlab.github.io/ParallelProgammingLabs/Labs/Lab1_led.html](https://github.com/URI-nextlab/ParallelProgammingLabs/blob/master/Labs/Lab6/AXIS_Square.v)). Back to source window, right-click `AXIS_Square` and choose `Add Module to Block Design`.
+Please add the source file [here](https://github.com/URI-nextlab/ParallelProgammingLabs/blob/master/Labs/Lab6/AXIS_Square.v). Back to source window, right-click `AXIS_Square` and choose `Add Module to Block Design`.
 
 
 ## Adding the DMA
