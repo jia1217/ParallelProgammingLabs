@@ -7,6 +7,8 @@ sort: 2
 
 ## Ritual 1
 
+Note: This is for resaerch ONLY.
+
 ### Launch a Palmetto desktop
 
 Step 1: Open a new tab, search "palmetto documentation", and click the first link.
