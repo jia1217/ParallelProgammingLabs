@@ -9,13 +9,13 @@ sort: 5
 
 If you have not used the PYNQ before, check the following link for setup:
 
--[PYNQ-Z2 Setup Guide](https://pynq.readthedocs.io/en/v2.6.1/getting_started/pynq_z2_setup.html#)
+-[PYNQ-Z2 Setup Guide](https://pynq.readthedocs.io/en/latest/getting_started/pynq_z2_setup.html).
 
 ## Step 2
 
 If you already have a basic idea of Jupyter on these boards, upload the `.bit` file and the `.hwh` file to Jupyter. In the same folder, create a new `.ipynb` file for writing the script.
 
--[Overlay Tutorial](https://pynq.readthedocs.io/en/v2.0/overlay_design_methodology/overlay_tutorial.html)
+-[Overlay Tutorial](https://pynq.readthedocs.io/en/latest/overlay_design_methodology/overlay_tutorial.html)
 
 ## Step 3
 
