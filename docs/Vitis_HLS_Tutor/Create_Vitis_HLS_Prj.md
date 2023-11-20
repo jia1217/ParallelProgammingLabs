@@ -73,7 +73,6 @@ Next, create a textbench named `main.c` as the following:
 
 ```C++
 // main.c
-// main.c
 #include <stdio.h>
 
 void top( int a_r[100], int b_r[100], int sum_r[100]);
