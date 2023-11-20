@@ -156,7 +156,7 @@ Click **Run C simulation** and then click **OK**.
 
 Now that the simulation has passed, let's run high-level synthesis and generate the RTL for our adder. Go to `Project Settings > Synthesis`, and specify `top.c` as the top function.
 
-<div align=center><img src="Images/10.png" alt="drawing" width="600"/></div>
+<div align=center><img src="Images/10.png" alt="drawing" width="400"/></div>
 
 <div align=center><img src="Images/11.png" alt="drawing" width="600"/></div>
 
@@ -172,13 +172,13 @@ Click **Run C Synthesis** and set the **Period** to be 10, then click **OK**.
 
 Check the console window to know when the synthesis finishes.
 
-<div align=center><img src="Images/13.png" alt="drawing" width="600"/></div>
+<div align=center><img src="Images/13.png" alt="drawing" width="1000"/></div>
 
 ## Step 11
 
 We can now view the performance reports and resource utilisation.
 
-<div align=center><img src="Images/14.png" alt="drawing" width="600"/></div>
+<div align=center><img src="Images/14.png" alt="drawing" width="1000"/></div>
 
 ## Step 12
 
