@@ -3,7 +3,9 @@ sort: 1
 ---
 
 
-# Clemson Palmetto Server Introduction
+# Clemson Palmetto Server Introduction 
+
+Note: This is for resaerch ONLY.
 
 ## Create an account
 
