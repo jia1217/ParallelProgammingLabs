@@ -50,17 +50,17 @@ Now, we can design our accelerator in **C++** and simulate with Vitis. To do so,
 
 ```C++
 // top.c
-void top(int a[100], int b[100], int sum[100])
+void top(int a_r[100], int b_r[100], int sum_r[100])
 {
-	#pragma HLS interface m_axi port=a depth=100 offset=slave bundle = A
-	#pragma HLS interface m_axi port=b depth=100 offset=slave bundle = B
-	#pragma HLS interface m_axi port=sum depth=100 offset=slave bundle = SUM
+	#pragma HLS interface m_axi port=a_r depth=100 offset=slave bundle = A
+	#pragma HLS interface m_axi port=b_r depth=100 offset=slave bundle = B
+	#pragma HLS interface m_axi port=sum_r depth=100 offset=slave bundle = SUM
 
   #pragma HLS interface s_axilite register port=return
 
     for (int i = 0; i < 100; i++)
     {
-		sum[i] = a[i] + b[i];
+		sum_r[i] = a_r[i] + b_r[i];
     }
 }
 ```
@@ -73,31 +73,57 @@ Next, create a textbench named `main.c` as the following:
 
 ```C++
 // main.c
+// main.c
 #include <stdio.h>
 
-void top( int a[100], int b[100], int sum[100]);
+void top( int a_r[100], int b_r[100], int sum_r[100]);
 
 int main()
 {
     int a[100];
     int b[100];
     int c[100];
+    int c_gold[100];
 
-    for(int i = 0; i < 100; i++)
-    {
-        a[i] = i;
-        b[i] = i * 2;
-        c[i] = 0;
-    }
+  // Misc
+    int i_trans, NUM_TRANS = 2, tmp;
+    FILE *fp;
 
+     // Load input data from files
+    fp=fopen("tb_data/inA.dat","r");
+    for (int i=0; i<100; i++){
+    fscanf(fp, "%d", &tmp);
+    a[i] = tmp;
+    } 
+    fclose(fp);
+
+    fp=fopen("tb_data/inB.dat","r");
+    for (int i=0; i<100; i++){
+    fscanf(fp, "%d", &tmp);
+    b[i] = tmp;
+    } 
+    fclose(fp);
+
+    // Execute the function multiple times (multiple transactions)
     // Call the DUT function, i.e., your adder
-    top(a, b, c);
+     for(i_trans=0; i_trans<NUM_TRANS; i_trans++){     
+        top(a, b, c);
+     }
 
+    // Load expected output data from files
+    fp=fopen("tb_data/outC.golden.dat","r");
+    for (int i=0; i<100; i++){
+    fscanf(fp, "%d", &tmp);
+    c_gold[i] = tmp;
+    } 
+    fclose(fp);
+
+    
     // verify the results
     int pass = 1;
     for(int j = 0; j < 100; j++)
     {
-        if(c[j] != (a[j] + b[j]))
+        if(c[j] != c_gold[j])
             {
                     pass = 0;
             }
@@ -112,6 +138,7 @@ int main()
     return 0;
 }
 ```
+Create a folder named `tb_data` in the same location as your testbench file `main.c`. Inside `tb_data`, create three files: `inA.dat` (input data), `inB.dat` (input data), and `outC.golden.dat` (expected ouput data). Each file should contain 100 values in a single column. The value in each row of `outC.golden.dat` must be the sum of the corresponding row values in `inA.dat` and `inB.dat`. You need to figure out how to create these files and values by yourself. Then, add this folder to the Test Bench. 
 
 Note: Test bench does not get synthesized. So you are free to use any C/C++ construct for your testing purposes!
 
