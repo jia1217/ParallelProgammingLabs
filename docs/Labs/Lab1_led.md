@@ -236,7 +236,7 @@ Observe the Tcl Console window and see the output is being displayed as the test
 
 * Click on *Run Synthesis* under the *SYNTHESIS* tasks of the *Flow Navigator* pane.
 
-The synthesis process will be run on the `lab1.v` file (and all its hierarchical files if they exist). When the process is completed a Synthesis Completed dialog box with three options will be displayed.
+The synthesis process will be run on the `lab1.v` file (and all its hierarchical files if they exist; `lab1.v` is the top file in this example). When the process is completed a Synthesis Completed dialog box with three options will be displayed.
 
 * Select the *Open Synthesized Design* option and click *OK* as we want to look at the synthesis output before progressing to the implementation stage.
 
