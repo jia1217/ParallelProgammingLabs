@@ -161,6 +161,8 @@ Lines 5-8 define the pin locations for the input buttons and lines 13-16 define 
 
 A *Settings* form will appear showing the *Simulation* properties form.
 
+* Ensure the *Simulation top module name* is `lab1_tb`.
+
 * Select the *Simulation* tab, and set the *Simulation Run Time* value to 200 ns and click *OK*.
 
 <div align=center><img src="imgs/1_3.png" alt="drawing" width="600"/></div>
