@@ -22,3 +22,5 @@ Download Vitis™ Unified Software Platform 2023.2 from [Vitis Download Page](ht
 Additional Info: Vitis is already installed on computers in Cadence Lab, Riggs B22.
 
 ## Proceed with Vitis Installation
+
+## Proceed with Create Vitis HLS Project
