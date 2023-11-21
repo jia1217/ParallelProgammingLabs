@@ -53,7 +53,7 @@ After completing this lab, you will be able to:
 
 * Select the board, search `pynq` and choose `pynq-z2`, then click *Next* and *Finish*. If you do not have it, follow the instruction in the provided link below.
 
-  [link text](https://pynq.readthedocs.io/en/latest/overlay_design_methodology/board_settings.html)
+  [Add BSP file to Vivado](https://pynq.readthedocs.io/en/latest/overlay_design_methodology/board_settings.html)
 
 <div align=center><img src="imgs/1_21.png" alt="drawing" width="600"/></div>
 
