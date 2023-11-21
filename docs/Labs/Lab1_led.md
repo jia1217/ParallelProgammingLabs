@@ -59,6 +59,8 @@ After completing this lab, you will be able to:
 
 ### Add source files 
 
+* Read this document first.
+
 -[Vivado design suite user guide](https://docs.xilinx.com/r/2022.2-English/ug895-vivado-system-level-design-entry/Introduction?tocId=YFapF_t0U4KZweOG8SPPMg)
 
 There are three kinds of source files: constrains file, design source file and silumation source file. Simulation source file and constraints file specify the timing requirements for the design and physical constraints defining the Xilinx device resources used by the design.
