@@ -51,7 +51,9 @@ After completing this lab, you will be able to:
 
 * Click *Create New Project*, and click *Next*. Then, give your project a name (i.e. project_1) and choose *RTL Project*. Making sure the *Project location* is the correct path that you want to save the project.
 
-* Select the board, search `pynq` and choose `pynq-z2`, then click *Next* and *Finish*.
+* Select the board, search `pynq` and choose `pynq-z2`, then click *Next* and *Finish*. If you do not have it, follow the instruction in the provided link below.
+
+  [link text](https://pynq.readthedocs.io/en/latest/overlay_design_methodology/board_settings.html)
 
 <div align=center><img src="imgs/1_21.png" alt="drawing" width="600"/></div>
 
