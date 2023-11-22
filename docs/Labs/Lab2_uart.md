@@ -43,9 +43,9 @@ After completing this lab, you will be able to:
 
 * Because there are only 4 leds on PYNQ_Z2 board, so we need to fix the code in three files: `led_ctl.v`, `uart_led.v` and `uart_led_pins_pynq.xdc`.
 
-* We don't need to add `uart_led_timing_pynq.xdc` file, it will lead to `setup timing problem`. Though its proposal is teaching us how to analyze it when we encounter this kind of problems, I think it is unnecessary here because there is no need to add timing constraints to LEDs. But if you want to learn it, please read the following document.
+* The `uart_led_timing_pynq.xdc` file is not required for this project, as it causes a `setup timing problem`. This file was originally intended to demonstrate how to analyze timing problems, but it is not relevant for the LEDs, which do not need any timing constraints. However, if you are interested in learning more about timing analysis, you can refer to this:
 
--[Document timing](https://docs.xilinx.com/r/en-US/ug949-vivado-design-methodology/Defining-Timing-Constraints-in-Four-Steps)
+[Document timing](https://docs.xilinx.com/r/en-US/ug949-vivado-design-methodology/Defining-Timing-Constraints-in-Four-Steps)
 
 * Double click `led_ctl.v`.
 
