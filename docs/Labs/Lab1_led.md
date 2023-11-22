@@ -187,7 +187,7 @@ You will see four main views: (i) Scopes, where the testbench hierarchy as well 
 
 Notice that the `<project_name>.sim` directory is created under the `<project_name>` directory, along with several low-level directories. 
 
-
+<u>For Linux User:</u>
 
 To verify, open a new terminal and execute the following shell command:
 
@@ -203,10 +203,20 @@ For example, I create a new folder named *Lab1*, and name the project *project_1
     tree project_1.sim
 ```
 
-
 The display will resemble the figure below.
 
 <div align=center><img src="imgs/1_5.png" alt="drawing" width="300"/></div>
+
+<u>For Windows User:</u>
+
+Launch Command Prompt and execute the following command:
+
+```WIN comand
+    cd C:\Users\twei2\workspace\course\Lab1\Lab1.sim
+    tree /f /a
+```
+
+You should see the tree now.
 
 * Back to vivado, you will see several buttons next to the waveform window which can be used for the specific purpose as listed in the figure blow.
 
