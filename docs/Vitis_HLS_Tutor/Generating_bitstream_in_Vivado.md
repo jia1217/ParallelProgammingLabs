@@ -30,7 +30,7 @@ upzip the zip file in the `IPs` folder
 
 ## Step 2
 
-<u>For Linux User:<\u>
+<u>For Linux User:</u>
 
 Invoke Vivado GUI, run the shell commond:
 
@@ -40,7 +40,7 @@ vivado
 
 <div align=center><img src="Images/16.png" alt="drawing" width="600"/></div>
 
-<u>For Windows User:<\u>
+<u>For Windows User:</u>
 
 Launch Vivado
 
