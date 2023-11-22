@@ -364,7 +364,7 @@ In order to let it work successfully, we need to add *PS* part first.
 
 * Right click `design_1` and choose *Create HDL wrapper*, then click *Set as top*.
 
-* Expand the `design_1_wrapper` and double click `design_1(design_1.v)`. Check the port of this module and change the constraints file.
+* Expand the `design_1_wrapper` and double click `design_1(design_1.v)`. Check the port of this module and change the constraints file (Note that the PIN names are different from simulation files, e.g., btn is now btn_0).
 
 ```verilog
 module design_1
