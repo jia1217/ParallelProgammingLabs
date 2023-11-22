@@ -82,7 +82,7 @@ Now we build the block diagram. Click the `Create Block Design` at the left colu
 
 <div align=center><img src="Images/25.png" alt="drawing" width="600"/></div>
 
-<div align=center><img src="Images/26.png" alt="drawing" width="600"/></div>
+<div align=center><img src="Images/26.png" alt="drawing" width="200"/></div>
 
 ## Step 8
 
@@ -110,7 +110,7 @@ To check the correctness, click the `validation` on the upper page.
 
 <div align=center><img src="Images/33.png" alt="drawing" width="600"/></div>
 
-<div align=center><img src="Images/34.png" alt="drawing" width="600"/></div>
+<div align=center><img src="Images/34.png" alt="drawing" width="1000"/></div>
 
 ## Step 11
 
@@ -133,7 +133,7 @@ Finally, click `Generate Bitstream` under `PROGRAM AND DEBUG` division (at the l
 
 If bitstream generation is successful, you should be able to view the implemented design!
 
-<div align=center><img src="Images/39.png" alt="drawing" width="600"/></div>
+<div align=center><img src="Images/39.png" alt="drawing" width="1000"/></div>
 
 ## Step 14
 
