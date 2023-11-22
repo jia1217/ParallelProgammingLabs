@@ -432,7 +432,7 @@ This process will have generated a `design_1_wrapper.bit` file under the *projec
 
 * The example code to download the *bit* file.
 
-* Then you can verify the function. 
+* Then you can verify the function (Createa a Look Up Table based on the design to help with on-board verification). 
 
 ```python
     from pynq import Overlay
