@@ -31,7 +31,9 @@ After completing this lab, you will be able to:
 
 ## Steps
 
-### Create a Vivado Project
+### Launch Vivado and Create Project Folder 
+
+<u>For Linux User:</u>
 
 * Launch Palmetto Desktop
 
@@ -48,6 +50,14 @@ After completing this lab, you will be able to:
     cd Lab1
     vivado
 ```
+
+<u>For Windows User:</u>
+
+* Create a new folder (e.g., `C:\Users\twei2\workspace\course\Lab1`)
+
+* Launch Vivado 
+
+### Create a Vivado Project 
 
 * Click *Create New Project*, and click *Next*. Then, give your project a name (i.e. project_1) and choose *RTL Project*. Making sure the *Project location* is the correct path that you want to save the project.
 
@@ -175,7 +185,11 @@ The testbench and source files will be compiled and the Vivado simulator will be
 
 You will see four main views: (i) Scopes, where the testbench hierarchy as well as glbl instances are displayed, (ii) Objects, where top-level signals are displayed, (iii) the waveform window, and (iv) Tcl Console where the simulation activities are displayed. Notice that since the testbench used is self-checking, the results are displayed as the simulation is run.
 
-Notice that the `<project_name>.sim` directory is created under the `<project_name>` directory, along with several low-level directories. To verify, open a new terminal and execute the following shell command:
+Notice that the `<project_name>.sim` directory is created under the `<project_name>` directory, along with several low-level directories. 
+
+
+
+To verify, open a new terminal and execute the following shell command:
 
 ```bash
     cd <project path>
@@ -188,6 +202,8 @@ For example, I create a new folder named *Lab1*, and name the project *project_1
     cd Lab1/project_1
     tree project_1.sim
 ```
+
+
 The display will resemble the figure below.
 
 <div align=center><img src="imgs/1_5.png" alt="drawing" width="300"/></div>
