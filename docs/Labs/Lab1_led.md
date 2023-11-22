@@ -31,7 +31,7 @@ After completing this lab, you will be able to:
 
 ## Steps
 
-### Launch Vivado and Create Project Folder 
+### Create Project Folder and Launch Vivado
 
 <u>For Linux User:</u>
 
