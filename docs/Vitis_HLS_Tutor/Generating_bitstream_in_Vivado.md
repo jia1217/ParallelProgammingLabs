@@ -102,23 +102,23 @@ Go back to the Block Diagram and click `Run Connection Automation`. You need to 
 
 <div align=center><img src="Images/31.png" alt="drawing" width="600"/></div>
 
-<div align=center><img src="Images/32.png" alt="drawing" width="600"/></div>
+<div align=center><img src="Images/32.png" alt="drawing" width="1000"/></div>
 
 ## Step 10
 
 To check the correctness, click the `validation` on the upper page.
 
-<div align=center><img src="Images/33.png" alt="drawing" width="600"/></div>
+<div align=center><img src="Images/33.png" alt="drawing" width="400"/></div>
 
-<div align=center><img src="Images/34.png" alt="drawing" width="1000"/></div>
+<div align=center><img src="Images/34.png" alt="drawing" width="400"/></div>
 
 ## Step 11
 
 The next step is to create a wrapper for the Block Design. Find the block diagram file under the design sources. Right click the design file (whatever you name it) and select `Create HDL Wrapper`. Choose `Let Vivado manage wrapper and auto-update` option. Click `OK` to start.
 
-<div align=center><img src="Images/35.png" alt="drawing" width="600"/></div>
+<div align=center><img src="Images/35.png" alt="drawing" width="400"/></div>
 
-<div align=center><img src="Images/36.png" alt="drawing" width="600"/></div>
+<div align=center><img src="Images/36.png" alt="drawing" width="400"/></div>
 
 ## Step 12
 
@@ -126,7 +126,7 @@ Finally, click `Generate Bitstream` under `PROGRAM AND DEBUG` division (at the l
 
 <div align=center><img src="Images/37.png" alt="drawing" width="600"/></div>
 
-<div align=center><img src="Images/38.png" alt="drawing" width="600"/></div>
+<div align=center><img src="Images/38.png" alt="drawing" width="400"/></div>
 
 
 ## Step 13
