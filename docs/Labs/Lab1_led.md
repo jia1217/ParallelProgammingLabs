@@ -209,9 +209,9 @@ The display will resemble the figure below.
 
 <u>For Windows User:</u>
 
-Launch Command Prompt and execute the following command:
+Launch Command Prompt and execute the following command (example):
 
-```WIN comand
+```bash
     cd C:\Users\twei2\workspace\course\Lab1\Lab1.sim
     tree /f /a
 ```
