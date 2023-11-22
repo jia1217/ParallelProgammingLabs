@@ -394,6 +394,9 @@ module design_1
 ```
 
 ```verilog
+# PYNQ Pin Assignments
+############################
+# On-board Slide Buttons  #
 ############################
 set_property -dict { PACKAGE_PIN D19   IOSTANDARD LVCMOS33 } [get_ports { btn_0[0] }];
 set_property -dict { PACKAGE_PIN D20   IOSTANDARD LVCMOS33 } [get_ports { btn_0[1] }];
