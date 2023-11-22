@@ -7,7 +7,7 @@ sort: 5
 
 ## Step 1
 
-<u>For Linux User:<\u>
+<u>For Linux User:</u>
 
 Create a new folder, and move the **zip** file to this folder, run the shell commond:
 
@@ -20,7 +20,7 @@ mv ../../vector_add/vector_add/solution1/impl/export.zip ./
 unzip export.zip
 ```
 
-<u>For Windows User:<\u>
+<u>For Windows User:</u>
 
 Create a new folder (`e.g., C:\Users\twei2\workspace\course\adderProject`)
 
