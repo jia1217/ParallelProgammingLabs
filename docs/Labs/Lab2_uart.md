@@ -260,7 +260,7 @@ Select *File > Checkpoint > Write* to save the processed design so it can be ope
 
 <div align=center><img src="imgs/2_29.png" alt="drawing" width="400"/></div>
 
-### Read the Checkpoints: Read the previously saved checkpoint (`checkpoint_1.dcp`) in order to analyze the results without going through the actual synthesis process.
+### Read the Checkpoints: Read the previously saved checkpoint (checkpoint_1.dcp) in order to analyze the results without going through the actual synthesis process.
 
 * Launch Vivado and select *File > Checkpoint > Open* at the *Getting Started Screen*. Select `checkpoint_1.dcp`. Click *OK*.
 
@@ -284,26 +284,27 @@ Select *File > Checkpoint > Write* to save the processed design so it can be ope
 
 #### Open a Vivado Project
 
-* Start the Vivado, if necessary, and open either the lab2 project (lab2.xpr) you created in the previous lab or the lab2 project in the labsolution directory using the Open Project link in the Getting Started page.
+* Start the Vivado, if necessary, and open either the lab2 project (`lab2.xpr`) you created in the previous lab or the lab2 project in the labsolution directory using the Open Project link in the Getting Started page.
 
-* Select *File > Project > Save As …* to open the Save Project As dialog box. Enter `lab2_p2` as the project name. Make sure that the Create Project Subdirectory option is checked and click OK.
+* Select *File > Project > Save As …* to open the Save Project As dialog box. Enter `lab2_p2` as the project name. Make sure that the Create Project Subdirectory option is checked and click *OK*.
 
 * Click on the Settings in the Flow Navigator pane, select *Project Settings > Synthesis*.
 
 * Make sure that the flatten_hierarchy is set to rebuilt, which allows the design hierarchy to be preserved for synthesis, and then rebuilt which is more useful for design analysis because many logical references will be maintained.
 
-* Click OK.
+* Click *OK*.
 
-A Create New Run dialog box will appear asking you if a new run should be created. Click Yes and then OK to create the new run with synth_2 name.
+A Create New Run dialog box will appear asking you if a new run should be created. Click *Yes* and then *OK* to create the new run with synth_2 name.
 
 <div align=center><img src="imgs/2_26.png" alt="drawing" width="400"/></div>
 
 #### Implement the Design
 
-
 * Click *Create Block Design* under *IP INTEGRATOR*. Click *+ (Add IP)* and search *zynq*, add *ZYNQ7 Processing Syatem* into the block design.
 
-* In the `Sources` under *BlOCK DESIGN*, right click `uart_led` and choose *Add module to block design*.
+<!--* In the `Sources` under *BlOCK DESIGN*, right click `uart_led` and choose *Add module to block design*.-->
+
+* Right click on Diagram, select *Add Module...*, select `uart_led` and click *OK*.
 
 <div align=center><img src="imgs/2_31.png" alt="drawing" width="500"/></div>
 
