@@ -29,9 +29,11 @@ After completing this lab, you will be able to:
 
 ### Create a Vivado Project
 
-* Same operations as Lab1.
+* Same operations as Lab1. (Do it yourself this time!)
 
 ### Add source files 
+
+* You should see a hierarchy like this in your Sources window.
 
 <div align=center><img src="imgs/2_1.png" alt="drawing" width="400"/></div>
 
