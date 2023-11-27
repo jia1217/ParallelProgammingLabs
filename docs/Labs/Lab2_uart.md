@@ -308,11 +308,11 @@ A Create New Run dialog box will appear asking you if a new run should be create
 
 <div align=center><img src="imgs/2_31.png" alt="drawing" width="500"/></div>
 
-* Back to *Diagram* window, add `axi uartlite` module. We want to send data to the uart_led module through its `rx` port. To do this, we will use the UART from PS side, which is connected to the ARM core by the AXI protocal. Then, we will connect the `tx` port of the UART on the PS side to the uart_led module in PL. Double-click on this module and configure it as shown in the subsequent figure. To prevent the `rx` port of AXI Uartlite from becoming floating, set the rx port to 1 (ensuring it remains in the IDLE state). We can disregard other ports, such as the interrupt of AXI Uartlite, since it's an output port.
+* Back to *Diagram* window, add `axi uartlite` module. We want to send data to the uart_led module through its `rx` port. To do this, we will use the UART from PS side, which is connected to the ARM core by the AXI protocol. Then, we will connect the `tx` port of the UART on the PS side (`axi uartlite`) to the `uart_led` module in PL. Double-click on this module and configure it as shown in the subsequent figure. To prevent the `rx` port of `axi uartlite` from becoming floating, set the `rx` port to 1 (it is not needed for this project; ensure it remains in the IDLE state). We can disregard other ports, such as the interrupt of `axi uartlite`, since it's an output port.
 
 <div align=center><img src="imgs/2_28.png" alt="drawing" width="600"/></div>
 
-* Right click in the blank part and choose *Create port*. Set the port name to be *clk_pin_0*, set the *Type* as *Clock* and the *Frequency* as 125 MHz. And connect this port to `uart_led's clk_pin` and `ZYNQ7 Processing System's M_AXI_GP0_ACLK`.
+* Now, let us create the system clock. Right click on the blank part and choose *Create port*. Set the port name to be *clk_pin_0*, set the *Type* as *Clock* and the *Frequency* as 125 MHz. And connect this port to `uart_led`'s `clk_pin` and `ZYNQ7 Processing System`'s `M_AXI_GP0_ACLK`.
 
 <div align=center><img src="imgs/2_23.png" alt="drawing" width="400"/></div>
 
