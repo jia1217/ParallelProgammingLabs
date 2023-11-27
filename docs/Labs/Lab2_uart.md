@@ -39,11 +39,11 @@ After completing this lab, you will be able to:
 
 ### Add code
 
-* Double-click on the *uart_led* entry to view its content. Notice in the Verilog code, the *BAUD_RATE* and *CLOCK_RATE* parameters are defined to be 115, 200 and 125M Hz. Also notice that the lower level modules are instantiated. The `meta_harden` modules are used to synchronize the asynchronous reset and push-button inputs.
+* Double-click on the *uart_led* entry to view its content. Notice in the Verilog code, the *BAUD_RATE* and *CLOCK_RATE* parameters are defined to be 115,200 and 125 MHz. Also, notice that the lower level modules are instantiated. The `meta_harden` modules are used to synchronize the asynchronous reset and push-button inputs (Read the code!).
 
-* Expand `uart_rx_i0` instance to see its hierarchy. This module used the baud rate generator and a finite state machine. The `rxd_pin` is sampled at a x16 the baud rate.
+* Expand `uart_rx_i0` instance to see its hierarchy. This module used the baud rate generator (It generate a 16x Baud enable.) and a finite state machine. The `rxd_pin` is sampled at a rate that is 16x the baud rate.
 
-* Because there are only 4 leds on PYNQ_Z2 board, so we need to fix the code in three files: `led_ctl.v`, `uart_led.v` and `uart_led_pins_pynq.xdc`.
+* Because there are only 4 leds on PYNQ_Z2 board (The source code was oringally used for a differenct board.), so we need to change the code in three files: `led_ctl.v`, `uart_led.v` and `uart_led_pins_pynq.xdc`.
 
 * The `uart_led_timing_pynq.xdc` file is not required for this project, as it causes a `setup timing problem`. This file was originally intended to demonstrate how to analyze timing problems, but it is not relevant for the LEDs, which do not need any timing constraints. However, if you are interested in learning more about timing analysis, you can refer to this:
 
@@ -83,7 +83,7 @@ module led_ctl(
             end
 
             if (btn_clk_rx)
-                led_pipeline_reg <= char_data[3: 0] ^ char_data[7: 4];
+                led_pipeline_reg <= char_data[3: 0] ^ char_data[7: 4]; // What are we doing here? What should we expect?
             else
                 led_pipeline_reg <= char_data[3: 0];
         end
@@ -151,6 +151,8 @@ module uart_led(
 endmodule
 ```
 
+* You need to add this constraint file (`uart_led_pins_pynq.xdc`) to your project (Do it yourself!).
+
 * Double click `uart_led_pins_pynq.xdc`:
 
 ```verilog
@@ -182,7 +184,7 @@ set_property PACKAGE_PIN W6 [get_ports rxd_pin]
 
 You will see four components at the top-level, 2 instances of meta_harden, one instance of uart_rx, and one instance of led_ctl.
 
-* To see where the uart_rx_i0 gets generated, right-click on the uart_rx_i0 instance and select Go To Source and see that line 84 in the source code is generating it.
+* To see where the uart_rx_i0 gets generated, right-click on the uart_rx_i0 instance and select Go To Source and see that line 100 in the source code is generating it.
 
 * Double-click on the uart_rx_i0 instance in the schematic diagram to see the underlying components.
 
@@ -198,7 +200,7 @@ You will see four components at the top-level, 2 instances of meta_harden, one i
 
 * Click on Run Synthesis under the Synthesis tasks of the Flow Navigator pane.
 
-The synthesis process will be run on the uart_led.v and all its hierarchical files. When the process is completed a Synthesis Completed dialog box with three options will be displayed.
+The synthesis process will be run on the `uart_led.v` and all its hierarchical files. When the process is completed a Synthesis Completed dialog box with three options will be displayed.
 
 * Select the Open Synthesized Design option and click OK as we want to look at the synthesis output. Click Yes to close the elabrated design if the dialog box is displayed.
 
