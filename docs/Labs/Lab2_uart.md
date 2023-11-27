@@ -302,6 +302,8 @@ A Create New Run dialog box will appear asking you if a new run should be create
 
 * Click *Create Block Design* under *IP INTEGRATOR*. Click *+ (Add IP)* and search *zynq*, add *ZYNQ7 Processing Syatem* into the block design.
 
+* Create a wrapper on the block diagram and set it as the top file (Do it yourslef!).
+
 <!--* In the `Sources` under *BlOCK DESIGN*, right click `uart_led` and choose *Add module to block design*.-->
 
 * Right click on Diagram, select *Add Module...*, select `uart_led` and click *OK*.
@@ -322,13 +324,13 @@ A Create New Run dialog box will appear asking you if a new run should be create
 
 <div align=center><img src="imgs/2_24.png" alt="drawing" width="600"/></div>
 
-* Expand `UART` in the `axi_uartlite` module, and connect `tx` to `rxd_pin` port of `uart_led` module. Connect `rx` to the `FCLK_RESET0_N` of `ZYNQ7 Processing System`.
+* Expand `UART` in the `axi_uartlite` module, and connect `tx` to `rxd_pin` port of `uart_led` module. Connect `rx` to a constant module (add IP and set the value = 0; Figure it out yourself!).
 
-* Click `Run Connection Automation` and `Run Block Automation`, Keep in mind not to opt for UART (you do not want to use auto-connection for UART), then click *OK*. 
+* Click `Run Connection Automation` and `Run Block Automation`, keep in mind not to opt for UART (you do not want to use auto-connection for UART), then click *OK*. 
 
 <div align=center><img src="imgs/2_22.png" alt="drawing" width="600"/></div>
 
-* Right click `btn_pin` and `btn_pin`, select `make extern`
+* Right click `btn_pin` and `btn_pin`, select `make external`.
 
 * The whole system diagram is shown in the following figure.
 
