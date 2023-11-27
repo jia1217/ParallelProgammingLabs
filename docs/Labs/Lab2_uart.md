@@ -5,7 +5,7 @@ sort: 2
 
 # Lab2_uart
 
-The design consists of a uart receiver receiving the input typed on a keyboard and displaying the binary equivalent of the typed character on the 4 LEDs. When a push button is pressed, the lower and upper nibbles are XOR. The block diagram is as shown in the following figure.
+The design consists of a uart receiver receiving the input typed on a keyboard and displaying the binary equivalent of the typed character on the 4 LEDs. When a push button is pressed, the lower and upper nibbles are XORed. The block diagram is as shown in the following figure.
 
 <div align=center><img src="imgs/lab2.png" alt="drawing" width="600"/></div>
 
@@ -39,7 +39,7 @@ After completing this lab, you will be able to:
 
 ### Add code
 
-* Double-click on the *uart_led* entry to view its content. Notice in the Verilog code, the *BAUD_RATE* and *CLOCK_RATE* parameters are defined to be 115,200 and 125 MHz. Also, notice that the lower level modules are instantiated. The `meta_harden` modules are used to synchronize the asynchronous reset and push-button inputs (Read the code!).
+* Double-click on the `uart_led` entry to view its content. Notice in the Verilog code, the `BAUD_RATE` and `CLOCK_RATE` parameters are defined to be 115,200 and 125 MHz. Also, notice that the lower level modules are instantiated. The `meta_harden` modules are used to synchronize the asynchronous reset and push-button inputs (Read the code!).
 
 * Expand `uart_rx_i0` instance to see its hierarchy. This module used the baud rate generator (It generate a 16x Baud enable.) and a finite state machine. The `rxd_pin` is sampled at a rate that is 16x the baud rate.
 
@@ -182,11 +182,11 @@ set_property PACKAGE_PIN W6 [get_ports rxd_pin]
 
 <div align=center><img src="imgs/2_2.png" alt="drawing" width="1000"/></div>
 
-You will see four components at the top-level, 2 instances of meta_harden, one instance of uart_rx, and one instance of led_ctl.
+You will see four components at the top-level, 2 instances of `meta_harden`, one instance of `uart_rx`, and one instance of `led_ctl`.
 
-* To see where the uart_rx_i0 gets generated, right-click on the uart_rx_i0 instance and select Go To Source and see that line 100 in the source code is generating it.
+* To see where the `uart_rx_i0` gets generated, right-click on the `uart_rx_i0` instance and select Go To Source and see that line 100 in the source code is generating it.
 
-* Double-click on the uart_rx_i0 instance in the schematic diagram to see the underlying components.
+* Double-click on the `uart_rx_i0` instance in the schematic diagram to see the underlying components.
 
 <div align=center><img src="imgs/2_3.png" alt="drawing" width="1000"/></div>
 
@@ -216,11 +216,11 @@ The synthesis process will be run on the `uart_led.v` and all its hierarchical f
 
 Notice that IBUF and OBUF are automatically instantiated (added) to the design as the input and output are buffered. There are still four lower level modules instantiated.
 
-* Double-click on the uart_rx_i0 instance in the schematic view to see the underlying instances.
+* Double-click on the `uart_rx_i0` instance in the schematic view to see the underlying instances.
 
-* Select the uart_baud_gen_rx_i0 instance, right-click, and select Go To Source. Notice that the line instantiated uart_rx_i0 is highlighted. Also notice that the CLOCK_RATE and BAUD_RATE parameters are passed to the module being called.
+* Select the `uart_baud_gen_rx_i0` instance, right-click, and select Go To Source. Notice that the line instantiated `uart_rx_i0` is highlighted. Also notice that the `CLOCK_RATE` and `BAUD_RATE` parameters are passed to the module being called.
 
-* Go back to the schematic, double-click on the meta_harden_rxd_io instance to see how the synchronization circuit is implemented using two FFs. This synchronization is necessary to reduce the likelihood of metastability.
+* Go back to the schematic, double-click on the `meta_harden_rxd_io` instance to see how the synchronization circuit is implemented using two FFs. This synchronization is necessary to reduce the likelihood of metastability.
 
 #### Generate the utilization and power reports
 
