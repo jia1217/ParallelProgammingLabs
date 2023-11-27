@@ -336,17 +336,13 @@ A Create New Run dialog box will appear asking you if a new run should be create
 
 <div align=center><img src="imgs/2_25.png" alt="drawing" width="1000"/></div>
 
-* You need to ensure that the wrapper file is set as the top-level module of your project before generating the bitstream file. This is because Vivado will only use the top-level module to create the bitstream file, and ignore any other files in your project.
+* You need to ensure that the wrapper file is set as the top-level module of your project before generating the bitstream file. This is because Vivado only uses the top-level module to create the bitstream file, and ignores any other files in your project.
 
-Right click design_1_wrapper and choose set to top.
+Right click `design_1_wrapper` and choose Set to Top if it is not the top file yet.
 
-* Continue with the remaining steps in the Lab1 (i.e., Check the port of this module and change the constraints file as needed.). Try to figure it out yourself this time.
-
-* Remember to change the constrain file to match the name of the pin. Similiar as *Lab 1*.
-
-* Remember to change the constrain file to match the name of the pin. Similiar as *Lab 1*.
-
-* Remember to change the constrain file to match the name of the pin. Similiar as *Lab 1*.
+* Continue with the remaining steps simliar to what we did in *Lab 1* (i.e., Check the port of this module and change the constraint file as needed. Figure it out yourself this time!).
+   
+* Remember to change the constraint file to match the names of the pins! (Hint: some of the pins are non-existent anymore for pin assignment. Why?)
 
 #### Generate the Bitstream
 
