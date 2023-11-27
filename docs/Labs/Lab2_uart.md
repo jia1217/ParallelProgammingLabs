@@ -344,6 +344,8 @@ Right click `design_1_wrapper` and choose Set to Top if it is not the top file y
    
 * Remember to change the constraint file to match the names of the pins! (Hint: some of the pins are non-existent anymore for pin assignment. Why?)
 
+* Add this line `create_clock -period 8.000 -name clk_pin_0 -waveform {0.000 4.000} [get_ports clk_pin_0]` in the contraint file for the primary clock (125 MHz).
+
 #### Generate the Bitstream
 
 * Click *Generate Bitstream* under *PROGRAM AND DEBUG*
