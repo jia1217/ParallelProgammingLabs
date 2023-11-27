@@ -363,7 +363,7 @@ find . -name *.hwh
 
 -[PYNQ code](https://github.com/parthpower/axi_uartlite_pynq/tree/master)
 
-* Following the similar step in the Lab1. Upload `.bit` and `.hwh`, make sure that they are the same name. Copy `uartlite.py` from the upper github source to the folder. Here, we need to fix the `write function` to fit our project.
+* Following the similar steps in the *Lab 1*. Upload `.bit` and `.hwh`, make sure that they have the same name (e.g.m `design_1_wrapper.bit` and `design_1_wrapper.hwh`). Copy `uartlite.py` from the upper github source to the folder. Here, we need to fix the `write` function to fit our project (Why do we need to change it?).
 
 ```python
 def write(self, buf, timeout = 10):
