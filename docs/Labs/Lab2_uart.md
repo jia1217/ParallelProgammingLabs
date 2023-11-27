@@ -39,7 +39,7 @@ After completing this lab, you will be able to:
 
 ### Add code
 
-* Double-click on the `uart_led` entry to view its content. Notice in the Verilog code, the `BAUD_RATE` and `CLOCK_RATE` parameters are defined to be 115,200 and 125 MHz. Also, notice that the lower level modules are instantiated. The `meta_harden` modules are used to synchronize the asynchronous reset and push-button inputs (Read the code!).
+* Double-click on the `uart_led` entry to view its content. Notice in the Verilog code, the `BAUD_RATE` and `CLOCK_RATE` parameters are defined to be 115,200 and 125 MHz. Also, notice that the lower-level modules are instantiated. The `meta_harden` modules are used to synchronize the asynchronous reset and push-button inputs (Read the code!).
 
 * Expand `uart_rx_i0` instance to see its hierarchy. This module used the baud rate generator (It generate a 16x Baud enable.) and a finite state machine. The `rxd_pin` is sampled at a rate that is 16x the baud rate.
 
@@ -232,7 +232,7 @@ Notice that IBUF and OBUF are automatically instantiated (added) to the design a
 
 <div align=center><img src="imgs/2_11.png" alt="drawing" width="600"/></div>
 
-* Click Report Power under the Synthesized Design, and click OK to generate the estimated power consumption report using default values. Note that this is just an estimate as no simulation run data was provided and no accurate activity rate, or environment information was entered. 
+* Click Report Power under the Synthesized Design, and click *OK* to generate the estimated power consumption report using default values. Note that this is just an estimate as no simulation run data was provided and no accurate activity rate, or environment information was entered. 
 
 <div align=center><img src="imgs/2_12.png" alt="drawing" width="1000"/></div>
 
@@ -244,37 +244,41 @@ Notice that IBUF and OBUF are automatically instantiated (added) to the design a
 
 #### Change the synthesis settings to flatten the design. Re-synthesize the design and analyze the results.
 
-* Click on the Settings under the Project Manager, and select Synthesis. Click on the flatten_hierarchy drop-down button and select full to flatten the design. Click OK. A Create New Run dialog box will appear asking you whether you want to create a new run since the settings have been changed.
+* Click on the Settings under the Project Manager, and select Synthesis. Click on the flatten_hierarchy drop-down button and select full to flatten the design. Click *OK*. A Create New Run dialog box will appear asking you whether you want to create a new run since the settings have been changed.
 
 <div align=center><img src="imgs/2_13.png" alt="drawing" width="600"/></div>
 
 <div align=center><img src="imgs/2_30.png" alt="drawing" width="600"/></div>
 
-Change the name from synth_1_copy_1 to synth_flatten and click OK. Click Run Synthesis to synthesize the design. Click OK to open the synthesized design when synthesis process is completed. Click on Schematic under the Open Synthesized Design tasks of Synthesis tasks of the Flow Navigator pane to view the synthesized design in a schematic view. Notice that the design is completely flattened. Click on Report Utilization and observe that the hierarchical utilization is no longer available. Also note that the number of Slice Registers is 38.
+Change the name from `synth_1_copy_1` to `synth_flatten` and click *OK*. Click Run Synthesis to synthesize the design. Click *OK* to open the synthesized design when synthesis process is completed. Click on Schematic under the Open Synthesized Design tasks of Synthesis tasks of the Flow Navigator pane to view the synthesized design in a schematic view. Notice that the design is completely flattened. Click on Report Utilization and observe that the hierarchical utilization is no longer available. Also note that the number of Slice Registers is 38.
 
 <div align=center><img src="imgs/2_14.png" alt="drawing" width="1000"/></div>
 
 #### Write the checkpoint in order to analyze the results without going through the actual synthesis process.
 
-Select *File > Checkpoint > Write* to save the processed design so it can be opened later for further analysis. A dialog box will appear showing the default name of the file in the current project directory.Click OK.
+Select *File > Checkpoint > Write* to save the processed design so it can be opened later for further analysis. A dialog box will appear showing the default name of the file in the current project directory.Click *OK*.
 
 <div align=center><img src="imgs/2_29.png" alt="drawing" width="400"/></div>
 
-### Read the Checkpoints: Read the previously saved checkpoint (checkpoint_1) in order to analyze the results without going through the actual synthesis process.
+### Read the Checkpoints: Read the previously saved checkpoint (`checkpoint_1.dcp`) in order to analyze the results without going through the actual synthesis process.
 
-* Launch Vivado and select *File > Checkpoint > Open* at the *Getting Started Screen*. Select checkpoint_1.dcp. Click OK.
+* Launch Vivado and select *File > Checkpoint > Open* at the *Getting Started Screen*. Select `checkpoint_1.dcp`. Click *OK*.
 
-* If the schematic isn’t open by default, in the netlist tab, select the top-level instance, uart_led, right-click and select Schematic. You will see the hierarchical blocks. You can double-click on any of the first-level block and see the underlying blocks. You can also select any lower-level block in the netlist tab, right-click and select Schematic to see the corresponding level design.
+* If the schematic isn’t open by default, in the netlist tab, select the top-level instance, `uart_led`, right-click and select Schematic. You will see the hierarchical blocks. You can double-click on any of the first-level block and see the underlying blocks. You can also select any lower-level block in the netlist tab, right-click and select Schematic to see the corresponding level design.
 
 * In the netlist tab, select the top-level instance, uart_led, right-click and select Show Hierarchy. You will see how the blocks are hierarchically connected.
 
-* Select *Reports > Report Utilization* and click OK to see the utilization report you saw previously.
+* Select *Reports > Report Utilization* and click *OK* to see the utilization report you saw previously.
 
-* Select *File > Open Checkpoint*, select checkpoint_2.dcp.
+<!-- 
 
-* Click No to keep the Checkpoint_1 open. This will invoke second Vivado GUI.
+* Select *File > Open Checkpoint*, select `checkpoint_2.dcp`.
+
+* Click No to keep the `Checkpoint_1` open. This will invoke second Vivado GUI.
 
 * If the schematic isn’t open by default, in the netlist tab, select the top-level instance, uart_led, right-click and select Schematic. You will see the flattened design. You can generate the desired reports on this checkpoint as you wish. Close the Vivado program by selecting File > Exit and click OK.
+
+-->
 
 ### Continues with the previous lab
 
@@ -282,7 +286,7 @@ Select *File > Checkpoint > Write* to save the processed design so it can be ope
 
 * Start the Vivado, if necessary, and open either the lab2 project (lab2.xpr) you created in the previous lab or the lab2 project in the labsolution directory using the Open Project link in the Getting Started page.
 
-* Select *File > Project > Save As …* to open the Save Project As dialog box. Enter *lab2_p2* as the project name. Make sure that the Create Project Subdirectory option is checked and click OK.
+* Select *File > Project > Save As …* to open the Save Project As dialog box. Enter `lab2_p2` as the project name. Make sure that the Create Project Subdirectory option is checked and click OK.
 
 * Click on the Settings in the Flow Navigator pane, select *Project Settings > Synthesis*.
 
