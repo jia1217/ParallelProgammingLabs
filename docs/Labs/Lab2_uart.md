@@ -49,7 +49,7 @@ After completing this lab, you will be able to:
 
 [Document timing](https://docs.xilinx.com/r/en-US/ug949-vivado-design-methodology/Defining-Timing-Constraints-in-Four-Steps)
 
-* Double click `led_ctl.v`.
+* Double click on `led_ctl.v`.
 
 ```verilog
 module led_ctl(
@@ -92,7 +92,7 @@ module led_ctl(
 endmodule
 ```
 
-* Double-click `uart_led.v`
+* Double-click on `uart_led.v`
 
 ```verilog
 module uart_led(
@@ -153,7 +153,7 @@ endmodule
 
 * You need to add this constraint file (`uart_led_pins_pynq.xdc`) to your project (Do it yourself!).
 
-* Double click `uart_led_pins_pynq.xdc`:
+* Double click on `uart_led_pins_pynq.xdc`:
 
 ```verilog
 # On-board led             #
@@ -190,7 +190,7 @@ You will see four components at the top-level, 2 instances of `meta_harden`, one
 
 <div align=center><img src="imgs/2_3.png" alt="drawing" width="1000"/></div>
 
-* Click on Report Noise under the Open Elaborated Design entry of the RTL Analysis tasks of the Flow Navigator pane. Click Ok to generate the report named `ssn_1`. View the `ssn_1` report and observe the unplaced ports. 
+* Click on Report Noise under the Open Elaborated Design entry of the RTL Analysis tasks of the Flow Navigator pane. Click *OK* to generate the report named `ssn_1`. View the `ssn_1` report and observe the unplaced ports. 
 
 <div align=center><img src="imgs/2_4.png" alt="drawing" width="600"/></div>
 
@@ -202,7 +202,7 @@ You will see four components at the top-level, 2 instances of `meta_harden`, one
 
 The synthesis process will be run on the `uart_led.v` and all its hierarchical files. When the process is completed a Synthesis Completed dialog box with three options will be displayed.
 
-* Select the Open Synthesized Design option and click OK as we want to look at the synthesis output. Click Yes to close the elabrated design if the dialog box is displayed.
+* Select the Open Synthesized Design option and click *OK* as we want to look at the synthesis output. Click *Yes* to close the elabrated design if the dialog box is displayed.
 
 * Select the Project Summary tab. If you don’t see the Project Summary tab then select *Layout > Default Layout*.
 
@@ -218,13 +218,13 @@ Notice that IBUF and OBUF are automatically instantiated (added) to the design a
 
 * Double-click on the `uart_rx_i0` instance in the schematic view to see the underlying instances.
 
-* Select the `uart_baud_gen_rx_i0` instance, right-click, and select Go To Source. Notice that the line instantiated `uart_rx_i0` is highlighted. Also notice that the `CLOCK_RATE` and `BAUD_RATE` parameters are passed to the module being called.
+* Select the `uart_baud_gen_rx_i0` instance, right-click on it, and select Go To Source. Notice that the line instantiated `uart_rx_i0` is highlighted. Also notice that the `CLOCK_RATE` and `BAUD_RATE` parameters are passed to the module being called.
 
 * Go back to the schematic, double-click on the `meta_harden_rxd_io` instance to see how the synchronization circuit is implemented using two FFs. This synchronization is necessary to reduce the likelihood of metastability.
 
 #### Generate the utilization and power reports
 
-* Click Report Utilization under the Synthesized Design, and click OK to generate the utilization report.
+* Click on Report Utilization under the Synthesized Design, and click *OK* to generate the utilization report.
 
 <div align=center><img src="imgs/2_10.png" alt="drawing" width="600"/></div>
 
@@ -232,7 +232,7 @@ Notice that IBUF and OBUF are automatically instantiated (added) to the design a
 
 <div align=center><img src="imgs/2_11.png" alt="drawing" width="600"/></div>
 
-* Click Report Power under the Synthesized Design, and click *OK* to generate the estimated power consumption report using default values. Note that this is just an estimate as no simulation run data was provided and no accurate activity rate, or environment information was entered. 
+* Click on Report Power under the Synthesized Design, and click *OK* to generate the estimated power consumption report using default values. Note that this is just an estimate as no simulation run data was provided and no accurate activity rate, or environment information was entered. 
 
 <div align=center><img src="imgs/2_12.png" alt="drawing" width="1000"/></div>
 
@@ -250,7 +250,7 @@ Notice that IBUF and OBUF are automatically instantiated (added) to the design a
 
 <div align=center><img src="imgs/2_30.png" alt="drawing" width="600"/></div>
 
-Change the name from `synth_1_copy_1` to `synth_flatten` and click *OK*. Click Run Synthesis to synthesize the design. Click *OK* to open the synthesized design when synthesis process is completed. Click on Schematic under the Open Synthesized Design tasks of Synthesis tasks of the Flow Navigator pane to view the synthesized design in a schematic view. Notice that the design is completely flattened. Click on Report Utilization and observe that the hierarchical utilization is no longer available. Also note that the number of Slice Registers is 38.
+Change the name from `synth_1_copy_1` to `synth_flatten` and click *OK*. Click on Run Synthesis to synthesize the design. Click *OK* to open the synthesized design when synthesis process is completed. Click on Schematic under the Open Synthesized Design tasks of Synthesis tasks of the Flow Navigator pane to view the synthesized design in a schematic view. Notice that the design is completely flattened. Click on Report Utilization and observe that the hierarchical utilization is no longer available. Also note that the number of Slice Registers is 38.
 
 <div align=center><img src="imgs/2_14.png" alt="drawing" width="1000"/></div>
 
@@ -264,9 +264,9 @@ Select *File > Checkpoint > Write* to save the processed design so it can be ope
 
 * Launch Vivado and select *File > Checkpoint > Open* at the *Getting Started Screen*. Select `checkpoint_1.dcp`. Click *OK*.
 
-* If the schematic isn’t open by default, in the netlist tab, select the top-level instance, `uart_led`, right-click and select Schematic. You will see the hierarchical blocks. You can double-click on any of the first-level block and see the underlying blocks. You can also select any lower-level block in the netlist tab, right-click and select Schematic to see the corresponding level design.
+* If the schematic isn’t open by default, in the netlist tab, select the top-level instance, `uart_led`, right-click on it and select Schematic. You will see the hierarchical blocks. You can double-click on any of the first-level block and see the underlying blocks. You can also select any lower-level block in the netlist tab, right-click on it and select Schematic to see the corresponding level design.
 
-* In the netlist tab, select the top-level instance, uart_led, right-click and select Show Hierarchy. You will see how the blocks are hierarchically connected.
+* In the netlist tab, select the top-level instance, `uart_led`, right-click on it and select Show Hierarchy. You will see how the blocks are hierarchically connected.
 
 * Select *Reports > Report Utilization* and click *OK* to see the utilization report you saw previously.
 
@@ -306,7 +306,7 @@ A Create New Run dialog box will appear asking you if a new run should be create
 
 <!--* In the `Sources` under *BlOCK DESIGN*, right click `uart_led` and choose *Add module to block design*.-->
 
-* Right click on Diagram, select *Add Module...*, select `uart_led` and click *OK*.
+* Right click on the blank part of Diagram, select *Add Module...*, select `uart_led` and click *OK*.
 
 <div align=center><img src="imgs/2_31.png" alt="drawing" width="500"/></div>
 
@@ -338,7 +338,7 @@ A Create New Run dialog box will appear asking you if a new run should be create
 
 * You need to ensure that the wrapper file is set as the top-level module of your project before generating the bitstream file. This is because Vivado only uses the top-level module to create the bitstream file, and ignores any other files in your project.
 
-Right click `design_1_wrapper` and choose Set to Top if it is not the top file yet.
+Right click on `design_1_wrapper` and choose Set to Top if it is not the top file yet.
 
 * Continue with the remaining steps simliar to what we did in *Lab 1* (i.e., Check the port of this module and change the constraint file as needed. Figure it out yourself this time!).
    
@@ -363,7 +363,7 @@ find . -name *.hwh
 
 -[PYNQ code](https://github.com/parthpower/axi_uartlite_pynq/tree/master)
 
-* Following the similar steps in the *Lab 1*. Upload `.bit` and `.hwh`, make sure that they have the same name (e.g.m `design_1_wrapper.bit` and `design_1_wrapper.hwh`). Copy `uartlite.py` from the upper github source to the folder. Here, we need to fix the `write` function to fit our project (Why do we need to change it?).
+* Following the similar steps in the *Lab 1*. Upload `.bit` and `.hwh`, make sure that they have the same name (e.g., `design_1_wrapper.bit` and `design_1_wrapper.hwh`). Copy `uartlite.py` from the upper github source to the folder. Here, we need to fix the `write` function to fit our project (Why do we need to change it?).
 
 ```python
 def write(self, buf, timeout = 10):
