@@ -137,7 +137,7 @@ The `uart_led_pynq.xdc` file will be created and added to the Sources tab.
 
 <div align=center><img src="imgs/4_12.png" alt="drawing" width="600"/></div>
 
-* Enter the tsu and thd as 0 ns and enter the trce_dly_max and trce_dly_min as -2.20 ns for `led_pins`. Click Apply and then click Next.
+* Enter the `tsu` and `thd` as 0 ns and enter the `trce_dly_max` and `trce_dly_min` as -2.20 ns for `led_pins`. Click Apply and then click Next.
 
 <div align=center><img src="imgs/4_13.png" alt="drawing" width="600"/></div>
 
@@ -199,14 +199,7 @@ The `uart_led_pynq.xdc` file will be created and added to the Sources tab.
 
 * Click on the WNS to see the failing paths.
 
-* Double-click on the first failing path from the top and see the detailed analysis. The output path delay can be reduced by placing the register in IOB. To do this, apply the constraint by typing the following two commands in the Tcl console. Proceed and the constraint file will be updated.
-
-**Hint:** The implemented results are dependent on your own computer, if possible, tunning the output delay towards appropriate value to meet the timing constrains. As our testing shows, normally 0 ~ -4 ns will be a practical value.
-
-```verilog
-set_output_delay -clock [get_clocks clk_pin] -min -add_delay -4.000 [get_ports {led_pins[*]}]
-set_output_delay -clock [get_clocks clk_pin] -max -add_delay -4.000 [get_ports {led_pins[*]}]
-````
+* Double-click on the first failing path from the top and see the detailed analysis. The output path delay can be reduced by placing the register in IOB.
 
 * Similiar to Lab2, we can just delete the constraints to the led_pin (timing constraint on leds is useless in practise). 
 
