@@ -7,7 +7,7 @@ sort: 3
 
 ## Introduction
 
-In this lab you will use the uart_led design that was introduced in the previous labs. You will start the project with I/O Planning, enter pin locations, and export it to the rtl. You will then create the timing constraints and perform the timing analysis.
+In this lab you will use the uart_led design that was introduced in the previous labs. You will start the project with I/O Planning, enter pin locations, and export it to the RTL. You will then create the timing constraints and perform the timing analysis.
 
 ## Objectives
 
@@ -23,11 +23,11 @@ After completing this lab, you will be able to:
 
 ## Design Description
 
-The design consists of a uart receiver receiving the input typed on a keyboard and displaying the binary equivalent of the typed character on the 4 LEDs. When a push button is pressed, the lower and upper nibbles are swapped. If you are using a PYNQ-Z2 development board, please make sure that you have a blank microSD card with FAT32 file system.
+The design consists of a uart receiver receiving the input typed on a keyboard (emulated on the PS side) and displaying the binary equivalent of the typed character on the 4 LEDs. When a push button is pressed, the lower and upper nibbles are swapped.
 
 In this design we will use board’s USB-UART which is controlled by the Zynq’s ARM Cortex-A9 processor. Our PL design needs access to this USB-UART. First thing we will do is to create a processing system design which will put the USB-UART connections in a simple GPIO-style and make it available to the PL section.
 
-The provided design places the UART (rx) pin of the PS (processing system) on the Cortex-A9 in a simple GPIO mode to allow the UART to be connected (passed through) to the PL. The processor samples the rx signal and sends it to the EMIO channel 0 which is connected to rx input of the HDL module provided in the Static directory.
+The provided design places the UART (`rx`) pin of the PS (processing system) on the Cortex-A9 in a simple GPIO mode to allow the UART to be connected (passed through) to the PL. The processor samples the `rx` signal and sends it to the EMIO channel 0 which is connected to `rx` input of the HDL module provided in the Static directory.
 
 ## Steps
 
@@ -57,31 +57,31 @@ The provided design places the UART (rx) pin of the PS (processing system) on th
 
 ### Step 2 Create I/O Ports, Assign Various Pins and Add Source Files
 
-*Create input ports for clk_pin, btn_pin and rst_pin.*
+* Create input ports for `clk_pin`, `btn_pin` and `rst_pin`.
 
 * *Select Flow Navigator > I/O PLANNING > Open I/O Design > Create > Create I/O Ports*.
 
 * Type clk_pin in the Name field, select Input for the Direction and select LVCMOS33 as the I/O Standard, and click OK.
 
-* Similarly, create the btn_pin, rxd_pin and rst_pin input ports.
+* Similarly, create the `btn_pin`, `rxd_pin` and `rst_pin` input ports.
 
 <div align=center><img src="imgs/4_3.png" alt="drawing" width="600"/></div>
 
-* Assign input pins clk_pin, btn_pin and rst_pin to H16, D19 and D20 locations using the Device view and package pins.
+* Assign input pins `clk_pin`, `btn_pin` and `rst_pin` to H16, D19 and D20 locations using the Device view and package pins.
 
 <div align=center><img src="imgs/4_4.png" alt="drawing" width="1000"/></div>
 
-* Do the same operations and assign output pins led_pins[0] to led_pins[3] to locations R14, P14, N16, M14. They all will be LVCMOS33.
+* Do the same operations and assign output `pins led_pins[0]` to `led_pins[3]` to locations R14, P14, N16, M14. They all will be LVCMOS33.
 
 <div align=center><img src="imgs/4_5.png" alt="drawing" width="400"/></div>
 
 <div align=center><img src="imgs/4_6.png" alt="drawing" width="1000"/></div>
 
-* *Select File > Constraints > Save*. Enter uart_led_{BOARDS} in the File name field, and click OK.
+* *Select File > Constraints > Save*. Enter uart_led_pynq in the File name field, and click OK.
 
 <div align=center><img src="imgs/4_7.png" alt="drawing" width="400"/></div>
 
-The uart_led_{BOARDS}.xdc file will be created and added to the Sources tab.
+The `uart_led_pynq.xdc` file will be created and added to the Sources tab.
 
 <div align=center><img src="imgs/4_8.png" alt="drawing" width="400"/></div>
 
@@ -89,17 +89,17 @@ The uart_led_{BOARDS}.xdc file will be created and added to the Sources tab.
 
 * Click OK. Notice the design rules checker has run and warnings are reported. Ignore the warnings.
 
-* Expand the *Flow Navigator > I/O PLANNING > Open I/O Design > Report Noise* and click OK. Notice the noise analysis is done on the output pins only (led_pins) and the results are displayed.
+* Expand the *Flow Navigator > I/O PLANNING > Open I/O Design > Report Noise* and click OK. Notice the noise analysis is done on the output pins only (`led_pins`) and the results are displayed.
 
 * Click on Migrate to RTL.
 
-* The Migrate to RTL form will be displayed with Top RTL file field showing {TUTORIAL}/io_1.v entry. Change io_1.v to uart_led.v(for PYNQ-Z2), and click OK.
+* The Migrate to RTL form will be displayed with Top RTL file field showing `{TUTORIAL}/io_1.v` entry. Change `io_1.v` to `uart_led.v` (for PYNQ-Z2), and click OK.
 
 <div align=center><img src="imgs/4_9.png" alt="drawing" width="600"/></div>
 
-* Select the Hierarchy tab and notice that the uart_led.v file has been added to the project with top-level module name as ios. If you double-click the entry, you will see the module name with the ports listing.
+* Select the Hierarchy tab and notice that the `uart_led.v` file has been added to the project with top-level module name as `ios`. If you double-click the entry, you will see the module name with the ports listing.
 
-* Add the source files used in Lab2 (from Lab2/project_1/project_1.srcs/sources_1/new) to this project, please exclude `uart_led.v` and copy the uart_led.v content in Lab2 into the `uart_led.v` you created when do migrating operation.
+* Add the source files used in Lab2 (from `Lab2/project_1/project_1.srcs/sources_1/new`, note: this directory is mine, yours might be different.) to this project, please exclude `uart_led.v` and copy the `uart_led.v` content in Lab2 into the `uart_led.v` you created after migrating operation.
 
 <div align=center><img src="imgs/4_10.png" alt="drawing" width="1000"/></div>
 
@@ -115,7 +115,7 @@ The uart_led_{BOARDS}.xdc file will be created and added to the Sources tab.
 
 * Read the Identify and Recommend Missing Timing Constraints screen of the wizard to understand what the wizard does and click Next.
 
-* Specify the frequency of the object clk_pin to be 125 MHz, notice the Period, Rise At and Fall At are automatically populated. Also notice the Tcl command that can be previewed at the bottom of the wizard. Click Next to proceed.
+* Specify the frequency of the object `clk_pin` to be 125 MHz, notice the Period, Rise At and Fall At are automatically populated. Also notice the Tcl command that can be previewed at the bottom of the wizard. Click Next to proceed.
 
 <div align=center><img src="imgs/4_11.png" alt="drawing" width="600"/></div>
 
@@ -125,11 +125,11 @@ The uart_led_{BOARDS}.xdc file will be created and added to the Sources tab.
 
 * There are no missing External Feedback Delays, click Next to proceed.
 
-* The wizard identifies Input Delays needed for the btn_pin and rst_pin pins. Do the following:
+* The wizard identifies Input Delays needed for the `btn_pin` and `rst_pin` pins. Do the following:
 
-    1. Here you will see three rows: btn_pin, rst_pin, and rxd_pin. We only need to identify Input Delays for the btn_pin and rst_pin pins. Press Ctrl and select the two rows (btn_pin and rst_pin).
+    1. Here you will see three rows: `btn_pin`, `rst_pin`, and `rxd_pin`. We only need to identify Input Delays for the `btn_pin` and `rst_pin` pins. Press Ctrl and select the two rows (`btn_pin` and `rst_pin`). Uncheck `rxd_pin`.
 
-    2. Enter the tco_min value to be -0.5 ns and everything else as 0 ns. Click Apply.
+    2. Enter the `tco_min` value to be -0.5 ns and everything else as 0 ns. Click Apply.
 
     3. Notice that under the Tcl Command Preview tab, 4 Tcl commands have been generated.
 
@@ -137,7 +137,7 @@ The uart_led_{BOARDS}.xdc file will be created and added to the Sources tab.
 
 <div align=center><img src="imgs/4_12.png" alt="drawing" width="600"/></div>
 
-* Enter the tsu and thd as 0 ns and enter the trce_dly_max and trce_dly_min as -2.20 ns. Click Apply and then click Next.
+* Enter the tsu and thd as 0 ns and enter the trce_dly_max and trce_dly_min as -2.20 ns for `led_pins`. Click Apply and then click Next.
 
 <div align=center><img src="imgs/4_13.png" alt="drawing" width="600"/></div>
 
@@ -149,11 +149,11 @@ The uart_led_{BOARDS}.xdc file will be created and added to the Sources tab.
 
 <div align=center><img src="imgs/4_14.png" alt="drawing" width="600"/></div>
 
-* Note the wizard generated the clk_pin constraint for an 8 ns period (or 125 MHz) (PYNQ-Z2). Notice in the All Constraints window, 7/9 constraints will be created. There is no need to click Apply since the constraints have already been applied in the Constraints Wizard.
+* Note the wizard generated the `clk_pin` constraint for an 8 ns period (or 125 MHz) (PYNQ-Z2). Notice in the All Constraints window, 7/9 constraints will be created. There is no need to click Apply since the constraints have already been applied in the Constraints Wizard.
 
 <div align=center><img src="imgs/4_15.png" alt="drawing" width="1000"/></div>
 
-* Open **uart_led_.xdc** (if it was already opened, click **Reload** in the yellow status bar) and notice additional constraints were added to the last line of the file.
+* Open `uart_led_.xdc` (if it was already opened, click Reload in the yellow status bar) and notice additional constraints were added to the last line of the file.
 
 #### Generate an estimated Timing Report showing both the setup and hold paths in the design.
 
@@ -199,7 +199,14 @@ The uart_led_{BOARDS}.xdc file will be created and added to the Sources tab.
 
 * Click on the WNS to see the failing paths.
 
-* Double-click on the first failing path from the top and see the detailed analysis. The output path delay can be reduced by placing the register in IOB.
+* Double-click on the first failing path from the top and see the detailed analysis. The output path delay can be reduced by placing the register in IOB. To do this, apply the constraint by typing the following two commands in the Tcl console. Proceed and the constraint file will be updated.
+
+**Hint:** The implemented results are dependent on your own computer, if possible, tunning the output delay towards appropriate value to meet the timing constrains. As our testing shows, normally 0 ~ -4 ns will be a practical value.
+
+```verilog
+set_output_delay -clock [get_clocks clk_pin] -min -add_delay -4.000 [get_ports {led_pins[*]}]
+set_output_delay -clock [get_clocks clk_pin] -max -add_delay -4.000 [get_ports {led_pins[*]}]
+````
 
 * Similiar to Lab2, we can just delete the constraints to the led_pin (timing constraint on leds is useless in practise). 
 
