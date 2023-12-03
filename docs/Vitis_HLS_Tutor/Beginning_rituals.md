@@ -5,9 +5,9 @@ sort: 3
 
 # Beginning Rituals
 
-## Ritual 1
-
 Note: This is for resaerch ONLY.
+
+## Ritual 1
 
 ### Launch a Palmetto desktop
 
