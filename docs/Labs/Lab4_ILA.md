@@ -5,8 +5,6 @@ sort: 4
 
 # Lab4_ILA 
 
-In this lab, you need to install the Vivado locally.
-
 ## Introduction
 
 In this lab you will use the uart_led design that was introduced in the previous labs. You will use Mark Debug feature and also the available Integrated Logic Analyzer (ILA) core (in IP Catalog) to debug the hardware.
@@ -23,13 +21,13 @@ After completing this lab, you will be able to:
 
 ## Design Description
 
-The design consists of a uart receiver receiving the input typed on a keyboard and displaying the binary equivalent of the typed character on the LEDs. When a push button is pressed, the lower and upper nibbles are swapped.
+Quick recap: The design consists of a uart receiver receiving the input typed on a keyboard and displaying the binary equivalent of the typed character on the LEDs. When a push button is pressed, the lower and upper nibbles are swapped.
 
 ## Steps
 
 ### Step 1 Create a new project and add source
 
-Please copy the whole Lab2 project and named it as *Lab4*:
+Please copy the whole Lab2 project and named it as Lab4:
 
 ### Step 2 Add the ILA Core
 
