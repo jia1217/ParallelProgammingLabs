@@ -3,7 +3,7 @@ sort: 2
 ---
 
 
-# Labs
+# FPGA/SoC Labs
 
 <!-- {% include list.liquid %} -->
 
