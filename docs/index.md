@@ -4,7 +4,7 @@
 
 - [Preparation](https://uri-nextlab.github.io/ParallelProgammingLabs/Vitis_HLS_Tutor)
 
-- [FPGA Labs](https://uri-nextlab.github.io/ParallelProgammingLabs/Labs/)
+- [FPGA/SoC Labs](https://uri-nextlab.github.io/ParallelProgammingLabs/Labs/)
 
 - [HLS Labs](https://uri-nextlab.github.io/ParallelProgammingLabs/HLS_Labs/)
 
