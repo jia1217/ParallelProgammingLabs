@@ -68,23 +68,23 @@ Please copy the whole `Lab2` project and re-name it as `Lab4`:
 
 * Click *PROGRAM AND DEBUG --> Open Hardware Manager --> Open Target*
 
-* Choose `Auto connect`. Remember to turn on the PYNQ board.
+* Choose `Auto connect`. Remember to turn on the PYNQ board and connect its USB cable to the computer.
 
 * Select `Program Device` and download the bitstream file to the board.
 
 <div align=center><img src="imgs/5_4.png" alt="drawing" width="600"/></div>
 
-* The programming bit file be downloaded and the DONE light will be turned ON indicating the FPGA has been programmed. Debug Probes window will also be opened, if not, then select Window > Debug Probes. In the Hardware window in Vivado notice that there are two debug cores, hw_ila_1 and hw_ila_2. The hardware session status window also opens showing that the FPGA is programmed having two ILA cores with the idle state.
+* The programming bit file be downloaded and the DONE light will be turned ON indicating the FPGA has been programmed. *Debug Probes* window will also be opened, if not, then select *Window > Debug Probes*. In the Hardware window in Vivado notice that there are two debug cores, `hw_ila_1` and `hw_ila_2`. The hardware session status window also opens showing that the FPGA is programmed having two ILA cores with the idle state.
 
 <div align=center><img src="imgs/5_5.png" alt="drawing" width="600"/></div>
 
-* Select the target FPGA xc7z020_1, and click on the Run Trigger Immediate button to see the signals in the waveform window. Two waveform windows will be created, one for each ILA; one ILA window is for the instantiated ILA core and another for the MARK DEBUG method.
+* Select the target `FPGA xc7z020_1`, and click on the *Run Trigger Immediate* button to see the signals in the waveform window. Two waveform windows will be created, one for each ILA; one ILA window is for the instantiated ILA core and another for the *MARK DEBUG* method.
 
 <div align=center><img src="imgs/5_6.png" alt="drawing" width="1000"/></div>
 
 ### Setup trigger conditions to trigger on a write to led port (rx_data_rdy_out=1) and the trigger position to 512. Arm the trigger.
 
-* In the Trigger Setup window, click Add Probes and select the rx_data_rdy.
+* In the *Trigger Setup* window, click *Add Probes* and select the `rx_data_rdy`.
 
 <div align=center><img src="imgs/5_7.png" alt="drawing" width="600"/></div>
 
@@ -92,17 +92,17 @@ Please copy the whole `Lab2` project and re-name it as `Lab4`:
 
 <div align=center><img src="imgs/5_8.png" alt="drawing" width="600"/></div>
 
-* Set the trigger position of the hw_ila_1 to 512.
+* Set the trigger position of the `hw_ila_1` to 512.
 
 <div align=center><img src="imgs/5_9.png" alt="drawing" width="600"/></div>
 
-* Similarly, set the trigger position of the hw_ila_2 to 512.
+* Similarly, set the trigger position of the `hw_ila_2` to 512.
 
-* Select the hw_ila_1 in the Hardware window and then click on the Run Trigger button. Observe that the hw_ila_1 core is armed and showing the status as Waiting for Trigger.
+* Select the `hw_ila_1` in the Hardware window and then click on the *Run Trigger* button. Observe that the `hw_ila_1` core is armed and showing the status as *Waiting for Trigger*.
 
 <div align=center><img src="imgs/5_10.png" alt="drawing" width="600"/></div>
 
-* Open a new jupyter notebook, similar to Lab2, input a data (i.e 0xd3) and observe that the hw_ila_1 status changes from capturing to idle as the rx_data_rdy_out became 1. And on the *hw_ila_2*, it will show d3 after the trigger.
+* Open a new jupyter notebook, similar to Lab2, input a data (i.e 0xd3) and observe that the `hw_ila_1` status changes from capturing to idle as the `rx_data_rdy_out` became 1. And on the `hw_ila_2`, it will show d3 after the trigger.
 
 <div align=center><img src="imgs/5_16.png" alt="drawing" width="1000"/></div>
 
@@ -197,7 +197,7 @@ module uart_led (
 
 <div align=center><img src="imgs/5_12.png" alt="drawing" width="600"/></div>
 
-* Set the *Number of windows* as 512
+* Set the *Number of Windows* as 512
 
 <div align=center><img src="imgs/5_13.png" alt="drawing" width="600"/></div>
 
