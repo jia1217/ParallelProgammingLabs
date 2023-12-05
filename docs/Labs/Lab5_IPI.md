@@ -43,7 +43,7 @@ There are three clock domains within this design: `clk_rx`, `clk_tx`, and `clk_s
 
 In this design we will use board’s USB-UART which is controlled by the Zynq’s ARM Cortex-A9 processor (PS). Our PL design needs access to this USB-UART. So first thing we will do is to create a PS design which will put the USB-UART connections in a simple GPIO-style and make it available to the PL section.
 
-The provided design places the UART (`rx` and `tx`) pins of the PS (processing system) on the Cortex-A9 in a simple GPIO mode to allow the UART to be connected (passed through) to the programmable logic. The processor samples the RX signal and sends it to the EMIO channel 0 which is connected to `rx` input of the HDL module provided in the *Static directory*. Similarly, the design samples the `tx` output of the HDL module through another EMIO channel 1 and sends it on the PS UART `tx` pin.
+The provided design places the UART (`rx` and `tx`) pins of the PS (processing system) on the Cortex-A9 in a simple GPIO mode to allow the UART to be connected (passed through) to the programmable logic. The processor samples the `rx` signal and sends it to the EMIO channel 0 which is connected to `rx` input of the HDL module provided in the *Static directory*. Similarly, the design samples the `tx` output of the HDL module through another EMIO channel 1 and sends it on the PS UART `tx` pin.
 
 ## Steps
 
@@ -59,15 +59,15 @@ Because we only have the source code working on the boolean board, so we must fi
 
 ### Generate and Instantiate Clock Generator Module
 
-Launch the clocking wizard from the IP Catalog of Vivado and generate the clock core with an input frequency of 125.00 MHz and two output clocks of 50.000 MHZ each.
+Launch the clocking wizard from the *IP Catalog* of Vivado and generate the clock core with an input frequency of 125.00 MHz and two output clocks of 50.000 MHZ each.
 
-* Click on IP Catalog in the Flow Navigator pane. The IP Catalog will open in the auxiliary pane.
+* Click on *IP Catalog* in the *Flow Navigator* pane. The *IP Catalog* will open in the auxiliary pane.
 
-* Expand *FPGA Features and Design > Clocking* and double-click on the Clocking Wizard entry.
+* Expand *FPGA Features and Design > Clocking* and double-click on the *Clocking Wizard* entry.
 
 <div align=center><img src="imgs/3_1.png" alt="drawing" width="600"/></div>
 
-* Click Customize IP on the following Add IP window. The clocking wizard will open.
+* Click *Customize IP* on the following *Add IP* window. The clocking wizard will open.
 
 * Make sure that the Primary input clock frequency is 125.000 MHz and the primitive used is MMCM.
 
