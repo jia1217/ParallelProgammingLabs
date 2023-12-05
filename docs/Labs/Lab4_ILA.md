@@ -197,7 +197,7 @@ module uart_led (
 
 <div align=center><img src="imgs/5_12.png" alt="drawing" width="600"/></div>
 
-* Set the *Number of Windows* as 512
+* Set the *Number of windows* as 512
 
 <div align=center><img src="imgs/5_13.png" alt="drawing" width="600"/></div>
 
