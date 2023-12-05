@@ -7,15 +7,15 @@ sort: 4
 
 ## Introduction
 
-In this lab you will use the uart_led design that was introduced in the previous labs. You will use Mark Debug feature and also the available Integrated Logic Analyzer (ILA) core (in IP Catalog) to debug the hardware.
+In this lab you will use the uart_led design that was introduced in the previous labs. You will use *Mark Debug* feature and also the available *Integrated Logic Analyzer (ILA)* core (in IP Catalog) to debug the hardware.
 
 ## Objectives
 
 After completing this lab, you will be able to:
 
-* Use the Integrated Logic Analyzer (ILA) core from the IP Catalog as a debugging tool.
+* Use the *Integrated Logic Analyzer (ILA) core* from the IP Catalog as a debugging tool.
 
-* Use Mark Debug feature of Vivado to debug a design.
+* Use *Mark Debug* feature of Vivado to debug a design.
 
 * Use hardware debugger to debug a design.
 
@@ -27,7 +27,7 @@ Quick recap: The design consists of a uart receiver receiving the input typed on
 
 ### Step 1 Create a new project and add source
 
-Please copy the whole Lab2 project and named it as Lab4:
+Please copy the whole `Lab2` project and re-name it as `Lab4`:
 
 ### Step 2 Add the ILA Core
 
@@ -48,15 +48,15 @@ Please copy the whole Lab2 project and named it as Lab4:
     );
 ```
 
-* Back to *Diagram* window, select `uart_led_0` module, and right click `Refresh module`, then you can see the port. Select one port (like `rx_data_rdy`), right click it and choose `debug`.
+* Back to *Diagram* window, select `uart_led_0` module, and right click *Refresh module*, then you can see the port. Select one port (like `rx_data_rdy`), right click it and choose *Debug*.
 
 * Similar operation to the other port.
 
-* Click `Run connection Automation` and choose all. 
+* Click *Run connection Automation* and choose all. 
 
 <div align=center><img src="imgs/5_1.png" alt="drawing" width="600"/></div>
 
-* If you want to combine two ports into one ILA, we can delete one (for example, `system_ila_0`) and double click (i.e. `system_ila_1`). And set the `Number of Probes` as 2.
+* If you want to combine two ports into one ILA, we can delete one (for example, `system_ila_0`) and double click (i.e. `system_ila_1`). And set the *Number of Probes* as 2.
 
 <div align=center><img src="imgs/5_2.png" alt="drawing" width="600"/></div>
 
@@ -66,7 +66,7 @@ Please copy the whole Lab2 project and named it as Lab4:
 
 ### Step 3 Run synthesis, implementation and generate bitstream
 
-* Click PROGRAM AND DEBUG --> Open Hardware Manager --> Open Target
+* Click *PROGRAM AND DEBUG --> Open Hardware Manager --> Open Target*
 
 * Choose `Auto connect`. Remember to turn on the PYNQ board.
 
