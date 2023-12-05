@@ -5,7 +5,7 @@ sort: 5
 
 # Lab5_IPI 
 
-In this lab you will use the IP Catalog to generate a clock resource. You will instantiate the generated clock core in the provided waveform generator design. You will also use IP Integrator to generate a FIFO core and then use it in the HDL design.
+In this lab you will use the *IP Catalog* to generate a clock resource. You will instantiate the generated clock core in the provided waveform generator design. You will also use *IP Integrator* to generate a FIFO core and then use it in the HDL design.
 
 <div align=center><img src="imgs/lab3.png" alt="drawing" width="600"/></div>
 
@@ -15,9 +15,9 @@ After completing this lab, you will be able to:
 
 * Include an IP in the project during the project creation.
 
-* Use IP Catalog to generate a clocking core.
+* Use *IP Catalog* to generate a clocking core.
 
-* Create a block design using IP Integrator.
+* Create a block design using *IP Integrator*.
 
 * Create and package your custom IP 
 
@@ -27,7 +27,7 @@ The design used in this lab is a programmable waveform generator, also known as 
 
 The waveform generator in this design is intended to be a “standalone” device that is controlled via a PC (or other terminal device) using RS-232 serial communication. The design described here implements the RS-232 communication channel, the waveform generator and connection to the external DAC, and a simple parser to implement a small number of “commands” to control the waveform generation.
 
-The wave generator implements a look-up table of 1024 samples of 16 bits each in a RAM. The wave generator also implements three variables:
+The wave generator implements a look-up table (LUT) of 1024 samples of 16 bits each in a RAM. The wave generator also implements three variables:
 
 * nsamp: The number of samples to use for the output waveform. Must be between 1 and 1024.
 
@@ -38,13 +38,13 @@ The wave generator implements a look-up table of 1024 samples of 16 bits each in
 The wave generator can be instructed to send the appropriate number of samples once, cycling from 0 to nsamp-1 once and then stopping, or continuously, where it continuously loops the nsamp samples. When enabled, either once or continuously, the wave generator will send one sample to the DAC every (prescale x speed) clk_tx clock cycles. The contents of the RAM, as well as the three variables, can be changed via commands sent over the RS-232 link, as can the mode of the wave
 generator. The wave generator will generate responses for all commands.
 
-There are three clock domains within this design: *clk_rx, clk_tx, and clk_samp*. The clock generator module instantiates all the clocking resources required for generating these three clocks. All three clocks are derived from a single clock input, coming in on clk_pin. The frequency of the clock input is 125MHz for PYNQ-Z2.
+There are three clock domains within this design: `clk_rx`, `clk_tx`, and `clk_samp`. The clock generator module instantiates all the clocking resources required for generating these three clocks. All three clocks are derived from a single clock input, coming in on `clk_pin`. The frequency of the clock input is 125 MHz for PYNQ-Z2.
 
 ## For PYNQ-Z2
 
-In this design we will use board’s USB-UART which is controlled by the Zynq’s ARM Cortex-A9 processor. Our PL design needs access to this USB-UART. So first thing we will do is to create a Processing System design which will put the USB-UART connections in a simple GPIO-style and make it available to the PL section.
+In this design we will use board’s USB-UART which is controlled by the Zynq’s ARM Cortex-A9 processor (PS). Our PL design needs access to this USB-UART. So first thing we will do is to create a PS design which will put the USB-UART connections in a simple GPIO-style and make it available to the PL section.
 
-The provided design places the UART (RX and TX) pins of the PS (processing system) on the Cortex-A9 in a simple GPIO mode to allow the UART to be connected (passed through) to the programmable logic. The processor samples the RX signal and sends it to the EMIO channel 0 which is connected to Rx input of the HDL module provided in the Static directory. Similarly, the design samples the Tx output of the HDL module through another EMIO channel 1 and sends it on the PS UART TX pin.
+The provided design places the UART (`rx` and `tx`) pins of the PS (processing system) on the Cortex-A9 in a simple GPIO mode to allow the UART to be connected (passed through) to the programmable logic. The processor samples the RX signal and sends it to the EMIO channel 0 which is connected to `rx` input of the HDL module provided in the *Static directory*. Similarly, the design samples the `tx` output of the HDL module through another EMIO channel 1 and sends it on the PS UART `tx` pin.
 
 ## Steps
 
