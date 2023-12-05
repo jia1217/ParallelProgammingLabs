@@ -29,14 +29,13 @@ The waveform generator in this design is intended to be a “standalone” devic
 
 The wave generator implements a look-up table (LUT) of 1024 samples of 16 bits each in a RAM. The wave generator also implements three variables:
 
-* nsamp: The number of samples to use for the output waveform. Must be between 1 and 1024.
+* `nsamp`: The number of samples to use for the output waveform. Must be between 1 and 1024.
 
-* prescale: The prescaler for the sample clock. Must be 32 or greater.
+* `prescale`: The prescaler for the sample clock. Must be 32 or greater.
 
-* speed: The speed (or rate) for the output samples in units of the prescaled clock.
+* `speed`: The speed (or rate) for the output samples in units of the prescaled clock.
 
-The wave generator can be instructed to send the appropriate number of samples once, cycling from 0 to nsamp-1 once and then stopping, or continuously, where it continuously loops the nsamp samples. When enabled, either once or continuously, the wave generator will send one sample to the DAC every (prescale x speed) clk_tx clock cycles. The contents of the RAM, as well as the three variables, can be changed via commands sent over the RS-232 link, as can the mode of the wave
-generator. The wave generator will generate responses for all commands.
+The wave generator can be instructed to send the appropriate number of samples once, cycling from 0 to `nsamp`-1 once and then stopping, or continuously, where it continuously loops the `nsamp` samples. When enabled, either once or continuously, the wave generator will send one sample to the DAC every (`prescale` x `speed`) `clk_tx` clock cycles. The contents of the RAM, as well as the three variables, can be changed via commands sent over the RS-232 link, as can the mode of the wave generator. The wave generator will generate responses for all commands.
 
 There are three clock domains within this design: `clk_rx`, `clk_tx`, and `clk_samp`. The clock generator module instantiates all the clocking resources required for generating these three clocks. All three clocks are derived from a single clock input, coming in on `clk_pin`. The frequency of the clock input is 125 MHz for PYNQ-Z2.
 
