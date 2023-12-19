@@ -355,5 +355,5 @@ mm2s.transfer(oBuf)
 
 We will see:
 
-<div align=center><img src="Imgs/1_8.png" alt="drawing" width="1000"/></div>
+<div align=center><img src="Images/1_8.png" alt="drawing" width="1000"/></div>
 
