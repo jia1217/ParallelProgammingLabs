@@ -21,15 +21,15 @@ sort: 1
 
 ## Introduction
 
-Arrays can be partitioned into blocks or into their individual elements. Arrays can be partitioned into blocks or into their individual elements. In some cases, Vitis HLS partitions arrays into individual elements. This is controllable using the configuration settings for auto-partitioning. When an array is partitioned into multiple blocks, the single array is implemented as multiple RTL RAM blocks. When partitioned into elements, each element is implemented as a register in the RTL. In both cases, partitioning allows more elements to be accessed in parallel and can help with performance; the design trade-off is between performance and the number of RAMs or registers required to achieve it.
+In Vitis HLS, arrays can be partitioned into blocks or individual elements, controlled by auto-partitioning settings. Block partitioning uses RTL RAM blocks for parallel access, while element partitioning treats each element as an RTL register. This trade-off impacts performance versus the number of required RAMs or registers. Auto-partitioning settings offer flexibility to find the optimal balance based on design requirements.
 
 ## Optimization
 
-We will illustrate the optimization process using a square matrix as our guiding example. Matrix multiplication, also known as matrix product, is a binary operation that takes a pair of matrices and produces another matrix. The multiplication of matrices is defined under specific conditions regarding the dimensions of the matrices involved. The number of rows is equal to the number of columns for square matrix.
+In the optimization process, we'll use a square matrix as an example. Matrix multiplication is a binary operation where two matrices produce another matrix. The key condition is that the number of rows in the first matrix must equal the number of columns in the second matrix for a valid product. This requirement ensures the matrices are conformable for multiplication.
 
 ### The unoptimized code
 
-Following code shows a highly unoptimized version of  square matrix  in HLS. in the header file (matrix_cyclic_block.h), this code uses **typedef** to define the datatype of different variables. Datatype of all three variables (```stream_in```,```stream_in2```, and ```stream_out```) are int (32 bit) in this example. ```hls::axis<int,0,0,0>``` from ```ap_axi_sdata.h``` packs int into a standarded AXI4-Stream Interfaces datatype, namely, data_t_pack. ([Ref](https://docs.xilinx.com/r/en-US/ug1399-vitis-hls/How-AXI4-Stream-is-Implemented)) Finally, ```hls::stream<data_t_pack>``` from ```hls_stream.h``` creates a HLS stream (also an AXIs datatype) datatype, ```d_stream```. The block level interface of the kernel (how the kernel is triggered, ```port=return```, [Ref](https://docs.xilinx.com/r/en-US/ug1399-vitis-hls/pragma-HLS-interface)) is set as ```ap_ctrl_none```, which means the kernel is always ready to receive new data (free-running kernel).
+Following code shows a highly unoptimized version of  square matrix  in HLS. in the header file (matrix_cyclic_block.h), this code uses ```typedef``` to define the datatype of different variables. Datatype of all three variables (```stream_in```,```stream_in2```, and ```stream_out```) are int (32 bit) in this example. ```hls::axis<int,0,0,0>``` from ```ap_axi_sdata.h``` packs int into a standarded AXI4-Stream Interfaces datatype, namely, data_t_pack. ([Ref](https://docs.xilinx.com/r/en-US/ug1399-vitis-hls/How-AXI4-Stream-is-Implemented)) Finally, ```hls::stream<data_t_pack>``` from ```hls_stream.h``` creates a HLS stream (also an AXIs datatype) datatype, ```d_stream```. The block level interface of the kernel (how the kernel is triggered, ```port=return```, [Ref](https://docs.xilinx.com/r/en-US/ug1399-vitis-hls/pragma-HLS-interface)) is set as ```ap_ctrl_none```, which means the kernel is always ready to receive new data (free-running kernel).
 
 **matrix_cyclic_block.h**
 ```c++
@@ -118,17 +118,13 @@ According to the report, the core loop (Matrix_Loop) has II = 4 and the II of th
 
 Suppose we have two matrices, $A$ and $B$, with the following dimensions:
 
-Matrix A:                                      
+Matrix A:  $$| a_{11}  a_{12} |$$
+           $$| a_{21}  a_{22} |$$                              
 
-| a_{11}  a_{12} |
 
-| a_{21}  a_{22} |
+Matrix B:  $$| b_{11}  b_{12} |$$
+		   $$| b_{21}  b_{22} |$$
 
-Matrix B:
-
-| b_{11}  b_{12} |
-
-| b_{21}  b_{22} |
 
 The resulting matrix $C=A*B$ will be a 2×2 matrix, and we can compute each element of $C$ using the formula:
 
@@ -136,11 +132,10 @@ $$c_{ij}=\sum_{k=1}^2a_{ik}\cdot b_{kj}$$
 
 Now, let's plug in the specific values for $A$ and $B$:
 
-        C = A * B =
+$C$ = $A$ * $B$ =
+				$$| a_{11} . b_{11} + a_{12} . b_{21}  a_{11} . b_{12} + a_{12} . b_{22} |$$
+				$$| a_{21} . b_{11} + a_{22} . b_{21}  a_{21} . b_{11} + a_{22} . b_{21} |$$
 
-                  | a_{11} . b_{11} + a_{12} . b_{21}  a_{11} . b_{12} + a_{12} . b_{22} |
-
-                  | a_{21} . b_{11} + a_{22} . b_{21}  a_{21} . b_{11} + a_{22} . b_{21} |
 
 The resulting matrix $C$ will have dimensions $m×p$, where $m$ is the number of rows in $A$ and $p$ is the number of colums in $B$. Each element $c_{ij}$ in matrix $C$ is obtained by taking the dot product of the i-th row of matrix $A$ and the j-th colunm of matrix $B$.
 
@@ -158,11 +153,11 @@ The original array is split into equally sized blocks interleaving the elements 
 
 For block and cyclic partitioning the factor option specifies the number of arrays that are created. In the preceding figure, a factor of 2 is used, that is, the array is divided into two smaller arrays. If the number of elements in the array is not an integer multiple of the factor, the final array has fewer elements [Ref](https://docs.xilinx.com/r/en-US/ug1399-vitis-hls/Array-Accesses-and-Performance).
 
+<!-- <div align=center><img src="Images/1_1.png" alt="drawing" width="600"/></div> -->
+
 <div align=center><img src="Images/1_1.png" alt="drawing" width="600"/></div>
 
-<div align=center><img src="Images/1_9.png" alt="drawing" width="600"/></div>
-
-The above optimization is suitable for the multiplication of matrices. Array Partition splits apart the original array into smaller arrays or into individual registers. And the actual matrix A and matrix B will be:
+The Above optimization is suitable for the multiplication of matrices. Array Partition splits apart the original array into smaller arrays or into individual registers. And the actual matrix A and matrix B will be:
 
 Matrix A:                                      
 
@@ -177,7 +172,7 @@ Matrix B:
 | b_{12}  b_{22} |
 
 
-
+<div align=center><img src="Images/1_9.png" alt="drawing" width="250"/></div>
 
 
 ```c++
@@ -314,7 +309,7 @@ hw ?
 We can use the ? to check the IP dictionary.
 ```
 
-<div align=center><img src="Images/1_6.png" alt="drawing" width="500"/></div>
+<div align=center><img src="Images/1_6.png" alt="drawing" width="400"/></div>
 
 ### Create DMA instances
 
@@ -355,5 +350,4 @@ mm2s.transfer(oBuf)
 
 We will see:
 
-<div align=center><img src="Images/1_8.png" alt="drawing" width="800"/></div>
-
+<div align=center><img src="Images/1_8.png" alt="drawing" width="600"/></div>
