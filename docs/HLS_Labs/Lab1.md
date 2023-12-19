@@ -314,7 +314,7 @@ hw ?
 We can use the ? to check the IP dictionary.
 ```
 
-<div align=center><img src="Images/1_6.png" alt="drawing" width="1000"/></div>
+<div align=center><img src="Images/1_6.png" alt="drawing" width="500"/></div>
 
 ### Create DMA instances
 
