@@ -25,7 +25,7 @@ Arrays can be partitioned into blocks or into their individual elements. Arrays 
 
 ## Optimization
 
-We will illustrate the optimization process using a square matrix as our guiding example. Matrix multiplication, also known as matrix product, is a binary operation that takes a pair of matrices and produces another matrix. The multiplication of matrices is defined under specific conditions regarding the dimensions of the matrices involved. The number of rows is equal to the number of columns.
+We will illustrate the optimization process using a square matrix as our guiding example. Matrix multiplication, also known as matrix product, is a binary operation that takes a pair of matrices and produces another matrix. The multiplication of matrices is defined under specific conditions regarding the dimensions of the matrices involved. The number of rows is equal to the number of columns for square matrix.
 
 ### The unoptimized code
 
