@@ -158,9 +158,9 @@ The original array is split into equally sized blocks interleaving the elements 
 
 For block and cyclic partitioning the factor option specifies the number of arrays that are created. In the preceding figure, a factor of 2 is used, that is, the array is divided into two smaller arrays. If the number of elements in the array is not an integer multiple of the factor, the final array has fewer elements [Ref](https://docs.xilinx.com/r/en-US/ug1399-vitis-hls/Array-Accesses-and-Performance).
 
-<div align=center><img src="Imgs/1_1.png" alt="drawing" width="600"/></div>
+<div align=center><img src="Images/1_1.png" alt="drawing" width="600"/></div>
 
-<div align=center><img src="Imgs/1_9.png" alt="drawing" width="600"/></div>
+<div align=center><img src="Images/1_9.png" alt="drawing" width="600"/></div>
 
 The Above optimization is suitable for the multiplication of matrices. Array Partition splits apart the original array into smaller arrays or into individual registers. And the actual matrix A and matrix B will be:
 
@@ -254,7 +254,7 @@ To export the IP, simply clock the Export RTL in the IMPLEMENTATION (bottom left
 
   [Add BSP file to Vivado](https://pynq.readthedocs.io/en/latest/overlay_design_methodology/board_settings.html)
 
-<div align=center><img src="Imgs/1_2.png" alt="drawing" width="600"/></div>
+<div align=center><img src="Images/1_2.png" alt="drawing" width="600"/></div>
 
 ### Create Block design
 
@@ -268,7 +268,7 @@ In the block diagram which should contain the ZYNQ PS block, add the *AXI Direct
 
 * Double click the DMA to open the configuration settings
 
-<div align=center><img src="Imgs/1_3.png" alt="drawing" width="1000"/></div>
+<div align=center><img src="Images/1_3.png" alt="drawing" width="1000"/></div>
 
 * Uncheck Enable Scatter Gather Engine to disable Scatter Gather
 
@@ -288,11 +288,11 @@ In the block diagram which should contain the ZYNQ PS block, add the *AXI Direct
 
 * Click OK to accept the changes
 
-<div align=center><img src="Imgs/1_4.png" alt="drawing" width="1000"/></div>
+<div align=center><img src="Images/1_4.png" alt="drawing" width="1000"/></div>
 
 Each interface can be individually configured based on the specific requirements of the associated data stream for the IP. Each AXI_DMA interface can be configured and controlled separately, providing flexibility and scalability for handling diverse data sources within our FPGA system. We have deliberately configured AXI_DMA0 and AXI_DMA1 with only the read channels enabled and configured AXI_DMA2 with only the write channel enabled. This design choice is driven by the predominant data flow requirements of our IP core, which involves receiving data from memory.   
 
-<div align=center><img src="Imgs/1_5.png" alt="drawing" width="1000"/></div>
+<div align=center><img src="Images/1_5.png" alt="drawing" width="1000"/></div>
 
 Then connect the DMA which can use reference materials [here](https://uri-nextlab.github.io/ParallelProgammingLabs/Labs/Lab6_DMA.html).
 
@@ -314,7 +314,7 @@ hw ?
 We can use the ? to check the IP dictionary.
 ```
 
-<div align=center><img src="Imgs/1_6.png" alt="drawing" width="1000"/></div>
+<div align=center><img src="Images/1_6.png" alt="drawing" width="1000"/></div>
 
 ### Create DMA instances
 
@@ -345,7 +345,7 @@ for i in range(N):
 
 Print the value of input_buffer, you will see:
 
-<div align=center><img src="Imgs/1_7.png" alt="drawing" width="200"/></div>
+<div align=center><img src="Images/1_7.png" alt="drawing" width="200"/></div>
 
 ```python
 s2mm_0.transfer(iBuf_0)
