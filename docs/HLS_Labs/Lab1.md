@@ -159,20 +159,15 @@ For block and cyclic partitioning the factor option specifies the number of arra
 
 The Above optimization is suitable for the multiplication of matrices. Array Partition splits apart the original array into smaller arrays or into individual registers. And the actual matrix A and matrix B will be:
 
-Matrix A:                                      
-
-| a_{11}  a_{12} |
-
-| a_{21}  a_{22} |
-
-Matrix B:
-
-| b_{11}  b_{21} |
-
-| b_{12}  b_{22} |
+Matrix A:  $$| a_{11}  a_{12} |$$
+           $$| a_{21}  a_{22} |$$                              
 
 
-<div align=center><img src="Images/1_9.png" alt="drawing" width="250"/></div>
+Matrix B:  $$| b_{11}  b_{21} |$$
+		   $$| b_{12}  b_{22} |$$
+
+
+<div align=center><img src="Images/1_9.png" alt="drawing" width="500"/></div>
 
 
 ```c++
