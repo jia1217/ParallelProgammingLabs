@@ -118,17 +118,17 @@ According to the report, the core loop (Matrix_Loop) has II = 4 and the II of th
 
 Suppose we have two matrices, $A$ and $B$, with the following dimensions:
 
-Matrix A:  
+Matrix B:
 
 		   $$| a_{11}  a_{12} |$$
 
-                   $$| a_{21}  a_{22} |$$                              
+		   $$| a_{21}  a_{22} |$$                             
 
 
 Matrix B:
 
 		   $$| b_{11}  b_{12} |$$
-		   
+
 		   $$| b_{21}  b_{22} |$$
 
 
@@ -139,9 +139,9 @@ $$c_{ij}=\sum_{k=1}^2a_{ik}\cdot b_{kj}$$
 Now, let's plug in the specific values for $A$ and $B$:
 
 $C$ = $A$ * $B$ =
-				$$| a_{11} . b_{11} + a_{12} . b_{21}  a_{11} . b_{12} + a_{12} . b_{22} |$$
+				$$| a_{11} . b_{11} + a_{12} . b_{21} , a_{11} . b_{12} + a_{12} . b_{22} |$$
 
-				$$| a_{21} . b_{11} + a_{22} . b_{21}  a_{21} . b_{11} + a_{22} . b_{21} |$$
+				$$| a_{21} . b_{11} + a_{22} . b_{21} , a_{21} . b_{11} + a_{22} . b_{21} |$$
 
 
 The resulting matrix $C$ will have dimensions $m×p$, where $m$ is the number of rows in $A$ and $p$ is the number of colums in $B$. Each element $c_{ij}$ in matrix $C$ is obtained by taking the dot product of the i-th row of matrix $A$ and the j-th colunm of matrix $B$.
@@ -171,7 +171,7 @@ Matrix A:  $$| a_{11}  a_{12} |$$
 
 
 Matrix B:  $$| b_{11}  b_{21} |$$
-           $$| b_{12}  b_{22} |$$
+		   $$| b_{12}  b_{22} |$$
 
 
 <div align=center><img src="Images/1_9.png" alt="drawing" width="200"/></div>
