@@ -3,7 +3,7 @@ sort: 1
 ---
 
 
-# Lab1 Array_patitioning_cyclic_block
+# Lab1 Array_patitioning_cyclic_block_complete
 
 <script type="text/x-mathjax-config">
   MathJax.Hub.Config({
@@ -141,7 +141,7 @@ The resulting matrix $C$ will have dimensions $m×p$, where $m$ is the number of
 
 Matrix multiplication involves accessing elements in a sequential manner. When matrices become large, it can lead to poor cache performance, as data may not fit into the fast cache memory, causing more frequent fetches from slower main memory. This is why the unoptimized core loop (Matrix_Loop) has II = 4.
 
-### Optimization 
+### Optimization 1
 
 #### block
 
@@ -185,6 +185,23 @@ Matrix B:  $$| b_{11}  b_{21} |$$
 ```
 
 After reading a matrix through the AXIS stream interface in the form of a one-dimensional array, the matrix is stored in two separate two-dimensional arrays, $A$ and $C$. And optimizating the code as shown in the above. Subsequently, matrix multiplication is performed. As result, the core loop (Matrix_Loop) has II = 1 and the the II of the IP block is 41.
+
+
+### Optimization 2
+
+#### complete
+
+The default operation is to split the array into its individual elements. This corresponds to resolving a memory into registers.
+
+```c++
+
+	int A[N][N];
+	int C[N][N];
+#pragma HLS ARRAY_PARTITION variable=A type=complete dim=2 
+#pragma HLS ARRAY_PARTITION variable=C type=complete dim=2 
+
+
+```
 
 ## Simulation
 
