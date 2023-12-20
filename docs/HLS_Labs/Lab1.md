@@ -122,7 +122,7 @@ Matrix A:
 
 		   $$| a_{11}  a_{12} |$$
 
-           $$| a_{21}  a_{22} |$$                              
+                   $$| a_{21}  a_{22} |$$                              
 
 
 Matrix B:
@@ -171,7 +171,7 @@ Matrix A:  $$| a_{11}  a_{12} |$$
 
 
 Matrix B:  $$| b_{11}  b_{21} |$$
-		   $$| b_{12}  b_{22} |$$
+           $$| b_{12}  b_{22} |$$
 
 
 <div align=center><img src="Images/1_9.png" alt="drawing" width="200"/></div>
