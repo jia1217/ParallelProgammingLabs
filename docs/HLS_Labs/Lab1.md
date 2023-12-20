@@ -118,11 +118,17 @@ According to the report, the core loop (Matrix_Loop) has II = 4 and the II of th
 
 Suppose we have two matrices, $A$ and $B$, with the following dimensions:
 
-Matrix A:  $$| a_{11}  a_{12} |$$
+Matrix A:  
+
+		   $$| a_{11}  a_{12} |$$
+
            $$| a_{21}  a_{22} |$$                              
 
 
-Matrix B:  $$| b_{11}  b_{12} |$$
+Matrix B:
+
+		   $$| b_{11}  b_{12} |$$
+		   
 		   $$| b_{21}  b_{22} |$$
 
 
@@ -134,6 +140,7 @@ Now, let's plug in the specific values for $A$ and $B$:
 
 $C$ = $A$ * $B$ =
 				$$| a_{11} . b_{11} + a_{12} . b_{21}  a_{11} . b_{12} + a_{12} . b_{22} |$$
+
 				$$| a_{21} . b_{11} + a_{22} . b_{21}  a_{21} . b_{11} + a_{22} . b_{21} |$$
 
 
