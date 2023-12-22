@@ -249,11 +249,11 @@ Disadvantages:
 
 In a flushable pipeline, once the input data becomes invalid, it shuts down pipeline stages successively, until the final input is processed and moved to the output, rather than closing all stages at once. The structure is shown below.
 
-<img src="Images/2_4.png" alt="drawing" width="300"/>
+<div align=center><img src="Images/2_4.png" alt="drawing" width="300"/></div>
 
-<img src="Images/2_5.png" alt="drawing" width="300"/>
+<div align=center><img src="Images/2_5.png" alt="drawing" width="300"/></div>
 
-<img src="Images/2_6.png" alt="drawing" width="600"/>
+<div align=center><img src="Images/2_6.png" alt="drawing" width="600"/></div>
 
 In the FIR application, unless the input data comes directly from an ADC (infinite data stream), a flushable pipeline is preferred.
 
@@ -313,7 +313,7 @@ The configure block design can use reference materials [here](https://uri-nextla
 
 The differenc between the lab1 and lab2 is the AXI_DMA. For this IP, we need one read interface and two write interfaces. We have deliberately configured AXI_DMA0 with only the read channels enabled and configured AXI_DMA1 and AXI_DMA2 with only the write channel enabled. This design choice is driven by the predominant data flow requirements of our IP core, which involves receiving data from memory.   
 
-<div align=center><img src="Images/2_12.png" alt="drawing" width="700"/></div>
+<div align=center><img src="Images/2_12.png" alt="drawing" width="800"/></div>
 
 ## Run synthesis,  Implementation and generate a bitstream
 
