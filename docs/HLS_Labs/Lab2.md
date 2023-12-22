@@ -271,7 +271,7 @@ Disadvantages:
 
 The structure is shown below:
 
-<img src="Images/2_7.png" alt="drawing" width="1000"/>
+<div align=center><img src="Images/2_7.png" alt="drawing" width="1000"/></div>
 
 
 The "enable" signal for the first stage is optional. It is only required when a shift register is placed at the first stage (if the input is not valid, the shift register shouldn't run). FRP keeps the following stages running. The output valid signal is generated from the valid_in. Therefore, a minimum number of "enable" signals is required. However, making the circuit run continuously is not energy efficient.
@@ -288,12 +288,12 @@ To generate the IP, you should do several steps in the below.
 
 * Create a New Project: Start a new project in Vitis HLS. Specify the project name, location, and target device or platform. Here we can choose the device as below.
 
-<img src="Images/2_8.png" alt="drawing" width="600"/>
+<div align=center><img src="Images/2_8.png" alt="drawing" width="600"/></div>
 
 * Write or Import Code: Write your hardware function in C, C++, or SystemC. This code will describe the behavior you want to implement in hardware. Alternatively, you can import 
 existing C/C++ code if available and you can click the green button "Run C Simulation" to verify the result of the function.
 
-<img src="Images/2_9.png" alt="drawing" width="300"/>
+<div align=center><img src="Images/2_9.png" alt="drawing" width="300"/></div>
 
 * Optimize and Synthesize: After writing or importing your code, use Vitis HLS to synthesize and optimize the code and you can click the green button "Run C Synthesis". The tool will generate a hardware description from your high-level code as shown in the below.
 
@@ -301,7 +301,7 @@ existing C/C++ code if available and you can click the green button "Run C Simul
 
 * Verify and Test: Verify the synthesized hardware behavior using test benches or co-simulation. Ensure that the hardware function behaves as expected. If the result of the Cosimulation is **PASS**, you can export the IP. At the same time, you can also click "Wave Viewer" to see the result of the input and output data of the IP.
 
-<div align=center><img src="Images/2_11.png" alt="drawing" width="300"/></div>
+<div align=center><img src="Images/2_11.png" alt="drawing" width="200"/></div>
 
 * Generate IP Core: Once you have verified the hardware behavior and are satisfied with the synthesis results, you can generate an IP core from the synthesized hardware function.
 In Vitis HLS, go to the "Solution" tab and select "Export RTL..." or a similar option depending on your version of Vitis HLS. Follow the prompts to generate an IP core.
