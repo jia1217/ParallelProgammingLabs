@@ -378,9 +378,9 @@ s2mm_2.wait()
 
 We will see:
 
-<img src="Images/2_13.png" alt="drawing" width="400"/>
+<div align=center><img src="Images/2_13.png" alt="drawing" width="400"/></div>
 
-<img src="Images/2_15.png" alt="drawing" width="400"/>
+<div align=center><img src="Images/2_15.png" alt="drawing" width="400"/></div>
 
 <div align=center><img src="Images/2_14.png" alt="drawing" width="1000"/></div>
 
