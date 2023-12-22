@@ -297,11 +297,11 @@ existing C/C++ code if available and you can click the green button "Run C Simul
 
 * Optimize and Synthesize: After writing or importing your code, use Vitis HLS to synthesize and optimize the code and you can click the green button "Run C Synthesis". The tool will generate a hardware description from your high-level code as shown in the below.
 
-<img src="Images/2_10.png" alt="drawing" width="800"/>
+<div align=center><img src="Images/2_10.png" alt="drawing" width="800"/></div>
 
 * Verify and Test: Verify the synthesized hardware behavior using test benches or co-simulation. Ensure that the hardware function behaves as expected. If the result of the Cosimulation is **PASS**, you can export the IP. At the same time, you can also click "Wave Viewer" to see the result of the input and output data of the IP.
 
-<img src="Images/2_11.png" alt="drawing" width="300"/>
+<div align=center><img src="Images/2_11.png" alt="drawing" width="300"/></div>
 
 * Generate IP Core: Once you have verified the hardware behavior and are satisfied with the synthesis results, you can generate an IP core from the synthesized hardware function.
 In Vitis HLS, go to the "Solution" tab and select "Export RTL..." or a similar option depending on your version of Vitis HLS. Follow the prompts to generate an IP core.
@@ -313,7 +313,7 @@ The configure block design can use reference materials [here](https://uri-nextla
 
 The differenc between the lab1 and lab2 is the AXI_DMA. For this IP, we need one read interface and two write interfaces. We have deliberately configured AXI_DMA0 with only the read channels enabled and configured AXI_DMA1 and AXI_DMA2 with only the write channel enabled. This design choice is driven by the predominant data flow requirements of our IP core, which involves receiving data from memory.   
 
-</div><img src="Images/2_12.png" alt="drawing" width="600"/></div>
+<div align=center><img src="Images/2_12.png" alt="drawing" width="600"/></div>
 
 ## Run synthesis,  Implementation and generate a bitstream
 
