@@ -234,9 +234,9 @@ Let us take a pipeline structure with three stages as an example. As is shown in
 
 A typical solution is to add some zeros after the last data of the stream to push the useful data out. Though the solution looks promising, it is hard for programming as the added zeros also need to be removed from the output of the next stream manually. The specific implementation of the circuit can be viewed under the 'Schematic' option in the Vivado IMPLEMENTATION report.
 
-<img src="Images/2_2.png" alt="drawing" width="500"/>
+<div align=center><img src="Images/2_2.png" alt="drawing" width="500"/></div>
 
-<img src="Images/2_3.png" alt="drawing" width="500"/>
+<div align=center><img src="Images/2_3.png" alt="drawing" width="500"/></div>
 
 
 **Flushable Pipeline (FLP)**  
