@@ -139,7 +139,7 @@ The following figure illustrates the difference in execution between pipelined a
 
 In the pipelined version of the loop shown in (B), a new input sample is read every cycle (II = 1) and the final output is written after only four clock cycles: substantially improving both the II and latency while using the same hardware resources.
 
-#### imperfect/perfect loop
+#### Imperfect/perfect loop
 
 **loop_imperfect.h**
 ```c++
@@ -262,7 +262,7 @@ int main() {
 
 The result of the C Simulation is the same. This example shows that the different loop structures can significantly affect the final optimization results. For the imperfect loop, inside the outer loop (LOOP_I), the accumulator variable acc is initialized to 0 for each iteration. This initialization should ideally occur once before entering the inner loop to avoid unnecessary reset operations. And the code has a conditional assignment to B[i] based on whether the index i is even or odd (if (i % 2 == 0)). This conditional assignment introduces branching in the code, which may impact performance and efficiency during hardware synthesis. For the perfect loop, the code contains a simple accumulation operation (acc += A[j] * j;) and conditional statements to handle specific conditions (if (j == 0) and if (j == 19)). The straightforward logic and absence of complex dependencies make optimizing and flattening the code easier for the synthesis tool.
 
-#### pipelined loop
+#### Pipelined loop
 
 Pipelining a loop causes any loops nested inside the pipelined loop to get automatically unrolled. This example shows different variations of the Loop pipelining (inner-most loop and outer-most loop).
 
@@ -428,7 +428,7 @@ LOOP_I:
 <div align=center><img src="Images/2_9.png" alt="drawing" width="1000"/></div>
 
 
-#### using_free_running_pipeline loop
+#### Using_free_running_pipeline loop
 
 The Pipeline architecture can be implemented in 3 modes:
 
