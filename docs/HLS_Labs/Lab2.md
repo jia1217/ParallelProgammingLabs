@@ -467,6 +467,7 @@ void add_flp( d_stream& strm,d_stream &out) {
 #pragma HLS INTERFACE axis port = strm
 #pragma HLS INTERFACE axis port = out
 #pragma HLS PIPELINE style=flp
+//#pragma HLS PIPELINE style=frp
 	data_t_pack temp;
 	data_t_pack result;
 	temp.keep=-1;
