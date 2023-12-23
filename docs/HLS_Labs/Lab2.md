@@ -35,209 +35,490 @@ Notice that no resources can be shared if the function is pipelined. Circuits at
 
 ## Optimization
 
+### Function_optimization
 
-To pipeline the loop, we can simply add a pragma to the source file (under the function or loop header). The syntax is: ([Ref](https://docs.xilinx.com/r/en-US/ug1399-vitis-hls/pragma-HLS-pipeline))
+The FUNCTION_INSTANTIATE pragma is an optimization technique that has the area benefits of maintaining the function hierarchy but provides an additional powerful option: performing targeted local optimizations on specific instances of a function. This can simplify the control logic around the function call and potentially improve latency and throughput.
+
+By default:
+
+* Functions remain as separate hierarchy blocks in the RTL, or is decomposed (or inlined) into a higher level function.
+
+* All instances of a function, at the same level of hierarchy, make use of a single RTL implementation (block).
+
+The FUNCTION_INSTANTIATE pragma allows you to control how functions are instantiated within the hardware design. By default, Vivado HLS will automatically instantiate functions when they are called. However, in certain scenarios, you might want to provide explicit control over the instantiation behavior. The syntax is: ([Ref](https://docs.xilinx.com/r/en-US/ug1399-vitis-hls/pragma-HLS-function_instantiate)).
+
+In this example, we use the function which takes two parameters (operands) and returns their sum. In the top-level function, we make multiple calls to another function. This means that within the main function or primary function, we repeatedly invoke (or use) another specific function to perform certain tasks or operations.
+
+**example.h**
+```c++
+
+#include <fstream>
+#include <iostream>
+using namespace std;
+
+void top(char inval1, char inval2, char inval3, char* outval1, char* outval2,
+         char* outval3);
 
 ```
-#pragma HLS pipeline II=<int> off rewind style=<stp, frp, flp>
+
+**example.cpp**
+```c++
+
+char foo(char inval, char incr) {
+#pragma HLS INLINE OFF
+#pragma HLS FUNCTION_INSTANTIATE variable = incr
+    return inval + incr;
+}
+
+void top(char inval1, char inval2, char inval3, char* outval1, char* outval2,
+         char* outval3) {
+    *outval1 = foo(inval1, 0);
+    *outval2 = foo(inval2, 1);
+    *outval3 = foo(inval3, 100);
+}
+
+
 ```
 
-The II determines the throughput of the module. Mostly, we want the II=1 which means the module (loop) can receive new data every clock. In this case, we just tell the tool to pipeline the cordic function and the code becomes:
+**example_tb.h**
+```c++
 
+#include "example.h"
+
+int main() {
+
+    int i, retval = 0;
+    const char N = 10;
+    char a, b, c;
+
+    for (i = 0; i < N; ++i) {
+        // Call the function
+        top(i, i, i, &a, &b, &c);
+        cout << (int)a << " " << (int)b << " " << (int)c << endl;
+    }
+
+
+}
+
+```
+And the result of C simulation is as shown in below.
+
+<div align=center><img src="Images/2_2.png" alt="drawing" width="400"/></div>
+
+You can click the "Run C Synthesis" to see the optimization result. Without the FUNCTION_INSTANTIATE pragma, the following code results in a single RTL implementation of function foo for all three instances of the function in func. Each instance of function foo is implemented in an identical manner. This is fine for function reuse and reducing the area required for each instance call of a function, but means that the control logic inside the function must be more complex to account for the variation in each call of foo.
+
+The below is the optimization result with the FUNCTION_INSTANTIATE pragma.
+
+<div align=center><img src="Images/2_3.png" alt="drawing" width="1000"/></div>
+
+### Loop_optimization
+
+Pipelining loops permits starting the next iteration of a loop before the previous iteration finishes, enabling portions of the loop to overlap in execution. By default, every iteration of a loop only starts when the previous iteration has finished. In the loop example below, a single iteration of the loop adds two variables and stores the result in a third variable. Assume that in hardware this loop takes three cycles to finish one iteration. Also, assume that the loop variable len is 20, that is, the vadd loop runs for 20 iterations in the kernel. Therefore, it requires a total of 60 clock cycles (20 iterations * 3 cycles) to complete all the operations of this loop.
 
 ```c++
-#include "cordic.h"
+vadd: for(int i = 0; i < len; i++) { 
+   c[i] = a[i] + b[i];
+}
 
-void cordic (
-  cos_sin_t_stream& sin_stream,
-  cos_sin_t_stream& cos_stream,
-  theta_t_stream& theta_stream
-){
-#pragma HLS INTERFACE mode=ap_ctrl_none port=return
-#pragma HLS INTERFACE mode=axis register_mode=both port=sin_stream
-#pragma HLS INTERFACE mode=axis register_mode=both port=cos_stream
-#pragma HLS INTERFACE mode=axis register_mode=both port=theta_stream
-#pragma HLS PIPELINE style=stp
-//or pragma HLS PIPIELINE stypel=flp
-//or pragma HLS PIPELINE styple=frp
+```
+Pipelining the loop allows subsequent iterations of the loop to overlap and run concurrently. Pipelining a loop can be enabled by adding the PIPELINE pragma or directive inside the body of the loop as shown below:
 
-    static THETA_TYPE cordic_phase[NUM_ITERATIONS] = {
-        0.78539816339745,   0.46364760900081,   0.24497866312686,   0.12435499454676,
-        0.06241880999596,   0.03123983343027,   0.01562372862048,   0.00781234106010,
-        0.00390623013197,   0.00195312251648,   0.00097656218956,   0.00048828121119,
-        0.00024414062015,   0.00012207031189,   0.00006103515617,   0.00003051757812,
-        0.00001525878906,   0.00000762939453,   0.00000381469727,   0.00000190734863,
-        0.00000095367432,   0.00000047683716,   0.00000023841858,   0.00000011920929,
-        0.00000005960464,   0.00000002980232,   0.00000001490116,   0.00000000745058
-    };
+```c++
+vadd: for(int i = 0; i < len; i++) { 
+#pragma HLS PIPELINE 
+c[i] = a[i] + b[i];
+}
 
-    theta_t_pack theta_t_pack_temp;
-    theta_stream >> theta_t_pack_temp;
-    THETA_TYPE theta = theta_t_pack_temp.data;
+```
 
-    COS_SIN_TYPE current_cos = INIT_X;
-    COS_SIN_TYPE current_sin = 0.0;
+The number of cycles it takes to start the next iteration of a loop is called the Initiation Interval (II) of the pipelined loop. So II = 2 means the next iteration of a loop starts two cycles after the current iteration. An II = 1 is the ideal case, where each iteration of the loop starts in the very next cycle. When you use pragma HLS pipeline, you can specify the II for the compiler to achieve. If a target II is not specified, the compiler can try to achieve II=1 by default.
+
+The following figure illustrates the difference in execution between pipelined and non-pipelined loops. In this figure, (A) shows the default sequential operation where there are three clock cycles between each input read (II = 3), and it requires eight clock cycles before the last output write is performed.
+
+<div align=center><img src="Images/2_4.png" alt="drawing" width="600"/></div>
+
+In the pipelined version of the loop shown in (B), a new input sample is read every cycle (II = 1) and the final output is written after only four clock cycles: substantially improving both the II and latency while using the same hardware resources.
+
+#### imperfect/perfect loop
+
+**loop_imperfect.h**
+```c++
+
+#ifndef _LOOP_IMPERFECT_H_
+#define _LOOP_IMPERFECT_H_
+
+#include <fstream>
+#include <iostream>
+using namespace std;
+
+#include "ap_int.h"
+#define N 20
+
+typedef ap_int<5> din_t;
+typedef ap_int<12> dint_t;
+typedef ap_int<6> dout_t;
+
+void loop_imperfect(din_t A[N], dout_t B[N]);
+void loop_perfect(din_t A[N], dout_t B[N]);
+
+#endif
+
+```
 
 
-ROTATION_LOOP:
-    for (int j = 0; j < NUM_ITERATIONS; j++){
-        COS_SIN_TYPE cos_shift = current_cos >> j;
-        COS_SIN_TYPE sin_shift = current_sin >> j;
+**loop_imperfect.cpp**
+```c++
+#include "loop_imperfect.h"
 
-        if (theta >= 0){
-            current_cos = current_cos - sin_shift;
-            current_sin = current_sin + cos_shift;
-            theta -= cordic_phase[j];
+//The example shows an imperfect loop which does not follow the loop flatten pre-conditions.
+void loop_imperfect(din_t A[N], dout_t B[N]) {
+
+    int i, j;
+    dint_t acc;
+
+LOOP_I:
+    for (i = 0; i < 20; i++) {
+        acc = 0;
+    LOOP_J:
+        for (j = 0; j < 20; j++) {
+            acc += A[j] * j;
         }
-        else{
-            current_cos = current_cos + sin_shift;
-            current_sin = current_sin - cos_shift;
-            theta += cordic_phase[j];
+        if (i % 2 == 0)
+            B[i] = acc / 20;
+        else
+            B[i] = 0;
+    }
+  
+}
+```
+The loop_imperfect function contains two nested for loops (LOOP_I and LOOP_J) that iterate from 0 to 19.
+Inside the inner loop (LOOP_J), there is an accumulator variable acc that accumulates the product of A[j] and j for each iteration of the inner loop.It stores these weighted sums (or 0 for odd i) in elements of array B.
+
+The result of the C Synthesis is as shown in the below.
+
+<div align=center><img src="Images/2_5.png" alt="drawing" width="1000"/></div>
+
+**loop_perfect.cpp**
+```c++
+//The example shows the correct coding guidlenes for nested loops to be flattened automatically by the tool
+void loop_perfect(din_t A[N], dout_t B[N]) {
+    int i, j;
+    dint_t acc;
+
+LOOP_I:
+    for (i = 0; i < 20; i++) {
+    LOOP_J:
+        for (j = 0; j < 20; j++) {
+            if (j == 0)
+                acc = 0;
+            acc += A[j] * j;
+            if (j == 19) {
+                if (i % 2 == 0)
+                    B[i] = acc / 20;
+                else
+                    B[i] = 0;
+            }
+        }
+    }
+}
+
+```
+The loop_perfect function contains two nested for loops (LOOP_I and LOOP_J) that iterate from 0 to 19.
+Inside the inner loop (LOOP_J), there is an accumulator variable acc that accumulates the product of A[j] and j for each iteration of the inner loop.
+At the end of the inner loop (j == 19), the function checks if the index i of the outer loop is even (i % 2 == 0). If i is even, it computes the average of the accumulated values in acc and stores it in B[i]. Otherwise, it sets B[i] to 0.
+
+The result of the C Synthesis is as shown in the below.
+
+<div align=center><img src="Images/2_6.png" alt="drawing" width="1000"/></div>
+
+
+**loop_imperfect_test.cpp**
+```c++
+
+#include "loop_imperfect.h"
+
+int main() {
+    din_t A[N];
+    dout_t B[N];
+
+    int i, retval = 0;
+
+
+    for (i = 0; i < N; ++i) {
+        A[i] = i;
+    }
+  
+    // Call the function
+    loop_imperfect(A, B);
+    //loop_perfec(A,B)
+    for (i = 0; i < N; ++i) {
+        cout << B[i] << endl;
+    }
+    
+}
+
+
+```
+
+The result of the C Simulation is the same. This example shows that the different loop structures can significantly affect the final optimization results. For the imperfect loop, inside the outer loop (LOOP_I), the accumulator variable acc is initialized to 0 for each iteration. This initialization should ideally occur once before entering the inner loop to avoid unnecessary reset operations. And the code has a conditional assignment to B[i] based on whether the index i is even or odd (if (i % 2 == 0)). This conditional assignment introduces branching in the code, which may impact performance and efficiency during hardware synthesis. For the perfect loop, the code contains a simple accumulation operation (acc += A[j] * j;) and conditional statements to handle specific conditions (if (j == 0) and if (j == 19)). The straightforward logic and absence of complex dependencies make optimizing and flattening the code easier for the synthesis tool.
+
+#### pipelined loop
+
+Pipelining a loop causes any loops nested inside the pipelined loop to get automatically unrolled. This example shows different variations of the Loop pipelining (inner-most loop and outer-most loop).
+
+If the outer loop (LOOP_I) is pipelined, inner-loop (LOOP_J) is unrolled creating 20 copies of the loop body: 20 multipliers and 1 array accesses must now be scheduled. Then each iteration of LOOP_I can be scheduled as a single entity.
+
+If the top-level function is pipelined, both loops must be unrolled: 400 multipliers and 20 array accesses must now be scheduled. It is very unlikely that Vitis HLS will produce a design with 400 multiplications because, in most designs, data dependencies often prevent maximal parallelism, for example, even if a dual-port RAM is used for A, the design can only access two values of A in any clock cycle. Otherwise, the array must be partitioned into 400 registers, which then can all be read in one clock cycle, with a very significant HW cost.
+
+
+**loop_pipeline.h**
+
+```c++
+
+#ifndef _LOOP_PIPELINE_H_
+#define _LOOP_PIPELINE_H_
+
+#include <fstream>
+#include <iostream>
+using namespace std;
+
+#include "ap_int.h"
+#define N 20
+#define NUM_TRANS 20
+
+typedef ap_int<5> din_t;
+typedef ap_int<20> dout_t;
+
+dout_t loop_pipeline(din_t A[N]);
+
+#endif
+
+
+```
+
+**loop_pipeline.cpp**
+```c++
+
+#include "loop_pipeline.h"
+
+dout_t loop_pipeline(din_t A[N]) {
+
+    int i, j;
+    static dout_t acc;
+
+LOOP_I:
+    for (i = 0; i < 20; i++) {
+    LOOP_J:
+        for (j = 0; j < 20; j++) {
+            acc += A[j] * i;
         }
     }
 
-    cos_sin_t_pack cos_temp, sin_temp;
-    cos_temp.data = current_cos;
-    sin_temp.data = current_sin;
-    cos_temp.keep = -1;
-    sin_temp.keep = -1;
-    cos_temp.last = theta_t_pack_temp.last;
-    sin_temp.last = theta_t_pack_temp.last;
-
-    sin_stream << sin_temp;
-    cos_stream << cos_temp;
-   
+    return acc;
 }
 ```
 
-cordic.h
 
+**loop_pipeline_test.cpp**
 ```c++
-/*
-Filename: cordic.h
-	Header file
-	CORDIC lab
-*/
-#ifndef CORDIC_H_
-#define CORDIC_H_
+#include "loop_pipeline.h"
 
-#include "hls_stream.h"
+int main() {
+    din_t A[N];
+    dout_t accum;
+
+    int i, j, retval = 0;
+    ofstream FILE;
+
+    // Create input data
+    for (i = 0; i < N; ++i) {
+        A[i] = i;
+    }
+
+
+    // Call the function
+    for (j = 0; j < NUM_TRANS; ++j) {
+        accum = loop_pipeline(A);
+        cout << accum << endl;
+    }
+
+}
+
+
+
+```
+
+The concept to appreciate when selecting at which level of the hierarchy to pipeline is to understand that pipelining the innermost loop gives the smallest hardware with generally acceptable throughput for most applications. Pipelining the upper levels of the hierarchy unrolls all sub-loops and can create many more operations to schedule (which could impact compile time and memory capacity), but typically gives the highest performance design in terms of throughput and latency. The data access bandwidth must be matched to the requirements of the operations that are expected to be executed in parallel. This implies that you might need to partition array A in order to make this work.
+
+* Pipeline LOOP_J: Latency is approximately 400 cycles (20x20) and requires less than 250 LUTs and registers (the I/O control and FSM are always present).
+
+```C++
+dout_t loop_pipeline(din_t A[N]) {
+
+    int i, j;
+    static dout_t acc;
+
+LOOP_I:
+    for (i = 0; i < 20; i++) {
+    LOOP_J:
+        for (j = 0; j < 20; j++) {
+#pragma HLS PIPELINE
+            acc += A[j] * i;
+        }
+    }
+
+    return acc;
+}
+
+
+```
+
+
+<div align=center><img src="Images/2_7.png" alt="drawing" width="1000"/></div>
+
+
+* Pipeline LOOP_I: Latency is 13 cycles but requires a few hundred LUTs and registers. About twice the logic as the first option, minus any logic optimizations that can be made.
+
+```C++
+dout_t loop_pipeline(din_t A[N]) {
+
+    int i, j;
+    static dout_t acc;
+
+LOOP_I:
+    for (i = 0; i < 20; i++) {
+    LOOP_J:
+#pragma HLS PIPELINE
+        for (j = 0; j < 20; j++) {
+
+            acc += A[j] * i;
+        }
+    }
+
+    return acc;
+}
+
+
+```
+<div align=center><img src="Images/2_8.png" alt="drawing" width="1000"/></div>
+
+* Pipeline function loop_pipeline: Latency is now only 3 cycles (due to 20 parallel register accesses) but requires almost twice the logic as the second option (and about 4 times the logic of the first option), minus any optimizations that can be made.
+
+```C++
+dout_t loop_pipeline(din_t A[N]) {
+#pragma HLS PIPELINE
+#pragma HLS ARRAY_PARTITION variable=A type=complete
+    int i, j;
+    static dout_t acc;
+
+LOOP_I:
+    for (i = 0; i < 20; i++) {
+    LOOP_J:
+        for (j = 0; j < 20; j++) {
+
+            acc += A[j] * i;
+        }
+    }
+
+    return acc;
+}
+
+
+```
+<div align=center><img src="Images/2_9.png" alt="drawing" width="1000"/></div>
+
+
+#### using_free_running_pipeline loop
+
+The Pipeline architecture can be implemented in 3 modes:
+
+* FRP (free-ruuning pipeline)
+
+* FLP (flushable pipeline)
+
+* STP (stall pipeline)
+
+The three types of pipelines available in the tool are summarized in the following table. The tool automatically selects the right pipeline style to use for a given pipelined loop or function. If the pipeline is used with hls::tasks, the flushing pipeline (FLP) style is automatically selected to avoid deadlocks. If the pipeline control requires high fanout, and meets other free-running requirements, the tool selects the free-running pipeline (FRP) style to limit the high fanout. Finally, if neither of the above cases apply, then the standard pipeline (STP) style is selected. [Ref](https://docs.xilinx.com/r/en-US/ug1399-vitis-hls/Flushing-Pipelines-and-Pipeline-Types)
+
+This example uses a FRP (free-ruuning pipeline) mode to configure the pipeline architecture using a global command which is useful in reducing control logic fanout in vivado.
+
+**free_pipe_mult.h**
+```c++
+
 #include "ap_axi_sdata.h"
-#include "ap_fixed.h"
+#include "hls_stream.h"
+#include "math.h"
+using namespace hls;
 
-#define PI (3.14159265f)
+typedef hls::axis<int,0,0,0> data_t_pack;
+typedef hls::stream<data_t_pack> d_stream;
 
-const int NUM_ITERATIONS = 28;
-const float INIT_X = 0.60735;
 
-typedef ap_fixed<32,8> THETA_TYPE;
-typedef ap_fixed<32,2>	COS_SIN_TYPE;
 
-typedef hls::axis<THETA_TYPE,0,0,0> theta_t_pack;
-typedef hls::stream<theta_t_pack> theta_t_stream;
-typedef hls::axis<COS_SIN_TYPE,0,0,0> cos_sin_t_pack;
-typedef hls::stream<cos_sin_t_pack> cos_sin_t_stream;
 
-void cordic (
-  cos_sin_t_stream& sin_stream,
-  cos_sin_t_stream& cos_stream,
-  theta_t_stream& theta_stream
-);
+void add_flp( d_stream& strm, d_stream &out);
 
-#endif
 ```
 
-
-
-
-Testbench
-
+**free_pipe_mult.cpp**
 ```c++
-/*
-  Filename: cordic_test.h
-  CORDIC lab wirtten for WES/CSE237C class at UCSD.
-  Testbench file
-  Calls cordic() function from cordic.cpp
-  Compares the output from cordic() with math library
-*/
+void add_flp( d_stream& strm,d_stream &out) {
+#pragma HLS INTERFACE ap_ctrl_none port=return
+#pragma HLS INTERFACE axis port = strm
+#pragma HLS INTERFACE axis port = out
+#pragma HLS PIPELINE style=flp
+	data_t_pack temp;
+	data_t_pack result;
+	temp.keep=-1;
+	temp.last=0;
+	result.keep=-1;
+	result.last=0;
+	temp=strm.read();
+	for(int i=0;i<10;i++){
+		temp.data=temp.data+1;
+		if(i>8)
+		{
+			result.last=1;
+		}
 
-#include <stdio.h>
-#include <math.h>
-#include <stdlib.h>
-#include "cordic.h"
-
-
-
-int main (int argc, char** argv) {
-  printf("Cordic rotation mode test:\n");
-  cos_sin_t_stream sin_stream;
-  cos_sin_t_stream cos_stream;
-  theta_t_stream theta_stream;
-  THETA_TYPE theta;
-
-  float acc_error = 0;
-  printf("Angle\t\t\tsin\t\t\tsin_gold\tcos\t\t\tcos_gold\terror\t\t\tacc_error\n");
-  for (int i = 0; i < 16; i++){
-    theta = i * PI / 16 / 2; // 16 steps from 0 to pi/2
-    theta_t_pack theta_t_pack_temp;
-    theta_t_pack_temp.data = theta;
-    theta_t_pack_temp.keep = -1;
-    theta_t_pack_temp.last = (i == 15);
-    theta_stream << theta_t_pack_temp;
-
-    cordic(sin_stream, cos_stream, theta_stream);
-
-    cos_sin_t_pack sin_pack, cos_pack;
-    sin_stream >> sin_pack;
-    cos_stream >> cos_pack;
-    float sin_golden = sin((float)theta);
-    float cos_golden = cos((float)theta);
-
-    float new_error = pow((float)cos_pack.data-(float)cos_golden,2) + pow((float)sin_pack.data-(float)sin_golden,2);
-    acc_error += new_error;
-
-    printf("%3.3f    :\t\t%1.4f\t\t%1.4f\t\t%1.4f\t\t%1.4f\t\t%1.8f\t\t%1.8f\n",(float)theta,(float)sin_pack.data,(float)sin_golden,(float)cos_pack.data,(float)cos_golden,new_error, acc_error);
-  }
-  if(acc_error / 16 < 0.0001){
-	  printf(" +---------------------+\n");
-	  printf(" |        PASS!        |\n");
-	  printf(" +---------------------+\n");
-	  printf("Mean error = %.8f\n",acc_error / 16);
-	  return 0;
-  }
-  else{
-	  printf(" +---------------------+\n");
-	  printf(" |        FAIL!        |\n");
-	  printf(" +---------------------+\n");
-	  printf("Mean error = %.8f\n",acc_error / 16);
-	  return -1;
-  }
+	}
+	result.data=temp.data;
+	out.write(result);
 }
 ```
 
-According to the synthesis report, now the II of the entire module becomes 1 and 3213 FFs and 8452 LUTs are required. 
+**free_pipe_mult_tb.cpp**
+```c++
+#include <cstdlib>
+#include <fstream>
+#include <iostream>
+#include "free_pipe_mult.h"
 
-#### Remaining Issue: Pipeline Type
-According to Xilinx Doc, the HLS supports three types of pipelines: ([Ref](https://docs.xilinx.com/r/en-US/ug1399-vitis-hls/pragma-HLS-pipeline))  
+using namespace std;
 
-**Stalled pipeline (STP)**  (Default pipeline; no usage constraints)  
-Advantages:
-> Lowest overall resource usage.  
+int main() {
 
-Disadvantages:
-> Not flushable:  
->> Lead to deadlock in the dataflow.  
->> Prevent already calculated output data from being delivered, if the inputs to the next iterations are missing.  
-> Timing issues due to high fanout on pipeline controls ("enable" signal distributed to all processing elements, or stages, in a pipeline structure).  
 
-Let us take a pipeline structure with three stages as an example. As is shown in the following figure, one "enable" signal is shared with three stages (this causes a fanout issue of the pipeline control signal). If the input data continuously comes in, a stalled pipeline should work properly. Now, considering a stream of data with a fixed length, after the last data arrives, the input valid becomes '0'. Since no valid data comes in after this, the first stage of the pipeline is closed (set "enable" to 0). Consequently, the second and third stages of the pipeline are also closed, stopping the data from flowing out from the pipeline (not flushable). 
+	d_stream strm;
+	d_stream out;
 
-A typical solution is to add some zeros after the last data of the stream to push the useful data out. Though the solution looks promising, it is hard for programming as the added zeros also need to be removed from the output of the next stream manually. The specific implementation of the circuit can be viewed under the 'Schematic' option in the Vivado IMPLEMENTATION report.
+	data_t_pack temp;
+	data_t_pack result;
 
-<div align=center><img src="Images/2_2.png" alt="drawing" width="500"/></div>
+    temp.data=1;
+    strm<< temp;
+    // Save the results to a file
 
-<div align=center><img src="Images/2_3.png" alt="drawing" width="500"/></div>
+    add_flp(strm, out);
+    result=out.read();
 
+    // Save output data
+    cout << "Result: " << result.data << endl;
+
+}
+
+
+```
 
 **Flushable Pipeline (FLP)**  
 A flushable pipeline is a better choice when processing multiple streams of data.  
@@ -249,13 +530,9 @@ Disadvantages:
 
 In a flushable pipeline, once the input data becomes invalid, it shuts down pipeline stages successively, until the final input is processed and moved to the output, rather than closing all stages at once. The structure is shown below.
 
-<div align=center><img src="Images/2_4.png" alt="drawing" width="300"/></div>
+<div align=center><img src="Images/2_10.png" alt="drawing" width="600"/></div>
 
-<div align=center><img src="Images/2_5.png" alt="drawing" width="300"/></div>
-
-<div align=center><img src="Images/2_6.png" alt="drawing" width="600"/></div>
-
-In the FIR application, unless the input data comes directly from an ADC (infinite data stream), a flushable pipeline is preferred.
+<div align=center><img src="Images/2_11.png" alt="drawing" width="700"/></div>
 
 **Free-Running/Flushanle Pipeline (FRP)**  
 Though the FLP reduces some fanout of the pipeline controlling signal, it is still not perfect as one pipeline may have hundreds of FFs to control. Free running pipeline further simplifies it.   
@@ -271,120 +548,9 @@ Disadvantages:
 
 The structure is shown below:
 
-<div align=center><img src="Images/2_7.png" alt="drawing" width="1000"/></div>
+<div align=center><img src="Images/2_12.png" alt="drawing" width="500"/></div>
 
 
 The "enable" signal for the first stage is optional. It is only required when a shift register is placed at the first stage (if the input is not valid, the shift register shouldn't run). FRP keeps the following stages running. The output valid signal is generated from the valid_in. Therefore, a minimum number of "enable" signals is required. However, making the circuit run continuously is not energy efficient.
 
 > (Important) Free-running kernel and free-running pipeline are different concepts. The free-running kernel means the entire module doesn't require any 'start' signal and is always ready to receive new data. The free-running pipeline is one structure to implement the pipeline.  
-
-## Implementation
-
-### Create Cordic IP
-
-To generate the IP, you should do several steps in the below.
-
-* Launch Vitis HLS: Open Xilinx Vitis HLS directly launch it from your system.
-
-* Create a New Project: Start a new project in Vitis HLS. Specify the project name, location, and target device or platform. Here we can choose the device as below.
-
-<div align=center><img src="Images/2_8.png" alt="drawing" width="600"/></div>
-
-* Write or Import Code: Write your hardware function in C, C++, or SystemC. This code will describe the behavior you want to implement in hardware. Alternatively, you can import 
-existing C/C++ code if available and you can click the green button "Run C Simulation" to verify the result of the function.
-
-<div align=center><img src="Images/2_9.png" alt="drawing" width="300"/></div>
-
-* Optimize and Synthesize: After writing or importing your code, use Vitis HLS to synthesize and optimize the code and you can click the green button "Run C Synthesis". The tool will generate a hardware description from your high-level code as shown in the below.
-
-<div align=center><img src="Images/2_10.png" alt="drawing" width="800"/></div>
-
-* Verify and Test: Verify the synthesized hardware behavior using test benches or co-simulation. Ensure that the hardware function behaves as expected. If the result of the Cosimulation is **PASS**, you can export the IP. At the same time, you can also click "Wave Viewer" to see the result of the input and output data of the IP.
-
-<div align=center><img src="Images/2_11.png" alt="drawing" width="200"/></div>
-
-* Generate IP Core: Once you have verified the hardware behavior and are satisfied with the synthesis results, you can generate an IP core from the synthesized hardware function.
-In Vitis HLS, go to the "Solution" tab and select "Export RTL..." or a similar option depending on your version of Vitis HLS. Follow the prompts to generate an IP core.
-This process will generate the necessary VHDL or Verilog files and associated metadata to create an IP core that you can integrate into your Vivado FPGA or SoC design.
-
-### Create Vivado Project
-
-The configure block design can use reference materials [here](https://uri-nextlab.github.io/ParallelProgammingLabs/HLS_Labs/Lab1.html)
-
-The differenc between the lab1 and lab2 is the AXI_DMA. For this IP, we need one read interface and two write interfaces. We have deliberately configured AXI_DMA0 with only the read channels enabled and configured AXI_DMA1 and AXI_DMA2 with only the write channel enabled. This design choice is driven by the predominant data flow requirements of our IP core, which involves receiving data from memory.   
-
-<div align=center><img src="Images/2_12.png" alt="drawing" width="800"/></div>
-
-## Run synthesis,  Implementation and generate a bitstream
-
-It may show some errors about I/O Ports, please fix them.
-
-## Download the bitstream file to PYNQ
-
-The first step is to allocate the buffer. pynq allocate will be used to allocate the buffer, and NumPy will be used to specify the type of the buffer.
-
-```python
-from pynq import Overlay
-from pynq import allocate
-import matplotlib.pyplot as plt
-import numpy as np
-import time
-hw = Overlay("design_1_wrapper.bit")
-hw ?
-
-We can use the ? to check the IP dictionary.
-```
-
-<div align=center><img src="Images/1_6.png" alt="drawing" width="400"/></div>
-
-### Create DMA instances
-
-Using the labels for the DMAs listed above, we can create three DMA objects.
-
-```python
-
-mm2s = hw.axi_dma_0.sendchannel
-s2mm_1 = hw.axi_dma_1.recvchannel
-s2mm_2 = hw.axi_dma_2.recvchannel
-```
-
-### Read DMA
-
-The first step is to allocate the buffer. pynq.allocate will be used to allocate the buffer, and NumPy will be used to specify the type of the buffer.
-
-```python
-theta =[0x0 , 0x001921fb , 0x003243f6 , 0x004b65f2 , 0x006487ed , 0x007da9e9 , 0x0096cbe4 , 0x00afede0 , 0x00c90fdb , 0x00e231d6 , 0x00fb53d2 , 0x11475ce , 0x12d97c8 , 0x146b9c4 , 0x15fdbc0 ,0x178fdba]
-
-N = 16
-oBuf_sin = allocate(shape=(N,), dtype = np.int32)
-oBuf_cos = allocate(shape=(N,), dtype = np.int32)
-iBuf = allocate(shape=(N,), dtype = np.int32)
-
-for i in range(N):
-    iBuf[i]= theta[i]
-    print(iBuf[i])
-
-```
-
-```python
-mm2s.transfer(iBuf)
-s2mm_1.transfer(oBuf_sin)
-s2mm_2.transfer(oBuf_cos)
-mm2s.wait()
-s2mm_1.wait()
-s2mm_2.wait()
-
-```
-
-We will see:
-
-<div align=center><img src="Images/2_13.png" alt="drawing" width="400"/></div>
-
-<div align=center><img src="Images/2_15.png" alt="drawing" width="400"/></div>
-
-<div align=center><img src="Images/2_14.png" alt="drawing" width="1000"/></div>
-
-But when use the #pragma HLS PIPELINE style=stp, the result is the below.
-
-<div align=center><img src="Images/2_16.png" alt="drawing" width="800"/></div>
-
