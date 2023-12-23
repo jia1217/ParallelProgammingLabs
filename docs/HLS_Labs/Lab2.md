@@ -549,7 +549,7 @@ Disadvantages:
 
 The structure is shown below:
 
-<div align=center><img src="Images/2_12.png" alt="drawing" width="500"/></div>
+<div align=center><img src="Images/2_12.png" alt="drawing" width="400"/></div>
 
 
 The "enable" signal for the first stage is optional. It is only required when a shift register is placed at the first stage (if the input is not valid, the shift register shouldn't run). FRP keeps the following stages running. The output valid signal is generated from the valid_in. Therefore, a minimum number of "enable" signals is required. However, making the circuit run continuously is not energy efficient.
