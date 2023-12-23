@@ -476,6 +476,7 @@ void add_flp( d_stream& strm,d_stream &out) {
 	temp=strm.read();
 	for(int i=0;i<10;i++){
 		temp.data=temp.data+1;
+//a function that increments the input data by 1 for ten times using a loop structure
 		if(i>8)
 		{
 			result.last=1;
