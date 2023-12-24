@@ -350,8 +350,6 @@ int main() {
 
 The concept to appreciate when selecting at which level of the hierarchy to pipeline is to understand that pipelining the innermost loop gives the smallest hardware with generally acceptable throughput for most applications. Pipelining the upper levels of the hierarchy unrolls all sub-loops and can create many more operations to schedule (which could impact compile time and memory capacity), but typically gives the highest performance design in terms of throughput and latency. The data access bandwidth must be matched to the requirements of the operations that are expected to be executed in parallel. This implies that you might need to partition array A in order to make this work.
 
-* Pipeline LOOP_J: Latency is approximately 400 cycles (20x20) and requires less than 250 LUTs and registers (the I/O control and FSM are always present).
-
 ```C++
 dout_t loop_pipeline(din_t A[N]) {
 
@@ -372,13 +370,10 @@ LOOP_I:
 
 
 ```
-
+* Pipeline LOOP_J: Latency is approximately 400 cycles (20x20) and requires less than 250 LUTs and registers (the I/O control and FSM are always present).
 
 <div align=center><img src="Images/2_7.png" alt="drawing" width="1000"/></div>
 
-
-* Pipeline LOOP_I: Latency is 13 cycles but requires a few hundred LUTs and registers. About twice the logic as the first option, minus any logic optimizations that can be made.
-
 ```C++
 dout_t loop_pipeline(din_t A[N]) {
 
@@ -400,9 +395,10 @@ LOOP_I:
 
 
 ```
-<div align=center><img src="Images/2_8.png" alt="drawing" width="1000"/></div>
 
-* Pipeline function loop_pipeline: Latency is now only 3 cycles (due to 20 parallel register accesses) but requires almost twice the logic as the second option (and about 4 times the logic of the first option), minus any optimizations that can be made.
+* Pipeline LOOP_I: Latency is 13 cycles but requires a few hundred LUTs and registers. About twice the logic as the first option, minus any logic optimizations that can be made.
+
+<div align=center><img src="Images/2_8.png" alt="drawing" width="1000"/></div>
 
 ```C++
 dout_t loop_pipeline(din_t A[N]) {
@@ -425,8 +421,10 @@ LOOP_I:
 
 
 ```
-<div align=center><img src="Images/2_9.png" alt="drawing" width="1000"/></div>
 
+* Pipeline function loop_pipeline: Latency is now only 3 cycles (due to 20 parallel register accesses) but requires almost twice the logic as the second option (and about 4 times the logic of the first option), minus any optimizations that can be made.
+  
+<div align=center><img src="Images/2_9.png" alt="drawing" width="1000"/></div>
 
 #### Using_free_running_pipeline loop
 
