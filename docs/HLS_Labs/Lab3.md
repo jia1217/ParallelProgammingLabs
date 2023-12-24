@@ -3,7 +3,7 @@ sort: 3
 ---
 
 
-# Lab2 Task_level_Parallelism_control_driven
+# Lab3 Task_level_Parallelism_Control_driven_Bypassing
 
 <script type="text/x-mathjax-config">
   MathJax.Hub.Config({
