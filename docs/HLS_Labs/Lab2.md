@@ -396,7 +396,7 @@ LOOP_I:
 
 ```
 
-* Pipeline LOOP_I: Latency is 13 cycles but requires a few hundred LUTs and registers. About twice the logic as the first option, minus any logic optimizations that can be made.
+* Pipeline LOOP_I: Latency is 12 cycles but requires a few hundred LUTs and registers. About twice the logic as the first option, minus any logic optimizations that can be made.
 
 <div align=center><img src="Images/2_8.png" alt="drawing" width="1000"/></div>
 
