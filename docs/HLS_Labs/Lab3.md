@@ -719,22 +719,3 @@ The result of the C simulation is shown below.
 
 <div align=center><img src="Images/3_16.png" alt="drawing" width="500"/></div>
 
-
-
-##### Simple_fifos
-
-
-
-
-
-##### Using_fifos
-
-
-
-
-##### Using_pipos
-
-
-
-
-##### Using_stream_of_blocks
