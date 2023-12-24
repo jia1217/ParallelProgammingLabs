@@ -287,7 +287,28 @@ To run the simulation, simply clock the C simulation or C/RTL cosimulation in th
 
 ### Export matrix_cyclic_block IP
 
-To export the IP, simply clock the Export RTL in the IMPLEMENTATION (bottom left).\
+To generate the IP, you should do several steps in the below.
+
+* Launch Vitis HLS: Open Xilinx Vitis HLS directly launch it from your system.
+
+* Create a New Project: Start a new project in Vitis HLS. Specify the project name, location, and target device or platform. Here we can choose the device as below.
+
+<div align=center><img src="Images/2_13.png" alt="drawing" width="600"/></div>
+
+* Write or Import Code: Write your hardware function in C, C++, or SystemC. This code will describe the behavior you want to implement in hardware. Alternatively, you can import 
+existing C/C++ code if available and you can click the green button "Run C Simulation" to verify the result of the function.
+
+<div align=center><img src="Images/2_14.png" alt="drawing" width="300"/></div>
+
+* Optimize and Synthesize: After writing or importing your code, use Vitis HLS to synthesize and optimize the code and you can click the green button "Run C Synthesis". The tool will generate a hardware description from your high-level code as shown in the below.
+
+* Verify and Test: Verify the synthesized hardware behavior using test benches or co-simulation. Ensure that the hardware function behaves as expected. If the result of the Cosimulation is **PASS**, you can export the IP. At the same time, you can also click "Wave Viewer" to see the result of the input and output data of the IP.
+
+<div align=center><img src="Images/2_15.png" alt="drawing" width="200"/></div>
+
+* Generate IP Core: Once you have verified the hardware behavior and are satisfied with the synthesis results, you can generate an IP core from the synthesized hardware function.
+In Vitis HLS, go to the "Solution" tab and select "Export RTL..." or a similar option depending on your version of Vitis HLS. Follow the prompts to generate an IP core.
+This process will generate the necessary VHDL or Verilog files and associated metadata to create an IP core that you can integrate into your Vivado FPGA or SoC design.
 
 ### Create Vivado Project
 
@@ -345,7 +366,7 @@ It may shows some errors about I/O Ports, please fix them.
 
 ## Download the bitstream file to PYNQ
 
-The first step is to allocate the buffer. pynq.allocate will be used to allocate the buffer, and NumPy will be used to specify the type of the buffer.
+The first step is to allocate the buffer. pynq allocate will be used to allocate the buffer, and NumPy will be used to specify the type of the buffer.
 
 ```python
 from pynq import Overlay
