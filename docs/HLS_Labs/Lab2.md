@@ -45,7 +45,7 @@ By default:
 
 * All instances of a function, at the same level of hierarchy, make use of a single RTL implementation (block).
 
-The FUNCTION_INSTANTIATE pragma allows you to control how functions are instantiated within the hardware design. By default, Vitis HLS will automatically instantiate functions when they are called. However, in certain scenarios, you might want to provide explicit control over the instantiation behavior. The syntax is: ([Ref](https://docs.xilinx.com/r/en-US/ug1399-vitis-hls/pragma-HLS-function_instantiate)).
+The FUNCTION_INSTANTIATE pragma allows you to control how functions are instantiated within the hardware design. By default, Vivado HLS will automatically instantiate functions when they are called. However, in certain scenarios, you might want to provide explicit control over the instantiation behavior. The syntax is: ([Ref](https://docs.xilinx.com/r/en-US/ug1399-vitis-hls/pragma-HLS-function_instantiate)).
 
 In this example, we use the function which takes two parameters (operands) and returns their sum. In the top-level function, we make multiple calls to another function. This means that within the main function or primary function, we repeatedly invoke (or use) another specific function to perform certain tasks or operations.
 
@@ -139,7 +139,7 @@ The following figure illustrates the difference in execution between pipelined a
 
 In the pipelined version of the loop shown in (B), a new input sample is read every cycle (II = 1) and the final output is written after only four clock cycles: substantially improving both the II and latency while using the same hardware resources.
 
-#### Imperfect/perfect loop
+#### imperfect/perfect loop
 
 **loop_imperfect.h**
 ```c++
@@ -262,7 +262,7 @@ int main() {
 
 The result of the C Simulation is the same. This example shows that the different loop structures can significantly affect the final optimization results. For the imperfect loop, inside the outer loop (LOOP_I), the accumulator variable acc is initialized to 0 for each iteration. This initialization should ideally occur once before entering the inner loop to avoid unnecessary reset operations. And the code has a conditional assignment to B[i] based on whether the index i is even or odd (if (i % 2 == 0)). This conditional assignment introduces branching in the code, which may impact performance and efficiency during hardware synthesis. For the perfect loop, the code contains a simple accumulation operation (acc += A[j] * j;) and conditional statements to handle specific conditions (if (j == 0) and if (j == 19)). The straightforward logic and absence of complex dependencies make optimizing and flattening the code easier for the synthesis tool.
 
-#### Pipelined loop
+#### pipelined loop
 
 Pipelining a loop causes any loops nested inside the pipelined loop to get automatically unrolled. This example shows different variations of the Loop pipelining (inner-most loop and outer-most loop).
 
@@ -289,7 +289,7 @@ using namespace std;
 typedef int din_t;
 typedef int dout_t;
 
-dout_t loop_pipeline(din_t A[N]);
+int loop_pipeline(din_t A[N]);
 
 #endif
 
@@ -301,15 +301,15 @@ dout_t loop_pipeline(din_t A[N]);
 
 #include "loop_pipeline.h"
 
-dout_t loop_pipeline(din_t A[N]) {
+int loop_pipeline(din_t A[N]) {
 
     int i, j;
     static dout_t acc;
 
 LOOP_I:
-    for (i = 0; i < 5; i++) {
+    for (i = 0; i < 20; i++) {
     LOOP_J:
-        for (j = 0; j < 5; j++) {
+        for (j = 0; j < 20; j++) {
             acc += A[j] * i;
         }
     }
@@ -322,7 +322,6 @@ LOOP_I:
 **loop_pipeline_test.cpp**
 ```c++
 #include "loop_pipeline.h"
-#include <stdio.h>
 
 int main() {
     din_t A[N];
@@ -339,7 +338,7 @@ int main() {
     // Call the function
     for (j = 0; j < NUM_TRANS; ++j) {
         accum = loop_pipeline(A);
-        printf("accum is %d\r\n", accum);
+        cout << accum << endl;
     }
 
 }
@@ -357,61 +356,10 @@ dout_t loop_pipeline(din_t A[N]) {
     static dout_t acc;
 
 LOOP_I:
-    for (i = 0; i < 5; i++) {
-    LOOP_J:
-        for (j = 0; j < 5; j++) {
-#pragma HLS PIPELINE
-            acc += A[j] * i;
-        }
-    }
-
-    return acc;
-}
-
-
-```
-* Pipeline LOOP_J: Latency is approximately 400 cycles (20x20) and requires less than 250 LUTs and registers (the I/O control and FSM are always present).
-
-<div align=center><img src="Images/2_7.png" alt="drawing" width="1000"/></div>
-
-```C++
-dout_t loop_pipeline(din_t A[N]) {
-
-    int i, j;
-    static dout_t acc;
-
-LOOP_I:
-    for (i = 0; i < 5; i++) {
-    LOOP_J:
-#pragma HLS PIPELINE
-        for (j = 0; j < 5; j++) {
-
-            acc += A[j] * i;
-        }
-    }
-
-    return acc;
-}
-
-
-```
-
-* Pipeline LOOP_I: Latency is 12 cycles but requires a few hundred LUTs and registers. About twice the logic as the first option, minus any logic optimizations that can be made.
-
-<div align=center><img src="Images/2_8.png" alt="drawing" width="1000"/></div>
-
-```C++
-dout_t loop_pipeline(din_t A[N]) {
-#pragma HLS PIPELINE
-#pragma HLS ARRAY_PARTITION variable=A type=complete
-    int i, j;
-    static dout_t acc;
-
-LOOP_I:
     for (i = 0; i < 20; i++) {
     LOOP_J:
         for (j = 0; j < 20; j++) {
-
+#pragma HLS PIPELINE
             acc += A[j] * i;
         }
     }
@@ -422,11 +370,73 @@ LOOP_I:
 
 ```
 
+* Pipeline LOOP_J: Latency is approximately 25 cycles (5x5) and requires less than 250 LUTs and registers (the I/O control and FSM are always present).
+
+<div align=center><img src="Images/2_16.png" alt="drawing" width="600"/></div>
+
+<div align=center><img src="Images/2_7.png" alt="drawing" width="1000"/></div>
+
+
+
+```C++
+int loop_pipeline(int A[N]) {
+
+    int i, j;
+    static int acc;
+
+LOOP_I:
+    for (i = 0; i < 5; i++) {
+    LOOP_J:
+#pragma HLS PIPELINE
+        for (j = 0; j < 5; j++) {
+
+            acc += A[j] * i;
+        }
+    }
+
+    return acc;
+}
+
+
+```
+* Pipeline LOOP_I: Latency is 13 cycles but requires a few hundred LUTs and registers. About twice the logic as the first option, minus any logic optimizations that can be made.
+
+The scheduling is 
+<div align=center><img src="Images/2_17.png" alt="drawing" width="600"/></div>
+
+<div align=center><img src="Images/2_8.png" alt="drawing" width="1000"/></div>
+
+
+```C++
+int loop_pipeline(int A[N]) {
+#pragma HLS PIPELINE
+#pragma HLS ARRAY_PARTITION variable=A type=complete
+    int i, j;
+    static int acc;
+
+LOOP_I:
+    for (i = 0; i < 5; i++) {
+    LOOP_J:
+
+        for (j = 0; j < 5; j++) {
+
+            acc += A[j] * i;
+        }
+    }
+
+    return acc;
+}
+
+
+```
 * Pipeline function loop_pipeline: Latency is now only 3 cycles (due to 20 parallel register accesses) but requires almost twice the logic as the second option (and about 4 times the logic of the first option), minus any optimizations that can be made.
-  
+
+<div align=center><img src="Images/2_18.png" alt="drawing" width="400"/></div>
+
 <div align=center><img src="Images/2_9.png" alt="drawing" width="1000"/></div>
 
-#### Using_free_running_pipeline loop
+
+#### using_free_running_pipeline loop
 
 The Pipeline architecture can be implemented in 3 modes:
 
@@ -438,7 +448,7 @@ The Pipeline architecture can be implemented in 3 modes:
 
 The three types of pipelines available in the tool are summarized in the following table. The tool automatically selects the right pipeline style to use for a given pipelined loop or function. If the pipeline is used with hls::tasks, the flushing pipeline (FLP) style is automatically selected to avoid deadlocks. If the pipeline control requires high fanout, and meets other free-running requirements, the tool selects the free-running pipeline (FRP) style to limit the high fanout. Finally, if neither of the above cases apply, then the standard pipeline (STP) style is selected. [Ref](https://docs.xilinx.com/r/en-US/ug1399-vitis-hls/Flushing-Pipelines-and-Pipeline-Types)
 
-This example uses a FRP (free-ruuning pipeline) mode to configure the pipeline architecture using a global command which is useful in reducing control logic fanout in vivado. In this example, we use the function which add 1 for ten times.
+This example uses a FRP (free-ruuning pipeline) mode to configure the pipeline architecture using a global command which is useful in reducing control logic fanout in vivado.
 
 **free_pipe_mult.h**
 ```c++
@@ -465,7 +475,6 @@ void add_flp( d_stream& strm,d_stream &out) {
 #pragma HLS INTERFACE axis port = strm
 #pragma HLS INTERFACE axis port = out
 #pragma HLS PIPELINE style=flp
-//#pragma HLS PIPELINE style=frp
 	data_t_pack temp;
 	data_t_pack result;
 	temp.keep=-1;
@@ -475,7 +484,6 @@ void add_flp( d_stream& strm,d_stream &out) {
 	temp=strm.read();
 	for(int i=0;i<10;i++){
 		temp.data=temp.data+1;
-//a function that increments the input data by 1 for ten times using a loop structure
 		if(i>8)
 		{
 			result.last=1;
@@ -548,7 +556,7 @@ Disadvantages:
 
 The structure is shown below:
 
-<div align=center><img src="Images/2_12.png" alt="drawing" width="400"/></div>
+<div align=center><img src="Images/2_12.png" alt="drawing" width="500"/></div>
 
 
 The "enable" signal for the first stage is optional. It is only required when a shift register is placed at the first stage (if the input is not valid, the shift register shouldn't run). FRP keeps the following stages running. The output valid signal is generated from the valid_in. Therefore, a minimum number of "enable" signals is required. However, making the circuit run continuously is not energy efficient.
