@@ -283,8 +283,8 @@ If the top-level function is pipelined, both loops must be unrolled: 400 multipl
 using namespace std;
 
 #include "ap_int.h"
-#define N 20
-#define NUM_TRANS 20
+#define N 5
+#define NUM_TRANS 5
 
 typedef ap_int<5> din_t;
 typedef ap_int<20> dout_t;
@@ -307,9 +307,9 @@ dout_t loop_pipeline(din_t A[N]) {
     static dout_t acc;
 
 LOOP_I:
-    for (i = 0; i < 20; i++) {
+    for (i = 0; i < 5; i++) {
     LOOP_J:
-        for (j = 0; j < 20; j++) {
+        for (j = 0; j < 5; j++) {
             acc += A[j] * i;
         }
     }
@@ -356,9 +356,9 @@ dout_t loop_pipeline(din_t A[N]) {
     static dout_t acc;
 
 LOOP_I:
-    for (i = 0; i < 20; i++) {
+    for (i = 0; i < 5; i++) {
     LOOP_J:
-        for (j = 0; j < 20; j++) {
+        for (j = 0; j < 5; j++) {
 #pragma HLS PIPELINE
             acc += A[j] * i;
         }
@@ -380,10 +380,10 @@ dout_t loop_pipeline(din_t A[N]) {
     static dout_t acc;
 
 LOOP_I:
-    for (i = 0; i < 20; i++) {
+    for (i = 0; i < 5; i++) {
     LOOP_J:
 #pragma HLS PIPELINE
-        for (j = 0; j < 20; j++) {
+        for (j = 0; j < 5; j++) {
 
             acc += A[j] * i;
         }
