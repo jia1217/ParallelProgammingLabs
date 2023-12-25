@@ -328,7 +328,6 @@ int main() {
     dout_t accum;
 
     int i, j, retval = 0;
-    ofstream FILE;
 
     // Create input data
     for (i = 0; i < N; ++i) {
