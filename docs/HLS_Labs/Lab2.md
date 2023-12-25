@@ -196,6 +196,8 @@ Inside the inner loop (LOOP_J), there is an accumulator variable acc that accumu
 
 The result of the C Synthesis is as shown in the below.
 
+<div align=center><img src="Images/2_20.png" alt="drawing" width="600"/></div>
+
 <div align=center><img src="Images/2_5.png" alt="drawing" width="1000"/></div>
 
 **loop_perfect.cpp**
@@ -228,6 +230,8 @@ Inside the inner loop (LOOP_J), there is an accumulator variable acc that accumu
 At the end of the inner loop (j == 19), the function checks if the index i of the outer loop is even (i % 2 == 0). If i is even, it computes the average of the accumulated values in acc and stores it in B[i]. Otherwise, it sets B[i] to 0.
 
 The result of the C Synthesis is as shown in the below.
+
+<div align=center><img src="Images/2_19.png" alt="drawing" width="600"/></div>
 
 <div align=center><img src="Images/2_6.png" alt="drawing" width="1000"/></div>
 
