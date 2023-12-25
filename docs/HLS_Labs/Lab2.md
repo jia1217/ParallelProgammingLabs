@@ -286,8 +286,8 @@ using namespace std;
 #define N 5
 #define NUM_TRANS 5
 
-typedef ap_int<5> din_t;
-typedef ap_int<20> dout_t;
+typedef int din_t;
+typedef int dout_t;
 
 dout_t loop_pipeline(din_t A[N]);
 
@@ -322,6 +322,7 @@ LOOP_I:
 **loop_pipeline_test.cpp**
 ```c++
 #include "loop_pipeline.h"
+#include <stdio.h>
 
 int main() {
     din_t A[N];
@@ -338,7 +339,7 @@ int main() {
     // Call the function
     for (j = 0; j < NUM_TRANS; ++j) {
         accum = loop_pipeline(A);
-        cout << accum << endl;
+        printf("accum is %d\r\n", accum);
     }
 
 }
