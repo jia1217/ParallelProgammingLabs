@@ -475,29 +475,40 @@ void add_flp( d_stream& strm, d_stream &out);
 
 **free_pipe_mult.cpp**
 ```c++
-void add_flp( d_stream& strm,d_stream &out) {
+#include <iostream>
+#include "example_stp.h"
+
+
+void add_frp( d_stream& strm,d_stream &out) {
 #pragma HLS INTERFACE ap_ctrl_none port=return
 #pragma HLS INTERFACE axis port = strm
 #pragma HLS INTERFACE axis port = out
-#pragma HLS PIPELINE style=flp
+#pragma HLS PIPELINE style=frp
 	data_t_pack temp;
 	data_t_pack result;
+	static int counter=0;
 	temp.keep=-1;
 	temp.last=0;
 	result.keep=-1;
-	result.last=0;
 	temp=strm.read();
 	for(int i=0;i<10;i++){
 		temp.data=temp.data+1;
-		if(i>8)
-		{
-			result.last=1;
-		}
+	}
+	if(counter==9)
+	{
+		result.last=1;
+		counter=0;
+	}
+	else
+	{
+		result.last=0;
+		counter++;
 
 	}
 	result.data=temp.data;
 	out.write(result);
 }
+
 ```
 
 **free_pipe_mult_tb.cpp**
@@ -505,7 +516,7 @@ void add_flp( d_stream& strm,d_stream &out) {
 #include <cstdlib>
 #include <fstream>
 #include <iostream>
-#include "free_pipe_mult.h"
+#include "example_stp.h"
 
 using namespace std;
 
@@ -518,17 +529,27 @@ int main() {
 	data_t_pack temp;
 	data_t_pack result;
 
-    temp.data=1;
-    strm<< temp;
+	for(int i=0;i<10;i++)
+	{
+		   temp.data=i;
+		   strm.write(temp);
+		   add_frp(strm, out);
+	}
+
     // Save the results to a file
 
-    add_flp(strm, out);
-    result=out.read();
+
+    for(int j=0;j<10;j++)
+    {
+    	 result=out.read();
 
     // Save output data
     cout << "Result: " << result.data << endl;
+    }
+
 
 }
+
 
 
 ```
@@ -566,4 +587,8 @@ The structure is shown below:
 
 The "enable" signal for the first stage is optional. It is only required when a shift register is placed at the first stage (if the input is not valid, the shift register shouldn't run). FRP keeps the following stages running. The output valid signal is generated from the valid_in. Therefore, a minimum number of "enable" signals is required. However, making the circuit run continuously is not energy efficient.
 
-> (Important) Free-running kernel and free-running pipeline are different concepts. The free-running kernel means the entire module doesn't require any 'start' signal and is always ready to receive new data. The free-running pipeline is one structure to implement the pipeline.  
+> (Important) Free-running kernel and free-running pipeline are different concepts. The free-running kernel means the entire module doesn't require any 'start' signal and is always ready to receive new data. The free-running pipeline is one structure to implement the pipeline.
+
+And we can see the synthesis result for the two style as shown below.
+
+<div align=center><img src="Images/2_22.png" alt="drawing" width="500"/></div>
