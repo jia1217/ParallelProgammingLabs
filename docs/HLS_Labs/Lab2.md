@@ -589,6 +589,4 @@ The "enable" signal for the first stage is optional. It is only required when a 
 
 > (Important) Free-running kernel and free-running pipeline are different concepts. The free-running kernel means the entire module doesn't require any 'start' signal and is always ready to receive new data. The free-running pipeline is one structure to implement the pipeline.
 
-And we can see the synthesis result for the two style as shown below.
 
-<div align=center><img src="Images/2_22.png" alt="drawing" width="500"/></div>
