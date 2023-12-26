@@ -208,6 +208,7 @@ void diamond(vecOf16Words* vecIn, vecOf16Words* vecOut, int size) {
 #pragma HLS INTERFACE m_axi port = vecOut depth = 32
 
     hls::stream<vecOf16Words> c0, c1, c2, c3, c4, c5;
+//To use hls::stream<> objects in your code include the header file hls_stream.h as shown in diamond.h
     assert(size % 16 == 0);
 
 #pragma HLS dataflow
@@ -282,7 +283,7 @@ Loop_St:
 
 ```
 
-The dataflow view is shown below. We can see the channel is FIFO. We can see that the interface of the function is streaming with hls::stream.
+The dataflow view is shown below. We can see the channel is FIFO. We can see that the interface of the function is streaming with hls::stream. A stream can also be specified as hls::stream<Type, Depth>, where Depth indicates the depth of the FIFO needed in the verification adapter that the HLS tool creates for RTL co-simulation.
 
 <div align=center><img src="Images/4_7.png" alt="drawing" width="800"/></div>
 
