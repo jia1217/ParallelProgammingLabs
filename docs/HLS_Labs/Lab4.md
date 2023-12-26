@@ -57,6 +57,7 @@ void diamond(data_t vecIn[N], data_t vecOut[N]) {
 
 void funcA(data_t* in, data_t* out1, data_t* out2) {
 #pragma HLS inline off
+//In Vitis HLS, the #pragma HLS inline off directive tells the compiler not to inline the function or subroutine immediately following it. This means that instead of directly inserting the function's code wherever it's called, the compiler creates a separate function call at //runtime.
 Loop0:
     for (int i = 0; i < N; i++) {
 #pragma HLS pipeline
