@@ -546,7 +546,7 @@ In a flushable pipeline, once the input data becomes invalid, it shuts down pipe
 
 <div align=center><img src="Images/2_11.png" alt="drawing" width="700"/></div>
 
-**Free-Running/Flushanle Pipeline (FRP)**  
+**Free-Running/Flushable Pipeline (FRP)**  
 Though the FLP reduces some fanout of the pipeline controlling signal, it is still not perfect as one pipeline may have hundreds of FFs to control. Free running pipeline further simplifies it.   
 Advantages:
 > Flushable
