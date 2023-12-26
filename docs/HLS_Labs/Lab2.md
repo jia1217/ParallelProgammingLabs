@@ -353,6 +353,7 @@ int main() {
 
 The concept to appreciate when selecting at which level of the hierarchy to pipeline is to understand that pipelining the innermost loop gives the smallest hardware with generally acceptable throughput for most applications. Pipelining the upper levels of the hierarchy unrolls all sub-loops and can create many more operations to schedule (which could impact compile time and memory capacity), but typically gives the highest performance design in terms of throughput and latency. The data access bandwidth must be matched to the requirements of the operations that are expected to be executed in parallel. This implies that you might need to partition array A in order to make this work.
 
+**loop_pipeline.cpp**
 ```C++
 dout_t loop_pipeline(din_t A[N]) {
 
@@ -381,7 +382,7 @@ LOOP_I:
 <div align=center><img src="Images/2_7.png" alt="drawing" width="1000"/></div>
 
 
-
+**loop_pipeline.cpp**
 ```C++
 int loop_pipeline(int A[N]) {
 
