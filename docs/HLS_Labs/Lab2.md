@@ -469,7 +469,7 @@ typedef hls::stream<data_t_pack> d_stream;
 
 
 
-void add_flp( d_stream& strm, d_stream &out);
+void add_frp( d_stream& strm, d_stream &out);
 
 ```
 
