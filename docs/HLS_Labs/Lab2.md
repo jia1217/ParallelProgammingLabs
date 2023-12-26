@@ -135,7 +135,7 @@ The number of cycles it takes to start the next iteration of a loop is called th
 
 The following figure illustrates the difference in execution between pipelined and non-pipelined loops. In this figure, (A) shows the default sequential operation where there are three clock cycles between each input read (II = 3), and it requires eight clock cycles before the last output write is performed.
 
-<div align=center><img src="Images/2_4.png" alt="drawing" width="600"/></div>
+<div align=center><img src="Images/2_4.png" alt="drawing" width="500"/></div>
 
 In the pipelined version of the loop shown in (B), a new input sample is read every cycle (II = 1) and the final output is written after only four clock cycles: substantially improving both the II and latency while using the same hardware resources.
 
@@ -411,7 +411,7 @@ The scheduling is
 
 <div align=center><img src="Images/2_8.png" alt="drawing" width="1000"/></div>
 
-
+**loop_pipeline.cpp**
 ```C++
 int loop_pipeline(int A[N]) {
 #pragma HLS PIPELINE
@@ -589,4 +589,76 @@ The "enable" signal for the first stage is optional. It is only required when a 
 
 > (Important) Free-running kernel and free-running pipeline are different concepts. The free-running kernel means the entire module doesn't require any 'start' signal and is always ready to receive new data. The free-running pipeline is one structure to implement the pipeline.
 
+### Create Vivado Project
 
+The configure block design can use reference materials [here](https://uri-nextlab.github.io/ParallelProgammingLabs/HLS_Labs/Lab1.html)
+
+The different between the lab1 and lab2 is the AXI_DMA. For this IP, we need one read interface and one write interfaces. We have deliberately configured AXI_DMA0 with  the read channels enabled and the write channel enabled. This design choice is driven by the predominant data flow requirements of our IP core, which involves receiving data from memory. 
+
+And the block design is shown below.
+
+<div align=center><img src="Images/2_24.png" alt="drawing" width="1000"/></div>
+
+## Run synthesis,  Implementation and generate bitstream
+
+It may shows some errors about I/O Ports, please fix them.
+
+## Download the bitstream file to PYNQ
+
+The first step is to allocate the buffer. pynq allocate will be used to allocate the buffer, and NumPy will be used to specify the type of the buffer.
+
+```python
+from pynq import Overlay
+from pynq import allocate
+import numpy as np
+import time
+
+
+```
+
+### Create DMA instances
+
+Using the labels for the DMAs listed above, we can create three DMA objects.
+
+```python
+
+hw = Overlay('design_flp.bit')
+mm2s = hw.axi_dma_0.sendchannel
+s2mm = hw.axi_dma_0.recvchannel
+
+```
+
+### Read DMA
+
+The first step is to allocate the buffer. pynq.allocate will be used to allocate the buffer, and NumPy will be used to specify the type of the buffer.
+
+```python
+N = 10
+oBuf = allocate(shape=(N,), dtype = np.int32)
+iBuf = allocate(shape=(N,), dtype = np.int32)
+for i in range(N):
+    iBuf[i]= i
+    print(iBuf[i])
+
+```
+<div align=center><img src="Images/2_27.png" alt="drawing" width="300"/></div>
+
+
+```python
+
+mm2s.transfer(iBuf)
+s2mm.transfer(oBuf)
+mm2s.wait()
+s2mm.wait()
+
+```
+
+
+
+We will see:
+
+<div align=center><img src="Images/2_25.png" alt="drawing" width="300"/></div>
+
+And if we change the value of the iBuf for the frp design, we will also see:
+
+<div align=center><img src="Images/2_26.png" alt="drawing" width="300"/></div>
