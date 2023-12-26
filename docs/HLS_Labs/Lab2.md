@@ -663,6 +663,8 @@ And the result for the C simulation is shown below:
 
 <div align=center><img src="Images/2_21.png" alt="drawing" width="100"/></div>
 
-And if we change the value of the iBuf for the frp design, we will also see:
+And if we change the value of the iBuf for the frp design(design_frp.bit), we will also see:
 
 <div align=center><img src="Images/2_26.png" alt="drawing" width="300"/></div>
+
+We can see that style=flp/frp can successfully communicate with DMA for data exchange
