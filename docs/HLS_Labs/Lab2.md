@@ -667,4 +667,4 @@ And if we change the value of the iBuf for the frp design(design_frp.bit), we wi
 
 <div align=center><img src="Images/2_26.png" alt="drawing" width="300"/></div>
 
-We can see that style=flp/frp can successfully communicate with DMA for data exchange
+We can see that style=flp/frp can successfully communicate with DMA for data exchange.
