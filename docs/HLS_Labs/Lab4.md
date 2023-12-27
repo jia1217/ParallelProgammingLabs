@@ -19,11 +19,11 @@ sort: 4
         src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
 </script>
 
-#### Channel_2
+## Channel_2
 
 The dataflow model takes this series of sequential functions and creates a task-level pipeline architecture of concurrent processes. The tool does this by inferring the parallel tasks and channels. The designer specifies the region to model in the dataflow style (for example, a function body or a loop body) by specifying the DATAFLOW pragma or directive as shown below. The tool scans the loop/function body, extracts the parallel tasks as parallel processes, and establishes communication channels between these processes. The designer can additionally guide the tool to select the type of channels - for example, FIFO (hls::stream or #pragma HLS STREAM) or PIPO or hls::stream_of_blocks. The dataflow model is a powerful method for improving design throughput and latency.
 
-##### Simple_fifos
+### Simple_fifos
 
 This example shows how to use FIFOs as the channel type.
 
@@ -160,7 +160,7 @@ In the following figure, when the dataflow model is applied and the designer sel
 
 
 
-##### Using_fifos
+### Using_fifos
 
 The dataflow model is not limited to a chain of processes but can be used on any directed acyclic graph (DAG) structure, or cyclic structure when using hls::streams. It can produce two different forms of overlapping: within an iteration if processes are connected with FIFOs, and across different iterations when connected with PIPOs and FIFOs. This potentially improves performance over a statically pipelined solution. It replaces the strict, centrally-controlled pipeline stall philosophy with a distributed handshaking architecture using FIFOs and/or PIPOs. The replacement of the centralized control structure with a distributed one also benefits the fanout of control signals, for example register enables, which is distributed among the control structures of individual processes.
 
@@ -292,7 +292,7 @@ The dataflow view is shown below. We can see the channel is FIFO. We can see tha
 <div align=center><img src="Images/4_7.png" alt="drawing" width="800"/></div>
 
 
-##### Using_pipos
+### Using_pipos
 
 This example shows how to use the default PIPOs as the channel type.
 
@@ -382,7 +382,7 @@ FIFO (First In, First Out):
 
 * Requires additional hardware resources (memory blocks).
 
-##### Using_stream_of_blocks
+### Using_stream_of_blocks
 
 The hls::strema_of_blocks type:
 
