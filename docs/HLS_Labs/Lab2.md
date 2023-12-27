@@ -589,7 +589,7 @@ The "enable" signal for the first stage is optional. It is only required when a 
 
 > (Important) Free-running kernel and free-running pipeline are different concepts. The free-running kernel means the entire module doesn't require any 'start' signal and is always ready to receive new data. The free-running pipeline is one structure to implement the pipeline.
 
-### Create Vivado Project
+## Create Vivado Project
 
 The configure block design can use reference materials [here](https://uri-nextlab.github.io/ParallelProgammingLabs/HLS_Labs/Lab1.html)
 
