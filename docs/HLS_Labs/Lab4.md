@@ -100,7 +100,7 @@ We can set the optimization directives as config_dataflow -default_channel fifo 
 
 <div align=center><img src="Images/4_2.png" alt="drawing" width="400"/></div>
 
-The dataflow view is shown below; we can see that the channel is FIFO.
+The dataflow view is shown below. In this diagram, the green colored arrows are FIFO channels while the blue arrows indicate the inputs and outputs of the instantiating function.
 
 <div align=center><img src="Images/4_1.png" alt="drawing" width="800"/></div>
 
