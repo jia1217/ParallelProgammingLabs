@@ -96,7 +96,7 @@ Loop0:
 ```
 In the above example, there are four functions: funcA, funcB, funcC, and funcD. funcB and funcC do not have any data dependencies between them and therefore can be executed in parallel. funcA reads from the non-local memory (vecIn) and needs to be executed first. Similarly, funcD writes to the non-local memory (vecOut) and therefore has to be executed last.
 
-We can set the optimization directives as config_dataflow -default_channel fifo -fifo_depth 2 and like below.
+We can set the optimization directives as config_dataflow -default_channel fifo -fifo_depth 2 and like below. In this diagram, the green colored arrows are FIFO channels while the blue arrows indicate the inputs and outputs of the instantiating function.
 
 <div align=center><img src="Images/4_2.png" alt="drawing" width="400"/></div>
 
