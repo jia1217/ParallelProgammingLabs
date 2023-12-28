@@ -70,6 +70,26 @@ The control-driven TLP model optimizes the flow of data between tasks (functions
 
 Reading of inputs of the function should be done at the start of the dataflow region, and writing to outputs should be done at the end of the dataflow region. Reading/writing to the ports of the function can cause the processes to be executed in sequence rather than in an overlapped fashion, adversely impacting performance. For the tool to use the dataflow model, all elements passed between tasks must follow a single-producer-consumer model. Each variable must be driven from a single task and only be consumed by a single task. In addition, data should generally flow from one task to another. If you bypass tasks, this can reduce the performance of the dataflow model. 
 
+The DATAFLOW pragma enables task-level pipelining, allowing functions and loops to overlap in their operation, increasing the concurrency of the RTL implementation and increasing the overall throughput of the design.
+
+All operations are performed sequentially in a C description. In the absence of any directives that limit resources (such as pragma HLS allocation), the Vitis HLS tool seeks to minimize latency and improve concurrency. However, data dependencies can limit this. For example, functions or loops that access arrays must finish all read/write accesses to the arrays before they complete. This prevents the next function or loop that consumes the data from starting operation. The DATAFLOW optimization enables the operations in a function or loop to start operation before the previous function or loop completes all its operations.
+
+<div align=center><img src="Images/3_18.png" alt="drawing" width="600"/></div>
+
+When the DATAFLOW pragma is specified, the HLS tool analyzes the dataflow between sequential functions or loops and creates channels (based on ping pong RAMs or FIFOs) that allow consumer functions or loops to start operation before the producer functions or loops have completed. This allows functions or loops to operate in parallel, which decreases latency and improves the throughput of the RTL. For the DATAFLOW optimization to work, the data must flow through the design from one task to the next.
+
+For the DATAFLOW optimization to work, the data must flow through the design from one task to the next. The following coding styles prevent the HLS tool from performing the DATAFLOW optimization.
+
+* Single-producer-consumer violations
+
+* Feedback between tasks
+
+* Conditional execution of tasks
+
+* Loops with multiple exit conditions
+
+Finally, the DATAFLOW optimization has no hierarchical implementation. If a sub-function or loop contains additional tasks that might benefit from the DATAFLOW optimization, you must apply the optimization to the loop, the sub-function, or inline the sub-function.
+
 ##### input_bypass
 
 This example shows a common issue within a DATAFLOW Pipeline where the input arguments bypass the first function which causes performance degradation in the DATAFLOW pipeline. The example shows both the problem and the solution
