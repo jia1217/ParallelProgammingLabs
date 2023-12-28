@@ -322,7 +322,25 @@ This process will generate the necessary VHDL or Verilog files and associated me
 
 ### Create Block design
 
-In the block diagram which should contain the ZYNQ PS block, add the *AXI Direct Memory Access* block to your design. Also, we need to add the IP we export by HLS. The IP core features two input interfaces, each accepting data from distinct sources, while providing a single output interface that delivers the processed or combined result. In our FPGA design, the custom IP core leverages AXI_DMA for efficient data transfer. As we all know, the AXI_DMA typically consists of separate channels for read and write operations. And the write channel is used for writing data from the source to the memory and the read channel is used for reading data from memory to the destination. Emphasize that the read and write channels operate independently. The read channel can be configured, initiated, and managed separately from the write channel. The advantages of having a separate read channel: 
+In the block diagram which should contain the ZYNQ PS block, and when you create the block design, you need to set the ZYNQ Processing System as shown below.
+
+<div align=center><img src="Images/5_11.png" alt="drawing" width="600"/></div>
+
+Select the corresponding DDR model.
+
+<div align=center><img src="Images/5_12.png" alt="drawing" width="600"/></div>
+
+In the Output Clocks option, change the output frequency to 100M Hz.
+
+<div align=center><img src="Images/5_13.png" alt="drawing" width="600"/></div>
+
+And then click the green word "Run Block Automation" 
+
+<div align=center><img src="Images/5_14.png" alt="drawing" width="600"/></div>
+
+Add the *AXI Direct Memory Access* block to your design. Also, we need to add the IP we export by HLS. The IP core features two input interfaces, each accepting data from distinct sources while providing a single output interface that delivers the processed or combined result. In our FPGA design, the custom IP core leverages AXI_DMA for efficient data transfer. As we all know, the AXI_DMA typically consists of separate channels for read and write operations. And the write channel is used for writing data from the source to the memory and the read channel is used for reading data from memory to the destination. Emphasize that the read and write channels operate independently. The read channel can be configured, initiated, and managed separately from the write channel. The advantages of having a separate read channel: 
+
+<div align=center><img src="Images/5_15.png" alt="drawing" width="600"/></div>
 
 * Concurrent Operations: Enables concurrent read and write operations for improved performance.
 
@@ -415,6 +433,8 @@ Print the value of input_buffer, you will see:
 s2mm_0.transfer(iBuf_0)
 s2mm_1.transfer(iBuf_1)
 mm2s.transfer(oBuf)
+
+
 ```
 
 We will see:
