@@ -3,7 +3,7 @@ sort: 5
 ---
 
 
-# Lab5 TLP_Data_driven_1
+# Lab5 TLP_data_driven
 
 <script type="text/x-mathjax-config">
   MathJax.Hub.Config({
@@ -330,6 +330,10 @@ void odds_and_evens(hls::stream<int>& in, hls::stream<int>& out1,
 
 void splitter(hls::stream<int>& in, hls::stream<int>& odds_buf,
               hls::stream<int>& evens_buf) {
+#pragma HLS INTERFACE ap_ctrl_none port=return
+#pragma HLS INTERFACE mode=AXIS port=in register_mode=off
+#pragma HLS INTERFACE mode=AXIS port=out register_mode=off
+#pragma HLS PIPELINE II=1 style=flp
     int data = in.read();
     if (data % 2 == 0)
         evens_buf.write(data);
@@ -338,15 +342,27 @@ void splitter(hls::stream<int>& in, hls::stream<int>& odds_buf,
 }
 
 void odds(hls::stream<int>& in, hls::stream<int>& out) {
+#pragma HLS INTERFACE ap_ctrl_none port=return
+#pragma HLS INTERFACE mode=AXIS port=in register_mode=off
+#pragma HLS INTERFACE mode=AXIS port=out register_mode=off
+#pragma HLS PIPELINE II=1 style=flp
     out.write(in.read() + 1);
 }
 
 void evens(hls::stream<int>& in, hls::stream<int>& out) {
+#pragma HLS INTERFACE ap_ctrl_none port=return
+#pragma HLS INTERFACE mode=AXIS port=in register_mode=off
+#pragma HLS INTERFACE mode=AXIS port=out register_mode=off
+#pragma HLS PIPELINE II=1 style=flp
     out.write(in.read() + 2);
 }
 
 void odds_and_evens(hls::stream<int>& in, hls::stream<int>& out1,
                     hls::stream<int>& out2) {
+#pragma HLS INTERFACE ap_ctrl_none port=return
+#pragma HLS INTERFACE mode=AXIS port=in register_mode=off
+#pragma HLS INTERFACE mode=AXIS port=out1 register_mode=off
+#pragma HLS INTERFACE mode=AXIS port=out2 register_mode=off
     hls_thread_local hls::stream<int, N / 2> s1; // channel connecting t1 and t2
     hls_thread_local hls::stream<int, N / 2> s2; // channel connecting t1 and t3
 
