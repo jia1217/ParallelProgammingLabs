@@ -298,7 +298,7 @@ To generate the IP, you should do several steps in the below.
 * Write or Import Code: Write your hardware function in C, C++, or SystemC. This code will describe the behavior you want to implement in hardware. Alternatively, you can import 
 existing C/C++ code if available and you can click the green button "Run C Simulation" to verify the result of the function.
 
-<div align=center><img src="Images/2_14.png" alt="drawing" width="300"/></div>
+<div align=center><img src="Images/2_14.png" alt="drawing" width="200"/></div>
 
 * Optimize and Synthesize: After writing or importing your code, use Vitis HLS to synthesize and optimize the code and you can click the green button "Run C Synthesis". The tool will generate a hardware description from your high-level code as shown in the below.
 
