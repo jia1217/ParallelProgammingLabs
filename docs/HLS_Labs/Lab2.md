@@ -37,7 +37,7 @@ Notice that no resources can be shared if the function is pipelined. Circuits at
 
 ### Function_optimization
 
-The FUNCTION_INSTANTIATE pragma is an optimization technique that has the area benefits of maintaining the function hierarchy but provides an additional powerful option: performing targeted local optimizations on specific instances of a function. This can simplify the control logic around the function call and potentially improve latency and throughput.
+The ```FUNCTION_INSTANTIATE``` pragma is an optimization technique that has the area benefits of maintaining the function hierarchy but provides an additional powerful option: performing targeted local optimizations on specific instances of a function. This can simplify the control logic around the function call and potentially improve latency and throughput.
 
 By default:
 
@@ -45,7 +45,7 @@ By default:
 
 * All instances of a function, at the same level of hierarchy, make use of a single RTL implementation (block).
 
-The FUNCTION_INSTANTIATE pragma allows you to control how functions are instantiated within the hardware design. By default, Vivado HLS will automatically instantiate functions when they are called. However, in certain scenarios, you might want to provide explicit control over the instantiation behavior. The syntax is: ([Ref](https://docs.xilinx.com/r/en-US/ug1399-vitis-hls/pragma-HLS-function_instantiate)).
+The ```FUNCTION_INSTANTIATE``` pragma allows you to control how functions are instantiated within the hardware design. By default, Vivado HLS will automatically instantiate functions when they are called. However, in certain scenarios, you might want to provide explicit control over the instantiation behavior. The syntax is: ([Ref](https://docs.xilinx.com/r/en-US/ug1399-vitis-hls/pragma-HLS-function_instantiate)).
 
 In this example, we use the function which takes two parameters (operands) and returns their sum. In the top-level function, we make multiple calls to another function. This means that within the main function or primary function, we repeatedly invoke (or use) another specific function to perform certain tasks or operations.
 
@@ -105,15 +105,15 @@ And the result of C simulation is as shown in below.
 
 <div align=center><img src="Images/2_2.png" alt="drawing" width="400"/></div>
 
-You can click the "Run C Synthesis" to see the optimization result. Without the FUNCTION_INSTANTIATE pragma, the following code results in a single RTL implementation of function foo for all three instances of the function in func. Each instance of function foo is implemented in an identical manner. This is fine for function reuse and reducing the area required for each instance call of a function, but means that the control logic inside the function must be more complex to account for the variation in each call of foo.
+You can click the ```Run C Synthesis``` to see the optimization result. Without the ```FUNCTION_INSTANTIATE``` pragma, the following code results in a single RTL implementation of function foo for all three instances of the function in func. Each instance of function ```foo``` is implemented in an identical manner. This is fine for function reuse and reducing the area required for each instance call of a function, but means that the control logic inside the function must be more complex to account for the variation in each call of ```foo```.
 
-The below is the optimization result with the FUNCTION_INSTANTIATE pragma.
+The below is the optimization result with the ```FUNCTION_INSTANTIATE``` pragma.
 
 <div align=center><img src="Images/2_3.png" alt="drawing" width="1000"/></div>
 
 ### Loop_optimization
 
-Pipelining loops permits starting the next iteration of a loop before the previous iteration finishes, enabling portions of the loop to overlap in execution. By default, every iteration of a loop only starts when the previous iteration has finished. In the loop example below, a single iteration of the loop adds two variables and stores the result in a third variable. Assume that in hardware this loop takes three cycles to finish one iteration. Also, assume that the loop variable len is 20, that is, the vadd loop runs for 20 iterations in the kernel. Therefore, it requires a total of 60 clock cycles (20 iterations * 3 cycles) to complete all the operations of this loop.
+Pipelining loops permits starting the next iteration of a loop before the previous iteration finishes, enabling portions of the loop to overlap in execution. By default, every iteration of a loop only starts when the previous iteration has finished. In the loop example below, a single iteration of the loop adds two variables and stores the result in a third variable. Assume that in hardware this loop takes three cycles to finish one iteration. Also, assume that the loop variable len is 20, that is, the ```vadd``` loop runs for 20 iterations in the kernel. Therefore, it requires a total of 60 clock cycles (20 iterations * 3 cycles) to complete all the operations of this loop.
 
 ```c++
 vadd: for(int i = 0; i < len; i++) { 
@@ -192,7 +192,7 @@ LOOP_I:
 }
 ```
 The loop_imperfect function contains two nested for loops (LOOP_I and LOOP_J) that iterate from 0 to 19.
-Inside the inner loop (LOOP_J), there is an accumulator variable acc that accumulates the product of A[j] and j for each iteration of the inner loop.It stores these weighted sums (or 0 for odd i) in elements of array B.
+Inside the inner loop (LOOP_J), there is an accumulator variable ```acc``` that accumulates the product of ```A[j]``` and j for each iteration of the inner loop.It stores these weighted sums (or 0 for odd i) in elements of array ```B```.
 
 The result of the C Synthesis is as shown in the below.
 
@@ -226,8 +226,8 @@ LOOP_I:
 
 ```
 The loop_perfect function contains two nested for loops (LOOP_I and LOOP_J) that iterate from 0 to 19.
-Inside the inner loop (LOOP_J), there is an accumulator variable acc that accumulates the product of A[j] and j for each iteration of the inner loop.
-At the end of the inner loop (j == 19), the function checks if the index i of the outer loop is even (i % 2 == 0). If i is even, it computes the average of the accumulated values in acc and stores it in B[i]. Otherwise, it sets B[i] to 0.
+Inside the inner loop (```LOOP_J```), there is an accumulator variable ```acc``` that accumulates the product of ```A[j]``` and j for each iteration of the inner loop.
+At the end of the inner loop (j == 19), the function checks if the index i of the outer loop is even (i % 2 == 0). If i is even, it computes the average of the accumulated values in acc and stores it in ```B[i]```. Otherwise, it sets ```B[i]``` to 0.
 
 The result of the C Synthesis is as shown in the below.
 
@@ -264,15 +264,15 @@ int main() {
 
 ```
 
-The result of the C Simulation is the same. This example shows that the different loop structures can significantly affect the final optimization results. For the imperfect loop, inside the outer loop (LOOP_I), the accumulator variable acc is initialized to 0 for each iteration. This initialization should ideally occur once before entering the inner loop to avoid unnecessary reset operations. And the code has a conditional assignment to B[i] based on whether the index i is even or odd (if (i % 2 == 0)). This conditional assignment introduces branching in the code, which may impact performance and efficiency during hardware synthesis. For the perfect loop, the code contains a simple accumulation operation (acc += A[j] * j;) and conditional statements to handle specific conditions (if (j == 0) and if (j == 19)). The straightforward logic and absence of complex dependencies make optimizing and flattening the code easier for the synthesis tool.
+The result of the C Simulation is the same. This example shows that the different loop structures can significantly affect the final optimization results. For the imperfect loop, inside the outer loop (```LOOP_I```), the accumulator variable ```acc``` is initialized to 0 for each iteration. This initialization should ideally occur once before entering the inner loop to avoid unnecessary reset operations. And the code has a conditional assignment to ```B[i]``` based on whether the index i is even or odd (if (i % 2 == 0)). This conditional assignment introduces branching in the code, which may impact performance and efficiency during hardware synthesis. For the perfect loop, the code contains a simple accumulation operation (```acc += A[j] * j```) and conditional statements to handle specific conditions (if (j == 0) and if (j == 19)). The straightforward logic and absence of complex dependencies make optimizing and flattening the code easier for the synthesis tool.
 
 #### pipelined loop
 
 Pipelining a loop causes any loops nested inside the pipelined loop to get automatically unrolled. This example shows different variations of the Loop pipelining (inner-most loop and outer-most loop).
 
-If the outer loop (LOOP_I) is pipelined, inner-loop (LOOP_J) is unrolled creating 20 copies of the loop body: 20 multipliers and 1 array accesses must now be scheduled. Then each iteration of LOOP_I can be scheduled as a single entity.
+If the outer loop (```LOOP_I```) is pipelined, inner-loop (```LOOP_J```) is unrolled creating 20 copies of the loop body: 20 multipliers and 1 array accesses must now be scheduled. Then each iteration of ```LOOP_I``` can be scheduled as a single entity.
 
-If the top-level function is pipelined, both loops must be unrolled: 400 multipliers and 20 array accesses must now be scheduled. It is very unlikely that Vitis HLS will produce a design with 400 multiplications because, in most designs, data dependencies often prevent maximal parallelism, for example, even if a dual-port RAM is used for A, the design can only access two values of A in any clock cycle. Otherwise, the array must be partitioned into 400 registers, which then can all be read in one clock cycle, with a very significant HW cost.
+If the top-level function is pipelined, both loops must be unrolled: 400 multipliers and 20 array accesses must now be scheduled. It is very unlikely that Vitis HLS will produce a design with 400 multiplications because, in most designs, data dependencies often prevent maximal parallelism, for example, even if a dual-port RAM is used for `A`, the design can only access two values of A in any clock cycle. Otherwise, the array must be partitioned into 400 registers, which then can all be read in one clock cycle, with a very significant HW cost.
 
 
 **loop_pipeline.h**
