@@ -3,7 +3,7 @@ sort: 3
 ---
 
 
-# Lab3 Task_level_Parallelism_Control_driven_1
+# Lab3 Task_level_Parallelism_control_driven_1
 
 <script type="text/x-mathjax-config">
   MathJax.Hub.Config({
@@ -70,15 +70,15 @@ The control-driven TLP model optimizes the flow of data between tasks (functions
 
 Reading of inputs of the function should be done at the start of the dataflow region, and writing to outputs should be done at the end of the dataflow region. Reading/writing to the ports of the function can cause the processes to be executed in sequence rather than in an overlapped fashion, adversely impacting performance. For the tool to use the dataflow model, all elements passed between tasks must follow a single-producer-consumer model. Each variable must be driven from a single task and only be consumed by a single task. In addition, data should generally flow from one task to another. If you bypass tasks, this can reduce the performance of the dataflow model. 
 
-The DATAFLOW pragma enables task-level pipelining, allowing functions and loops to overlap in their operation, increasing the concurrency of the RTL implementation and increasing the overall throughput of the design.
+The ```DATAFLOW``` pragma enables task-level pipelining, allowing functions and loops to overlap in their operation, increasing the concurrency of the RTL implementation and increasing the overall throughput of the design.
 
 All operations are performed sequentially in a C description. In the absence of any directives that limit resources (such as pragma HLS allocation), the Vitis HLS tool seeks to minimize latency and improve concurrency. However, data dependencies can limit this. For example, functions or loops that access arrays must finish all read/write accesses to the arrays before they complete. This prevents the next function or loop that consumes the data from starting operation. The DATAFLOW optimization enables the operations in a function or loop to start operation before the previous function or loop completes all its operations.
 
 <div align=center><img src="Images/3_18.png" alt="drawing" width="600"/></div>
 
-When the DATAFLOW pragma is specified, the HLS tool analyzes the dataflow between sequential functions or loops and creates channels (based on ping pong RAMs or FIFOs) that allow consumer functions or loops to start operation before the producer functions or loops have completed. This allows functions or loops to operate in parallel, which decreases latency and improves the throughput of the RTL. For the DATAFLOW optimization to work, the data must flow through the design from one task to the next.
+When the ```DATAFLOW``` pragma is specified, the HLS tool analyzes the dataflow between sequential functions or loops and creates channels (based on ```ping pong RAMs``` or ```FIFOs```) that allow consumer functions or loops to start operation before the producer functions or loops have completed. This allows functions or loops to operate in parallel, which decreases latency and improves the throughput of the RTL. For the ```DATAFLOW``` optimization to work, the data must flow through the design from one task to the next.
 
-For the DATAFLOW optimization to work, the data must flow through the design from one task to the next. The following coding styles prevent the HLS tool from performing the DATAFLOW optimization.
+For the ```DATAFLOW``` optimization to work, the data must flow through the design from one task to the next. The following coding styles prevent the HLS tool from performing the ```DATAFLOW``` optimization.
 
 * Single-producer-consumer violations
 
@@ -88,11 +88,11 @@ For the DATAFLOW optimization to work, the data must flow through the design fro
 
 * Loops with multiple exit conditions
 
-Finally, the DATAFLOW optimization has no hierarchical implementation. If a sub-function or loop contains additional tasks that might benefit from the DATAFLOW optimization, you must apply the optimization to the loop, the sub-function, or inline the sub-function.
+Finally, the ```DATAFLOW``` optimization has no hierarchical implementation. If a sub-function or loop contains additional tasks that might benefit from the ```DATAFLOW``` optimization, you must apply the optimization to the loop, the sub-function, or inline the sub-function.
 
 ##### input_bypass
 
-This example shows a common issue within a DATAFLOW Pipeline where the input arguments bypass the first function which causes performance degradation in the DATAFLOW pipeline. The example shows both the problem and the solution
+This example shows a common issue within a ```DATAFLOW``` Pipeline where the input arguments bypass the first function which causes performance degradation in the ```DATAFLOW``` pipeline. The example shows both the problem and the solution
 
 **dut. cpp**
 ```c++
@@ -131,7 +131,7 @@ void dut(int a[128], int b[128], int tmp3[128]) {
 
 ```
 
-The dataflow view is shown below. We can see that the input data labeled as "a" in a top-level function is passed to the pass_u0 function, and the input data labeled as "b" in the same top-level function is passed to the double_pass_u0 function where the input arguments bypass the first function which causes performance degradation in the DATAFLOW pipeline.
+The dataflow view is shown below. We can see that the input data labeled as ```a``` in a top-level function is passed to the ```pass_u0``` function, and the input data labeled as ```b``` in the same top-level function is passed to the ```double_pass_u0``` function where the input arguments bypass the first function which causes performance degradation in the DATAFLOW pipeline.
 
 <div align=center><img src="Images/3_2.png" alt="drawing" width="200"/></div>
 
@@ -177,7 +177,7 @@ void dut(int a[128], int b[128], int tmp3[128]) {
 
 ```
 
-The dataflow view is shown below. The top-level function reads both input data labeled as "a" and "b" and passes them to the pass_2_u0 function.
+The dataflow view is shown below. The top-level function reads both input data labeled as ```a``` and ```b``` and passes them to the ```pass_2_u0``` function.
 
 <div align=center><img src="Images/3_1.png" alt="drawing" width="200"/></div>
 
@@ -227,7 +227,7 @@ void dut(int a[128], int b[128], int tmp3[128]) {
 
 ```
 
-This is a common DATAFLOW issue, where the channels inside the DATAFLOW are not feed-forward and bypass the tasks which causes a degradation in performance. This example shows both the problem and the solution. The dataflow view is shown below. 
+This is a common DATAFLOW issue, where the channels inside the ```DATAFLOW``` are not feed-forward and bypass the tasks which causes a degradation in performance. This example shows both the problem and the solution. The dataflow view is shown below. 
 
 <div align=center><img src="Images/3_3.png" alt="drawing" width="200"/></div>
 
@@ -311,7 +311,7 @@ void dut(int a[128], int b[128], int tmp2[128]) {
 }
 
 ```
-This is a common DATAFLOW issue, where the channels inside the DATAFLOW does not follow the feed-forward which causes degradation in performance. This example shows both the problem and solution 
+This is a common DATAFLOW issue, where the channels inside the ```DATAFLOW``` does not follow the feed-forward which causes degradation in performance. This example shows both the problem and solution 
 
 <div align=center><img src="Images/3_7.png" alt="drawing" width="200"/></div>
 
@@ -350,19 +350,19 @@ The dataflow view is shown below.
 
 <div align=center><img src="Images/3_6.png" alt="drawing" width="200"/></div>
 
-#### Channels
+#### Channel_1
 
-Vitis HLS implements channels between the tasks as either PIPO or FIFO buffers, depending on the user's choice:
+Vitis HLS implements channels between the tasks as either ```PIPO``` or ```FIFO``` buffers, depending on the user's choice:
 
-* For scalars, Vitis HLS automatically infers FIFOs as the channel type.
+* For scalars, Vitis HLS automatically infers ```FIFOs``` as the channel type.
 
-* If the parameter (of a producer or consumer) is an array, the user has a choice of implementing the channel as a PIPO or a FIFO based on the following considerations:
+* If the parameter (of a producer or consumer) is an array, the user has a choice of implementing the channel as a ```PIPO``` or a ```FIFO``` based on the following considerations:
 
-If the data is always accessed in sequential order, the user can choose to implement this memory channel as PIPO/FIFO. Choosing PIPOs comes with the advantage that PIPOs can never deadlock but they require more memory to use. Choosing FIFOs offers the advantage of lesser memory requirements but this comes with the risk of deadlock if the FIFO sizes are not correct.
+If the data is always accessed in sequential order, the user can choose to implement this memory channel as ```PIPO/FIFO```. Choosing ```PIPOs``` comes with the advantage that ```PIPOs``` can never deadlock but they require more memory to use. Choosing FIFOs offers the advantage of lesser memory requirements but this comes with the risk of deadlock if the ```FIFO``` sizes are not correct.
 
-If the data is accessed in an arbitrary manner, the memory channel must be implemented as a PIPO (with a default size that is twice the size of the original array).
+If the data is accessed in an arbitrary manner, the memory channel must be implemented as a ```PIPO``` (with a default size that is twice the size of the original array).
 
-Specifying the size of the FIFO channels overrides the default value that is computed by the tool to attempt to optimize the throughput. If any function in the design can produce or consume samples at a greater rate than the specified size of the FIFO, the FIFOs might become empty (or full). In this case, the design halts operation, because it is unable to read (or write). This might lead to a stalled, deadlock state.
+Specifying the size of the ```FIFO``` channels overrides the default value that is computed by the tool to attempt to optimize the throughput. If any function in the design can produce or consume samples at a greater rate than the specified size of the ```FIFO```, the ```FIFOs``` might become empty (or full). In this case, the design halts operation, because it is unable to read (or write). This might lead to a stalled, deadlock state.
 
 ##### Merge_split
 
@@ -380,7 +380,7 @@ Where:
 
 * round_robin/load_balancing: Specifies the type of scheduler mechanism used for the channel.
 
-* DATATYPE: Specifies the data type on the channel. This has the same restrictions as standard hls::stream. The DATATYPE can be:
+* ```DATATYPE```: Specifies the data type on the channel. This has the same restrictions as standard hls::stream. The DATATYPE can be:
 
 * Any C++ native data type
 
@@ -388,13 +388,13 @@ Where:
 
 * A user-defined struct containing either of the above types
 
-* NUM_PORTS: Indicates the number of write ports required for split (1:num) or read-ports required for merge (num:1) operation.
+* ```NUM_PORTS```: Indicates the number of write ports required for split (1:num) or read-ports required for merge (num:1) operation.
 
-* DEPTH: Optional argument is the depth of the main buffer, located before the split or after the merge. This is optional, and the default depth is 2 when not specified.
+* ```DEPTH```: Optional argument is the depth of the main buffer, located before the split or after the merge. This is optional, and the default depth is 2 when not specified.
 
-* N_PORT_DEPTH: Optional field for round-robin to specify the depth of output buffers applied after the split, or before merge. This is optional and the default depth is 0 when not specified.
+* ```N_PORT_DEPTH```: Optional field for round-robin to specify the depth of output buffers applied after the split, or before merge. This is optional and the default depth is 0 when not specified.
 
-Tip: To specify the optional N_PORT_DEPTH value, you must also specify DEPTH.
+Tip: To specify the optional ```N_PORT_DEPTH``` value, you must also specify ```DEPTH```.
 
 **test.h**
 ```c++
@@ -571,7 +571,7 @@ The result of the C simulation is shown below.
 
 ###### split_load_balance
 
-A split channel has one producer and many consumers, and can be typically used to distribute tasks to a set of workers, abstracting and implementing in RTL the distribution logic, and thus leading to both better performance and fewer resources. The distribution of an input to one of the N outputs can be:
+A split channel has one producer and many consumers, and can be typically used to distribute tasks to a set of workers, abstracting and implementing in RTL the distribution logic, and thus leading to both better performance and fewer resources. The distribution of an input to one of the ```N``` outputs can be:
 
 * Load balancing, where the first consumer to attempt a read will read the first input data, thus ensuring good load balancing, but with non-deterministic results.
 
@@ -738,4 +738,6 @@ The dataflow view is shown below.
 The result of the C simulation is shown below.
 
 <div align=center><img src="Images/3_16.png" alt="drawing" width="500"/></div>
+
+
 
