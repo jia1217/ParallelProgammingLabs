@@ -272,7 +272,7 @@ Pipelining a loop causes any loops nested inside the pipelined loop to get autom
 
 If the outer loop (```LOOP_I```) is pipelined, inner-loop (```LOOP_J```) is unrolled creating 20 copies of the loop body: 20 multipliers and 1 array accesses must now be scheduled. Then each iteration of ```LOOP_I``` can be scheduled as a single entity.
 
-If the top-level function is pipelined, both loops must be unrolled: 400 multipliers and 20 array accesses must now be scheduled. It is very unlikely that Vitis HLS will produce a design with 400 multiplications because, in most designs, data dependencies often prevent maximal parallelism, for example, even if a dual-port RAM is used for `A`, the design can only access two values of ```A``` in any clock cycle. Otherwise, the array must be partitioned into 400 registers, which then can all be read in one clock cycle, with a very significant HW cost.
+If the top-level function is pipelined, both loops must be unrolled: 400 multipliers and 20 array accesses must now be scheduled. It is very unlikely that Vitis HLS will produce a design with 400 multiplications because, in most designs, data dependencies often prevent maximal parallelism, for example, even if a dual-port RAM is used for ```A```, the design can only access two values of ```A``` in any clock cycle. Otherwise, the array must be partitioned into 400 registers, which then can all be read in one clock cycle, with a very significant HW cost.
 
 
 **loop_pipeline.h**
@@ -351,7 +351,7 @@ int main() {
 
 ```
 
-The concept to appreciate when selecting at which level of the hierarchy to pipeline is to understand that pipelining the innermost loop gives the smallest hardware with generally acceptable throughput for most applications. Pipelining the upper levels of the hierarchy unrolls all sub-loops and can create many more operations to schedule (which could impact compile time and memory capacity), but typically gives the highest performance design in terms of throughput and latency. The data access bandwidth must be matched to the requirements of the operations that are expected to be executed in parallel. This implies that you might need to partition array A in order to make this work.
+The concept to appreciate when selecting at which level of the hierarchy to pipeline is to understand that pipelining the innermost loop gives the smallest hardware with generally acceptable throughput for most applications. Pipelining the upper levels of the hierarchy unrolls all sub-loops and can create many more operations to schedule (which could impact compile time and memory capacity), but typically gives the highest performance design in terms of throughput and latency. The data access bandwidth must be matched to the requirements of the operations that are expected to be executed in parallel. This implies that you might need to partition array ```A``` in order to make this work.
 
 **loop_pipeline.cpp**
 ```C++
@@ -375,7 +375,7 @@ LOOP_I:
 
 ```
 
-* Pipeline LOOP_J: Latency is approximately 25 cycles (5x5) and requires less than 250 LUTs and registers (the I/O control and FSM are always present).
+* Pipeline ```LOOP_J```: Latency is approximately 25 cycles (5x5) and requires less than 250 LUTs and registers (the I/O control and FSM are always present).
 
 <div align=center><img src="Images/2_16.png" alt="drawing" width="600"/></div>
 
@@ -404,7 +404,7 @@ LOOP_I:
 
 
 ```
-* Pipeline LOOP_I: Latency is 13 cycles but requires a few hundred LUTs and registers. About twice the logic as the first option, minus any logic optimizations that can be made.
+* Pipeline ```LOOP_I```: Latency is 13 cycles but requires a few hundred LUTs and registers. About twice the logic as the first option, minus any logic optimizations that can be made.
 
 The scheduling is 
 <div align=center><img src="Images/2_17.png" alt="drawing" width="600"/></div>
@@ -434,7 +434,7 @@ LOOP_I:
 
 
 ```
-* Pipeline function loop_pipeline: Latency is now only 3 cycles (due to 20 parallel register accesses) but requires almost twice the logic as the second option (and about 4 times the logic of the first option), minus any optimizations that can be made.
+* Pipeline ```function loop_pipeline```: Latency is now only 3 cycles (due to 20 parallel register accesses) but requires almost twice the logic as the second option (and about 4 times the logic of the first option), minus any optimizations that can be made.
 
 <div align=center><img src="Images/2_18.png" alt="drawing" width="400"/></div>
 
@@ -451,9 +451,9 @@ The Pipeline architecture can be implemented in 3 modes:
 
 * STP (stall pipeline)
 
-The three types of pipelines available in the tool are summarized in the following table. The tool automatically selects the right pipeline style to use for a given pipelined loop or function. If the pipeline is used with hls::tasks, the flushing pipeline (FLP) style is automatically selected to avoid deadlocks. If the pipeline control requires high fanout, and meets other free-running requirements, the tool selects the free-running pipeline (FRP) style to limit the high fanout. Finally, if neither of the above cases apply, then the standard pipeline (STP) style is selected. [Ref](https://docs.xilinx.com/r/en-US/ug1399-vitis-hls/Flushing-Pipelines-and-Pipeline-Types)
+The three types of pipelines available in the tool are summarized in the following table. The tool automatically selects the right pipeline style to use for a given pipelined loop or function. If the pipeline is used with ```hls::tasks```, the flushing pipeline (```FLP```) style is automatically selected to avoid deadlocks. If the pipeline control requires high fanout, and meets other free-running requirements, the tool selects the free-running pipeline (```FRP```) style to limit the high fanout. Finally, if neither of the above cases apply, then the standard pipeline (```STP```) style is selected. [Ref](https://docs.xilinx.com/r/en-US/ug1399-vitis-hls/Flushing-Pipelines-and-Pipeline-Types)
 
-This example uses a FRP (free-ruuning pipeline) mode to configure the pipeline architecture using a global command which is useful in reducing control logic fanout in vivado.
+This example uses a ```FRP``` (free-ruuning pipeline) mode to configure the pipeline architecture using a global command which is useful in reducing control logic fanout in vivado.
 
 **free_pipe_mult.h**
 ```c++
@@ -569,7 +569,7 @@ In a flushable pipeline, once the input data becomes invalid, it shuts down pipe
 <div align=center><img src="Images/2_11.png" alt="drawing" width="700"/></div>
 
 **Free-Running/Flushable Pipeline (FRP)**  
-Though the FLP reduces some fanout of the pipeline controlling signal, it is still not perfect as one pipeline may have hundreds of FFs to control. Free running pipeline further simplifies it.   
+Though the ```FLP``` reduces some fanout of the pipeline controlling signal, it is still not perfect as one pipeline may have hundreds of FFs to control. Free running pipeline further simplifies it.   
 Advantages:
 > Flushable
 > Better Timing:  
@@ -585,7 +585,7 @@ The structure is shown below:
 <div align=center><img src="Images/2_12.png" alt="drawing" width="500"/></div>
 
 
-The "enable" signal for the first stage is optional. It is only required when a shift register is placed at the first stage (if the input is not valid, the shift register shouldn't run). FRP keeps the following stages running. The output valid signal is generated from the valid_in. Therefore, a minimum number of "enable" signals is required. However, making the circuit run continuously is not energy efficient.
+The "enable" signal for the first stage is optional. It is only required when a shift register is placed at the first stage (if the input is not valid, the shift register shouldn't run). ```FRP``` keeps the following stages running. The output valid signal is generated from the valid_in. Therefore, a minimum number of "enable" signals is required. However, making the circuit run continuously is not energy efficient.
 
 > (Important) Free-running kernel and free-running pipeline are different concepts. The free-running kernel means the entire module doesn't require any 'start' signal and is always ready to receive new data. The free-running pipeline is one structure to implement the pipeline.
 
@@ -593,7 +593,7 @@ The "enable" signal for the first stage is optional. It is only required when a 
 
 The configure block design can use reference materials [here](https://uri-nextlab.github.io/ParallelProgammingLabs/HLS_Labs/Lab1.html)
 
-The different between the lab1 and lab2 is the AXI_DMA. For this IP, we need one read interface and one write interfaces. We have deliberately configured AXI_DMA0 with  the read channels enabled and the write channel enabled. This design choice is driven by the predominant data flow requirements of our IP core, which involves receiving data from memory. 
+The different between the lab1 and lab2 is the ```AXI_DMA```. For this IP, we need one read interface and one write interfaces. We have deliberately configured ```AXI_DMA0``` with  the read channels enabled and the write channel enabled. This design choice is driven by the predominant data flow requirements of our IP core, which involves receiving data from memory. 
 
 And the block design is shown below.
 
