@@ -143,11 +143,11 @@ After the Run C Simulation, we will see the error below.
 
 And then in the window, (titled "C Simulation Dialog") that pops up, select the "Launch Debugger" option and click "OK".
 
-<div align=center><img src="Images/5_2.png" alt="drawing" width="200"/></div>
+<div align=center><img src="Images/5_2.png" alt="drawing" width="300"/></div>
 
 The debugging process is currently stopped in the main() function. Click the "Resume" icon (Top Left-most Green Triangle Icon) to continue the simulation.
 
-<div align=center><img src="Images/5_3.png" alt="drawing" width="400"/></div>
+<div align=center><img src="Images/5_3.png" alt="drawing" width="500"/></div>
 
 Click "Resume" causes the simulation to run and you will see the "deadlock detected when simulating hls::tasks" in the Console window. 
 
