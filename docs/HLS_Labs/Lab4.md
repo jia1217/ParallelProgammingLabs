@@ -3,7 +3,7 @@ sort: 4
 ---
 
 
-# Lab4 Task_level_Parallelism_Control_driven_2
+# Lab4 Task_level_Parallelism_control_driven_2
 
 <script type="text/x-mathjax-config">
   MathJax.Hub.Config({
@@ -19,13 +19,13 @@ sort: 4
         src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
 </script>
 
-## Channel_2
+#### Channel_2
 
-The dataflow model takes this series of sequential functions and creates a task-level pipeline architecture of concurrent processes. The tool does this by inferring the parallel tasks and channels. The designer specifies the region to model in the dataflow style (for example, a function body or a loop body) by specifying the DATAFLOW pragma or directive as shown below. The tool scans the loop/function body, extracts the parallel tasks as parallel processes, and establishes communication channels between these processes. The designer can additionally guide the tool to select the type of channels - for example, FIFO (hls::stream or #pragma HLS STREAM) or PIPO or hls::stream_of_blocks. The dataflow model is a powerful method for improving design throughput and latency.
+The dataflow model takes this series of sequential functions and creates a task-level pipeline architecture of concurrent processes. The tool does this by inferring the parallel tasks and channels. The designer specifies the region to model in the dataflow style (for example, a function body or a loop body) by specifying the DATAFLOW pragma or directive as shown below. The tool scans the loop/function body, extracts the parallel tasks as parallel processes, and establishes communication channels between these processes. The designer can additionally guide the tool to select the type of channels - for example, ```FIFO``` (```hls::stream``` or ```#pragma HLS STREAM```) or ```PIPO``` or ```hls::stream_of_blocks```. The dataflow model is a powerful method for improving design throughput and latency.
 
-### Simple_fifos
+##### Simple_fifos
 
-This example shows how to use FIFOs as the channel type.
+This example shows how to use ```FIFOs``` as the channel type.
 
 **diamond.h**
 ```c++
@@ -57,7 +57,6 @@ void diamond(data_t vecIn[N], data_t vecOut[N]) {
 
 void funcA(data_t* in, data_t* out1, data_t* out2) {
 #pragma HLS inline off
-//In Vitis HLS, the #pragma HLS inline off directive tells the compiler not to inline the function or subroutine immediately following it. This means that instead of directly inserting the function's code wherever it's called, the compiler creates a separate function call at //runtime.
 Loop0:
     for (int i = 0; i < N; i++) {
 #pragma HLS pipeline
@@ -94,20 +93,19 @@ Loop0:
     }
 }
 ```
-In the above example, there are four functions: funcA, funcB, funcC, and funcD. funcB and funcC do not have any data dependencies between them and therefore can be executed in parallel. funcA reads from the non-local memory (vecIn) and needs to be executed first. Similarly, funcD writes to the non-local memory (vecOut) and therefore has to be executed last.
+In the above example, there are four functions: ```funcA```, ```funcB```, ```funcC```, and ```funcD```. ```funcB``` and ```funcC``` do not have any data dependencies between them and therefore can be executed in parallel. ```funcA``` reads from the non-local memory (```vecIn```) and needs to be executed first. Similarly, ```funcD``` writes to the non-local memory (```vecOut```) and therefore has to be executed last.
 
-The default_channel of the config_dataflow is PIPO and the dataflow view is shown below.
+The default_channel of the config_dataflow is ```PIPO``` and the dataflow view is shown below.
 
 <div align=center><img src="Images/4_10.png" alt="drawing" width="800"/></div>
 
-We can set the optimization directives as config_dataflow -default_channel fifo -fifo_depth 2 and like below. In this diagram, the green colored arrows are FIFO channels while the blue arrows indicate the inputs and outputs of the instantiating function.
+We can set the optimization directives as ```config_dataflow -default_channel fifo -fifo_depth 2``` and like below.
 
 <div align=center><img src="Images/4_2.png" alt="drawing" width="400"/></div>
 
-The dataflow view is shown below. In this diagram, the green colored arrows are FIFO channels while the blue arrows indicate the inputs and outputs of the instantiating function.
+The dataflow view is shown below; we can see that the channel is ```FIFO```.
 
 <div align=center><img src="Images/4_1.png" alt="drawing" width="800"/></div>
-
 
 
 **diamond_test.cpp**
@@ -149,24 +147,24 @@ int main() {
 
 ```
 
-The following waveform shows the execution profile of this design without the dataflow model. There are three calls to the function diamond from the test bench. funcA, funcB, funcC, and funcD are executed in sequential order. Each call to diamond, therefore, takes 475 cycles in total as shown in the following figure.
+The following waveform shows the execution profile of this design without the dataflow model. There are three calls to the function diamond from the test bench. ```funcB```, ```funcC```, and ```funcD``` are executed in sequential order. Each call to diamond, therefore, takes 475 cycles in total as shown in the following figure.
 
 <div align=center><img src="Images/4_3.png" alt="drawing" width="500"/></div>
 
-In the following figure, when the dataflow model is applied and the designer selected to use FIFOs for channels, all the functions are started immediately by the controller and are stalled waiting on input. As soon as the input arrives, it is processed and sent out. Due to this type of overlap, each call to diamond now only takes 275 cycles in total as shown below. [Ref](https://docs.xilinx.com/r/en-US/ug1399-vitis-hls/Control-driven-Task-level-Parallelism)
+In the following figure, when the dataflow model is applied and the designer selected to use ```FIFOs``` for channels, all the functions are started immediately by the controller and are stalled waiting on input. As soon as the input arrives, it is processed and sent out. Due to this type of overlap, each call to diamond now only takes 275 cycles in total as shown below. [Ref](https://docs.xilinx.com/r/en-US/ug1399-vitis-hls/Control-driven-Task-level-Parallelism)
 
 <div align=center><img src="Images/4_4.png" alt="drawing" width="500"/></div>
 
 
 
 
-### Using_fifos
+##### Using_fifos
 
-The dataflow model is not limited to a chain of processes but can be used on any directed acyclic graph (DAG) structure, or cyclic structure when using hls::streams. It can produce two different forms of overlapping: within an iteration if processes are connected with FIFOs, and across different iterations when connected with PIPOs and FIFOs. This potentially improves performance over a statically pipelined solution. It replaces the strict, centrally-controlled pipeline stall philosophy with a distributed handshaking architecture using FIFOs and/or PIPOs. The replacement of the centralized control structure with a distributed one also benefits the fanout of control signals, for example register enables, which is distributed among the control structures of individual processes.
+The dataflow model is not limited to a chain of processes but can be used on any directed acyclic graph (DAG) structure, or cyclic structure when using hls::streams. It can produce two different forms of overlapping: within an iteration if processes are connected with ```FIFOs```, and across different iterations when connected with ```PIPOs``` and ```FIFOs```. This potentially improves performance over a statically pipelined solution. It replaces the strict, centrally-controlled pipeline stall philosophy with a distributed handshaking architecture using ```FIFOs``` and/or ```PIPOs```. The replacement of the centralized control structure with a distributed one also benefits the fanout of control signals, for example register enables, which is distributed among the control structures of individual processes.
 
-All arrays are implemented by default as ping-pong to enable random access. These buffers can also be re-sized if needed. For example, in some circumstances, such as when a task is being bypassed, performance degradation is possible. To mitigate this effect on performance, you can give more slack to the producer and consumer by increasing the size of these buffers by using the STREAM pragma or directive as shown below.
+All arrays are implemented by default as ```ping-pong``` to enable random access. These buffers can also be re-sized if needed. For example, in some circumstances, such as when a task is being bypassed, performance degradation is possible. To mitigate this effect on performance, you can give more slack to the producer and consumer by increasing the size of these buffers by using the STREAM pragma or directive as shown below.
 
-This example shows how to use FIFOs instead of the default PIPOs as the channel type.
+This example shows how to use ```FIFOs``` instead of the default ```PIPOs``` as the channel type.
 
 **diamond.h**
 ```c++
@@ -212,7 +210,6 @@ void diamond(vecOf16Words* vecIn, vecOf16Words* vecOut, int size) {
 #pragma HLS INTERFACE m_axi port = vecOut depth = 32
 
     hls::stream<vecOf16Words> c0, c1, c2, c3, c4, c5;
-//To use hls::stream<> objects in your code include the header file hls_stream.h as shown in diamond.h
     assert(size % 16 == 0);
 
 #pragma HLS dataflow
@@ -287,12 +284,12 @@ Loop_St:
 
 ```
 
-The dataflow view is shown below. We can see the channel is FIFO. We can see that the interface of the function is streaming with hls::stream. A stream can also be specified as hls::stream<Type, Depth>, where Depth indicates the depth of the FIFO needed in the verification adapter that the HLS tool creates for RTL co-simulation.
+The dataflow view is shown below. We can see the channel is ```FIFO```. We can see that the interface of the function is streaming with ```hls::stream```.
 
 <div align=center><img src="Images/4_7.png" alt="drawing" width="800"/></div>
 
 
-### Using_pipos
+##### Using_pipos
 
 This example shows how to use the default PIPOs as the channel type.
 
@@ -362,11 +359,11 @@ Loop0:
     }
 }
 ```
-The dataflow view is shown below. We can see the channel is PIPO.
+The dataflow view is shown below. We can see the channel is ```PIPO```.
 
 <div align=center><img src="Images/4_6.png" alt="drawing" width="800"/></div>
 
-And compare the two examples, we can see that the difference between the use of FIFO and PIPO depends on the hls::stream. The Vitis HLS default optimization is PIPO, but if we use the hls::stream to the type of data then the channel of dataflow is FIFO. In essence, Vitis HLS defaults to PIPO for general efficiency, but automatically switches to FIFO when hls::stream is used to ensure correct dataflow behavior for streaming applications. The choice between PIPO and FIFO often involves trade-offs between hardware efficiency, latency, throughput, and algorithm requirements. Vitis HLS tools often provide pragmas or directives to control the type of dataflow channel used, allowing for fine-tuning based on specific needs.
+And compare the two examples, we can see that the difference between the use of ```FIFO``` and ```PIPO``` depends on the hls::stream. The Vitis HLS default optimization is ```PIPO```, but if we use the ```hls::stream``` to the type of data then the channel of dataflow is ```FIFO```. In essence, Vitis HLS defaults to ```PIPO``` for general efficiency, but automatically switches to ```FIFO``` when ```hls::stream``` is used to ensure correct dataflow behavior for streaming applications. The choice between ```PIPO``` and ```FIFO``` often involves trade-offs between hardware efficiency, latency, throughput, and algorithm requirements. Vitis HLS tools often provide pragmas or directives to control the type of dataflow channel used, allowing for fine-tuning based on specific needs.
 
 PIPO (Push In, Push Out):
 
@@ -382,17 +379,17 @@ FIFO (First In, First Out):
 
 * Requires additional hardware resources (memory blocks).
 
-### Using_stream_of_blocks
+##### Using_stream_of_blocks
 
-The hls::strema_of_blocks type:
+The ```hls::strema_of_blocks``` type:
 
 * supports streaming blocks of data for process-level interfaces in a dataflow context, where each block is an array or multidimensional array.
 
 * replace array-based communication between a pair of processes within a dataflow region.
 
-Currently, Vitis HLS implements arrays written by a producer process and read by a consumer process in a dataflow region by mapping them to ping pong buffers (PIPOs). The buffer exchange for a PIPO buffer occurs at the return of the producer function and the calling of the consumer function in C++.
+Currently, Vitis HLS implements arrays written by a producer process and read by a consumer process in a dataflow region by mapping them to ping pong buffers (```PIPOs```). The buffer exchange for a PIPO buffer occurs at the return of the producer function and the calling of the consumer function in C++.
 
-On the other hand, for a stream-of-blocks the communication between the producer and the consumer is modeled as a stream of array-like objects, providing several advantages over array transfer through PIPO. [Ref](https://docs.xilinx.com/r/en-US/ug1399-vitis-hls/Specifying-Arrays-as-Stream-of-Blocks)
+On the other hand, for a stream-of-blocks the communication between the producer and the consumer is modeled as a stream of array-like objects, providing several advantages over array transfer through ```PIPO```. [Ref](https://docs.xilinx.com/r/en-US/ug1399-vitis-hls/Specifying-Arrays-as-Stream-of-Blocks)
 
 
 The stream-of-blocks object template is:
@@ -403,15 +400,15 @@ hls::stream_of_blocks<block_type, depth> v
 
 Where:
 
-* <block_type> specifies the datatype of the array or multidimensional array held by the stream-of-blocks
+* <block_type> specifies the data type of the array or multidimensional array held by the stream-of-blocks
 
-* <depth> is an optional argument that provides depth control like hls::stream or PIPOs, and specifies the total number of blocks, including the one acquired by the producer and the one acquired by the consumer at any given time. The default value is 2
+* <depth> is an optional argument that provides depth control like ```hls::stream``` or ```PIPOs```, and specifies the total number of blocks, including the one acquired by the producer and the one acquired by the consumer at any given time. The default value is 2
 
-* v specifies the variable name for the stream-of-blocks object
+* ```v``` specifies the variable name for the stream-of-blocks object
 
 Use the following steps to access a block in a stream of blocks:
 
-* The producer or consumer process that wants to access the stream first needs to acquire access to it, using a hls::write_lock or hls::read_lock object.
+* The producer or consumer process that wants to access the stream first needs to acquire access to it, using a ```hls::write_lock``` or ```hls::read_lock``` object.
 
 * After the producer has acquired the lock it can start writing (or reading) the acquired block. Once the block has been fully initialized, it can be released by the producer, when the write_lock object goes out of scope.
 
@@ -445,9 +442,9 @@ void top(...) {
 }
 
 ```
-This can unnecessarily limit throughput and/or increase resources if the producer generates data for the consumer in smaller blocks, for example by writing one row of the buffer output inside a nested loop, and the consumer uses the data in smaller blocks by reading one row of the buffer input inside a nested loop, as the example above does. In this example, due to the non-sequential buffer column access in the inner loop, you cannot simply stream the array b. However, the row access in the outer loop is sequential thus supporting hls::stream_of_blocks communication where each block is a 1-dimensional array of size N.
+This can unnecessarily limit throughput and/or increase resources if the producer generates data for the consumer in smaller blocks, for example by writing one row of the buffer output inside a nested loop, and the consumer uses the data in smaller blocks by reading one row of the buffer input inside a nested loop, as the example above does. In this example, due to the non-sequential buffer column access in the inner loop, you cannot simply stream the array b. However, the row access in the outer loop is sequential thus supporting ```hls::stream_of_blocks``` communication where each block is a 1-dimensional array of size N.
 
-The main purpose of the hls::stream_of_blocks feature is to provide PIPO-like functionality, but with user-managed explicit synchronization, accesses, and a better coding style. Stream-of-blocks lets you avoid the use of dataflow in a loop containing the producer and consumer, which would have been a way to optimize the example above. However, in this case, the use of the dataflow loop containing the producer and consumer requires the use of a PIPO buffer (2xN) as shown in the following example:
+The main purpose of the ```hls::stream_of_blocks``` feature is to provide PIPO-like functionality but with user-managed explicit synchronization, accesses, and a better coding style. Stream-of-blocks lets you avoid the use of dataflow in a loop containing the producer and consumer, which would have been a way to optimize the example above. However, in this case, the use of the dataflow loop containing the producer and consumer requires the use of a ```PIPO``` buffer (2xN) as shown in the following example:
 
 ```c++
 
@@ -475,13 +472,9 @@ void top(...) {
 ```
 The dataflow-in-a-loop code above is also not desirable because this structure has several limitations in Vitis HLS, such as the loop structure must be very constrained (single induction variable, starting from 0 and compared with a constant or a function argument and incremented by 1).
 
+The main difference between ```hls::stream_of_blocks``` and the ```PIPO``` mechanism seen in the prior examples is that the block becomes available to the consumer as soon as the write_lock goes out of scope, rather than only at the return of the producer process. Therefore the amount of storage is much less with stream-of-blocks than with ```PIPOs```: namely 2N instead of 2xMxN.
 
-
-
-
-The main difference between hls::stream_of_blocks and the PIPO mechanism seen in the prior examples is that the block becomes available to the consumer as soon as the write_lock goes out of scope, rather than only at the return of the producer process. Therefore the amount of storage is much less with stream-of-blocks than with PIPOs: namely 2N instead of 2xMxN.
-
-The producer acquires the block by constructing an hls::write_lock object called b, and passing it the reference to the stream-of-blocks object, called s. The write_lock object provides an overloaded array access operator, letting it be accessed as an array to access underlying storage in random order as shown in the example below.
+The producer acquires the block by constructing an ```hls::write_lock``` object called b, and passing it the reference to the stream-of-blocks object, called s. The write_lock object provides an overloaded array access operator, letting it be accessed as an array to access underlying storage in random order as shown in the example below.
 
 ```c++
 #include "hls_streamofblocks.h"
@@ -639,11 +632,11 @@ Loop0:
 
 ```
 
-And we can see the dataflow view is shown below. This example divides 100 pieces of data into 10 stream_blocks and each stream_block contains 10 pieces of data. However, the input and output of the top-level function are read into and written out of hls::stream for data. And comparing with the previous example using PIPOs, we can see that although both are dataflow, the words contained in each PIPO channel are different. This is because the stream_block divides the entire 100 pieces of data into 10 blocks. From the dataflow view of the channel, we can see the words are different.
+And we can see the dataflow view is shown below. This example divides 100 pieces of data into 10 stream_blocks and each stream_block contains 10 pieces of data. However, the input and output of the top-level function are read into and written out of ```hls::stream``` for data. And comparing with the previous example using PIPOs, we can see that although both are dataflow, the words contained in each ```PIPO``` channel are different. This is because the stream_block divides the entire 100 pieces of data into 10 blocks. From the dataflow view of the channel, we can see the words are different.
 
 <div align=center><img src="Images/4_8.png" alt="drawing" width="800"/></div>
 
-But the initial interval(II) of the funcA is 10 not 1 because the number of each stream_blcok is 10 and each of stream_block is PIP0 channel. And the II of the funcB and funcC is 5 and the last funcD is 10.
+But the initial interval(II) of the ```funcA``` is 10 not 1 because the number of each stream_blcok is 10 and each of stream_block is PIP0 channel. And the II of the ```funcB``` and ```funcC``` is 5 and the last ```funcD``` is 10.
 
 <div align=center><img src="Images/4_9.png" alt="drawing" width="800"/></div>
 
