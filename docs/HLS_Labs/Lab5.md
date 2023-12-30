@@ -38,6 +38,8 @@ No other types of arguments are supported. In particular, even constant values c
 * The supplied function is called the task body, and it has an implicit infinite loop wrapped around it to ensure that the task keeps running and waiting on input.
 
 * The supplied function can contain pipelined loops but they need to be flushable pipelines (FLP) to prevent deadlock. The tool automatically selects the right pipeline style to use for a given pipelined loop or function.
+* 
+In general, ```hls::task``` designs must use flushing pipelines (```flp```) or free-running pipelines (```frp```), as described in Flushing Pipelines and Pipeline Types. Non-flushing pipelines introduce dependencies between process executions and can result in unexpected deadlocks.
 
 ### Handing_deadlock
 
