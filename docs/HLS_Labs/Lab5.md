@@ -39,7 +39,7 @@ No other types of arguments are supported. In particular, even constant values c
 
 * The supplied function can contain pipelined loops but they need to be flushable pipelines (FLP) to prevent deadlock. The tool automatically selects the right pipeline style to use for a given pipelined loop or function.
 * 
-In general, ```hls::task``` designs must use flushing pipelines (```flp```) or free-running pipelines (```frp```), as described in Flushing Pipelines and Pipeline Types. Non-flushing pipelines introduce dependencies between process executions and can result in unexpected deadlocks.
+In general, ```hls::task``` designs must use flushing pipelines (```flp```) or free-running pipelines (```frp```), as described in Flushing Pipelines and Pipeline Types[Ref](https://docs.xilinx.com/r/en-US/ug1399-vitis-hls/Flushing-Pipelines-and-Pipeline-Types). Non-flushing pipelines introduce dependencies between process executions and can result in unexpected deadlocks.
 
 ### Handing_deadlock
 
