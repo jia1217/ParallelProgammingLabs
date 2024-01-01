@@ -447,7 +447,6 @@ void write_process(hls::stream<int>& in, hls::stream<int>& out, int* mem) {
 extern "C" {
 
 void stable_pointer(int* mem, hls::stream<int>& in, hls::stream<int>& out) {
-#pragma HLS DATAFLOW
 #pragma HLS INTERFACE mode = m_axi bundle = gmem depth =                       \
     256 max_read_burst_length = 16 max_widen_bitwidth =                        \
         512 max_write_burst_length = 16 num_read_outstanding =                 \
