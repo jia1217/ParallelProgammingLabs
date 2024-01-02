@@ -420,7 +420,9 @@ int main() {
 
 #### struct_ii_issue
 
-This example illustrates the effect of misaligned data in the interface. Struct A defined in example.h has a size of 192 bits / 24 Bytes. As the port is defined as m_axi, Vitis HLS will pad this field to the closest power of 2 - 256 bits (or 32 bytes). This causes a mismatch in the software and hardware sizes, resulting in II violations in the two loops that read and write to the m_axi interfaces.
+This example illustrates the effect of misaligned data in the interface. Struct A defined in example.h has a size of 192 bits / 24 Bytes. As the port is defined as ```m_axi```, Vitis HLS will pad this field to the closest power of 2 - 256 bits (or 32 bytes). This causes a mismatch in the software and hardware sizes, resulting in II violations in the two loops that read and write to the m_axi interfaces.
+
+The ```m_axi``` interface, in particular, often has stricter alignment requirements to optimize for high-bandwidth data transfers. It often pads data to power-of-2 sizes for efficient burst transfers and cache alignment.
 
 **example. h**
 ```c++
@@ -484,6 +486,7 @@ void dut(A a_in[NUM], A a_out[NUM], int size) {
     write(buffer_out, a_out);
 }
 ```
+Loops that read or write misaligned data can experience Initiation Interval (II) violations, as extra cycles are needed for memory access. This limits the ability to start new iterations in each clock cycle, reducing overall loop performance.
 
 The synthesis report is shown below.
 
