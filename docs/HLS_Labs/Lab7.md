@@ -3,7 +3,7 @@ sort: 7
 ---
 
 
-# Lab6 Interface_aggregation
+# Lab7 Interface_aggregation
 
 <script type="text/x-mathjax-config">
   MathJax.Hub.Config({
