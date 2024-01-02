@@ -361,7 +361,7 @@ int main() {
 #### disaggregation_of_axis_port
 In this disaggregation example, ```a``` struct port is mapped to an AXI stream and then disaggregated causing the Vitis HLS compiler to create two AXI stream ports - one for each member (```c``` and ```i```) of the struct ```A```. 
 
-<div align=center><img src="Images/7_11.png" alt="drawing" width="700"/></div>
+<div align=center><img src="Images/7_11.png" alt="drawing" width="500"/></div>
 
 **example.h**
 ```c++
