@@ -395,7 +395,7 @@ void dut(A in[N], A out[N]) {
 ```
 In the above disaggregation example, the struct arguments ``` in``` and ```out``` are mapped to AXIS interfaces, and then disaggregated. This results in Vitis HLS creating two AXI streams for each argument: ```in_c```, ```in_i```, ```out_c``` and ```out_i```. Each member of the struct A becomes a separate stream.
 
-<div align=center><img src="Images/7_12.png" alt="drawing" width="700"/></div>
+<div align=center><img src="Images/7_12.png" alt="drawing" width="500"/></div>
 
 **example_test.cpp**
 ```c++
