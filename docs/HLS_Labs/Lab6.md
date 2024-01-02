@@ -632,7 +632,7 @@ import numpy as np
 import time
 ```
 
-<div align=center><img src="Images/6_2.png" alt="drawing" width="500"/></div>
+<div align=center><img src="Images/6_2.png" alt="drawing" width="400"/></div>
 
 #### Create DMA instances
 
