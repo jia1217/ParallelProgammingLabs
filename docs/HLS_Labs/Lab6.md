@@ -313,7 +313,7 @@ With the ```stable``` pragma, the compiler assumes that:
 * If ```A``` is written by ```proc2```, then the memory locations written can not be read, before their definition, by any other process or calling context, while ```dataflow_region``` is being executed.
 
 
-<div align=center><img src="Images/6_14.png" alt="drawing" width="400"/></div>
+<div align=center><img src="Images/6_14.png" alt="drawing" width="300"/></div>
 
 And we can have an example as shown below:
 
