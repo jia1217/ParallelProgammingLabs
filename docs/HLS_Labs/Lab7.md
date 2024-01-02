@@ -132,6 +132,10 @@ If we change the interface to the ```axis```, then the II will be 1.
 
 <div align=center><img src="Images/7_5.png" alt="drawing" width="800"/></div>
 
+After the optimization, memory layout of char and short variables will shown as below.
+
+<div align=center><img src="Images/7_16.png" alt="drawing" width="300"/></div>
+
 **example_test.cpp**
 ```c++
 #include "example.h"
@@ -420,9 +424,9 @@ int main() {
 
 #### struct_ii_issue
 
-This example illustrates the effect of misaligned data in the interface. Struct A defined in example.h has a size of 192 bits / 24 Bytes. As the port is defined as ```m_axi```, Vitis HLS will pad this field to the closest power of 2 - 256 bits (or 32 bytes). This causes a mismatch in the software and hardware sizes, resulting in II violations in the two loops that read and write to the m_axi interfaces.
+This example illustrates the effect of misaligned data in the interface. Struct A defined in example.h has a size of 192 bits / 24 Bytes. As the port is defined as ```m_axi```, Vitis HLS will pad this field to the closest power of 2 - 256 bits (or 32 bytes). This causes a mismatch in the software and hardware sizes, resulting in II violations in the two loops that read and write to the ```m_axi``` interfaces.
 
-The ```m_axi``` interface, in particular, often has stricter alignment requirements to optimize for high-bandwidth data transfers. It often pads data to power-of-2 sizes for efficient burst transfers and cache alignment.
+The m_axi interface, in particular, often has stricter alignment requirements to optimize for high-bandwidth data transfers. It often pads data to power-of-2 sizes for efficient burst transfers and cache alignment.
 
 **example. h**
 ```c++
@@ -507,9 +511,11 @@ struct A { /* Total size = 256 bits (32 x 8) or 32 bytes */
     int s_4;
     int s_5;
     int s_6;
-    int s_7;
+    int s_7;//add two int variables
     int s_8;
 };
+
+//if we add one char and one short variable, then it still  does not meet alignment requirements.
 
 // Top function
 void dut(A a_in[NUM], A a_out[NUM], int size);
