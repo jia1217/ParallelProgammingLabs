@@ -613,7 +613,7 @@ The first step is to allocate the buffer. pynq allocate will be used to allocate
 ```python
 
 
-top_ip = overlay.transfer_kernel_0
+top_ip = overlay.example_0
 top_ip.signature
 
 a_buffer = pynq.allocate((32), np.int32)
