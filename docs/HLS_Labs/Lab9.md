@@ -325,7 +325,6 @@ top_ip.register_map
 
 ```python
 top_ip.register_map.size=32
-top_ip.register_map.inc_value=10
 # specify the address
 # These addresses can be found in the generated .v file: vadd_control_s_axi.v
 top_ip.write(0x10, aptr)
@@ -633,11 +632,10 @@ cptr = c_buffer.physical_address
 top_ip.register_map
 ```
 
-<div align=center><img src="Images/9_16.png" alt="drawing" width="600"/></div>
+<div align=center><img src="Images/9_15.png" alt="drawing" width="600"/></div>
 
 ```python
-top_ip.register_map.size=32
-top_ip.register_map.inc_value=10
+top_ip.register_map.factor=32
 # specify the address
 # These addresses can be found in the generated .v file: vadd_control_s_axi.v
 top_ip.write(0x10, aptr)
@@ -651,4 +649,5 @@ top_ip.write(0x00, 1)
 We will see:
 
 <div align=center><img src="Images/9_13.png" alt="drawing" width="400"/></div>
+
 
