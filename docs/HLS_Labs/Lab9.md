@@ -652,13 +652,3 @@ We will see:
 
 <div align=center><img src="Images/9_13.png" alt="drawing" width="400"/></div>
 
-
-## max_widen_port_width
-
-## memory_bottleneck
-
-## ram_uram
-
-## rom_lookup_table_math
-
-## using_axi_master
