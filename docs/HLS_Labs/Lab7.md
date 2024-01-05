@@ -496,7 +496,7 @@ The synthesis report is shown below.
 
 <div align=center><img src="Images/7_13.png" alt="drawing" width="700"/></div>
 
-Edit example. h to uncomment the line that sizes the struct to a power of 2. Rerun and observe that the II violations are no longer there as the interfaces are properly sized and aligned. 
+Edit ```example. h``` to uncomment the line that sizes the struct to a power of 2. Rerun and observe that the II violations are no longer there as the interfaces are properly sized and aligned. 
 
 **example. h**
 ```c++
