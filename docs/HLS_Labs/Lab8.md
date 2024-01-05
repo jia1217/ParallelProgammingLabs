@@ -52,6 +52,7 @@ Bursting is about aggregating successive memory access requests. Here are the se
 * There must be no dependency issues from the time a burst request is initiated and finished.
 
 This is simple example of using AXI4-master interface for burst read and write in Vitis HLS.
+
 **vadd.h**
 ```c++
 #define DATA_SIZE 32
