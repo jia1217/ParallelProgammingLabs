@@ -383,6 +383,12 @@ The synthesis report is shown below:
 
 <div align=center><img src="Images/8_7.png" alt="drawing" width="1000"/></div>
 
+Caching can improve performance and mitigate burst failures in scenarios with:
+
+* Misaligned accesses
+
+* Limited outstanding read capability
+
 **dut_tb.cpp**
 ```c++
 #include <iostream>
