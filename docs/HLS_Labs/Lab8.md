@@ -280,6 +280,11 @@ The synthesis report is shown below:
 
 <div align=center><img src="Images/8_9.png" alt="drawing" width="1000"/></div>
 
+How Caching Can Help:
+
+* Reduces Memory Accesses: The cache buffers elements of in, potentially reducing individual memory transactions and mitigating burst failures.
+
+* Improves Performance: Caching can improve performance by avoiding memory stalls and leveraging burst transfers more effectively.
 
 
 **vadd_test.h**
