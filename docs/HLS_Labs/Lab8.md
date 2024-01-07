@@ -388,6 +388,9 @@ Caching can improve performance and mitigate burst failures in scenarios with:
 * Misaligned accesses
 
 * Limited outstanding read capability
+  
+However, it might not completely eliminate burst failures, especially for very irregular access patterns or cache misses. Choosing appropriate cache parameters (lines, depth) is essential for effectiveness.
+It's crucial to balance performance gains with potential area overhead and design complexity when using caches.
 
 **dut_tb.cpp**
 ```c++
