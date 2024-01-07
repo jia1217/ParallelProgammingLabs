@@ -140,6 +140,12 @@ Performance Benefits is shown below.
 
 <div align=center><img src="Images/9_2_auto.png" alt="drawing" width="800"/></div>
 
+Potential Burst Failure:
+
+* Unknown Size: The size parameter is unknown at compile time, hindering the HLS tool's ability to automatically infer optimal burst lengths for memory accesses.
+
+* Consequence: The tool might generate conservative burst sizes, potentially leading to suboptimal performance.
+
 **example_tb.cpp**
 ```c++
 #include "example.h"
