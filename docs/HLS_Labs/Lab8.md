@@ -353,27 +353,20 @@ The following example shows a design where overlapping access will cause the bur
 
 **dut.cpp**
 ```c++
-#include <stdio.h>
-
 extern "C" {
-void dut(const int* in, // Read-Only Vector 1
-         int* out,      // Output Result
+void dut(const double* in, // Read-Only Vector 1
+         double* out,      // Output Result
          int size          // Size in integer
 ) {
 
 #pragma HLS INTERFACE mode = m_axi bundle = aximm2 depth =                     \
-    1024 max_read_burst_length = 16 num_read_outstanding = 32 port = in
+    1025 max_read_burst_length = 128 num_read_outstanding = 256 port = in
 #pragma HLS INTERFACE m_axi port = out bundle = aximm depth = 1024
-#pragma HLS INTERFACE mode=s_axilite port=return
-#pragma HLS INTERFACE mode=s_axilite port=in
-#pragma HLS INTERFACE mode=s_axilite port=out
-#pragma HLS INTERFACE mode=s_axilite port=size
 
 #pragma HLS cache port = in lines = 1 depth = 128
 
     for (int i = 0; i < size; i++) {
         out[i] = in[i] + in[i + 1];
-        printf("out[%d] is %d\r\n",i,out[i]);
     }
 }
 }
