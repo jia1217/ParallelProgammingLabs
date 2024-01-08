@@ -5,7 +5,7 @@ sort: 2
 
 # Clemson Palmetto Server Introduction 
 
-Note: This is for resaerch ONLY.
+Note: This is for research ONLY.
 
 ## Create an account
 
