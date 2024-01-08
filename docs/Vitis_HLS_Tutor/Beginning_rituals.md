@@ -5,7 +5,7 @@ sort: 3
 
 # Beginning Rituals
 
-Note: This is for resaerch ONLY.
+Note: This is for research ONLY.
 
 ## Ritual 1
 
