@@ -472,7 +472,7 @@ int main() {
 
 We also need to set the last and keep signals for the AXIS interface so that this IP can communicate with DMA.
 
-Here, we can additionally generate a middleman IP to provide the last and keep signals.
+Here, we can additionally generate a ```middle_data``` IP to provide the last and keep signals.
 
 **middle.h**
 ```c++
