@@ -139,9 +139,9 @@ void fft_top(bool direction, cmpxDataIn in[FFT_LENGTH],
 ```
 The synthesis report is shown below:
 
-<div align=center><img src="14/1.png" alt="drawing" width="400"/></div>
+<div align=center><img src="Images/14/1.png" alt="drawing" width="400"/></div>
 
-<div align=center><img src="14/2.png" alt="drawing" width="300"/></div>
+<div align=center><img src="Images/14/2.png" alt="drawing" width="300"/></div>
 
 ### interface_stream
 
@@ -260,9 +260,9 @@ void fft_top(bool direction, hls::stream<cmpxDataIn>& in,
 ```
 The synthesis report is shown below:
 
-<div align=center><img src="14/3.png" alt="drawing" width="400"/></div>
+<div align=center><img src="Images/14/3.png" alt="drawing" width="400"/></div>
 
-<div align=center><img src="14/4.png" alt="drawing" width="200"/></div>
+<div align=center><img src="Images/14/4.png" alt="drawing" width="200"/></div>
 
 ## initialization_and_reset
 
@@ -352,7 +352,7 @@ int test(int i) {
 
 The synthesis report is shown below:
 
-<div align=center><img src="14/5.png" alt="drawing" width="600"/></div>
+<div align=center><img src="Images/14/5.png" alt="drawing" width="600"/></div>
 
 **test_tb.cpp**
 ```c++
@@ -405,19 +405,19 @@ int test(int i) {
 ```
 The synthesis report is shown below:
 
-<div align=center><img src="14/6.png" alt="drawing" width="600"/></div>
+<div align=center><img src="Images/14/6.png" alt="drawing" width="600"/></div>
 
 And you can see that for BRAM/LUTRAM/URAM, the following structure is generated in the RTL to initialize the static RAM arrays:
 
 proj/solution_A/syn/verilog/test_A_V_RAM_2P_BRAM_1R1W.v:
 
-<div align=center><img src="14/13.png" alt="drawing" width="600"/></div>
+<div align=center><img src="Images/14/13.png" alt="drawing" width="600"/></div>
 
 The ```*.dat``` files contain the initial values for the respective arrays.
 
 And we can have a new solution for the reset as show below:
 
-<div align=center><img src="14/11.png" alt="drawing" width="300"/></div>
+<div align=center><img src="Images/14/11.png" alt="drawing" width="300"/></div>
 
 **test_2.cpp**
 ```cpp
@@ -445,11 +445,11 @@ int test(int i) {
 
  When the reset directive/pragma is applied to the static arrays (A/B/C), you will see that in the generated RTL, both a ROM and a RAM are used to implement each memory. The initial value is loaded to the ROM only (as in solution_A). But each time after the reset signal is asserted, if an address is not written, the value read from the address is from the ROM, otherwise it is read from the RAM. That means the memory is reset back to the initialized value after each reset. The same structure below can be seen for all three arrays A/B/C.
 
-<div align=center><img src="14/14.png" alt="drawing" width="500"/></div>
+<div align=center><img src="Images/14/14.png" alt="drawing" width="500"/></div>
 
 And we can also use the third way to set as shown below:
 
-<div align=center><img src="14/12.png" alt="drawing" width="400"/></div>
+<div align=center><img src="Images/14/12.png" alt="drawing" width="400"/></div>
 
 **test_tb.cpp**
 ```cpp
@@ -494,9 +494,9 @@ int test(int i) {
 ```
 The synthesis report is shown below:
 
-<div align=center><img src="14/7.png" alt="drawing" width="600"/></div>
+<div align=center><img src="Images/14/7.png" alt="drawing" width="600"/></div>
 
-<div align=center><img src="14/13.png" alt="drawing" width="600"/></div>
+<div align=center><img src="Images/14/13.png" alt="drawing" width="600"/></div>
 
 The ```*.dat``` files contain the initial values for the respective arrays. Also note that ```URAM``` is not a supported implementation type for ```ROMs```.
 
@@ -565,7 +565,7 @@ int test(int i) {
 ```
 The synthesis report is shown below:
 
-<div align=center><img src="14/8.png" alt="drawing" width="600"/></div>
+<div align=center><img src="Images/14/8.png" alt="drawing" width="600"/></div>
 
 And the reset optimization is the like as the ```static_array_RAM```.
 
@@ -631,7 +631,7 @@ int test(int i) {
 ```
 The synthesis report is shown below:
 
-<div align=center><img src="14/9.png" alt="drawing" width="600"/></div>
+<div align=center><img src="Images/14/9.png" alt="drawing" width="600"/></div>
 
 And the reset optimization is the like as the ```static_array_RAM```.
 
@@ -693,7 +693,7 @@ int test(int i) {
 ```
 The synthesis report is shown below:
 
-<div align=center><img src="14/5.png" alt="drawing" width="600"/></div>
+<div align=center><img src="Images/14/5.png" alt="drawing" width="600"/></div>
 
 And the reset optimization is the like as the ```static_array_RAM```.
 
@@ -783,7 +783,7 @@ LOOP_ACCUM:
 ```
 The synthesis report is shown below:
 
-<div align=center><img src="14/15.png" alt="drawing" width="600"/></div>
+<div align=center><img src="Images/14/15.png" alt="drawing" width="600"/></div>
 
 **malloc_removed_tb.cpp**
 ```cpp
@@ -861,7 +861,7 @@ void example(data_t a1, data_t a2, data_t a3, data_t a4, data_t b1, data_t b2,
 ```
 The synthesis report is shown below:
 
-<div align=center><img src="14/5.png" alt="drawing" width="600"/></div>
+<div align=center><img src="Images/14/5.png" alt="drawing" width="600"/></div>
 
 **example_tb.cpp**
 ```cpp
