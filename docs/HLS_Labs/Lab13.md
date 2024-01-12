@@ -71,11 +71,11 @@ void example(hls::stream<pkt>& A, hls::stream<pkt>& B,int num) {
 ```
 After synthesis, both arguments are implemented with a data port (TDATA) and the standard AXI4-Stream protocol ports, TVALID, TREADY, TKEEP, TLAST, and TSTRB, as shown in the following figure
 
-<div align=center><img src="/Images/13/13_1.png" alt="drawing" width="600"/></div>
+<div align=center><img src="Images/13/13_1.png" alt="drawing" width="600"/></div>
 
 And run ```cosimulation``` and click ```Wave Viewer``` to see the wave to enable the ```last``` signal is right as shown below.
 
-<div align=center><img src="13/13_2.png" alt="drawing" width="800"/></div>
+<div align=center><img src="Images/13/13_2.png" alt="drawing" width="800"/></div>
 
 **example_tb.h**
 ```c++
@@ -110,7 +110,7 @@ int main() {
 
 The configure block design can use reference materials [here](https://uri-nextlab.github.io/ParallelProgammingLabs/HLS_Labs/Lab1.html). And we need to choose the number of the DMA according to the number of the interface.
 
-<div align=center><img src="13/4.png" alt="drawing" width="1000"/></div>
+<div align=center><img src="Images/13/4.png" alt="drawing" width="1000"/></div>
 
 #### Run synthesis,  Implementation, and generate bitstream
 
@@ -128,7 +128,7 @@ from pynq import MMIO
 hw = pynq.Overlay('design_1.bit')
 hw ?
 ```
-<div align=center><img src="13/3.png" alt="drawing" width="400"/></div>
+<div align=center><img src="Images/13/3.png" alt="drawing" width="400"/></div>
 
 
 ```python
@@ -167,7 +167,7 @@ mm2s.wait()
 
 We will see:
 
-<div align=center><img src="13/5.png" alt="drawing" width="400"/></div>
+<div align=center><img src="Images/13/5.png" alt="drawing" width="400"/></div>
 
 
 ### using_axi_stream_with_custom_side_channel_data_1
@@ -231,7 +231,7 @@ void example(hls::stream<packet>& A, hls::stream<packet>& B) {
 ```
 The synthesis report is shown below:
 
-<div align=center><img src="13/16.png" alt="drawing" width="1000"/></div>
+<div align=center><img src="Images/13/16.png" alt="drawing" width="1000"/></div>
 
 **example_tb.h**
 ```c++
@@ -308,7 +308,7 @@ void example(hls::stream<packet>& A, hls::stream<packet>& B) {
 ```
 The synthesis report is shown below:
 
-<div align=center><img src="13/17.png" alt="drawing" width="1000"/></div>
+<div align=center><img src="Images/13/17.png" alt="drawing" width="1000"/></div>
 
 **example_tb.h**
 ```c++
@@ -398,7 +398,7 @@ void example(hls::stream<packet>& A, hls::stream<packet>& B) {
 
 The synthesis report is shown below:
 
-<div align=center><img src="13/7.PNG" alt="drawing" width="1000"/></div>
+<div align=center><img src="Images/13/7.PNG" alt="drawing" width="1000"/></div>
 
 **example_tb.h**
 ```c++
@@ -443,18 +443,18 @@ int main() {
 ```
 After Run the cosimulation, we can see the wave viewer to confirm the ```last``` signal as shown below:
 
-<div align=center><img src="13/6.PNG" alt="drawing" width="600"/></div>
+<div align=center><img src="Images/13/6.PNG" alt="drawing" width="600"/></div>
 
 And the export IP is shown below.
 
-<div align=center><img src="13/8.PNG" alt="drawing" width="200"/></div>
+<div align=center><img src="Images/13/8.PNG" alt="drawing" width="200"/></div>
 
 
 #### Create the Vivado project
 
 The configure block design can use reference materials [here](https://uri-nextlab.github.io/ParallelProgammingLabs/HLS_Labs/Lab1.html). And we need to choose the number of the DMA according to the number of the interface.
 
-<div align=center><img src="13/9.PNG" alt="drawing" width="1000"/></div>
+<div align=center><img src="Images/13/9.PNG" alt="drawing" width="1000"/></div>
 
 #### Run synthesis,  Implementation, and generate bitstream
 
@@ -503,7 +503,7 @@ mm2s.wait()
 
 We will see:
 
-<div align=center><img src="13/10.png" alt="drawing" width="200"/></div>
+<div align=center><img src="Images/13/10.png" alt="drawing" width="200"/></div>
 
 ### using_axi_stream_with_struct
 **example.h**
@@ -555,7 +555,7 @@ void example(mystream& A, mystream& B) {
 ```
 The synthesis report is shown below:
 
-<div align=center><img src="13/12.PNG" alt="drawing" width="1000"/></div>
+<div align=center><img src="Images/13/12.PNG" alt="drawing" width="1000"/></div>
 
 **example_tb.h**
 ```c++
@@ -603,18 +603,18 @@ int main() {
 ```
 After Run the cosimulation, we can see the wave viewer to confirm the ```last``` signal as shown below:
 
-<div align=center><img src="13/11.png" alt="drawing" width="800"/></div>
+<div align=center><img src="Images/13/11.png" alt="drawing" width="800"/></div>
 
 And the export IP is shown below.
 
-<div align=center><img src="13/14.png" alt="drawing" width="200"/></div>
+<div align=center><img src="Images/13/14.png" alt="drawing" width="200"/></div>
 
 
 #### Create the Vivado project
 
 The configure block design can use reference materials [here](https://uri-nextlab.github.io/ParallelProgammingLabs/HLS_Labs/Lab1.html). And we need to choose the number of the DMA according to the number of the interface.
 
-<div align=center><img src="13/13.PNG" alt="drawing" width="1000"/></div>
+<div align=center><img src="Images/13/13.PNG" alt="drawing" width="1000"/></div>
 
 #### Run synthesis,  Implementation, and generate bitstream
 
@@ -667,7 +667,7 @@ mm2s.wait()
 
 We will see:
 
-<div align=center><img src="13/15.png" alt="drawing" width="300"/></div>
+<div align=center><img src="Images/13/15.png" alt="drawing" width="300"/></div>
 
 
 ### using_axis_array_stream_no_side_channel_data
@@ -691,7 +691,7 @@ void example(int A[50], int B[50]) {
 
 The synthesis report is shown below:
 
-<div align=center><img src="13/18.png" alt="drawing" width="1000"/></div>
+<div align=center><img src="Images/13/18.png" alt="drawing" width="1000"/></div>
 
 
 **example_tb.h**
