@@ -172,7 +172,7 @@ The original array is split into equally sized blocks of consecutive elements of
 
 The original array is split into equally sized blocks interleaving the elements of the original array.
 
-For block and cyclic partitioning the factor option specifies the number of arrays that are created. In the preceding figure, a factor of 2 is used, that is, the array is divided into two smaller arrays. If the number of elements in the array is not an integer multiple of the factor, the final array has fewer elements [Ref](https://docs.xilinx.com/r/en-US/ug1399-vitis-hls/Array-Accesses-and-Performance).
+For block and cyclic partitioning the factor option specifies the number of arrays that are created. In the following figure, a factor of 2 is used, that is, the array is divided into two smaller arrays. If the number of elements in the array is not an integer multiple of the factor, the final array has fewer elements [Ref](https://docs.xilinx.com/r/en-US/ug1399-vitis-hls/Array-Accesses-and-Performance).
 
 <!-- <div align=center><img src="Images/1_1.png" alt="drawing" width="600"/></div> -->
 
