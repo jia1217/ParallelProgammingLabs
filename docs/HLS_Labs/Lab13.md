@@ -71,7 +71,7 @@ void example(hls::stream<pkt>& A, hls::stream<pkt>& B,int num) {
 ```
 After synthesis, both arguments are implemented with a data port (TDATA) and the standard AXI4-Stream protocol ports, TVALID, TREADY, TKEEP, TLAST, and TSTRB, as shown in the following figure
 
-<div align=center><img src="13/13_1.png" alt="drawing" width="600"/></div>
+<div align=center><img src="/Images/13/13_1.png" alt="drawing" width="600"/></div>
 
 And run ```cosimulation``` and click ```Wave Viewer``` to see the wave to enable the ```last``` signal is right as shown below.
 
