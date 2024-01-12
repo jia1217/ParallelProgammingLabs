@@ -783,7 +783,7 @@ LOOP_ACCUM:
 ```
 The synthesis report is shown below:
 
-<div align=center><img src="Images/14/15.png" alt="drawing" width="600"/></div>
+<div align=center><img src="Images/14/15.png" alt="drawing" width="800"/></div>
 
 **malloc_removed_tb.cpp**
 ```cpp
