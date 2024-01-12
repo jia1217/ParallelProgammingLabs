@@ -859,9 +859,6 @@ void example(data_t a1, data_t a2, data_t a3, data_t a4, data_t b1, data_t b2,
 }
 
 ```
-The synthesis report is shown below:
-
-<div align=center><img src="Images/14/5.png" alt="drawing" width="600"/></div>
 
 **example_tb.cpp**
 ```cpp
