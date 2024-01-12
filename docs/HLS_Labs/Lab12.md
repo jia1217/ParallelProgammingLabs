@@ -567,6 +567,9 @@ We will see:
 
 
 ### using_array_of_streams
+
+While arrays can be converted to streams, it can often lead to coding and synthesis issues as arrays can be accessed in random order while a stream requires a sequential access pattern where every element is read in order. To avoid such issues, any time a streaming interface is required, it is highly recommended to use the ```hls::stream``` object as described in [Using HLS Streams](https://docs.xilinx.com/r/en-US/ug1399-vitis-hls/Using-HLS-Streams). Usage of this construct will enforce streaming semantics in the source code. However, to convert an array to a stream you should perform all the operations on temp variables.
+
 This example illustrates how to define and use an array of streams in the interface. Instead of defining an array and then using a pragma to map this array to a stream, it is highly recommended to use the hls::stream objects instead.
 
 **example.h**
