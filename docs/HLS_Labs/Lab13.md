@@ -292,7 +292,7 @@ typedef hls::axis_user<13, (AXIS_ENABLE_USER | AXIS_ENABLE_LAST)> packet;
 void example(hls::stream<packet>& A, hls::stream<packet>& B);
 
 ```
-<div align=center><img src="Images/13/19.png" alt="drawing" width="1000"/></div>
+<div align=center><img src="Images/13/19.png" alt="drawing" width="800"/></div>
 
 **example.cpp**
 ```c++
