@@ -55,9 +55,10 @@ void example(hls::stream<pkt>& A, hls::stream<pkt>& B,int num) {
     A.read(tmp);
     t1.data = tmp.data + 5;
 
-    if(counter==num-2)
+    if(counter==num-1)
     {
     	t1.last=1;
+        counter=0;
     }
     else
     {
