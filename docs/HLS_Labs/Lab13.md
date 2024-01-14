@@ -735,3 +735,60 @@ int main() {
 }
 
 ```
+#### Create the Vivado project
+
+The configure block design can use reference materials [here](https://uri-nextlab.github.io/ParallelProgammingLabs/HLS_Labs/Lab1.html). And we need to choose the number of the DMA according to the number of the interface.
+
+<div align=center><img src="Images/13/4.png" alt="drawing" width="1000"/></div>
+
+#### Run synthesis,  Implementation, and generate bitstream
+
+It may show some errors about I/O Ports, please fix them.
+
+#### Download the bitstream file to PYNQ
+
+<div align=center><img src="Images/8_16.png" alt="drawing" width="800"/></div>
+
+
+```python
+import numpy as np
+import pynq
+from pynq import MMIO
+hw = pynq.Overlay('design_1.bit')
+hw ?
+```
+<div align=center><img src="Images/13/3.png" alt="drawing" width="400"/></div>
+
+
+```python
+
+s2mm = hw.axi_dma_0.sendchannel
+mm2s = hw.axi_dma_0.recvchannel
+
+```
+
+#### Allocate DMA memory address size
+```python
+top=hw.example_0
+N = 50
+oBuf_0 = allocate(shape=(N,), dtype = np.int32)
+iBuf_0 = allocate(shape=(N,), dtype = np.int32)
+for i in range(N):
+    iBuf_0[i]= i
+```
+
+
+```python 
+#begin the DMA transfer
+s2mm.transfer(iBuf_0)
+mm2s.transfer(oBuf_0)
+s2mm.wait()
+mm2s.wait()
+
+```
+
+We will see:
+
+<div align=center><img src="Images/13/22.png" alt="drawing" width="400"/></div>
+
+
