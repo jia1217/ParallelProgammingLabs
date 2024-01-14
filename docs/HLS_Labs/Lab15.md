@@ -96,7 +96,7 @@ int main() {
 ```
 When simulated, this results in the following output:
 
-<div align=center><img src="15/1.png" alt="drawing" width="100"/></div>
+<div align=center><img src="Images/15/1.png" alt="drawing" width="100"/></div>
 
 The pointer arithmetic can access the pointer data out of sequence. On the other hand, wire, handshake, or FIFO interfaces can only access data in order:
 
@@ -155,7 +155,7 @@ int main() {
 ```
 C and RTL simulation verify the correct operation (although not all possible cases) with this simple data set:
 
-<div align=center><img src="15/2.png" alt="drawing" width="100"/></div>
+<div align=center><img src="Images/15/2.png" alt="drawing" width="100"/></div>
 
 ### multiple_pointers
 
@@ -221,7 +221,7 @@ int main() {
 
 The C simulation report is shown below:
 
-<div align=center><img src="15/3.png" alt="drawing" width="100"/></div>
+<div align=center><img src="Images/15/3.png" alt="drawing" width="100"/></div>
 
 ### native_casts
 This example shows how to use native C type casts in a synthesizable design. Pointer casting is supported for synthesis if native C/C++ types are used. In the following code example, type ```int``` is cast to type ```char```.
@@ -378,7 +378,7 @@ Even if the ```volatile``` keyword is used, the coding style of accessing a poin
 
 The C simulation report is shown below:
 
-<div align=center><img src="15/4.png" alt="drawing" width="100"/></div>
+<div align=center><img src="Images/15/4.png" alt="drawing" width="100"/></div>
 
 The Multi-Access volatile pointer interface can be implemented with wire interfaces. If a FIFO interface is specified, Vitis HLS creates an RTL test bench to stream new data on each read. Because no new data is available from the test bench, the RTL fails to verify. The test bench does not correctly model the reads and writes.
 
@@ -461,15 +461,15 @@ The test bench validates the algorithm with the following results, showing that:
 
 * The outputs are an accumulation of the first two input reads, plus an accumulation of the next two input reads and the previous accumulation.
 
-* The final issue to be aware of when pointers are accessed multiple time at the function interface is RTL simulation modeling.
+* The final issue to be aware of when pointers are accessed multiple times at the function interface is RTL simulation modeling.
 
-<div align=center><img src="15/5.png" alt="drawing" width="200"/></div>
+<div align=center><img src="Images/15/5.png" alt="drawing" width="200"/></div>
 
 
 ### using_double
-Vitis HLS supports pointers to pointers for synthesis but does not support them on the top-level interface, that is, as argument to the top-level function. If you use a pointer to pointer in multiple functions, Vitis HLS inlines all functions that use the pointer to pointer. Inlining multiple functions can increase runtime.
+Vitis HLS supports pointers to pointers for synthesis but does not support them on the top-level interface, that is, as the argument to the top-level function. If you use a pointer to pointer in multiple functions, Vitis HLS inlines all functions that use the pointer to pointer. Inlining multiple functions can increase runtime.
 
-This simple design illustrate the usage of the C native double data type. 
+This simple design illustrates the usage of the C native double data type. 
 
 **pointer_double.h**
 ```c++
@@ -541,7 +541,7 @@ int main() {
 
 ## basic_loops_primer
 
-This example shows how to write a loop and apply variables optimizations to this loop.
+This example shows how to write a loop and apply variable optimizations to this loop.
 
 **test.h**
 ```c++
@@ -586,14 +586,14 @@ LOOP_1:
 ```
 The synthesis report is shown below:
 
-<div align=center><img src="15/6.png" alt="drawing" width="800"/></div>
+<div align=center><img src="Images/15/6.png" alt="drawing" width="800"/></div>
 
 The scheduling view is shown below:
 
-<div align=center><img src="15/9.png" alt="drawing" width="600"/></div>
+<div align=center><img src="Images/15/9.png" alt="drawing" width="600"/></div>
 
 
-You can unroll loops to create multiple independent operations rather than a single collection of operations. The UNROLL pragma transforms loops by creating multiples copies of the loop body in the RTL design, which allows some or all loop iterations to occur in parallel. [Ref](https://docs.xilinx.com/r/en-US/ug1399-vitis-hls/pragma-HLS-unroll)
+You can unroll loops to create multiple independent operations rather than a single collection of operations. The UNROLL pragma transforms loops by creating multiple copies of the loop body in the RTL design, which allows some or all loop iterations to occur in parallel. [Ref](https://docs.xilinx.com/r/en-US/ug1399-vitis-hls/pragma-HLS-unroll)
 
 The UNROLL pragma allows the loop to be fully or partially unrolled. Fully unrolling the loop creates a copy of the loop body in the RTL for each loop iteration, so the entire loop can be run concurrently. Partially unrolling a loop lets you specify a factor N, to create N copies of the loop body and reduce the loop iterations accordingly.
 
@@ -620,11 +620,11 @@ LOOP_1:
 ```
 The synthesis report is shown below:
 
-<div align=center><img src="15/7.png" alt="drawing" width="800"/></div>
+<div align=center><img src="Images/15/7.png" alt="drawing" width="800"/></div>
 
 The scheduling view is shown below:
 
-<div align=center><img src="15/10.png" alt="drawing" width="600"/></div>
+<div align=center><img src="Images/15/10.png" alt="drawing" width="600"/></div>
 
 This example specifies an unroll factor of 2 to partially unroll ```loop_1``` of function ```test```,
 
@@ -650,9 +650,9 @@ LOOP_1:
 
 The synthesis report is shown below:
 
-<div align=center><img src="15/8.png" alt="drawing" width="800"/></div>
+<div align=center><img src="Images/15/8.png" alt="drawing" width="800"/></div>
 
-And this can compare with the ```test_1.cpp```
+And this can be compared with the ```test_1.cpp```
 
 **test_tb.cpp**
 ```c++
@@ -728,10 +728,10 @@ void fxp_sqrt(ap_ufixed<W2, IW2>& result, ap_ufixed<W1, IW1>& in_val) {
     enum { QW = (IW1 + 1) / 2 + (W2 - IW2) + 1 }; // derive max root width
     enum {
         SCALE = (W2 - W1) - (IW2 - (IW1 + 1) / 2)
-    }; // scale (shift) to adj initial remainer value
+    }; // scale (shift) to adj initial remainder value
     enum { ROOT_PREC = QW - (IW1 % 2) };
     assert((IW1 + 1) / 2 <=
-           IW2); // Check that output format can accommodate full result
+           IW2); // Check that the output format can accommodate the full result
 
     ap_uint<QW> q = 0;      // partial sqrt
     ap_uint<QW> q_star = 0; // diminished partial sqrt
@@ -757,7 +757,7 @@ void fxp_sqrt(ap_ufixed<W2, IW2>& result, ap_ufixed<W1, IW1>& in_val) {
     // Round result by "extra iteration" method
     if (s > 0)
         q = q + 1;
-    // Truncate excess bit and assign to output format
+    // Truncate excess bit and assign to the output format
     result.range(W2 - 1, 0) = ap_uint<W2>(q >> 1);
 }
 
