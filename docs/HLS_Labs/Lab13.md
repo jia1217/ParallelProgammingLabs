@@ -168,7 +168,7 @@ mm2s.wait()
 
 We will see:
 
-<div align=center><img src="Images/13/5.png" alt="drawing" width="400"/></div>
+<div align=center><img src="Images/13/5_2.png" alt="drawing" width="400"/></div>
 
 
 ### using_axi_stream_with_custom_side_channel_data_1
