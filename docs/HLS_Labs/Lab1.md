@@ -228,7 +228,7 @@ For block and cyclic partitioning the factor option specifies the number of arra
 
 <!-- <div align=center><img src="Images/1_1.png" alt="drawing" width="600"/></div> -->
 
-<div align=center><img src="Images/1_1.png" alt="drawing" width="600"/></div>
+<div align=center><img src="Images/1_1.png" alt="drawing" width="500"/></div>
 
 The Above optimization is suitable for the multiplication of matrices. Array Partition splits apart the original array into smaller arrays or into individual registers. And the actual matrix A and matrix B will be:
 
