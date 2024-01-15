@@ -160,6 +160,10 @@ Then we can choose the function we want to run the C synthesis.
 
 <div align=center><img src="Images/13/25.png" alt="drawing" width="400"/></div>
 
+You can see the synthesis report as shown below:
+
+<div align=center><img src="Images/13/26.png" alt="drawing" width="400"/></div>
+
 Suppose we have two matrices, $A$ and $B$, with the following dimensions:
 
 Matrix A:  
