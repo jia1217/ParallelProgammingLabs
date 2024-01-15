@@ -41,7 +41,6 @@ Open a terminal, run the shell command:
 
 ```bash
 source /project/twei2/vitis/vitinstall/Vitis/2022.2/settings64.sh
-source /project/twei2/vitis/vitinstall/Vitis_HLS/2022.2/settings64.sh
 ```
 
 ### Option 2
@@ -58,7 +57,6 @@ In the `vitis_setup.sh` file, we can input the following command:
 #!/bin/bash
 
 source /project/twei2/vitis/vitinstall/Vitis/2022.2/settings64.sh
-source /project/twei2/vitis/vitinstall/Vitis_HLS/2022.2/settings64.sh
 ```
 
 Then, run the shell command:
