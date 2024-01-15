@@ -140,7 +140,7 @@ int main()
 		datain.write(indata);
 		datain2.write(indata);
 	}
-matrix_cyclic(datain,dataout,datain2);
+matrix_cyclic_block(datain,dataout,datain2);
 	for(int k=0;k<N*N;k++)
 	{
 		outdata=dataout.read();
