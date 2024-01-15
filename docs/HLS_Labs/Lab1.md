@@ -166,7 +166,7 @@ Then we can click the green button ```Run C Synthesis``` like below:
 
 You can see the synthesis report as shown below:
 
-<div align=center><img src="Images/13/27.png" alt="drawing" width="400"/></div>
+<div align=center><img src="Images/13/27.png" alt="drawing" width="800"/></div>
 
 Suppose we have two matrices, $A$ and $B$, with the following dimensions:
 
