@@ -152,7 +152,7 @@ matrix_cyclic_block(datain,dataout,datain2);
 ```
  Then we should add the ```matrix_cyclic_block``` as the top function like below:
 
-<div align=center><img src="Images/13/23.png" alt="drawing" width="400"/></div>
+<div align=center><img src="Images/13/23.png" alt="drawing" width="200"/></div>
 
 <div align=center><img src="Images/13/24.png" alt="drawing" width="400"/></div>
 
@@ -160,9 +160,13 @@ Then we can choose the function we want to run the C synthesis.
 
 <div align=center><img src="Images/13/25.png" alt="drawing" width="400"/></div>
 
-You can see the synthesis report as shown below:
+Then we can click the green button ```Run C Synthesis``` like below:
 
 <div align=center><img src="Images/13/26.png" alt="drawing" width="400"/></div>
+
+You can see the synthesis report as shown below:
+
+<div align=center><img src="Images/13/27.png" alt="drawing" width="400"/></div>
 
 Suppose we have two matrices, $A$ and $B$, with the following dimensions:
 
