@@ -285,8 +285,8 @@ The default operation is to split the array into its individual elements. This c
 
 	int A[N][N];
 	int B[N][N];
-#pragma HLS ARRAY_PARTITION variable=A type=complete dim=2 
-#pragma HLS ARRAY_PARTITION variable=B type=complete dim=2 
+#pragma HLS ARRAY_PARTITION variable=A type=complete dim=0
+#pragma HLS ARRAY_PARTITION variable=B type=complete dim=0 
 
 
 ```
