@@ -150,6 +150,8 @@ matrix_cyclic_block(datain,dataout,datain2);
 }
 
 ```
+ Then we should add the ```matrix_cyclic_block```
+
 
 According to the report, the core loop (Matrix_Loop) has II(Initial Interval) = 4 and the II of the IP block is 68, which means this IP can only receive 1 data every 68 clock cycles. This is extremely slow. An optimized design should have an II = 1 (receive new data every clock; maximum throughput). This design consumes 411 FFs and 534 LUTs and 12 DSPs for the Matrix_Loop.
 
