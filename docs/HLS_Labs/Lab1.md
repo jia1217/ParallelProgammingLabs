@@ -278,44 +278,6 @@ The default operation is to split the array into its individual elements. This c
 
 ## Simulation
 
-The testbench file for simulation is shown below:
-
-```c++
-/*
-	Filename: matrix_cyclic_block.h
-		Testbench file
-		Calls matrix_cyclic_block() function from matrix_cyclic_block.cpp
-*/
-
-#include "matrix_cyclic_block.h"
-
-
-int main()
-{
-	d_stream datain;
-	d_stream datain2;
-	d_stream dataout;
-
-	data_t_pack indata;
-	data_t_pack outdata;
-
-	for(int i=0;i<N*N;i++)
-	{
-		indata.data=i;
-		datain.write(indata);
-		datain2.write(indata);
-	}
-matrix_cyclic(datain,dataout,datain2);
-	for(int k=0;k<N*N;k++)
-	{
-		outdata=dataout.read();
-		printf("dataout[%d] is %d\r\n",k,outdata.data);
-	}
-
-}
-
-```
-
 In Vitis HLS, there are two types of simulations, C simulation, and C/RTL Cosimulation. In C simulation, Vitis HLS runs the kernel (matrix_cyclic_block) as pure software. The pragmas do not take effect in C simulation. C/RTL cosimulation first compiles the kernel into HDL hardware kernel and then generates the interface between the test bench and hardware kernel. Calling the ```matrix_cyclic_block``` function launches the hardware simulation if the block level interface is not ```ap_ctrl_none```. In this example, the ```matrix_cyclic_block``` kernel doesn't require any start signal. Calling the kernel just passes the data into it. Such a free-running kernel performs differently in C simulation and Cosimulation ([Ref](https://docs.xilinx.com/r/en-US/ug1393-vitis-application-acceleration/Free-Running-Kernel)). 
 
 To run the simulation, simply clock the C simulation or C/RTL cosimulation in the Flow Navigator (bottom right). You should see the *PASS* if everything is good. When running the Cosimulation, you can change the *Dump Trace* option to *all* before launching. Then, once the simulation is finished, you can click the *Wave Viewer* to see the waveform from the simulation. You can check if the actual II matches the report with the waveform.  
