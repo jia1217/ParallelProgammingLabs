@@ -255,7 +255,7 @@ b_{12}&b_{22}\\
 $$
 
 
-<div align=center><img src="Images/13/28.png" alt="drawing" width="600"/></div>
+<div align=center><img src="Images/13/28.png" alt="drawing" width="400"/></div>
 
 
 ```c++
