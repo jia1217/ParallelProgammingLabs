@@ -81,7 +81,7 @@ void matrix_cyclic_block(d_stream &stream_in,d_stream &stream_out, d_stream &str
 	int A[N][N];
 	int B[N][N];
 
-read A and C:
+read_A_and_C:
 	for(int i=0;i<N;i++)
 	{
 		for(int j=0;j<N;j++)
@@ -114,6 +114,43 @@ Matrix_Loop:
 }
 
 ```
+**matrix_cyclic_block_tb.cpp**
+```c++
+/*
+	Filename: matrix_cyclic_block.h
+		Testbench file
+		Calls matrix_cyclic_block() function from matrix_cyclic_block.cpp
+*/
+
+#include "matrix_cyclic_block.h"
+
+
+int main()
+{
+	d_stream datain;
+	d_stream datain2;
+	d_stream dataout;
+
+	data_t_pack indata;
+	data_t_pack outdata;
+
+	for(int i=0;i<N*N;i++)
+	{
+		indata.data=i;
+		datain.write(indata);
+		datain2.write(indata);
+	}
+matrix_cyclic(datain,dataout,datain2);
+	for(int k=0;k<N*N;k++)
+	{
+		outdata=dataout.read();
+		printf("dataout[%d] is %d\r\n",k,outdata.data);
+	}
+
+}
+
+```
+
 According to the report, the core loop (Matrix_Loop) has II(Initial Interval) = 4 and the II of the IP block is 68, which means this IP can only receive 1 data every 68 clock cycles. This is extremely slow. An optimized design should have an II = 1 (receive new data every clock; maximum throughput). This design consumes 411 FFs and 534 LUTs and 12 DSPs for the Matrix_Loop.
 
 Suppose we have two matrices, $A$ and $B$, with the following dimensions:
