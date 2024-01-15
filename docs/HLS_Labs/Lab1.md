@@ -246,9 +246,9 @@ $$
 ```c++
 
 	int A[N][N];
-	int C[N][N];
+	int B[N][N];
 #pragma HLS ARRAY_PARTITION variable=A type=cyclic dim=1 factor=4
-#pragma HLS ARRAY_PARTITION variable=C type=block dim=1 factor=4
+#pragma HLS ARRAY_PARTITION variable=B type=block dim=1 factor=4
 //variable: This indicates the array variable that you want to partition. Replace A with the actual name of your array.
 //dim = 1: This specifies the dimension along which the array should be partitioned. In this case, it's dimension 1, which corresponds to the first dimension in C/C++ arrays
 //(rows for 2D arrays).
