@@ -535,6 +535,7 @@ template <int N> struct TestStruct {
 };
 
 int test(int i);
+
 ```
 
 **test.cpp**
