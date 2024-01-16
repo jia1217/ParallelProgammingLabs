@@ -180,7 +180,7 @@ mm2s.wait()
 
 We will see:
 
-<div align=center><img src="Images/16/7.png" alt="drawing" width="200"/></div>
+<div align=center><img src="Images/16/7 .png" alt="drawing" width="200"/></div>
 
 
 
