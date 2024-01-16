@@ -91,11 +91,11 @@ using namespace std;
 ```
 The synthesis report is shown below:
 
-<div align=center><img src="16/1.png" alt="drawing" width="800"/></div>
+<div align=center><img src="Images/16/1.png" alt="drawing" width="800"/></div>
 
 And the dataflow view is shown below:
 
-<div align=center><img src="16/2.png" alt="drawing" width="800"/></div>
+<div align=center><img src="Images/16/2.png" alt="drawing" width="800"/></div>
 
 **example_test.cpp**
 ```c++
@@ -130,7 +130,7 @@ And this IP can transfer data with the AXI_DMA, becauce the port is ```axis```, 
 
 The configure block design can use reference materials [here](https://uri-nextlab.github.io/ParallelProgammingLabs/HLS_Labs/Lab1.html). And we need to choose the number of the DMA according to the number of the interface.
 
-<div align=center><img src="16/3.png" alt="drawing" width="600"/></div>
+<div align=center><img src="Images/16/3.png" alt="drawing" width="600"/></div>
 
 #### Run synthesis,  Implementation, and generate bitstream
 
@@ -180,7 +180,7 @@ mm2s.wait()
 
 We will see:
 
-<div align=center><img src="16/7.png" alt="drawing" width="200"/></div>
+<div align=center><img src="Images/16/7.png" alt="drawing" width="200"/></div>
 
 
 
@@ -338,7 +338,7 @@ int main() {
 Vitis HLS does not support C arbitrary precision types. AMD recommends using C++ types with arbitrary precision.
 Vitis HLS provides arbitrary precision integer data types that manage the value of the integer numbers within the boundaries of the specified width, as shown in the following table. [Ref](https://docs.xilinx.com/r/en-US/ug1399-vitis-hls/Arbitrary-Precision-Data-Types-Library)
 
-<div align=center><img src="16/4.png" alt="drawing" width="800"/></div>
+<div align=center><img src="Images/16/4.png" alt="drawing" width="800"/></div>
 
 The header file ap_int.h defines the arbitrary precision integer data type for the C++ ```ap_[u]int``` data types. To use arbitrary precision integer data types in a C++ function:
 
@@ -505,7 +505,7 @@ In Vitis HLS, it is important to use fixed-point data types, because the behavio
 
 These data types manage the value of real (non-integer) numbers within the boundaries of a specified total width (W) and integer width (I) with the expression (W = I + B), as shown in the following figure.[Ref](https://docs.xilinx.com/r/en-US/ug1399-vitis-hls/Arbitrary-Precision-Fixed-Point-Data-Types)
 
-<div align=center><img src="16/5.png" alt="drawing" width="400"/></div>
+<div align=center><img src="Images/16/5.png" alt="drawing" width="400"/></div>
 
 This simple test illustrates how to use ap_fixed/ap_ufixed fixed point data types.
 
@@ -568,7 +568,7 @@ int main() {
 }
 
 ```
-<div align=center><img src="16/6.png" alt="drawing" width="400"/></div>
+<div align=center><img src="Images/16/6.png" alt="drawing" width="400"/></div>
 
 ## using_float_and_double
 
@@ -867,11 +867,11 @@ extern "C" void example(float16* res, const float16* lhs, const float16* rhs,
 ```
 The synthesis report is shown below:
 
-<div align=center><img src="16/8.png" alt="drawing" width="400"/></div>
+<div align=center><img src="Images/16/8.png" alt="drawing" width="400"/></div>
 
 And the dataflow view is shown below:
 
-<div align=center><img src="16/9.png" alt="drawing" width="400"/></div>
+<div align=center><img src="Images/16/9.png" alt="drawing" width="400"/></div>
 
 **example_tb.cpp**
 ```c++
@@ -914,7 +914,7 @@ int main(int, char**) {
 This function ```example``` is to add the array ```lhs``` and ```rhs```.
 And you can see the result is right by run ```C simulation``` like below:
 
-<div align=center><img src="16/10.png" alt="drawing" width="400"/></div>
+<div align=center><img src="Images/16/10.png" alt="drawing" width="400"/></div>
 
 #### Create the Vivado project
 
@@ -980,7 +980,7 @@ print(sum_buffer[0:10])
 
 We will see:
 
-<div align=center><img src="16/12.png" alt="drawing" width="600"/></div>
+<div align=center><img src="Images/16/12.png" alt="drawing" width="600"/></div>
 
 ## variable_bound_loops
 
@@ -1050,13 +1050,13 @@ dout_t loop_max_bounds(din_t A[N], dsel_t width) {
 
 Attempting to optimize the design (```loop_var```) in the example above reveals the issues created by variable loop bounds. The first issue with variable loop bounds is that they prevent Vitis HLS from determining the latency of the loop. Vitis HLS can determine the latency to complete one iteration of the loop, but because it cannot statically determine the exact variable ```width```, it does not know how many iterations are performed and thus cannot report the loop latency (the number of cycles to completely execute all iterations of the loop).
 
-<div align=center><img src="16/13.png" alt="drawing" width="800"/></div>
+<div align=center><img src="Images/16/13.png" alt="drawing" width="800"/></div>
 
 The report shows that the ```Trip Counter``` is 63 becauce the type of the ```x``` is ```ap_uint<6>```.
 
 The solution to loops with variable bounds is to make the number of loop iteration a fixed value with conditional executions inside the loop. The code from the variable loop bounds example can be rewritten as shown in the following code example. Here, the loop bounds are explicitly set to the maximum value of variable width and the loop body is conditionally executed (```loop_max_bounds```).
 
-<div align=center><img src="16/14.png" alt="drawing" width="800"/></div>
+<div align=center><img src="Images/16/14.png" alt="drawing" width="800"/></div>
 
 **loop_var_tb.c++**
 ```c++
