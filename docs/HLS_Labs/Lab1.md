@@ -81,7 +81,7 @@ void matrix_cyclic_block(d_stream &stream_in,d_stream &stream_out, d_stream &str
 	int A[N][N];
 	int B[N][N];
 
-read_A_and_C:
+read_A_and_B:
 	for(int i=0;i<N;i++)
 	{
 		for(int j=0;j<N;j++)
