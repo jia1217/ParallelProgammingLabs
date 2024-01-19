@@ -21,11 +21,11 @@ sort: 12
 
 ## Register
 
-An HLS IP or kernel can be controlled by a host application, or embedded processor using the Slave AXI4-Lite interface (```s_axilite```) which acts as a system bus for communication between the processor and the kernel. Using the ```s_axilite``` interface the host or an embedded processor can start and stop the kernel, and read or write data to it. When Vitis HLS synthesizes the design the ```s_axilite``` interface is implemented as an adapter that captures the data that was communicated from the host in registers on the adapter.
+An HLS IP or kernel can be controlled by a host application, or embedded processor using the Slave AXI4-Lite interface (```s_axilite```) which acts as a system bus for communication between the processor and the kernel. Using the ```s_axilite``` interface the host or an embedded processor can start and stop the kernel, and read or write data to it. When Vitis HLS synthesizes the design the ```s_axilite``` interface is implemented as an adapter that captures the data communicated from the host in registers on the adapter.
 
 The AXI4-Lite interface performs several functions within a Vivado IP or Vitis kernel:
 
-* It maps a block-level control mechanism which can be used to start and stop the kernel.
+* It maps a block-level control mechanism that can be used to start and stop the kernel.
 
 * It provides a channel for passing scalar arguments, pointers to scalar values, function return values, and address offsets for ```m_axi``` interfaces from the host to the IP or kernel
 
@@ -42,19 +42,19 @@ The AXI4-Lite interface performs several functions within a Vivado IP or Vitis k
 
 <div align=center><img src="Images/12_1.png" alt="drawing" width="600"/></div>
 
-By default, Vitis HLS automatically assigns the address for each port that is grouped into an ```s_axilite``` interface. The size, or range of addresses assigned to a port is dependent on the argument data type and the port protocol used, as described below. You can also explicitly define the address using the ```offset``` option as discussed in [S_AXILITE Offset Option](https://docs.xilinx.com/r/en-US/ug1399-vitis-hls/S_AXILITE-Offset-Option).
+By default, Vitis HLS automatically assigns the address for each port grouped into an ```s_axilite``` interface. As described below, the size or range of addresses assigned to a port depends on the argument data type and the port protocol used. You can also explicitly define the address using the ```offset``` option as discussed in [S_AXILITE Offset Option](https://docs.xilinx.com/r/en-US/ug1399-vitis-hls/S_AXILITE-Offset-Option).
 
 **S_AXILITE Control Register Map**
 
-In the Control Register Map of the ```s_axilite``` interface, Vitis HLS reserves addresses 0x00 through 0x18 for the block-level protocol, interrupt, mailbox and auto-restart controls. The latter are present only when counted auto-restart and the mailbox are enabled, as shown below:
+In the Control Register Map of the ```s_axilite``` interface, Vitis HLS reserves address 0x00 through 0x18 for the block-level protocol, interrupt, mailbox and auto-restart controls. The latter are present only when counted auto-restart and the mailbox are enabled, as shown below:
 
 <div align=center><img src="Images/12_2.png" alt="drawing" width="600"/></div>
 
-The Control signals (0X00) contains ```ap_start```, ```ap_done```, ```ap_ready```, and ```ap_idle```; and in the case of ```ap_ctrl_chain``` the block protocol also contains ```ap_continue```. These are the block-level interface signals which are accessed through the ```s_axilite``` adapter.[Ref](https://docs.xilinx.com/r/en-US/ug1399-vitis-hls/S_AXILITE-Control-Register-Map)
+The Control signals (0X00) contains ```ap_start```, ```ap_done```, ```ap_ready```, and ```ap_idle```; and in the case of ```ap_ctrl_chain``` the block protocol also contains ```ap_continue```. These are the block-level interface signals that are accessed through the ```s_axilite `` adapter.[Ref](https://docs.xilinx.com/r/en-US/ug1399-vitis-hls/S_AXILITE-Control-Register-Map)
 
 **S_AXILITE and Port-level Protocols**
 
-In the Vivado IP flow, you can assign port-level I/O protocols to the individual ports and signals bundled into an ```s_axilite``` interface. In the Vitis kernel flow, changing the default port-level I/O protocols is not recommended unless necessary. The tool assigns a default port protocol to a port depending on the type and direction of the argument associated with it. The port can contain one or more of the following:
+In the Vivado IP flow, you can assign port-level I/O protocols to the individual ports and signals bundled into an ```s_axilite``` interface. In the Vitis kernel flow, changing the default port-level I/O protocols is not recommended unless necessary. The tool assigns a default port protocol to a port depending on the type and direction of the associated argument. The port can contain one or more of the following:
 * Data signal for the argument
 
 * Valid signal (```ap_vld```/```ap_ovld```) to indicate when the data can be read
@@ -65,15 +65,15 @@ The default port protocol assignments for various argument types are as follows:
 
 <div align=center><img src="Images/12_3.png" alt="drawing" width="600"/></div>
 
-Arrays default to ```ap_memory```. The ```bram``` port protocol is not supported for arrays in an ```s_axilite``` interface.
+Arrays default to ```ap_memory```. The ```bram``` port protocol is unsupported for arrays in an ```s_axilite``` interface.
 
 **S_AXILITE Bundle Rules**
 
-In the [S_AXILITE Example](https://docs.xilinx.com/r/en-US/ug1399-vitis-hls/S_AXILITE-Example) all the function arguments are grouped into a single ```s_axilite``` interface adapter specified by the ```bundle=BUS_A ```option in the INTERFACE pragma. The ```bundle``` option simply lets you group ports together into one interface.
+In the [S_AXILITE Example](https://docs.xilinx.com/r/en-US/ug1399-vitis-hls/S_AXILITE-Example) all the function arguments are grouped into a single ```s_axilite``` interface adapter specified by the ```bundle=BUS_A ``` option in the INTERFACE pragma. The ```bundle``` option lets you group ports together into one interface.
 
-In the Vitis kernel flow there should only be a single interface bundle, commonly named ```s_axi_control``` by the tool. So you should not specify the ```bundle``` option in that flow, or you will probably encounter an error during synthesis. However, in the Vivado IP flow you can specify multiple bundles using the ```s_axilite``` interface, and this will create a separate interface adapter for each bundle you have defined
+In the Vitis kernel flow, there should only be a single interface bundle, commonly named ```s_axi_control``` by the tool. So you should not specify the ```bundle``` option in that flow, or you will probably encounter an error during synthesis. However, in the Vivado IP flow, you can specify multiple bundles using the ```s_axilite``` interface, creating a separate interface adapter for each bundle you have defined.
 
-After synthesis completes, the Synthesis Summary report provides feedback regarding the number of ```s_axilite``` adapters generated. The SW-to-HW Mapping section of the report contains the HW info showing the control register offset and the address range for each port.[Ref](https://docs.xilinx.com/r/en-US/ug1399-vitis-hls/S_AXILITE-Bundle-Rules)
+After synthesis, the Synthesis Summary report provides feedback regarding the number of ```s_axilite``` adapters generated. The SW-to-HW Mapping section of the report contains the HW info showing the control register offset and the address range for each port.[Ref](https://docs.xilinx.com/r/en-US/ug1399-vitis-hls/S_AXILITE-Bundle-Rules)
 
 However, there are some rules related to using bundles with the ```s_axilite``` interface.
 
@@ -83,9 +83,9 @@ However, there are some rules related to using bundles with the ```s_axilite``` 
 
 * Partially Specified Bundle Names: If you specify ```bundle``` names for some arguments, but leave other arguments unassigned, then the tool will bundle the arguments as follows:
 
-* Group all ports into the specified bundles as indicated by the INTERFACE pragmas.
+* Group all ports into the specified bundles as the INTERFACE pragmas indicate.
 
-* Group any ports without bundle assignments into a default named bundle. The default name can either be the standard tool default, or an alternative default name if the tool default has already been specified by the user.
+* Group any ports without bundle assignments into a default named bundle. The default name can be either the standard tool default or an alternative one if the user has already specified the tool default.
 
 ### using_axi_lite
 
@@ -306,17 +306,17 @@ If the stream data type is an user-defined struct, the default procedure is to k
 
 **How AXI4-Stream Works**
 
-AXI4-Stream is a protocol designed for transporting arbitrary unidirectional data. In an AXI4-Stream, ```TDATA``` width of bits is transferred per clock cycle. The transfer is started once the producer sends the ```TVALID``` signal and the consumer responds by sending the ```TREADY``` signal (once it has consumed the initial ```TDATA```). At this point, the producer will start sending ```TDATA``` and ```TLAST``` (```TUSER``` if needed to carry additional user-defined sideband data). ```TLAST``` signals the last byte of the stream. So the consumer keeps consuming the incoming ```TDATA``` until ```TLAST``` is asserted.
+AXI4-Stream is a protocol designed for transporting arbitrary unidirectional data. In an AXI4-Stream, the `TDATA``` width of bits is transferred per clock cycle. The transfer is started once the producer sends the ```TVALID``` signal and the consumer responds by sending the ```TREADY``` signal (once it has consumed the initial ```TDATA```). At this point, the producer will start sending ```TDATA``` and ```TLAST``` (```TUSER``` if needed to carry additional user-defined sideband data). ```TLAST``` signals the last byte of the stream. So the consumer keeps consuming the incoming ```TDATA``` until ```TLAST``` is asserted.
 
 <div align=center><img src="Images/12_6.png" alt="drawing" width="600"/></div>
 
-AXI4-Stream has additional optional features like sending positional data with ```TKEEP``` and ```TSTRB``` ports which makes it possible to multiplex both the data position and data itself on the ```TDATA``` signal. Using the ```TID``` and ```TDIST``` signals, you can route streams as these fields roughly corresponds to stream identifier and stream destination identifier. 
+AXI4-Stream has additional optional features like sending positional data with ```TKEEP``` and ```TSTRB``` ports which makes it possible to multiplex both the data position and data itself on the ```TDATA``` signal. Using the ```TID``` and ``TDIST``` signals, you can route streams as these fields roughly correspond to the stream and destination identifiers. 
 
 **How AXI4-Stream is Implemented**
 
 If your design requires a streaming interface begin by defining and using a streaming data structure like ```hls::stream``` in Vitis HLS. This simple object encapsulates the requirements of streaming and its streaming interface is by default implemented in the RTL as a FIFO interface (ap_fifo) but can be optionally, implemented as a handshake interface (ap_hs) or an AXI4-Stream interface (axis)
 
-If a AXI4-Stream interface (axis) is specified via the interface pragma mode option, the interface implementation will mimic the style of an AXIS interface by defining the TDATA, TVALID and TREADY signals.
+If an AXI4-Stream interface (axis) is specified via the interface pragma mode option, the interface implementation will mimic the style of an AXIS interface by defining the TDATA, TVALID and TREADY signals.
 
 If a more formal AXIS implementation is desired, then Vitis HLS requires the usage of a special data type (```hls::axis``` defined in ```ap_axi_sdata.h```) to encapsulate the requirements of the AXI4-Stream protocol and implement the special RTL signals needed for this interface.
 
@@ -335,7 +335,7 @@ Where:
 
 ```WDest```: Width of the TDest signal
 
-When the stream data type (T) are simple integer types, there are two predefined types of AXI4-Stream implementations available:
+When the stream data type (T) a simple integer type, there are two predefined types of AXI4-Stream implementations available:
 
 * A signed implementation of the AXI4-Stream class (or more simply``` ap_axis<Wdata, WUser, WId, WDest>```)
 ```c++
@@ -351,13 +351,13 @@ The value specified for the WUser, WId, and WDest template parameters controls t
 
 When the ```hls::axis``` class is used, the generated RTL will typically contain the actual data signal ```TDATA```, and the following additional signals: ```TVALID```, ```TREADY```, ```TKEEP```, ```TSTRB```, ```TLAST```, ```TUSER```, ```TID```, and ```TDEST```.
 
-```TVALID```, ```TREADY```, and ```TLAST``` are necessary control signals for the AXI4-Stream protocol. ```TKEEP```, ```TSTRB```, ```TUSER```, ```TID```, and ```TDEST``` signals are optional special signals that can be used to pass around additional bookkeeping data.
+```TVALID```, ```TREADY```, and ```TLAST``` are necessary control signals for the AXI4-Stream protocol. ```TKEEP```, ```TSTRB```, ```TUSER```, ```TID```, and ```TDEST``` signals are optional special signals that can pass around additional bookkeeping data.
 
 If ```WUser```, ```WId```, and ```WDest``` are set to 0, the generated RTL will not include the optional ```TUSER```, ```TID```, and ```TDEST``` signals in the interface.
 
 **Registered AXI4-Stream Interfaces**
 
-As a default, AXI4-Stream interfaces are always implemented as registered interfaces to ensure that no combinational feedback paths are created when multiple HLS IP blocks with AXI4-Stream interfaces are integrated into a larger design. For AXI4-Stream interfaces, four types of register modes are provided to control how the interface registers are implemented:
+As a default, AXI4-Stream interfaces are always implemented as registered interfaces to ensure no combinational feedback paths are created when multiple HLS IP blocks with AXI4-Stream interfaces are integrated into a larger design. For AXI4-Stream interfaces, four types of register modes are provided to control how the interface registers are implemented:
 
 * Forward: Only the ```TDATA``` and ```TVALID``` signals are registered.
 
@@ -368,18 +368,18 @@ As a default, AXI4-Stream interfaces are always implemented as registered interf
 * Off: None of the port signals are registered.
 
 The AXI4-Stream side-channel signals are considered to be data signals and are registered whenever ```TDATA``` is registered.
-When connecting HLS generated IP blocks with AXI4-Stream interfaces at least one interface should be implemented as a registered interface or the blocks should be connected via an AXI4-Stream Register Slice.
+When connecting HLS-generated IP blocks with AXI4-Stream interfaces at least one interface should be implemented as a registered interface or the blocks should be connected via an AXI4-Stream Register Slice.
 There are two basic methods to use an AXI4-Stream in your design:
 
 * Use an AXI4-Stream without side-channels.
 
 * Use an AXI4-Stream with side-channels.
 
-This second use model provides additional functionality, allowing the optional side-channels which are part of the AXI4-Stream standard, to be used directly in your C/C++ code.
+This second-use model provides additional functionality, allowing the optional side channels which are part of the AXI4-Stream standard, to be used directly in your C/C++ code.
 
 ### axi_stream_to_master
 
-This example illustrates how to use a stream and write (with bursts) to a memory mapped interface. 
+This example illustrates using a stream and writing (with bursts) to a memory-mapped interface. 
 
 **example.h**
 ```c++
@@ -568,7 +568,7 @@ We will see:
 
 ### using_array_of_streams
 
-While arrays can be converted to streams, it can often lead to coding and synthesis issues as arrays can be accessed in random order while a stream requires a sequential access pattern where every element is read in order. To avoid such issues, any time a streaming interface is required, it is highly recommended to use the ```hls::stream``` object as described in [Using HLS Streams](https://docs.xilinx.com/r/en-US/ug1399-vitis-hls/Using-HLS-Streams). Usage of this construct will enforce streaming semantics in the source code. However, to convert an array to a stream you should perform all the operations on temp variables.
+While arrays can be converted to streams, it can often lead to coding and synthesis issues as arrays can be accessed in random order while a stream requires a sequential access pattern where every element is read in order. To avoid such issues, any time a streaming interface is required, it is highly recommended to use the ```hls::stream``` object as described in [Using HLS Streams](https://docs.xilinx.com/r/en-US/ug1399-vitis-hls/Using-HLS-Streams). The usage of this construct will enforce streaming semantics in the source code. However, to convert an array to a stream you should perform all the operations on temp variables.
 
 This example illustrates how to define and use an array of streams in the interface. Instead of defining an array and then using a pragma to map this array to a stream, it is highly recommended to use the hls::stream objects instead.
 
