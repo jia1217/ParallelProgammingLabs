@@ -68,7 +68,7 @@ dout_t lookup_math(din1_t inval, din2_t idx) {
 The function ```init_sin_table``` precomputes a sine table for efficient lookup of sine values and stores the scaled value in the ```sin_table```.
 The function ```lookup_math``` performs a lookup and multiplication using the sine table and returns the result as a ```dout_t``` type.
 
-The ```sin_table``` array is declared as a regular array, but its contents are initialized at compile time with pre-computed values. This static nature makes it suitable for ```ROM``` implementation. The ```lookup_math``` function accesses the ```sin_table``` elements directly using the ```idx``` index, without any dynamic memory allocation or modification.
+The ```sin_table``` array is declared a regular array, but its contents are initialized at compile time with pre-computed values. This static nature makes it suitable for ```ROM``` implementation. The ```lookup_math``` function directly accesses the ```sin_table``` elements using the ```idx``` index, without any dynamic memory allocation or modification.
 This read-only behavior aligns with ```ROM``` characteristics.
 
 <div align=center><img src="Images/11_17.png" alt="drawing" width="600"/></div>
@@ -122,13 +122,13 @@ AXI4 memory-mapped (```m_axi```) interfaces allow kernels to read and write data
 
 The main advantages for ```m_axi``` interfaces are listed below:
 
-* The interface has a separate and independent read and write channels
+* The interface has separate and independent read and write channels
 
-* It supports burst-based accesses with potential performance of ~17 GBps
+* It supports burst-based accesses with a potential performance of ~17 GBps
 
 * It provides support for outstanding transactions
 
-* It can include cache to improve performance as indicated by the [CACHE](https://docs.xilinx.com/r/en-US/ug1399-vitis-hls/pragma-HLS-cache) pragma or directive.
+* It can include a cache to improve performance as indicated by the [CACHE](https://docs.xilinx.com/r/en-US/ug1399-vitis-hls/pragma-HLS-cache) pragma or directive.
 
 You can use an AXI4 master interface on array or pointer/reference arguments, which Vitis HLS implements in one of the following modes:
 
@@ -136,7 +136,7 @@ You can use an AXI4 master interface on array or pointer/reference arguments, wh
 
 * Burst mode data transfers
 
-With individual data transfers, Vitis HLS reads or writes a single element of data for each address. The following example shows a single read and single write operation. In this example, Vitis HLS generates an address on the AXI interface to read a single data value and an address to write a single data value. The interface transfers one data value per address.
+With individual data transfers, Vitis HLS reads or writes a single data element for each address. The following example shows a single read and single write operation. In this example, Vitis HLS generates an address on the AXI interface to read a single data value and an address to write a single data value. The interface transfers one data value per address.
 
 ```c++
 void bus (int *d) {
@@ -146,9 +146,9 @@ void bus (int *d) {
  *d  = acc;
 }
 ```
-With burst mode transfers, Vitis HLS reads or writes data using a single base address followed by multiple sequential data samples, which makes this mode capable of higher data throughput. Burst mode of operation is possible when using a pipelined ```for``` loop.
+With burst mode transfers, Vitis HLS reads or writes data using a single base address followed by multiple sequential data samples, which makes this mode capable of higher data throughput. A Burst mode of operation is possible when using a pipelined ``` for``` loop.
 
-The use of ```memcpy``` is discouraged because it can not be inlined or pipelined. Its use can also be problematic because it changes the type of the argument into ```char```, which can lead to errors if ```array_partition```, ```array_reshape```, or struct ```disaggregate``` is used. Instead you are recommended to write your own version of ```memcpy``` with explicit arrays and loops to provide better control.
+The use of ```memory `` is discouraged because it can not be inlined or pipelined. Its use can also be problematic because it changes the type of the argument into ```char```, which can lead to errors if ```array_partition```, ```array_reshape```, or struct ```disaggregate``` is used. Instead, you should write your own version of ```memcpy``` with explicit arrays and loops to provide better control.
 
 When using a ```for``` loop to implement burst reads or writes, follow these requirements:
 
@@ -164,17 +164,17 @@ Only one read and one write is allowed in a for loop unless the ports are bundle
 
 **Offset and Modes of Operation**
 
-In the Vitis kernel flow the default mode of operation is ```offset=slave``` and should not be changed. In the Vivado IP flow the default is also ```offset=slave```, but can be changed.
+In the Vitis kernel flow, the default mode of operation is ```offset=slave``` and should not be changed. In the Vivado IP flow, the default is also ```offset=slave```, but it can be changed.
 
 The AXI4 Master interface has a read/write address channel that can be used to read/write specific addresses. By default the ```m_axi``` interface starts all read and write operations from the address ```0x00000000```.[Ref](https://docs.xilinx.com/r/en-US/ug1399-vitis-hls/Offset-and-Modes-of-Operation)
 
-The ```m_axi``` interface can be both a master initiating transactions, and also a slave interface that receives the data and sends acknowledgment. Depending on the mode specified with the ```offset``` option of the INTERFACE pragma, an HLS IP can use multiple approaches to set the base address.
+The ```m_axi``` interface can be both a master initiating transactions, and also a slave interface that receives the data and sends an acknowledgment. Depending on the mode specified with the ```offset``` option of the INTERFACE pragma, an HLS IP can use multiple approaches to set the base address.
 
-**Master Mode**: When acting as a master interface with different offset options, the m_axi interface start address can be either hard-coded or set at runtime.
+**Master Mode**: When acting as a master interface with different offset options, the m_axi interface start address can be hard-coded or set at runtime.
 
-```offset=off```: Sets the base address of the ```m_axi``` interface to 0x00000000 and it cannot be changed in the Vivado IP integrator. One disadvantage with this approach is that you cannot change the base address during runtime. See [Customizing AXI4 Master Interfaces in IP Integrator](https://docs.xilinx.com/r/en-US/ug1399-vitis-hls/Customizing-AXI4-Master-Interfaces-in-IP-Integrator)for setting the base address.
+```offset=off```: Sets the base address of the ```m_axi``` interface to 0x00000000 and it cannot be changed in the Vivado IP integrator. One disadvantage of this approach is that you cannot change the base address during runtime. See [Customizing AXI4 Master Interfaces in IP Integrator](https://docs.xilinx.com/r/en-US/ug1399-vitis-hls/Customizing-AXI4-Master-Interfaces-in-IP-Integrator)for setting the base address.
 
-```offset=direct```: Vitis HLS generates a port on the IP for setting the address. Note the addition of the ```a``` port as shown in the figure below. This lets you update the address at runtime, so you can have one ```m_axi``` interface reading and writing different locations. For example, an HLS module that reads data from an ADC into RAM, and an HLS module that processes that data. Because you can change the address on the module, while one HLS module is processing the initial dataset the other module can be reading more data into different address.
+```offset=direct```: Vitis HLS generates a port on the IP for setting the address. Note the addition of the ```a``` port as shown in the figure below. This lets you update the address at runtime, so you can have one ```m_axi``` interface reading and writing different locations. For example, an HLS module that reads data from an ADC into RAM, and an HLS module that processes that data. Because you can change the address on the module, while one HLS module is processing the initial dataset the other module can be reading more data into different addresses.
 
 ```c++
 void example(int *a){
@@ -184,9 +184,9 @@ void example(int *a){
 
 ```
 
-**Slave Mode**: The slave mode for an interface is set with ```offset=slave```. In this mode the IP will be controlled by the host application, or the micro-controller through the ```s_axilite``` interface. This is the default for both the Vitis kernel flow, and the Vivado IP flow. Here is the flow of operation:
+**Slave Mode**: The slave mode for an interface is set with ```offset=slave```. In this mode, the IP will be controlled by the host application or the microcontroller through the ```s_axilite``` interface. This is the default for both the Vitis kernel flow and the Vivado IP flow. Here is the flow of operation:
 
-* initially, the Host/CPU will start the IP or kernel using the block-level control protocol which is mapped to the ```s_axilite``` adapter.
+* Initially, the Host/CPU will start the IP or kernel using the block-level control protocol mapped to the ```s_axilite``` adapter.
 
 * The host will send address offsets for the ```m_axi``` interfaces through the ```s_axilite``` adapter.
 
@@ -211,9 +211,9 @@ The following are rules associated with the ```offset``` option:
 #pragma HLS INTERFACE mode=m_axi bundle=BUS_C port=in2 offset=off
 ```
 
-* No Offset Specified: If there are no offsets specified in the INTERFACE pragma, the tool will defer to the setting specified by ```syn.interface.m_axi_offset```.
+* No Offset Specified: If no offsets are specified in the INTERFACE pragma, the tool will defer to the setting specified by ```syn.interface.m_axi_offset```.
 
-If the global ```syn.interface.m_axi_offset``` setting is specified, and the design has an ```s_axilite``` interface, the global setting is ignored and ```offset=slave``` is assumed.
+If the global ``` syn.interface.m_axi_offset``` setting is specified, and the design has an ```s_axilite``` interface, the global setting is ignored and ```offset=slave``` is assumed.
 
 ```c++
 void top(int *a) {
@@ -224,9 +224,9 @@ void top(int *a) {
 
 **M_AXI Bundles**
 
-Bundling ports into a single interface helps save FPGA resources by eliminating AXI logic, but it can limit the performance of the kernel because all the memory transfers have to go through a single interface. The ```m_axi``` interface has independent READ and WRITE channels, so a single interface can read and write simultaneously, though only at one location. Using multiple bundles the bandwidth and throughput of the kernel can be increased by creating multiple interfaces to connect to multiple memory banks.
+Bundling ports into a single interface helps save FPGA resources by eliminating AXI logic. Still, it can limit the performance of the kernel because all the memory transfers have to go through a single interface. The ```m_axi``` interface has independent READ and WRITE channels so that a single interface can read and write simultaneously, though only at one location. Using multiple bundles the bandwidth and throughput of the kernel can be increased by creating multiple interfaces to connect to multiple memory banks.
 
-In the following example all the pointer arguments are grouped into a single ```m_axi``` adapter using the interface option ```bundle=BUS_A```, and adds a single ```s_axilite``` adapter for the m_axi offsets, the scalar argument size, and the function return. [Ref](https://docs.xilinx.com/r/en-US/ug1399-vitis-hls/M_AXI-Bundles)
+In the following example, all the pointer arguments are grouped into a single ```m_axi``` adapter using the interface option ```bundle=BUS_A```, and adds a single ```s_axilite``` adapter for the m_axi offsets, the scalar argument size, and the function return. [Ref](https://docs.xilinx.com/r/en-US/ug1399-vitis-hls/M_AXI-Bundles)
 
 ```c++
 extern "C" {
@@ -267,21 +267,21 @@ This enables the following benefits:
 
 There are two methods to enable this feature in your design:
 
-* Enable globally on ```m_axi``` interfaces using the ```syn.interface.m_axi_auto_id_channel=true``` configuration command as described in [Interface Configuration](https://docs.xilinx.com/r/en-US/ug1399-vitis-hls/Interface-Configuration). The HLS tool automatically adds channels to the ``m_axi`` adapter when this is enabled.
+* Enable globally on ```m_axi``` interfaces using the ```syn.interface.m_axi_auto_id_channel=true``` configuration command as described in [Interface Configuration](https://docs.xilinx.com/r/en-US/ug1399-vitis-hls/Interface-Configuration). When enabled, the HLS tool automatically adds channels to the ``m_axi`` adapter.
 
 * Enable on a specific ```m_axi``` interface using the ```channel``` option of the INTERFACE pragma 
 
 **M_AXI Resource**
 
-The AXI Master Adapter converts the customized AXI commands from the HLS scheduler to standard AXI AMBA® protocol and sends them to the external memory. The MAXI adapter uses resources such as FIFO to store the requests/Data and ack. Here is the summary of the modules and the resource they consume:
+The AXI Master Adapter converts the customized AXI commands from the HLS scheduler to standard AXI AMBA® protocol and sends them to the external memory. The MAXI adapter uses resources such as FIFO to store the requests/Data and ack. Here is the summary of the modules and the resources they consume:
 
-* Write Module: The bus write modules performs the write operations.
+* Write Module: The bus write modules perform the write operations.
 
-* ```FIFO_wreq```: This FIFO module stores the future write requests. When the AW channel is available a new write request to global memory will be popped out of this FIFO.
+* ```FIFO_wreq```: This FIFO module stores the future write requests. When the AW channel is available, a new write request to global memory will pop out of this FIFO.
 
 * ```buff_wdata```: This FIFO stores the future write data that needs to be sent to the global memory. When the W channel is available and AXI protocol conditions are met, the write data of size= burst_length will be popped out of this FIFO and sent to the global memory.
 
-* ```FIFO_resp```: This module is responsible for controlling the number of pipelined write responses sent to the module.
+* ```FIFO_resp```: This module controls the number of pipelined write responses sent to the module.
 
 The device resource consumption of the M_AXI adapter is a sum of all the write modules (size of the ```FIFO_wreq module```, ```buff_wdata```, and size of FIFO_ resp) and the sum of all read modules. In general, the size of the FIFO is calculated as = Width * Depth. When you refer to a 1KB FIFO storage it can be one of the configurations such as 32*32, 8*64 etc, which are selected according to the design specification. [Ref](https://docs.xilinx.com/r/en-US/ug1399-vitis-hls/M_AXI-Resources)
 
@@ -302,7 +302,7 @@ Some of these options use internal storage to buffer data and can have an impact
 
 * ``num_write_outstanding``: Specifies how many write requests can be made to the AXI4 bus, without a response, before the design stalls. This implies internal storage in the design, a FIFO of size: ```num_write_outstanding```*```max_write_burst_length```*```word_size```
 
-This example illustrates how an input argument of top level function can be mapped to AXI4-MEM.
+This example illustrates how an input argument of a level function can be mapped to AXI4-MEM.
 
 **example.cpp**
 ```c++
