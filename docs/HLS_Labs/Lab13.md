@@ -70,7 +70,7 @@ void example(hls::stream<pkt>& A, hls::stream<pkt>& B,int num) {
 
 
 ```
-After synthesis, both arguments are implemented with a data port (TDATA) and the standard AXI4-Stream protocol ports, TVALID, TREADY, TKEEP, TLAST, and TSTRB, as shown in the following figure
+After synthesis, both arguments are implemented with a data port (TDATA) and the standard AXI4-Stream protocol ports, TVALID, TREADY, TKEEP, TLAST, and TSTRB, as shown in the following figure.
 
 <div align=center><img src="Images/13/13_1.png" alt="drawing" width="600"/></div>
 
@@ -183,7 +183,7 @@ An instance of an AXI4-Stream without side channels (for example ```hls::stream<
 
 Some of these signals (```TLAST```, ```TKEEP```, and ```TSTRB```) can be unnecessary or unwanted in your design. In addition, there are use cases where ```TDATA``` is not required as the modeler uses ```TUSER``` to move data.[Ref](https://docs.xilinx.com/r/en-US/ug1399-vitis-hls/Customizing-AXI4-Stream-Interfaces)
 
-In addition to letting you enable or disable specific side-channel signals, the set of macros was expanded to allow the specification of ```all``` or ```none``` of the signals. This allowed for the definition of the special ```hls::axis_data<>``` and ```hls::axis_user<>``` helper classes that make it easier to pick and choose the exact signal specification.
+In addition to letting you enable or disable specific side-channel signals, the set of macros was expanded to allow the specification of ```all``` or ```none``` of the signals. This allowed for the definition of the special ```hls::axis_data<>``` and ```hls::axis_user<>``` helper classes, making it easier to pick and choose the exact signal specification.
 
 Example C++ code for implementing an AXI stream interface in Vitis HLS using only one side channel.(```TDATA```, ```TLAST``` only)
 
@@ -448,7 +448,7 @@ After Run the cosimulation, we can see the wave viewer to confirm the ```last```
 
 <div align=center><img src="Images/13/6.PNG" alt="drawing" width="600"/></div>
 
-And the export IP is shown below.
+The export IP is shown below.
 
 <div align=center><img src="Images/13/8.PNG" alt="drawing" width="200"/></div>
 
@@ -604,11 +604,11 @@ int main() {
 }
 
 ```
-After Run the cosimulation, we can see the wave viewer to confirm the ```last``` signal as shown below:
+After Running the cosimulation, we can see the wave viewer to confirm the ```last``` signal as shown below:
 
 <div align=center><img src="Images/13/11.png" alt="drawing" width="800"/></div>
 
-And the export IP is shown below.
+The export IP is shown below.
 
 <div align=center><img src="Images/13/14.png" alt="drawing" width="200"/></div>
 
