@@ -118,21 +118,21 @@ writeC:
 
 We set the function ```matmult_accel``` as the top function and run C synthesis. The report is shown below:
 
-<div align=center><img src="17/10.png" alt="drawing" width="800"/></div>
+<div align=center><img src="Images/17/10.png" alt="drawing" width="800"/></div>
 
 And we can have an analysis for the report. At first, the interface of the function matmult_accel is ```512-bit```, the kernel_mmult is a ```32-bit``` float, and the top function(```matmult_accel```) is the hls::stream interface. Then we can see the coding and ```j_limit``` is 16 by computing the ```512/DataTypeSize``` and ```i_limit``` is 1024 by computing the ```N2/j_limit```(N2 is defined in ```matmult.h```). The way for the optimization of mult is widening the bit for the input and output interface so that the function can read 16 data at one time, compared to the way for reading one data at one time.
 
 And for the pragma of the array ```l_A```, ```l_B```, ```l_C```, we can see that ```l_A``` is ```cyclic``` and ```l_B``` is ```block``` and more information on the ```pragma ARRAY_PARTITION``` can be found in lab1. And because the factor is set to 16, so after the optimization array, the array ```l_A[N2]``` will be the ```l_A2[N2/16]```. And then every block will contain the ```N2/16 (16384/16=1024)```, but the array ```l_A``` is different from the array ```l_B``` as shown below:
 
-<div align=center><img src="17/11.png" alt="drawing" width="200"/></div>
+<div align=center><img src="Images/17/11.png" alt="drawing" width="200"/></div>
 
 Assuming that ```l_A``` and ```l_B``` are 4*4 matrix, and we set the factor is 4, then we can see the array ```l_A``` and array ```l_B``` as shonw below:
 
-<div align=center><img src="17/12.png" alt="drawing" width="300"/></div>
+<div align=center><img src="Images/17/12.png" alt="drawing" width="300"/></div>
 
 As for the function, we can also see from the report that the array ```l_A``` and array ```l_B``` are divided into 16 blocks differently. The array ```l_A``` loads data by column, while the array ```l_B``` loads data by row.
 
-<div align=center><img src="17/13.png" alt="drawing" width="400"/></div>
+<div align=center><img src="Images/17/13.png" alt="drawing" width="400"/></div>
 
 So as for the array ```l_A```, when Vitis HLS pipelined the inner loop of the ```load_A```, its II will be 1 while for the array ```l_B```, its II will not be 1 because Bram has two ports reading data at one clock.
 
@@ -317,11 +317,11 @@ int main(void)
 
 The configure block design can use reference materials [here](https://uri-nextlab.github.io/ParallelProgammingLabs/HLS_Labs/Lab1.html). And we need to choose the number of the DMA according to the number of the interface.
 
-<div align=center><img src="17/7.png" alt="drawing" width="1000"/></div>
+<div align=center><img src="Images/17/7.png" alt="drawing" width="1000"/></div>
 
 ## Run synthesis,  Implementation, and generate bitstream
 
-It may show some errors about I/O Ports, please fix them.
+It may show some errors about I/O Ports. Please fix them.
 
 ## Download the bitstream file to PYNQ
 
@@ -379,6 +379,6 @@ np.array_equal(A @ B, out_buffer)
 
 We will see:
 
-<div align=center><img src="17/9.png" alt="drawing" width="400"/></div>
+<div align=center><img src="Images/17/9.png" alt="drawing" width="400"/></div>
 
 This hardware accelerator provides a 1.8x speedup compared to NumPy.
