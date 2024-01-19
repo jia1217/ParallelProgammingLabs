@@ -36,7 +36,7 @@ INPUT_RUN_TIME_CONFIGURATION);
 ```
 The ```STATIC_PARAM``` is the static parameterization struct that defines the static parameters for the FFT.
 
-Both the input and output data are supplied to the function as arrays (```INPUT_DATA_ARRAY``` and ```OUTPUT_DATA_ARRAY```). 
+The input and output data are supplied to the function as arrays (```INPUT_DATA_ARRAY``` and ```OUTPUT_DATA_ARRAY```). 
 The data types for the arrays can be ```float``` or ```ap_fixed```.
 
 ```c++
@@ -266,7 +266,7 @@ The synthesis report is shown below:
 
 ## initialization_and_reset
 
-Although not a requirement, AMD recommends specifying arrays that are to be implemented as memories with the ```static``` qualifier. This not only ensures that Vitis HLS implements the array with a memory in the RTL; it also allows the default initialization behavior of the static types to be used. [Ref](https://docs.xilinx.com/r/en-US/ug1399-vitis-hls/Initializing-and-Resetting-Arrays)
+Although not a requirement, AMD recommends specifying arrays to be implemented as memories with the ```static``` qualifier. This ensures that Vitis HLS implements the array with memory in the RTL and allows the default initialization behavior of the static types to be used. [Ref](https://docs.xilinx.com/r/en-US/ug1399-vitis-hls/Initializing-and-Resetting-Arrays)
 
 In addition, if the variable has the ```static``` qualifier, Vitis HLS initializes the variable in the RTL design and in the FPGA bitstream. This removes the need for multiple clock cycles to initialize the memory and ensures that initializing large memories is not an operational overhead. The RTL configuration command ```syn.rtl.reset``` can specify if static variables return to their initial state after a reset is applied. This is not the default. When ```syn.rtl.reset=state``` or ```all``` are used, it forces all arrays implemented as block RAM to be returned to their initialized state after reset. This can result in two very undesirable conditions in the RTL design:
 
@@ -276,13 +276,13 @@ In addition, if the variable has the ```static``` qualifier, Vitis HLS initializ
 
 To prevent adding reset logic onto every such block RAM, and incurring the cycle overhead to reset all elements in the RAM, specify the default ```syn.rtl.reset=control``` reset mode and use the RESET pragma or directive to identify individual static or global variables to be reset.
 
-Alternatively, you can use the ```syn.rtl.reset=state``` reset mode, and use the RESET directive ```off``` option to select which individual static or global variables to not reset.
+Alternatively, you can use the ```syn.rtl.reset=state``` reset mode and the RESET directive ```off``` option to select which individual static or global variables not to reset.
 
-Finally, depending on the hardware device or platform of your choice (UltraScale+ or Versal, etc), there can be differences in how block RAMs and URAMs are initialized and/or reset. In general, Vitis HLS supports two types of reset: one is when the device is powered on (and also termed as power-up initialization or power-on reset), and the second is when a hardware RESET signal is asserted during device execution. The following shows the differences in behavior for the different memory resources:
+Finally, depending on the hardware device or platform of your choice (UltraScale+ or Versal, etc), there can be differences in how block RAMs and URAMs are initialized and/or reset. In general, Vitis HLS supports two types of reset: when the device is powered on (and also termed as power-up initialization or power-on reset), and when a hardware RESET signal is asserted during device execution. The following shows the differences in behavior for the different memory resources:
 
 * Initialization Behavior: Applies to all block RAMs on all platforms and only to Versal URAMs. This is the behavior during power-on initialization (or power-on reset).
 
-* Maintaining an “initial value array” and “runtime array” if the array is read/written. This applies to both block RAMs and URAMs and this corresponds to the hardware “RESET” signal during device execution.
+* Maintaining an “initial value array” and “runtime array” if the array is read/written. This applies to block RAMs and URAMs and corresponds to the hardware “RESET” signal during device execution.
 
  URAMs do not support a read-first output write_mode (unlike block RAMs) when a read and a write to the same address is mapped to the same memory port. Block RAM supports the following write-modes: ```write thru```, ```read first```, ```no change```. URAM only supports ```no change```. Vitis HLS will issue the following warning message when it cannot schedule memory operations in the same cycle on a URAM port:
 
@@ -295,9 +295,9 @@ read-first mode for URAMs. Consider using block RAMs instead.
 
 The RESET pragma or directive adds or disables reset ports for specific state variables (global or static). [Ref](https://docs.xilinx.com/r/en-US/ug1399-vitis-hls/pragma-HLS-reset)
 
-The reset port is used to restore the registers and block RAM, connected to the port, to an initial value any time the reset signal is applied. Globally, the presence and behavior of the RTL reset port is controlled using the ```syn.rtl.reset``` configuration settings (or ```config_rtl -reset```). The reset configuration settings include the ability to define the polarity of the reset, and specify whether the reset is synchronous or asynchronous, but more importantly it controls, through the reset option, which registers are reset when the reset signal is applied. For more information, see [Controlling Initialization and Reset Behavior](https://docs.xilinx.com/r/en-US/ug1399-vitis-hls/Controlling-Initialization-and-Reset-Behavior).
+The reset port is used to restore the registers and block RAM, connected to the port, to an initial value any time the reset signal is applied. Globally, the presence and behavior of the RTL reset port are controlled using the ```syn.rtl.reset``` configuration settings (or ```config_rtl -reset```). The reset configuration settings include the ability to define the polarity of the reset and specify whether the reset is synchronous or asynchronous, but more importantly, it controls, through the reset option, which registers are reset when the reset signal is applied. For more information, see [Controlling Initialization and Reset Behavior](https://docs.xilinx.com/r/en-US/ug1399-vitis-hls/Controlling-Initialization-and-Reset-Behavior).
 
-More specific control over reset is provided through the RESET pragma. For global or static variables the RESET pragma is used to explicitly enable a reset when none is present, or the variable can be removed from the reset by turning off the pragma. This can be particularly useful when static or global arrays are present in the design.
+More specific control over reset is provided through the RESET pragma. For global or static variables the RESET pragma is used to enable a reset when none is present explicitly, or the variable can be removed from the reset by turning off the pragma. This can be particularly useful when static or global arrays are present in the design.
 
 For public variables of a class, the RESET pragma must be used as the reset configuration settings only apply to variables declared at the function or file level. In addition, the RESET pragma must be applied to an object of the class in the top-function or sub-function, and cannot be applied to private variables of the class.
 
@@ -317,7 +317,7 @@ Where:
 ```off```: Indicates that reset is not generated for the specified variable.
 
 ### global_array_RAM
-This example shows how global arrays are mapped to RAMs with different implementations and how they are initialized as well as how they are reset.
+This example shows how global arrays are mapped to RAMs with different implementations, how they are initialized, and how they are reset.
 
 **test.h**
 ```cpp
