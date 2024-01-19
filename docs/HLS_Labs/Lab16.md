@@ -20,7 +20,7 @@ sort: 16
 </script>
 
 ## free_running_kernel_remerge_ii4to1
-This example illustrates coding example of achieving II=1 based on two sources using De-Mux/Mux mechanism. It also uses a ap_ctrl_none which shows the free-running kernel behavior.
+This example illustrates the coding example of achieving II=1 based on two sources using the De-Mux/Mux mechanism. It also uses an ap_ctrl_none which shows the free-running kernel behavior.
 
 **example.cpp**
 ```c++
@@ -93,7 +93,7 @@ The synthesis report is shown below:
 
 <div align=center><img src="Images/16/1.png" alt="drawing" width="800"/></div>
 
-And the dataflow view is shown below:
+The dataflow view is shown below:
 
 <div align=center><img src="Images/16/2.png" alt="drawing" width="800"/></div>
 
@@ -124,7 +124,7 @@ int main() {
 }
 ```
 
-And this IP can transfer data with the AXI_DMA, becauce the port is ```axis```, but we should add the ```middle_data``` IP to provide the ```last``` signal. You can find the ```middle_data``` coding in the Lab5/Simple_data_driven/Export the test_IP.
+And this IP can transfer data with the AXI_DMA, because the port is ```axis```, but we should add the ```middle_data``` IP to provide the ```last``` signal. You can find the ```middle_data``` coding in the Lab5/Simple_data_driven/Export the test_IP.
 
 #### Create the Vivado project
 
@@ -188,7 +188,7 @@ We will see:
 
 Vitis HLS supports the use of templates in C++ for synthesis. Vitis HLS does not support templates for the top-level function.
 
-Templates can also be used to implement a form of recursion that is not supported in standard C synthesis (Recursive Functions).
+Templates can also be used to implement a recursion form unsupported in standard C synthesis (Recursive Functions).
 
 The following code example shows a case in which a templatized ```struct``` is used to implement a tail-recursion Fibonacci algorithm. The key to performing synthesis is that a termination class is used to implement the final call in the recursion, where a template size of one is used.
 
@@ -259,10 +259,10 @@ int main() {
 
 A static variable in a template function is duplicated for each different value of the template arguments.
 
-Different C++ template values passed to a function creates unique instances of the function for each template value. Vitis HLS synthesizes these copies independently within their own context. This can be beneficial as the tool can provide specific optimizations for each unique instance, producing a straightforward implementation of the function.
+Different C++ template values passed to a function create unique instances of the function for each template value. Vitis HLS synthesizes these copies independently within their context. This can be beneficial because the tool can provide specific optimizations for each unique instance, producing a straightforward implementation of the function.
 
 This simple example shows how to use C++ template functions to create multiple instances of the same function. This is one way to prevent
-Vitis HLS from creating one module master and then sharing the instance of the master across multiple cycles. The template function method can be use to create multiple instances of the same function and Vitis HLS would treat them as separate unique functions that are not shared. 
+Vitis HLS from creating one module master and then sharing the instance of the master across multiple cycles. The template function method can be used to create multiple instances of the same function and Vitis HLS would treat them as separate unique functions that are not shared. 
 
 **cpp_template.cpp**
 ```c++
@@ -503,7 +503,7 @@ int main() {
 
 In Vitis HLS, it is important to use fixed-point data types, because the behavior of the C++ simulations performed using fixed-point data types match that of the resulting hardware created by synthesis. This allows you to analyze the effects of bit-accuracy, quantization, and overflow with fast C-level simulation.
 
-These data types manage the value of real (non-integer) numbers within the boundaries of a specified total width (W) and integer width (I) with the expression (W = I + B), as shown in the following figure.[Ref](https://docs.xilinx.com/r/en-US/ug1399-vitis-hls/Arbitrary-Precision-Fixed-Point-Data-Types)
+These data types manage the value of real (non-integer) numbers within the boundaries of a specified total width (W) and integer width (I) with the expression (W = I + B), as shown in the following figure. [Ref](https://docs.xilinx.com/r/en-US/ug1399-vitis-hls/Arbitrary-Precision-Fixed-Point-Data-Types)
 
 <div align=center><img src="Images/16/5.png" alt="drawing" width="400"/></div>
 
@@ -572,7 +572,7 @@ int main() {
 
 ## using_float_and_double
 
-Advanced floating-point power of 2 with bounds checking and defining an helper typedefs to allow easy parsing of the IEEE-754 floating point fields.
+Advanced floating-point power of 2 with bounds checking and defining helper typedefs to allow easy parsing of the IEEE-754 floating-point fields.
 
 **fp_mul_pow2.c**
 ```c++
@@ -644,7 +644,7 @@ double double_mul_pow2(double x, int16_t n) {
 #include <stdint.h>
 
 // Uncomment the following line to eliminate bounds checking, ignoring
-// overlow, underflow, NaN inputs, etc.
+//overflow, underflow, NaN inputs, etc.
 //#define AESL_FP_MATH_NO_BOUNDS_TESTS
 
 // Helper typedefs that allow easy parsing of the IEEE-754 floating point
@@ -672,7 +672,7 @@ typedef union {
 
 // These functions implement floating point (single- and double-precision)
 // multiplication by a power-of-two for HLS. Multiplication by a power-of-two
-// can be much more effecient that arbitrary multiplitcation, because it can
+// can be much more effecient than arbitrary multiplication, because it can
 // be reduced to a simple 8- or 11-bit (single- & double-precision
 // respectively) addition to the biased exponent w/ some basic checks for
 // overflow and underflow (which can be eliminated if desired by defining the
@@ -701,12 +701,12 @@ int main(void) {
   unsigned i, err_cnt = 0;
 
   for (i = 0; i < NUM_TEST_ITERS; i++) {
-    // Get result from HW version
+    // Get results from HW version
     hw_result.fp_num = double_mul_pow2(test_val, test_exp);
     // Generate expected result
     sw_result.fp_num = test_val * pow(2.0, test_exp);
-    // Print out result
-    printf("hw_result = %13g : bits = 0x%016llX : ", hw_result.fp_num,
+    // Print out the result
+    print("hw_result = %13g : bits = 0x%016llX : ", hw_result.fp_num,
            (unsigned long long)hw_result.raw_bits);
     printf("sign = %c, exp = %5d, mant = 0x%014llX", hw_result.sign ? '-' : '+',
            (int)hw_result.bexp - 1023, (unsigned long long)hw_result.mant);
@@ -742,27 +742,27 @@ int main(void) {
 
 ## using_vectors
 
-The vector data type is provided to easily model and synthesize single instruction multiple data (SIMD) type operations. Many operators are overloaded to provide SIMD behavior for vector types. The AMD Vitis™ HLS library provides the reference implementation for the ```hls::vector<T, N>``` type which represent a single-instruction multiple-data (SIMD) vector, as defined below.
+The vector data type is provided to model and synthesize single instruction multiple data (SIMD) type operations easily. Many operators are overloaded to provide SIMD behavior for vector types. The AMD Vitis™ HLS library provides the reference implementation for the ```hls::vector<T, N>``` type which represents a single-instruction multiple-data (SIMD) vector, as defined below.
 
-* ```T```: The type of elements that the vector holds, can be a user-defined type which must provide common arithmetic operations.
+* ```T```: The type of elements that the vector holds, can be a user-defined type that must provide common arithmetic operations.
 
 * ```N```: The number of elements that the vector holds, must be a positive integer.
 
 * The best performance is achieved when both the bit-width of ```T``` and ```N``` are integer powers of 2.
 
-Vitis HLS provides a template type ```hls::vector``` that can be used to define SIMD operands. All the operation performed using this type are mapped to hardware during synthesis that will execute these operations in parallel. These operations can be carried out in a loop which can be pipelined with II=1.
+Vitis HLS provides a template type ```hls::vector``` that can be used to define SIMD operands. All the operations performed using this type are mapped to hardware during synthesis that will execute these operations in parallel. These operations can be carried out in a loop pipelined with II=1.
 
 **Vector Data Type Usage**
 
-The vector data type is provided to easily model and synthesize SIMD-type vector operations. AMD Vitis™ HLS vector data type can be defined as follows, where ```T``` is a primitive or user-defined type with most of the arithmetic operations defined on it. ```N``` is an integer greater than zero. Once a vector type variable is declared it can be used like any other primitive type variable to perform arithmetic and logic operations.
+The vector data type is provided to model and synthesize SIMD-type vector operations easily. AMD Vitis™ HLS vector data type can be defined as follows, where ```T``` is a primitive or user-defined type with most of the arithmetic operations defined on it. ```N``` is an integer greater than zero. Once a vector type variable is declared it can be used like any other primitive type variable to perform arithmetic and logic operations.
 
 **Memory Layout**
 
-For any vector type defined as ```hls::vector<T,N>```, the storage is guaranteed to be contiguous of size ```sizeof(T)*N``` and aligned to the greatest power of 2 such that the allocated size is at least ```sizeof(T)*N```. In particular, when N is a power of 2 and ```sizeof(T)``` is a power of 2, ```vector<T, N>``` is aligned to its total size. This matches vector implementation on most architectures.
+For any vector type defined as ```hls::vector<T, N>```, the storage is guaranteed to be contiguous of size ```sizeof(T)*N``` and aligned to the greatest power of 2 such that the allocated size is at least ```sizeof(T)*N```. In particular, when N is a power of 2 and ```sizeof(T)``` is a power of 2, ```vector<T, N>``` is aligned to its total size. This matches vector implementation on most architectures.
 
 **Requirements and Dependencies**
 
-Vitis HLS vector types requires support for C++ 14 or later. It has the following dependencies on the standard headers:
+Vitis HLS vector types require support for C++ 14 or later. It has the following dependencies on the standard headers:
 
 * ```<array>```: ```std::array<T,N>```
 
@@ -869,7 +869,7 @@ The synthesis report is shown below:
 
 <div align=center><img src="Images/16/8.png" alt="drawing" width="400"/></div>
 
-And the dataflow view is shown below:
+The dataflow view is shown below:
 
 <div align=center><img src="Images/16/9.png" alt="drawing" width="400"/></div>
 
@@ -912,7 +912,7 @@ int main(int, char**) {
 
 ```
 This function ```example``` is to add the array ```lhs``` and ```rhs```.
-And you can see the result is right by run ```C simulation``` like below:
+You can see the result is right by running ```C simulation``` like below:
 
 <div align=center><img src="Images/16/10.png" alt="drawing" width="400"/></div>
 
@@ -986,7 +986,7 @@ We will see:
 
 Some of the optimizations that Vitis HLS can apply are prevented when the loop has [variable bounds](https://docs.xilinx.com/r/en-US/ug1399-vitis-hls/Working-with-Variable-Loop-Bounds).
 
-This example shows how to write a loop which has a variable bound and apply pragmas/directives on such a loop. 
+This example shows how to write a loop that has a variable bound and apply pragmas/directives to such a loop. 
 
 **loop_var.h**
 ```c++
@@ -1048,7 +1048,7 @@ dout_t loop_max_bounds(din_t A[N], dsel_t width) {
 
 ```
 
-Attempting to optimize the design (```loop_var```) in the example above reveals the issues created by variable loop bounds. The first issue with variable loop bounds is that they prevent Vitis HLS from determining the latency of the loop. Vitis HLS can determine the latency to complete one iteration of the loop, but because it cannot statically determine the exact variable ```width```, it does not know how many iterations are performed and thus cannot report the loop latency (the number of cycles to completely execute all iterations of the loop).
+Attempting to optimize the design (```loop_var```) in the example above reveals the issues created by variable loop bounds. The first issue with variable loop bounds is that they prevent Vitis HLS from determining the latency of the loop. Vitis HLS can determine the latency to complete one iteration of the loop. Still, because it cannot statically determine the exact variable ```width```, it does not know how many iterations are performed and thus cannot report the loop latency (the number of cycles to execute all iterations of the loop completely).
 
 <div align=center><img src="Images/16/13.png" alt="drawing" width="800"/></div>
 
