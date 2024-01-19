@@ -407,9 +407,9 @@ from pynq import allocate
 import numpy as np
 hw = Overlay("design_1_wrapper.bit")
 hw ?
-
-We can use the ? to check the IP dictionary.
 ```
+We can use the ? to check the IP dictionary.
+
 
 <div align=center><img src="Images/1_6.png" alt="drawing" width="400"/></div>
 
