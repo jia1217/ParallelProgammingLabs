@@ -21,7 +21,7 @@ sort: 15
 
 ## Pointers
 
-Pointers are used extensively in C/C++ code and are supported for synthesis, but it is generally recommended to avoid the use of pointers in your code. This is especially true when using pointers in the following cases:
+Pointers are used extensively in C/C++ code and are supported for synthesis, but it is generally recommended to avoid using pointers in your code. This is especially true when using pointers in the following cases:
 
 * When pointers are accessed (read or written) multiple times in the same function.
 
@@ -33,7 +33,7 @@ Pointer to pointer is not supported.[Ref](https://docs.xilinx.com/r/en-US/ug1399
 
 ### basic_arithmetic
 
-Introducing pointer arithmetic limits the possible interfaces that can be synthesized in RTL. The following code example shows the same code, but in this instance simple pointer arithmetic is used to accumulate the data values (starting from the second value).
+Introducing pointer arithmetic limits the possible interfaces that can be synthesized in RTL. The following code example shows the same code, but in this instance simple pointer arithmetic accumulates the data values (starting from the second value).
 
 **pointer_arith.h**
 ```cpp
@@ -100,13 +100,13 @@ When simulated, this results in the following output:
 
 The pointer arithmetic can access the pointer data out of sequence. On the other hand, wire, handshake, or FIFO interfaces can only access data in order:
 
-* A wire interface reads data when the design is ready to consume the data or write the data when the data is ready.
+* A wire interface reads data when the design is ready to consume the data or writes the data when the data is ready.
 
 * Handshake and FIFO interfaces read and write when the control signals permit the operation to proceed.
 
 ### basic_pointers
 
-This example shows a simple pointer based design. 
+This example shows a simple pointer-based design. 
 
 **pointer_basic.cpp**
 ```c++
@@ -159,7 +159,7 @@ C and RTL simulation verify the correct operation (although not all possible cas
 
 ### multiple_pointers
 
-This simple example show how a pointer can be made to point to different arrays in a synthesizeable design. 
+This simple example shows how a pointer can point to different arrays in a synthesizable design. 
 
 **pointer_multi.h**
 ```c++
@@ -224,7 +224,7 @@ The C simulation report is shown below:
 <div align=center><img src="Images/15/3.png" alt="drawing" width="100"/></div>
 
 ### native_casts
-This example shows how to use native C type casts in a synthesizable design. Pointer casting is supported for synthesis if native C/C++ types are used. In the following code example, type ```int``` is cast to type ```char```.
+This example shows how to use native C-type casts in a synthesizable design. Pointer casting is supported for synthesis if native C/C++ types are used. In the following code example, type ```int``` is cast to type ```char```.
 
 **pointer_cast_native.h**
 ```c++
@@ -307,7 +307,7 @@ void pointer_stream_bad ( dout_t *d_o,  din_t *d_i) {
  *d_o = acc;
 }
 ```
-After synthesis this code will result in an RTL design which reads the input port once and writes to the output port once. As with any standard C/C++ compiler, Vitis HLS will optimize away the redundant pointer accesses.
+After synthesis, this code will result in an RTL design that reads the input port once and writes to the output port once. As with any standard C/C++ compiler, Vitis HLS will optimize away the redundant pointer accesses.
 
 The test bench to verify this design is shown in the following code example:
 
@@ -365,7 +365,7 @@ To support multi-access pointers on the interface you should take the following 
 
 * Validate the C/C++ before synthesis to confirm the intent and that the C/C++ model is correct.
 
-* The pointer argument must have the number of accesses on the port interface specified when verifying the RTL using co-simulation within Vitis HLS.
+* The pointer argument must specify the number of accesses on the port interface when verifying the RTL using co-simulation within Vitis HLS.
 
 To make this design read and write to the RTL ports multiple times, use a ```volatile``` qualifier[Ref](https://docs.xilinx.com/r/en-US/ug1399-vitis-hls/Understanding-Volatile-Data). The ```volatile``` qualifier tells the C/C++ compiler and Vitis HLS to make no assumptions about the pointer accesses, and to not optimize them away. That is, the data is volatile and might change.
 
@@ -374,13 +374,13 @@ The ```volatile``` qualifier:
 * Prevents pointer access optimizations.
 * Results in an RTL design that performs the expected four reads on input port ```d_i``` and two writes to output port ```d_o```.
 
-Even if the ```volatile``` keyword is used, the coding style of accessing a pointer multiple times still has an issue in that the function and test bench do not adequately model multiple distinct reads and writes. In this case, four reads are performed, but the same data is read four times. There are two separate writes, each with the correct data, but the test bench captures data only for the final write.
+Even if the ```volatile``` keyword is used, the coding style of accessing a pointer multiple times still has an issue because the function and test bench do not adequately model multiple distinct reads and writes. In this case, four reads are performed, but the same data is read four times. There are two separate writes, each with the correct data, but the test bench captures data only for the final write.
 
 The C simulation report is shown below:
 
 <div align=center><img src="Images/15/4.png" alt="drawing" width="100"/></div>
 
-The Multi-Access volatile pointer interface can be implemented with wire interfaces. If a FIFO interface is specified, Vitis HLS creates an RTL test bench to stream new data on each read. Because no new data is available from the test bench, the RTL fails to verify. The test bench does not correctly model the reads and writes.
+The Multi-Access volatile pointer interface can be implemented with wire interfaces. If a FIFO interface is specified, Vitis HLS creates an RTL test bench to stream new data on each read. The RTL fails to verify because no new data is available from the test bench. The test bench does not correctly model the reads and writes.
 
 ### stream _good
 
@@ -390,13 +390,13 @@ As [Understanding Volatile Data](https://docs.xilinx.com/r/en-US/ug1399-vitis-hl
 
 There are several possible approaches:
 
-* Add the volatile qualifier as shown in the Multi-Access Volatile Pointer Interface example. The test bench does not model unique reads and writes, and RTL simulation using the original C/C++ test bench might fail, but viewing the trace file waveforms shows that the correct reads and writes are being performed.
+* Add the volatile qualifier shown in the Multi-Access Volatile Pointer Interface example. The test bench does not model unique reads and writes, and RTL simulation using the original C/C++ test bench might fail, but viewing the trace file waveforms shows that the correct reads and writes are being performed.
 
 * Modify the code to model explicit unique reads and writes. See the following example.
 
-* Modify the code to using a streaming data type. A streaming data type allows hardware using streaming data to be accurately modeled.
+* Modify the code to use a streaming data type. A streaming data type allows hardware using streaming data to be accurately modeled.
 
-The following code example has been updated to ensure that it reads four unique values from the test bench and write two unique values. Because the pointer accesses are sequential and start at location zero, a streaming interface type can be used during synthesis.
+The following code example has been updated to ensure that it reads four unique values from the test bench and writes two unique values. Because the pointer accesses are sequential and start at location zero, a streaming interface type can be used during synthesis.
 
 **pointer_stream_good.h**
 ```c++
@@ -595,7 +595,7 @@ The scheduling view is shown below:
 
 You can unroll loops to create multiple independent operations rather than a single collection of operations. The UNROLL pragma transforms loops by creating multiple copies of the loop body in the RTL design, which allows some or all loop iterations to occur in parallel. [Ref](https://docs.xilinx.com/r/en-US/ug1399-vitis-hls/pragma-HLS-unroll)
 
-The UNROLL pragma allows the loop to be fully or partially unrolled. Fully unrolling the loop creates a copy of the loop body in the RTL for each loop iteration, so the entire loop can be run concurrently. Partially unrolling a loop lets you specify a factor N, to create N copies of the loop body and reduce the loop iterations accordingly.
+The UNROLL pragma allows the loop to be fully or partially unrolled. Fully unrolling the loop creates a copy of the loop body in the RTL for each loop iteration so that the entire loop can be run concurrently. Partially unrolling a loop lets you specify a factor N, to create N copies of the loop body and reduce the loop iterations accordingly.
 
 The following example fully unrolls ```loop_1``` in function ```test```. Place the pragma in the body of ```loop_1``` as shown.
 **test_2.cpp**
