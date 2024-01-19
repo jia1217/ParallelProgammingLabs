@@ -210,9 +210,9 @@ a_{21} . b_{11} + a_{22} . b_{21}&a_{21} . b_{11} + a_{22} . b_{21}\\
 $$
 
 
-The resulting matrix $C$ will have dimensions $m×p$, where $m$ is the number of rows in $A$ and $p$ is the number of colums in $B$. Each element $c_{ij}$ in matrix $C$ is obtained by taking the dot product of the i-th row of matrix $A$ and the j-th colunm of matrix $B$.
+The resulting matrix $C$ will have dimensions $m×p$, where $m$ is the number of rows in $A$ and $p$ is the number of columns in $B$. Each element $c_{ij}$ in matrix $C$ is obtained by taking the dot product of the i-th row of matrix $A$ and the j-th column of matrix $B$.
 
-Matrix multiplication involves accessing elements in a sequential manner. When matrices become large, it can lead to poor cache performance, as data may not fit into the fast cache memory, causing more frequent fetches from slower main memory. This is why the unoptimized core loop (Matrix_Loop) has II = 4.
+Matrix multiplication involves accessing elements sequentially. When matrices become large, it can lead to poor cache performance, as data may not fit into the fast cache memory, causing more frequent fetches from slower main memory. This is why the unoptimized core loop (Matrix_Loop) has II = 4.
 
 ### Optimization 1
 
@@ -230,7 +230,7 @@ For block and cyclic partitioning the factor option specifies the number of arra
 
 <div align=center><img src="Images/1_1.png" alt="drawing" width="400"/></div>
 
-The Above optimization is suitable for the multiplication of matrices. Array Partition splits apart the original array into smaller arrays or into individual registers. And the actual matrix A and matrix B will be:
+The Above optimization is suitable for the multiplication of matrices. Array Partition splits apart the original array into smaller arrays or into individual registers. The actual matrix A and matrix B will be:
 
 Matrix A:  
 
@@ -272,7 +272,7 @@ $$
 
 ```
 
-After reading a matrix through the AXIS stream interface in the form of a one-dimensional array, the matrix is stored in two separate two-dimensional arrays, $A$ and $C$. And optimizating the code as shown in the above. Subsequently, matrix multiplication is performed. As result, the core loop (Matrix_Loop) has II = 1 and the the II of the IP block is 41.
+After reading a matrix through the AXIS stream interface in the form of a one-dimensional array, the matrix is stored in two separate two-dimensional arrays, $A$ and $C$. And optimizing the code as shown above. Subsequently, matrix multiplication is performed. As a result, the core loop (Matrix_Loop) has II = 1 and the the II of the IP block is 41.
 
 
 ### Optimization 2
@@ -293,7 +293,7 @@ The default operation is to split the array into its individual elements. This c
 
 ## Simulation
 
-In Vitis HLS, there are two types of simulations, C simulation, and C/RTL Cosimulation. In C simulation, Vitis HLS runs the kernel (matrix_cyclic_block) as pure software. The pragmas do not take effect in C simulation. C/RTL cosimulation first compiles the kernel into HDL hardware kernel and then generates the interface between the test bench and hardware kernel. Calling the ```matrix_cyclic_block``` function launches the hardware simulation if the block level interface is not ```ap_ctrl_none```. In this example, the ```matrix_cyclic_block``` kernel doesn't require any start signal. Calling the kernel just passes the data into it. Such a free-running kernel performs differently in C simulation and Cosimulation ([Ref](https://docs.xilinx.com/r/en-US/ug1393-vitis-application-acceleration/Free-Running-Kernel)). 
+In Vitis HLS, there are two types of simulations, C simulation, and C/RTL Cosimulation. Vitis HLS runs the kernel (matrix_cyclic_block) in C simulation as pure software. The pragmas do not take effect in C simulation. C/RTL cosimulation first compiles the kernel into HDL hardware kernel and then generates the interface between the test bench and hardware kernel. Calling the ```matrix_cyclic_block``` function launches the hardware simulation if the block level interface is not ```ap_ctrl_none```. In this example, the ```matrix_cyclic_block``` kernel doesn't require any start signal. Calling the kernel just passes the data into it. Such a free-running kernel performs differently in C simulation and Cosimulation ([Ref](https://docs.xilinx.com/r/en-US/ug1393-vitis-application-acceleration/Free-Running-Kernel)). 
 
 To run the simulation, simply clock the C simulation or C/RTL cosimulation in the Flow Navigator (bottom right). You should see the *PASS* if everything is good. When running the Cosimulation, you can change the *Dump Trace* option to *all* before launching. Then, once the simulation is finished, you can click the *Wave Viewer* to see the waveform from the simulation. You can check if the actual II matches the report with the waveform.  
 
@@ -301,20 +301,20 @@ To run the simulation, simply clock the C simulation or C/RTL cosimulation in th
 
 ### Export matrix_cyclic_block IP
 
-To generate the IP, you should do several steps in the below.
+To generate the IP, you should follow several steps below.
 
-* Launch Vitis HLS: Open Xilinx Vitis HLS directly launch it from your system.
+* Launch Vitis HLS: Open Xilinx Vitis HLS directly and launch it from your system.
 
-* Create a New Project: Start a new project in Vitis HLS. Specify the project name, location, and target device or platform. Here we can choose the device as below.
+* Create a New Project: Start a new project in Vitis HLS. Specify the project name, location, and target device or platform. We can choose the device below.
 
 <div align=center><img src="Images/2_13.png" alt="drawing" width="600"/></div>
 
 * Write or Import Code: Write your hardware function in C, C++, or SystemC. This code will describe the behavior you want to implement in hardware. Alternatively, you can import 
 existing C/C++ code if available and you can click the green button "Run C Simulation" to verify the result of the function.
 
-<div align=center><img src="Images/2_14.png" alt="drawing" width="200"/></div>
+<div align=center><img src="Images/17/14.png" alt="drawing" width="200"/></div>
 
-* Optimize and Synthesize: After writing or importing your code, use Vitis HLS to synthesize and optimize the code and you can click the green button "Run C Synthesis". The tool will generate a hardware description from your high-level code as shown in the below.
+* Optimize and Synthesize: After writing or importing your code, use Vitis HLS to synthesize and optimize the code and you can click the green button "Run C Synthesis". The tool will generate a hardware description from your high-level code as shown in below.
 
 * Verify and Test: Verify the synthesized hardware behavior using test benches or co-simulation. Ensure that the hardware function behaves as expected. If the result of the Cosimulation is **PASS**, you can export the IP. At the same time, you can also click "Wave Viewer" to see the result of the input and output data of the IP.
 
@@ -328,7 +328,7 @@ This process will generate the necessary VHDL or Verilog files and associated me
 
 * Click *Create New Project*, and click *Next*. Then, give your project a name (i.e. project_1) and choose *RTL Project*. Making sure the *Project location* is the correct path that you want to save the project.
 
-* Select the board, search `pynq` and choose `pynq-z2`, then click *Next* and *Finish*. If you do not have it, follow the instruction in the provided link below.
+* Select the board, search `pynq` and choose `pynq-z2`, then click *Next* and *Finish*. If you do not have it, follow the instructions in the provided link below.
 
   [Add BSP file to Vivado](https://pynq.readthedocs.io/en/latest/overlay_design_methodology/board_settings.html)
 
@@ -348,11 +348,11 @@ In the Output Clocks option, change the output frequency to 100M Hz.
 
 <div align=center><img src="Images/5_13.png" alt="drawing" width="600"/></div>
 
-And then click the green word "Run Block Automation" 
+Then, click the green word "Run Block Automation." 
 
 <div align=center><img src="Images/5_14.png" alt="drawing" width="600"/></div>
 
-Add the *AXI Direct Memory Access* block to your design. Also, we need to add the IP we export by HLS. The IP core features two input interfaces, each accepting data from distinct sources while providing a single output interface that delivers the processed or combined result. In our FPGA design, the custom IP core leverages AXI_DMA for efficient data transfer. As we all know, the AXI_DMA typically consists of separate channels for read and write operations. And the write channel is used for writing data from the source to the memory and the read channel is used for reading data from memory to the destination. Emphasize that the read and write channels operate independently. The read channel can be configured, initiated, and managed separately from the write channel. The advantages of having a separate read channel: 
+Add the *AXI Direct Memory Access* block to your design. Also, we need to add the IP we export by HLS. The IP core features two input interfaces, each accepting data from distinct sources while providing a single output interface that delivers the processed or combined result. In our FPGA design, the custom IP core leverages AXI_DMA for efficient data transfer. As we all know, the AXI_DMA typically consists of separate channels for read and write operations. The write channel is used for writing data from the source to the memory and the read channel is used for reading data from memory to the destination. Emphasize that the read and write channels operate independently. The read channel can be configured, initiated, and managed separately from the write channel. The advantages of having a separate read channel: 
 
 <div align=center><img src="Images/5_15.png" alt="drawing" width="600"/></div>
 
@@ -362,21 +362,21 @@ Add the *AXI Direct Memory Access* block to your design. Also, we need to add th
 
 ### Configure the DMA
 
-* Double click the DMA to open the configuration settings
+* Double-click the DMA to open the configuration settings
 
 <div align=center><img src="Images/1_3.png" alt="drawing" width="1000"/></div>
 
 * Uncheck Enable Scatter Gather Engine to disable Scatter Gather
 
-* Set the Width of Buffer Length Register to 26
+* Set the Width of the Buffer Length Register to 26
 
     This value determines the maximum packet size for a single DMA transfer. width = 26 allows transfers of 67,108,863 bytes - the maximum size the DMA supports. I usually set this value to the maximum value of 26. If you know you will never need more than a smaller size transfer, you can set this to a smaller value and save a small amount of PL resources. I prefer to set the maximum value for flexibility as the hardware resource increase is relatively modest.
 
-    When using the DMA if you try to do a transfer but only see that the first part of your buffer is transferred , check this value in your hardware design and check how much data you are transferring. Leaving the default with set to 14-bits is a common mistake which will limit the DMA to 16,384 byte transfers. If you try to send more than this the transfer will terminate once the maximum number of bytes supported is transferred. Remember to check the size of the transfer in bytes.
+    When using the DMA if you try to do a transfer but only see that the first part of your buffer is transferred, check this value in your hardware design and check how much data you are transferring. Leaving the default set to 14 bits is a common mistake that will limit the DMA to 16,384 byte transfers. If you try to send more than this the transfer will terminate once the maximum number of bytes supported is transferred. Remember to check the size of the transfer in bytes.
 
-* Check the address width is set to 32. In this example, I will connect the DMA to the PS memory which is 32-bit for Zynq. You can set this up to 64-bit if you are connecting this to a larger memory, for example, if you are using a Zynq Ultrascale+ or if your DMA is connected to a PL connected memory.
+* Check the address width is set to 32. In this example, I will connect the DMA to the PS memory which is 32-bit for Zynq. You can set this up to 64-bit if you are connecting this to a larger memory, for example, if you are using a Zynq Ultrascale+ or if your DMA is connected to a PL-connected memory.
 
-* For this design, leave only read channel enabled because the IP has two input interfaces and one output interface.
+* For this design, leave only the read channel enabled because the IP has two input interfaces and one output interface.
 
 * Set the stream data to match your IP stream width. In this example, I will leave it set to 32.
 
@@ -394,7 +394,7 @@ Then connect the DMA which can use reference materials [here](https://uri-nextla
 
 ## Run synthesis,  Implementation and generate bitstream
 
-It may shows some errors about I/O Ports, please fix them.
+It may show some errors about I/O Ports, please fix them.
 
 ## Download the bitstream file to PYNQ
 
