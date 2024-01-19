@@ -23,16 +23,16 @@ sort: 10
 
 **Automatic Port Width Resizing**
 
-In the Vitis tool flow Vitis HLS provides the ability to automatically re-size ```m_axi``` interface ports to 512-bits to improve burst access. However, automatic port width resizing only supports standard C data types and power of two size ```struct```, where the pointer is aligned to the expected widened byte size. If the tool cannot automatically widen the port, you can manually change the port width by using Vector or Arbitrary Precision (AP) as the data type of the port.
-Structs on the interface prevent automatic widening of the port. You must break the struct into individual elements to enable this feature.
+In the Vitis tool flow, Vitis HLS can automatically re-size the ```m_axi``` interface ports to 512 bits to improve burst access. However, automatic port width resizing only supports standard C data types and power of two sizes ```struct```, where the pointer is aligned to the expected widened byte size. If the tool cannot automatically widen the port, you can manually change the port width by using Vector or Arbitrary Precision (AP) as the data type of the port.
+Structs on the interface prevent the automatic widening of the port. You must break the structure into individual elements to enable this feature.
 Vitis HLS controls automatic port width resizing using the following two commands:
 
-* ```syn.interface.m_axi_max_widen_bitwidth=<N>```: Directs the tool to automatically widen bursts on M-AXI interfaces up to the specified bitwidth. The value of <N> must be a power-of-two between 0 and 1024.
+* ```syn.interface.m_axi_max_widen_bitwidth=<N>```: Directs the tool to widen bursts on M-AXI automatically interfaces up to the specified bitwidth. The value of <N> must be a power-of-two between 0 and 1024.
 
-* ```syn.interface.m_axi_alignment_byte_size=<N>```: Note that burst widening also requires strong alignment properties. Assume pointers that are mapped to ```m_axi``` interfaces are at least aligned to the provided width in bytes (power of two). This can help automatic burst widening.
+* ```syn.interface.m_axi_alignment_byte_size=<N>```: Note that burst widening also requires strong alignment properties. Assume pointers mapped to ```m_axi``` interfaces are at least aligned to the provided width in bytes (power of two). This can help automatic burst widening.
 
 
-This example shows how to enable automatic port widening for m_axi ports in the Vivado IP flow. In the Vitis kernel flow, the following two config_interface settings are on by default. It is only in the Vivado IP flow that you have to explicit set them.
+This example shows how to enable automatic port widening for m_axi ports in the Vivado IP flow. In the Vitis kernel flow, the following two config_interface settings are on by default. Only in the Vivado IP flow do you have to set them explicitly.
 
 **example.h**
 ```c++
@@ -134,7 +134,7 @@ overlay ?
 
 #### Allocate DMA memory address size
 
-The first step is to allocate the buffer. pynq allocate will be used to allocate the buffer, and NumPy will be used to specify the type of the buffer.
+The first step is to allocate the buffer. pynq allocate will be used to allocate the buffer, and NumPy will be used to specify the buffer type.
 
 ```python
 
@@ -163,7 +163,7 @@ top_ip.register_map
 
 ```python
 # specify the address
-# These addresses can be found in the generated .v file: vadd_control_s_axi.v
+# These addresses are in the generated .v file: vadd_control_s_axi.v
 top_ip.write(0x10, aptr)
 top_ip.write(0x1C, bptr)
 # start the HLS kernel
@@ -177,7 +177,7 @@ We will see:
 
 ## memory_bottleneck
 
-In a previous section, optimization concepts such as loop unrolling and pipelining were introduced as a means for exploring parallelism. However, this was done without considering how array access patterns may prevent such optimizations when the arrays are mapped to memories instead of registers. Arrays mapped to memories can become the bottleneck in a design’s performance. Vitis HLS provides a number of optimizations, such as array reshaping and array partitioning, that can remove these memory bottlenecks. Whenever possible, these automatic memory optimizations should be used, minimizing the number of code modifications. However, there may be situations where explicitly coding the memory architecture is either required to meet performance or may allow designers to achieve an even better quality of results. In these cases, it is essential that array accesses are coded in such a way as to not limit performance. This means analyzing array access patterns and organizing the memories in a design so that the desired throughput and area can be achieved. The following code example shows a case in which access to an array can limit performance in the final RTL design. In this example, there are three accesses to the array ```mem[N]``` to create a summed result.
+In a previous section, optimization concepts such as loop unrolling and pipelining were introduced to explore parallelism. However, this was done without considering how array access patterns may prevent such optimizations when the arrays are mapped to memories instead of registers. Arrays mapped to memories can become the bottleneck in a design’s performance. Vitis HLS provides several optimizations, such as array reshaping and partitioning, that can remove these memory bottlenecks. These automatic memory optimizations should be used whenever possible, minimizing the number of code modifications. However, there may be situations where explicitly coding the memory architecture is required to meet performance or may allow designers to achieve an even better quality of results. In these cases, it is essential that array accesses are coded in such a way as not to limit performance. This means analyzing array access patterns and organizing the memories in a design to achieve the desired throughput and area. The following code example shows a case in which access to an array can limit performance in the final RTL design. In this example, three accesses exist to the array ```mem[N]``` to create a summed result.
 
 **mem_bottleneck.h**
 ```c++
@@ -221,7 +221,7 @@ The synthesis report is shown  below.
 <div align=center><img src="Images/10_7.png" alt="drawing" width="1000"/></div>
 
 
-The issue here is that the single-port RAM has only a single data port: only one read (or one write) can be performed in each clock cycle.
+The issue is that the single-port RAM has only a single data port: only one read (or one write) can be performed in each clock cycle.
 
 * SUM_LOOP Cycle1: read mem[i];
 
@@ -229,9 +229,9 @@ The issue here is that the single-port RAM has only a single data port: only one
 
 * SUM_LOOP Cycle3: read mem[i-2], sum values;mem_bottleneck_test.cpp**
 
-A dual-port RAM could be used, but this allows only two accesses per clock cycle. Three reads are required to calculate the value of sum, and so three accesses per clock cycle are required to pipeline the loop with an new iteration every clock cycle.
+A dual-port RAM could be used, but this allows only two accesses per clock cycle. Three reads are required to calculate the value of the sum, and so three accesses per clock cycle are required to pipeline the loop with a new iteration every clock cycle.
 
-The code in the example above can be rewritten as shown in the following code example to allow the code to be pipelined with a throughput of 1. In the following code example, by performing pre-reads and manually pipelining the data accesses, there is only one array read specified in each iteration of the loop. This ensures that only a single-port RAM is required to achieve the performance.
+The code in the example above can be rewritten as shown in the following code example to allow the code to be pipelined with a throughput of 1. In the following code example, by performing pre-reads and manually pipelining the data accesses, only one array read is specified in each iteration of the loop. This ensures that only a single-port RAM is required to achieve the performance.
 
 **mem_bottleneck_resolved.cpp**
 ```c++
@@ -259,11 +259,11 @@ The synthesis report is shown  below.
 
 <div align=center><img src="Images/10_8.png" alt="drawing" width="1000"/></div>
 
-Such changes to the source code as shown above are not always required. The more typical case is to use optimization directives/pragmas to achieve the same result. Vitis HLS includes optimization directives for changing how arrays are implemented and accessed. There are two main classes of optimization:
+Such changes to the source code as shown above are not always required. The typical case is to use optimization directives/pragmas to achieve the same result. Vitis HLS includes optimization directives for changing how arrays are implemented and accessed. There are two main classes of optimization:
 
-* Array Partition splits apart the original array into smaller arrays or into individual registers.
+* Array Partition splits the original array into smaller arrays or individual registers.
 
-* Array Reshape reorganizes the array into a different memory arrangement to increase parallelism but without splitting apart the original array.
+* Array Reshape reorganizes the array into a different memory arrangement to increase parallelism without splitting the original array apart.
 
 ```c++
 
@@ -296,7 +296,7 @@ This example illustrates how to infer a RAM using BIND_STORAGE[Ref](https://docs
 
 **pragma HLS dependence**
 
-Vitis HLS detects dependencies within loops: dependencies within the same iteration of a loop are loop-independent dependencies, and dependencies between different iterations of a loop are loop-carried dependencies. The DEPENDENCE pragma allows you to provide additional information to define, negate loop dependencies, and allow loops to be pipelined with lower intervals.
+Vitis HLS detects dependencies within loops: dependencies within the same iteration of a loop are loop-independent dependencies, and dependencies between different iterations of a loop are loop-carried dependencies. The DEPENDENCE pragma allows you to provide additional information to define, and negate loop dependencies, and allow loops to be pipelined with lower intervals.
 
 **Loop-independent dependence**
 
@@ -318,7 +318,7 @@ for (i=1;i<N;i++) {
 ```
 These dependencies impact when operations can be scheduled, especially during function and loop pipelining.
 
-Under some circumstances, such as variable dependent array indexing or when an external requirement needs to be enforced (for example, two inputs are never the same index), the dependence analysis might be too conservative and fail to filter out false dependencies. The DEPENDENCE pragma allows you to explicitly define the dependencies and eliminate a false dependence.
+Under some circumstances, such as variable dependent array indexing or when an external requirement needs to be enforced (for example, two inputs are never the same index), the dependence analysis might be too conservative and fail to filter out false dependencies. The DEPENDENCE pragma allows you to define the dependencies and eliminate a false dependence explicitly.
 
 **Syntax**
 Place the pragma within the boundaries of the function where the dependence is defined.
@@ -331,9 +331,9 @@ Place the pragma within the boundaries of the function where the dependence is d
 Where:
 
 ```variable=<variable>```: Optionally specifies the variable to consider for the dependence.
-You cannot specify a ```dependence``` for function arguments that are bundled with other arguments in an ```m_axi``` interface. This is the default configuration for ```m_axi``` interfaces on the function. You also cannot specify a dependence for an element of a struct, unless the struct has been disaggregated.
+You cannot specify a ```dependence``` for function arguments bundled with other arguments in an ```m_axi``` interface. This is the default configuration for ```m_axi``` interfaces on the function. You also cannot specify a dependence for an element of a struct, unless the struct has been disaggregated.
 
-```class=[array | pointer]```: Optionally specifies a class of variables in which the dependence needs clarification. Valid values include array or pointer.
+```class=[array | pointer]```: Optionally specifies a class of variables in which the dependence needs clarification. Valid values include an array or pointer.
 ```<class>``` and ```variable=``` should not be specified together as you can specify dependence for a variable, or a class of variables within a function.
 
 ```type=[inter | intra]```: Valid values include intra or inter. Specifies whether the dependence is:
