@@ -124,7 +124,7 @@ Clear_Loop:
 ```
 The synthesis report is shown below:
 
-<div align=center><img src="17/15.png" alt="drawing" width="1000"/></div>
+<div align=center><img src="Images/17/15.png" alt="drawing" width="1000"/></div>
 
 The Vitis HLS will default pipeline the loop. And we can see the II of the ```Shift_Accum_Loop``` is 1 and the ```Clear_Loop``` is the same.
 
@@ -145,7 +145,7 @@ Shift_Accum_Loop:
 ```
 The synthesis report is shown below:
 
-<div align=center><img src="17/16.png" alt="drawing" width="1000"/></div>
+<div align=center><img src="Images/17/16.png" alt="drawing" width="1000"/></div>
 
 With the new implementation, the II of the "Shift_Accum_Loop" becomes 1 and the II of the  module becomes 14. However, this performance increase is not directly from the loop hoisting optimization. Moving branch i == 0 out of the for loop reduces one write operation to the shift_reg, removing the conflict (2 writes in the same clock cycle). This design consumes 320 FFs and 383 LUTs. 
 
@@ -170,7 +170,7 @@ MAC:
 
 The synthesis report is shown below:
 
-<div align=center><img src="17/17.png" alt="drawing" width="1000"/></div>
+<div align=center><img src="Images/17/17.png" alt="drawing" width="1000"/></div>
 
 In the above code, the label "TDL" stands for tapped delay line, which is implemented as shift registers in a digital circuit, and "MAC" refers to multiply-accumulate. Notice that in TDL the loop hoisting is used as it is required to check if i equals 0, while the MAC loop doesn't need loop hoisting (i > 0 or i >= 0). The II of both two loops (TDL and MAC) is 1 and the II for the entire module is 48. The TDL and MAC loops consume a total of 300 FFs and 402 LUTs. This is worse than the result with optimization 1. The II of the module becomes 48 as one loop becomes two loops, each requiring 11 trips. More LUTs are required as each loop requires its control circuit.
 
@@ -193,7 +193,7 @@ TDL:
 ```
 The synthesis report is shown below:
 
-<div align=center><img src="17/18.png" alt="drawing" width="1000"/></div>
+<div align=center><img src="Images/17/18.png" alt="drawing" width="1000"/></div>
 
 ``` if (i == 1)``` is added to support even N. The unrolling reduces the trip count and increases the hardware required. This is caused by the same reason in the original code. "In the unrolled code, each iteration requires that we read two values from the shift reg array; and we write two values to the same array. Thus, if we wish to execute both statements in parallel, we must be able to perform two read operations and two write operations from the shift reg array in the same cycle."([Ref](https://kastner.ucsd.edu/hlsbook/)) In most cases, RAM only provides one read port and one write port simultaneously. To solve this problem, the shift_array is required to be **partitioned**, which means saving the value in a different memory (or even registers) instead of saving all the values in one single memory. The is called array_partition. HLS provides pragma to do this in the background, this syntax is in [Ref](https://docs.xilinx.com/r/en-US/ug1399-vitis-hls/pragma-HLS-array_partition):
 
@@ -211,9 +211,9 @@ Since we know that the shift_reg should be implemented as shift registers on har
 
 ```
 
-With this pragma, the HLS should be able to give an implementation of TDL with II=1, which reduces the total II of the module by 1/2.
+With this pragma, the HLS should be able to implement TDL with II=1, which reduces the total II of the module by 1/2.
 
-If we unroll the TDL loop by a larger factor (or even completely) can further increase the performance. However, it is unwise and not always possible to do that manually. Another pragma called ```unroll``` is provided by HLS so that the designer can realize the loop unrolling more easily, the syntax is shown below: ([Ref](https://docs.xilinx.com/r/en-US/ug1399-vitis-hls/pragma-HLS-unroll))
+If we unroll the TDL loop by a larger factor (or even completely), it can further increase the performance. However, it is unwise and not always possible to do that manually. Another pragma called ```unroll``` is provided by HLS so that the designer can realize the loop unrolling more easily, the syntax is shown below: ([Ref](https://docs.xilinx.com/r/en-US/ug1399-vitis-hls/pragma-HLS-unroll))
 
 ```
 #pragma HLS unroll factor=<N> skip_exit_check
@@ -285,7 +285,7 @@ Clear_Loop:
 ```
 The synthesis report is shown below:
 
-<div align=center><img src="17/19.png" alt="drawing" width="1000"/></div>
+<div align=center><img src="Images/17/19.png" alt="drawing" width="1000"/></div>
 
 According to the synthesis result, II of the entire block becomes 4, which is a huge improvement. The trade-off is that the required FF becomes 581 and the required LUT becomes 665 and the required DSP becomes 8. This is due to the fact the unrolling and array partition increases the parallelism and of course, require more hardware resources. In this example, N = 11 so it is possible to unroll all loops and partition all arrays. If N equals 4096 or more, we may need to reduce the unroll factor to balance the resources with speed.
 
@@ -300,7 +300,7 @@ acc = c[0] * (shift_reg[0] + shift_reg[10])
 
 Clearly, only 4 multipliers are required. The scheduling of math operations is shown below:
 
-<img src="Images/Scheduling.png" alt="drawing" width="600"/>
+<img src="Images/17/Scheduling.png" alt="drawing" width="600"/>
 
 In the first period, three add operations are completed, corresponding to the three sums in parentheses. Then, four multiplications are done and each requires more than one clock period, which makes the result only available at the fourth (3rd in the scheduling figure) cycle. Notice that only three add operations are required as HLS automatically uses "adder tree" structure to implement accumulation-like loops. For four numbers, only 4 adders are required.
 
@@ -315,7 +315,7 @@ Pipelining is a widely used hardware trhoughput improvement method. Pipelining c
 Without pipelining, the operations are executed one by one, and new data can only be received after the last step is finished. Some resources can also be shared, for example, the adders in 2.1 can be reused in 2.3, though some extra logic may be required to control the dataflow. Pipelining, however, creates independent hardware for operation and some flip-flops to tap the inputs and middle results. The book ([Ref](https://kastner.ucsd.edu/hlsbook/)) gives an example for the MAC loop (though we are not pipelining the MAC loop here) shown below, (a) is without pipelining and (b) is with pipelining:
 
 
-<img src="Images/20220603-160025.png" alt="drawing" width="600"/>
+<img src="Images/17/20220603-160025.png" alt="drawing" width="600"/>
 
 Notice that no resources can be shared if the function is pipelined. Circuits at different stages are processing data simultaneously. For example, the circuit at the first stage is always processing the newest data, while the circuit at the second stage is always processing the data input (via shift register) from the previous cycle and the output from the first stage circuit. Hence, pipelining mostly requires more resources.
 
@@ -382,7 +382,7 @@ Clear_Loop:
 ```
 The synthesis report is shown below:
 
-<div align=center><img src="17/20.png" alt="drawing" width="1000"/></div>
+<div align=center><img src="Images/17/20.png" alt="drawing" width="1000"/></div>
 
 
 According to the synthesis report, now the II of the entire module becomes 1 and 1306 FFs and 796 LUTs are required.  
@@ -404,8 +404,8 @@ The first four types only support integers, and they can be defined as unsigned 
 
 In this example, the frequency response is shown on the left of the figures below. It is definitely not a normal FIR filter since the gain at the pass band is 60dB rather than 0dB (unit gain). To make the pass band gain equal to 1, we have to divide all the coefficients by the sum of all coefficients (1050 in this case). As talked about before, it is better to use 1024 here as it is close to 1050. The frequency responses when dividing the coefficients by 1050 and 1024 are shown in the right figure, and they are almost identical.
 
-<img src="17/33.png" alt="drawing" width="300"/>
-<img src="17/Freqz1.png" alt="drawing" width="300"/>
+<img src="Images/17/33.png" alt="drawing" width="300"/>
+<img src="Images/17/Freqz1.png" alt="drawing" width="300"/>
 
 In this example, we assume that we want a filter with a passing band gain equal 60dB (so that we don't have to manipulate the coefficients). The maximum value of the coefficients equals 500, which means we need at least 10 bits (1 for sign) to represent the coefficient. For the input signal, we assume that the input signal ranges from -127 to +127, which means we need 8 bits to represent it. Once we know the range of the input signal, we should use as least bits as possible to optimize the resource utilization. If it is in C language, we could use short for the coefficients and char for the input signal. But this causes some waste of Flip-Flops and LUTs for the coefficients because only 10 bits are required but we can only use 16 bits. Xilinx provides an arbitrary precision numbers package in HLS so that we can define variables with custom bit width. To use the package, include ```"ap_fixed.h"``` and then define the variable type like this ([Ref](https://docs.xilinx.com/r/en-US/ug1399-vitis-hls/Arbitrary-Precision-Fixed-Point-Data-Types)):
 
@@ -427,7 +427,7 @@ typedef ap_fixed<19,19> acc_t;
 ```
 The synthesis report is shown below:
 
-<div align=center><img src="17/21.png" alt="drawing" width="1000"/></div>
+<div align=center><img src="Images/17/21.png" alt="drawing" width="1000"/></div>
 
 According to the report, the optimized design requires 195 FFs and 323 LUTs, which is much less than the one with pipelined optimization. The final code should look like this:
 
@@ -593,7 +593,7 @@ To run the simulation, simply clock the C simulation or C/RTL cosimulation in th
 
 After running the C synthesis, we click the ```export RTL``` anc choose the fold for IP like below.
 
-<div align=center><img src="17/26.png" alt="drawing" width="400"/></div>
+<div align=center><img src="Images/17/26.png" alt="drawing" width="400"/></div>
 
 ### Create the Vivado project
 
@@ -603,23 +603,23 @@ We can see the ```x_TDATA``` is 8 bits and the ```y_TDATA``` is 24 bits. Since f
 
 For the ```x``` port:
 
-<div align=center><img src="17/23.png" alt="drawing" width="600"/></div>
+<div align=center><img src="Images/17/23.png" alt="drawing" width="600"/></div>
 
-<div align=center><img src="17/24.png" alt="drawing" width="600"/></div>
+<div align=center><img src="Images/17/24.png" alt="drawing" width="600"/></div>
 
-<div align=center><img src="17/25.png" alt="drawing" width="600"/></div>
+<div align=center><img src="Images/17/25.png" alt="drawing" width="600"/></div>
 
 For the ```y``` port:
 
-<div align=center><img src="17/27.png" alt="drawing" width="600"/></div>
+<div align=center><img src="Images/17/27.png" alt="drawing" width="600"/></div>
 
-<div align=center><img src="17/28.png" alt="drawing" width="600"/></div>
+<div align=center><img src="Images/17/28.png" alt="drawing" width="600"/></div>
 
-<div align=center><img src="17/29.png" alt="drawing" width="600"/></div>
+<div align=center><img src="Images/17/29.png" alt="drawing" width="600"/></div>
 
 And the result block design is shown below:
 
-<div align=center><img src="17/30.png" alt="drawing" width="1000"/></div>
+<div align=center><img src="Images/17/30.png" alt="drawing" width="1000"/></div>
 
 ### Run synthesis,  Implementation, and generate bitstream
 
@@ -627,7 +627,7 @@ It may show some errors about I/O Ports, please fix them.
 
 ### Download the bitstream file to PYNQ
 
-<div align=center><img src="17/31.png" alt="drawing" width="800"/></div>
+<div align=center><img src="Images/17/31.png" alt="drawing" width="800"/></div>
 
 Then create a python3 notebook via clicking the new in the website and selecting python3. 
 
@@ -685,7 +685,7 @@ else:
 
 We can see the time like below:
 
-<div align=center><img src="17/32.png" alt="drawing" width="400"/></div>
+<div align=center><img src="Images/17/32.png" alt="drawing" width="400"/></div>
 
 Unlike the testbench where we just call the fir function, don't need to call (or start) the fir kernel here as the block-level interface is ap_ctrl_none. The fir IP is always ready to receive and process new data so all we need to do are just create the two data streams.
 
@@ -720,5 +720,5 @@ plt.grid(True)
 
 The plot is shown below on the left, it matches the theoretical frequency response shown on the right.
 
-<img src="17/33.png" alt="drawing" width="300"/>
-<img src="17/Freqz1.png" alt="drawing" width="300"/>
+<img src="Images/17/33.png" alt="drawing" width="300"/>
+<img src="Images/17/Freqz1.png" alt="drawing" width="300"/>
