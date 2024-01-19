@@ -312,9 +312,9 @@ To generate the IP, you should follow several steps below.
 * Write or Import Code: Write your hardware function in C, C++, or SystemC. This code will describe the behavior you want to implement in hardware. Alternatively, you can import 
 existing C/C++ code if available and you can click the green button "Run C Simulation" to verify the result of the function.
 
-<div align=center><img src="Images/17/14.png" alt="drawing" width="400"/></div>
+<div align=center><img src="Images/17/14.png" alt="drawing" width="600"/></div>
 
-* Optimize and Synthesize: After writing or importing your code, use Vitis HLS to synthesize and optimize the code and you can click the green button "Run C Synthesis". The tool will generate a hardware description from your high-level code as shown in below.
+* Optimize and Synthesize: After writing or importing your code, use Vitis HLS to synthesize and optimize the code and you can click the green button "Run C Synthesis." The tool will generate a hardware description from your high-level code as shown in below.
 
 * Verify and Test: Verify the synthesized hardware behavior using test benches or co-simulation. Ensure that the hardware function behaves as expected. If the result of the Cosimulation is **PASS**, you can export the IP. At the same time, you can also click "Wave Viewer" to see the result of the input and output data of the IP.
 
@@ -322,13 +322,13 @@ existing C/C++ code if available and you can click the green button "Run C Simul
 
 * Generate IP Core: Once you have verified the hardware behavior and are satisfied with the synthesis results, you can generate an IP core from the synthesized hardware function.
 In Vitis HLS, go to the "Solution" tab and select "Export RTL..." or a similar option depending on your version of Vitis HLS. Follow the prompts to generate an IP core.
-This process will generate the necessary VHDL or Verilog files and associated metadata to create an IP core that you can integrate into your Vivado FPGA or SoC design.
+This process will generate the necessary VHDL or Verilog files and associated metadata to create an IP core to integrate into your Vivado FPGA or SoC design.
 
 ### Create Vivado Project
 
-* Click *Create New Project*, and click *Next*. Then, give your project a name (i.e. project_1) and choose *RTL Project*. Making sure the *Project location* is the correct path that you want to save the project.
+* Click *Create New Project*, and click *Next*. Then, give your project a name (i.e. project_1) and choose *RTL Project*. Make sure the *Project location* is the correct path that you want to save the project.
 
-* Select the board, search `pynq` and choose `pynq-z2`, then click *Next* and *Finish*. If you do not have it, follow the instructions in the provided link below.
+* Select the board, search `pynq` and choose `pynq-z2`, then click *Next* and *Finish*. If you do not have it, follow the instructions in the link below.
 
   [Add BSP file to Vivado](https://pynq.readthedocs.io/en/latest/overlay_design_methodology/board_settings.html)
 
@@ -372,11 +372,11 @@ Add the *AXI Direct Memory Access* block to your design. Also, we need to add th
 
     This value determines the maximum packet size for a single DMA transfer. width = 26 allows transfers of 67,108,863 bytes - the maximum size the DMA supports. I usually set this value to the maximum value of 26. If you know you will never need more than a smaller size transfer, you can set this to a smaller value and save a small amount of PL resources. I prefer to set the maximum value for flexibility as the hardware resource increase is relatively modest.
 
-    When using the DMA if you try to do a transfer but only see that the first part of your buffer is transferred, check this value in your hardware design and check how much data you are transferring. Leaving the default set to 14 bits is a common mistake that will limit the DMA to 16,384 byte transfers. If you try to send more than this the transfer will terminate once the maximum number of bytes supported is transferred. Remember to check the size of the transfer in bytes.
+    When using the DMA if you try to do a transfer but only see that the first part of your buffer is transferred, check this value in your hardware design and how much data you are transferring. Leaving the default set to 14 bits is a common mistake that will limit the DMA to 16,384 byte transfers. If you try to send more than this the transfer will terminate once the maximum number of bytes supported is transferred. Remember to check the size of the transfer in bytes.
 
 * Check the address width is set to 32. In this example, I will connect the DMA to the PS memory which is 32-bit for Zynq. You can set this up to 64-bit if you are connecting this to a larger memory, for example, if you are using a Zynq Ultrascale+ or if your DMA is connected to a PL-connected memory.
 
-* For this design, leave only the read channel enabled because the IP has two input interfaces and one output interface.
+* leave only the read channel enabled for this design because the IP has two input interfaces and one output interface.
 
 * Set the stream data to match your IP stream width. In this example, I will leave it set to 32.
 
@@ -386,11 +386,11 @@ Add the *AXI Direct Memory Access* block to your design. Also, we need to add th
 
 <div align=center><img src="Images/1_4.png" alt="drawing" width="1000"/></div>
 
-Each interface can be individually configured based on the specific requirements of the associated data stream for the IP. Each AXI_DMA interface can be configured and controlled separately, providing flexibility and scalability for handling diverse data sources within our FPGA system. We have deliberately configured AXI_DMA0 and AXI_DMA1 with only the read channels enabled and configured AXI_DMA2 with only the write channel enabled. This design choice is driven by the predominant data flow requirements of our IP core, which involves receiving data from memory.   
+Each interface can be individually configured based on the specific requirements of the associated data stream for the IP. Each AXI_DMA interface can be configured and controlled separately, providing flexibility and scalability for handling diverse data sources within our FPGA system. We have deliberately configured AXI_DMA0 and AXI_DMA1 with only the read channels enabled and configured AXI_DMA2 with only the write channel enabled. This design choice is driven by our IP core's predominant data flow requirements, which involves receiving data from memory.   
 
 <div align=center><img src="Images/1_5.png" alt="drawing" width="1000"/></div>
 
-Then connect the DMA which can use reference materials [here](https://uri-nextlab.github.io/ParallelProgammingLabs/Labs/Lab6_DMA.html).
+Then connect the DMA using reference materials [here](https://uri-nextlab.github.io/ParallelProgammingLabs/Labs/Lab6_DMA.html).
 
 ## Run synthesis,  Implementation and generate bitstream
 
@@ -398,7 +398,7 @@ It may show some errors about I/O Ports, please fix them.
 
 ## Download the bitstream file to PYNQ
 
-The first step is to allocate the buffer. pynq allocate will be used to allocate the buffer, and NumPy will be used to specify the type of the buffer.
+The first step is to allocate the buffer. pynq allocate will be used to allocate the buffer, and NumPy will be used to specify the buffer type.
 
 ```python
 from pynq import Overlay
@@ -414,7 +414,7 @@ We can use the ? to check the IP dictionary.
 
 ### Create DMA instances
 
-Using the labels for the DMAs listed above, we can create three DMA objects.
+We can create three DMA objects using the labels for the DMAs listed above.
 
 ```python
 
@@ -425,7 +425,7 @@ mm2s = hw.axi_dma_2.recvchannel
 
 ### Read DMA
 
-The first step is to allocate the buffer. pynq.allocate will be used to allocate the buffer, and NumPy will be used to specify the type of the buffer.
+The first step is to allocate the buffer. pynq.allocate will be used to allocate the buffer, and NumPy will be used to specify the buffer type.
 
 ```python
 N=16
