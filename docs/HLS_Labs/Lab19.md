@@ -378,7 +378,7 @@ plt.ylabel('Error pencentage (%)')
 
 The plot is shown below:
 
-<div align=center><img src="Images/16/18.png" alt="drawing" width="800"/></div>
+<div align=center><img src="Images/16/18.png" alt="drawing" width="400"/></div>
 
 In most cases, the error is less than 0.02%, which is good enough, and the II of the module is 1.
 
