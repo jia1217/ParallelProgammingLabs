@@ -315,11 +315,11 @@ Pipelining the loop is different from unrolling the loop and making it a pipelin
 
 The synthesis report is shown below:
 
-<div align=center><img src="16/15.png" alt="drawing" width="800"/></div>
+<div align=center><img src="Images/16/15.png" alt="drawing" width="800"/></div>
 
 And the C simulation result is shown below:
 
-<div align=center><img src="16/16.png" alt="drawing" width="600"/></div>
+<div align=center><img src="Images/16/16.png" alt="drawing" width="600"/></div>
 
 Then export the IP to the floder where you want to set.
 
@@ -327,7 +327,7 @@ Then export the IP to the floder where you want to set.
 
 The configure block design can use reference materials [here](https://uri-nextlab.github.io/ParallelProgammingLabs/HLS_Labs/Lab1.html). And we need to choose the number of the DMA according to the number of the interface.
 
-<div align=center><img src="16/17.png" alt="drawing" width="1000"/></div>
+<div align=center><img src="Images/16/17.png" alt="drawing" width="1000"/></div>
 
 ## Run synthesis,  Implementation, and generate bitstream
 
@@ -378,7 +378,7 @@ plt.ylabel('Error pencentage (%)')
 
 The plot is shown below:
 
-<div align=center><img src="16/18.png" alt="drawing" width="800"/></div>
+<div align=center><img src="Images/16/18.png" alt="drawing" width="800"/></div>
 
 In most cases, the error is less than 0.02%, which is good enough, and the II of the module is 1.
 
