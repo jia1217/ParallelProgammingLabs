@@ -32,3 +32,9 @@ sort: 3
 - [Lab12](https://uri-nextlab.github.io/ParallelProgammingLabs/HLS_Labs/Lab12.html)
 
 - [Lab13](https://uri-nextlab.github.io/ParallelProgammingLabs/HLS_Labs/Lab13.html)
+
+- [Lab14](https://uri-nextlab.github.io/ParallelProgammingLabs/HLS_Labs/Lab14.html)
+
+- [Lab15](https://uri-nextlab.github.io/ParallelProgammingLabs/HLS_Labs/Lab15.html)
+
+- [Lab16](https://uri-nextlab.github.io/ParallelProgammingLabs/HLS_Labs/Lab16.html)
