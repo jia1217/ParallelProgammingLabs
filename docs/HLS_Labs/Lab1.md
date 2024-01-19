@@ -397,8 +397,9 @@ Then connect the DMA using reference materials [here](https://uri-nextlab.github
 It may show some errors about I/O Ports, please fix them.
 
 ## Download the bitstream file to PYNQ
+Then create a python3 notebook via clicking the new in the website and selecting python3. 
 
-The first step is to allocate the buffer. pynq allocate will be used to allocate the buffer, and NumPy will be used to specify the buffer type.
+In this project, we need the following python packages and import them.
 
 ```python
 from pynq import Overlay
