@@ -560,3 +560,5 @@ int main() {
     return 0;
 }
 ```
+## Demonstrate
+Please finish six examples for the use of the ```aggregation``` pragma.
