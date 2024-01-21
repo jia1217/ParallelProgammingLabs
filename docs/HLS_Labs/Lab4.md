@@ -678,3 +678,6 @@ int main() {
 }
 
 ```
+## Demonstrate 
+Please find the differences between the use of the fifos and pipos and the difference between the stream and stream_of_blocks.
+
