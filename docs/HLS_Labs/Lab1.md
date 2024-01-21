@@ -386,7 +386,7 @@ Add the *AXI Direct Memory Access* block to your design. Also, we need to add th
 
 <div align=center><img src="Images/1_4.png" alt="drawing" width="1000"/></div>
 
-Each interface can be individually configured based on the specific requirements of the associated data stream for the IP. Each AXI_DMA interface can be configured and controlled separately, providing flexibility and scalability for handling diverse data sources within our FPGA system. We have deliberately configured AXI_DMA0 and AXI_DMA1 with only the read channels enabled and configured AXI_DMA2 with only the write channel enabled. This design choice is driven by our IP core's predominant data flow requirements, which involves receiving data from memory.   
+Each interface can be individually configured based on the specific requirements of the associated data stream for the IP. Each AXI_DMA interface can be configured and controlled separately, providing flexibility and scalability for handling diverse data sources within our FPGA system. We have deliberately configured AXI_DMA0 and AXI_DMA1 with only the read channels enabled and configured AXI_DMA2 with only the write channel enabled. This design choice is driven by our IP core's predominant data flow requirements, which involve receiving data from memory.   
 
 <div align=center><img src="Images/1_5.png" alt="drawing" width="1000"/></div>
 
@@ -455,3 +455,6 @@ mm2s.transfer(oBuf)
 We will see:
 
 <div align=center><img src="Images/1_8.png" alt="drawing" width="600"/></div>
+
+## Demonstrate
+Please finish one matrix product, C = AB, where A, B, and C are 4 x 4 int data and implement it on the PYNQ-Z1 board.
