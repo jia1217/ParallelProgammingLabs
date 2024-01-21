@@ -644,3 +644,7 @@ s2mm_2.wait()
 We will see:
 
 <div align=center><img src="Images/5_10.png" alt="drawing" width="300"/></div>
+
+## Demonstrate
+Please finish the odds_and_evens function in data_driven and implement it on the PYNQ-Z1 board.
+
