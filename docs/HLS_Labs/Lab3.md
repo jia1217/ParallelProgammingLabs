@@ -706,7 +706,7 @@ The result of the C simulation is shown below.
  
 ###### split_round_robin
 
-* Round-robin, where the consumers read the input data in a fixed rotating order, thus ensuring deterministic behavior, but not allowing load sharing with dynamically varying computational loads for the workers.
+* Round-robin, where the consumers read the input data in a fixed rotating order, thus ensuring deterministic behavior but not allowing load sharing with dynamically varying computational loads for the workers.
 
 ```c++
 hls::split::round_robin<DATATYPE, NUM_PORTS[, DEPTH]> name
@@ -739,5 +739,6 @@ The result of the C simulation is shown below.
 
 <div align=center><img src="Images/3_16.png" alt="drawing" width="500"/></div>
 
-
+## Demonstrate
+Please finish the three bypassing writing styles and compare the differences between the merge and split pragma.
 
