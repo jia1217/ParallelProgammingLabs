@@ -618,7 +618,7 @@ import time
 
 ### Create DMA instances
 
-Using the labels for the DMAs listed above, we can create three DMA objects.
+We can create three DMA objects using the labels for the DMAs listed above.
 
 ```python
 
@@ -668,3 +668,9 @@ And if we change the value of the iBuf for the frp design(design_frp.bit), we wi
 <div align=center><img src="Images/2_26.png" alt="drawing" width="300"/></div>
 
 We can see that style=flp/frp can successfully communicate with DMA for data exchange.
+
+## Demonstrate
+
+Please finish the IP that outputs the input data after adding 1 ten times implement it on the PYNQ-Z1 board and compare the difference in the style of the pipeline.
+
+
