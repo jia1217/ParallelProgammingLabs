@@ -547,7 +547,7 @@ static int counter=0;
 
 ```
 
-**middle_tb.cpp
+**middle_tb.cpp**
 ```c++
 #include "middle.h"
 
