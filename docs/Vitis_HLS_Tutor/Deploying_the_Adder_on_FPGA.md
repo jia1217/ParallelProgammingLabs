@@ -27,9 +27,7 @@ We can also use another way to use PYNQ more convenient as below:
 
    <div align=center><img src="Images/18/8.png" alt="drawing" width="600"/></div>
    
-And we need to copy the address below:
-
-  <div align=center><img src="Images/18/9.png" alt="drawing" width="600"/></div>
+And we need to copy the address above.
   
 * Thirdly, we need to click the link for setup:
 -[Clemson Ethernet](https://ccit.clemson.edu/support/current-students/get-connected/ethernet-wired/)
