@@ -11,6 +11,29 @@ If you have not used the PYNQ before, check the following link for setup:
 
 -[PYNQ-Z2 Setup Guide](https://pynq.readthedocs.io/en/latest/getting_started/pynq_z2_setup.html).
 
+We can also use another way to use PYNQ more convenient as below:
+
+* Firstly, we need to connect the PYNQ by the Serial Port Terminal(like MobXterm), and we need to set some parameters like below:
+
+* Secondly, we need to know some information about the PYNQ-Z1 board by print ```ifconfig``` like below.
+
+And we need to copy the address below:
+
+  <div align=center><img src="Images/18/4.png" alt="drawing" width="600"/></div>
+  
+* Thirdly, we need to click the link for setup:
+-[Clemson Ethernet](https://ccit.clemson.edu/support/current-students/get-connected/ethernet-wired/)
+
+* Then, click the link like below:
+
+  <div align=center><img src="Images/18/2.png" alt="drawing" width="600"/></div>
+  
+  <div align=center><img src="Images/18/3.png" alt="drawing" width="600"/></div>
+
+  <div align=center><img src="Images/18/4.png" alt="drawing" width="600"/></div>
+
+We can write something in the ```Description `` to mark our device. Accessing the school network through connecting to the school's Ethernet cable is currently the most convenient way. Then even if we don't have the board with us, we can still remotely access PYNQ by knowing the board's IP address, provided that the board is connected to the school network and powered on.
+
 ## Step 2
 
 If you already have a basic idea of Jupyter on these boards, upload the `.bit` file and the `.hwh` file to Jupyter. In the same folder, create a new `.ipynb` file for writing the script.
