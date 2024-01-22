@@ -124,7 +124,7 @@ int main() {
 }
 ```
 
-And this IP can transfer data with the AXI_DMA, because the port is ```axis```, but we should add the ```middle_data``` IP to provide the ```last``` signal. You can find the ```middle_data``` coding in the Lab5/Simple_data_driven/Export the test_IP.
+And this IP can transfer data with the AXI_DMA, because the port is ```axis```, but we should add the ```middle_data``` IP to provide the ```last``` signal. You can find the ```middle_data``` coding in the [Lab5/Simple_data_driven/Export the test_IP](https://uri-nextlab.github.io/ParallelProgammingLabs/HLS_Labs/Lab5.html#export-the-testip).
 
 #### Create the Vivado project
 
