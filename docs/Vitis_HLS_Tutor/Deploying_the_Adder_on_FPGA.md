@@ -15,11 +15,21 @@ We can also use another way to use PYNQ more convenient as below:
 
 * Firstly, we need to connect the PYNQ by the Serial Port Terminal(like MobXterm), and we need to set some parameters like below:
 
+  <div align=center><img src="Images/18/5.png" alt="drawing" width="600"/></div>
+
+  <div align=center><img src="Images/18/6.png" alt="drawing" width="600"/></div>
+
+  If we connect the PYNQ successfully, we will see like below:
+
+ <div align=center><img src="Images/18/7.png" alt="drawing" width="600"/></div>
+
 * Secondly, we need to know some information about the PYNQ-Z1 board by print ```ifconfig``` like below.
 
+   <div align=center><img src="Images/18/8.png" alt="drawing" width="600"/></div>
+   
 And we need to copy the address below:
 
-  <div align=center><img src="Images/18/4.png" alt="drawing" width="600"/></div>
+  <div align=center><img src="Images/18/9.png" alt="drawing" width="600"/></div>
   
 * Thirdly, we need to click the link for setup:
 -[Clemson Ethernet](https://ccit.clemson.edu/support/current-students/get-connected/ethernet-wired/)
