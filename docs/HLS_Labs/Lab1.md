@@ -457,4 +457,4 @@ We will see:
 <div align=center><img src="Images/1_8.png" alt="drawing" width="600"/></div>
 
 ## Demonstrate
-Please finish one matrix product, C = AB, where A, B, and C are 4 x 4 int data and implement it on the PYNQ-Z1 board.
+Please finish one matrix product, C = AB, where A, B, and C are 4 x 4 int data and implement it on the PYNQ-Z2 board.
