@@ -23,7 +23,7 @@ We can also use another way to use PYNQ more convenient as below:
 
  <div align=center><img src="Images/18/7.png" alt="drawing" width="600"/></div>
 
-* Secondly, we need to know some information about the PYNQ-Z1 board by print ```ifconfig``` like below.
+* Secondly, we need to know some information about the PYNQ-Z2 board by print ```ifconfig``` like below.
 
    <div align=center><img src="Images/18/8.png" alt="drawing" width="600"/></div>
    
