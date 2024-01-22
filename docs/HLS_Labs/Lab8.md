@@ -1014,3 +1014,7 @@ top_ip.write(0x00, 1)
 We will see:
 
 <div align=center><img src="Images/8_18.png" alt="drawing" width="400"/></div>
+
+## Demonstrates
+
+You need to finish the ```vadd``` function for the ```burst_rw``` and the ```dut``` function for the ```cache``` and implement it on the PYNQ-Z1 board.
