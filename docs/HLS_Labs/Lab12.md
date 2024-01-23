@@ -167,7 +167,7 @@ import numpy as np
 import pynq
 from pynq import MMIO
 overlay = pynq.Overlay('design_1.bit')
-overlay ?
+overlay?
 ```
 <div align=center><img src="Images/9_12.png" alt="drawing" width="600"/></div>
 
@@ -273,7 +273,7 @@ import numpy as np
 import pynq
 from pynq import MMIO
 overlay = pynq.Overlay('design_1.bit')
-overlay ?
+overlay?
 ```
 <div align=center><img src="Images/12_18.png" alt="drawing" width="400"/></div>
 
@@ -524,7 +524,7 @@ import numpy as np
 import pynq
 from pynq import MMIO
 hw = pynq.Overlay('design_1.bit')
-hw ?
+hw?
 ```
 <div align=center><img src="Images/12_11.png" alt="drawing" width="400"/></div>
 
@@ -670,7 +670,7 @@ import numpy as np
 import pynq
 from pynq import MMIO
 hw = pynq.Overlay('design_1.bit')
-hw ?
+hw?
 ```
 <div align=center><img src="Images/12_15.png" alt="drawing" width="400"/></div>
 
@@ -692,20 +692,20 @@ iBuf_2 = allocate(shape=(N,), dtype = np.int32)
 
 # initialize input
 for i in range(N):
-    iBuf_0[i]= i
-    iBuf_1[i]= i
-    iBuf_2[i]= i
+    oBuf_0[i]= i
+    oBuf_1[i]= i
+    oBuf_2[i]= i
 
 ```
 
 ```python
 ## start AXI-DMA transfer
-dma0.sendchannel.transfer(iBuf_0)
-dma1.sendchannel.transfer(iBuf_1)
-dma2.sendchannel.transfer(iBuf_2)
-dma0.recvchannel.transfer(oBuf_0)
-dma1.recvchannel.transfer(oBuf_1)
-dma2.recvchannel.transfer(oBuf_2)
+dma0.sendchannel.transfer(oBuf_0)
+dma1.sendchannel.transfer(oBuf_1)
+dma2.sendchannel.transfer(oBuf_2)
+dma0.recvchannel.transfer(iBuf_0)
+dma1.recvchannel.transfer(iBuf_1)
+dma2.recvchannel.transfer(iBuf_2)
 dma0.sendchannel.wait()
 dma1.sendchannel.wait()
 dma2.sendchannel.wait()
@@ -717,7 +717,7 @@ dma2.recvchannel.wait()
 
 We will see:
 
-<div align=center><img src="Images/12_16.png" alt="drawing" width="400"/></div>
+<div align=center><img src="Images/12_16_2.png" alt="drawing" width="400"/></div>
 
 
 
