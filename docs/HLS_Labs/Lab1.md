@@ -406,7 +406,7 @@ from pynq import Overlay
 from pynq import allocate
 import numpy as np
 hw = Overlay("design_1_wrapper.bit")
-hw ?
+hw?
 ```
 We can use the ? to check the IP dictionary.
 
@@ -430,24 +430,23 @@ The first step is to allocate the buffer. pynq.allocate will be used to allocate
 
 ```python
 N=16
-oBuf = allocate(shape=(N,), dtype = np.int32)
-iBuf_0 = allocate(shape=(N,), dtype = np.int32)
-iBuf_1 = allocate(shape=(N,), dtype = np.int32)
-output_buffer[:] = 0
+iBuf = allocate(shape=(N,), dtype = np.int32)
+oBuf_0 = allocate(shape=(N,), dtype = np.int32)
+oBuf_1 = allocate(shape=(N,), dtype = np.int32)
 for i in range(N):
-    iBuf_0[i] = i
-    iBuf_1[i] = i
-    print(iBuf_0[i])
+    oBuf_0[i] = i
+    oBuf_1[i] = i
+    print(oBuf_0[i])
 ```
 
 Print the value of input_buffer, you will see:
 
-<div align=center><img src="Images/1_7.png" alt="drawing" width="200"/></div>
+<div align=center><img src="Images/1_7_2.png" alt="drawing" width="200"/></div>
 
 ```python
-s2mm_0.transfer(iBuf_0)
-s2mm_1.transfer(iBuf_1)
-mm2s.transfer(oBuf)
+s2mm_0.transfer(oBuf_0)
+s2mm_1.transfer(oBuf_1)
+mm2s.transfer(iBuf)
 
 
 ```
