@@ -128,7 +128,7 @@ import numpy as np
 import pynq
 from pynq import MMIO
 overlay = pynq.Overlay('design_1.bit')
-overlay ?
+overlay?
 ```
 <div align=center><img src="Images/9_12.png" alt="drawing" width="700"/></div>
 
@@ -452,4 +452,4 @@ int main() {
 
 ```
 ## Demonstrate
-You need to finish the example for the ```max_widen_port_width``` and implement it on the PYNQ-Z1 board.
+You need to finish the example for the ```max_widen_port_width``` and implement it on the PYNQ-Z2 board.
