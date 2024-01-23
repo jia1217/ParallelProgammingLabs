@@ -641,7 +641,7 @@ for i in range(N):
     print(oBuf[i])
 
 ```
-<div align=center><img src="Images/2_27_2.png" alt="drawing" width="100"/></div>
+<div align=center><img src="Images/2_27_2.png" alt="drawing" width="200"/></div>
 
 
 ```python
