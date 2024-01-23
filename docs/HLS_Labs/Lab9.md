@@ -319,7 +319,6 @@ sum_buffer = pynq.allocate((32), np.int32)
 for i in range (0, 32):
     a_buffer[i] = i
 ```
-<div align=center><img src="Images/9_11.png" alt="drawing" width="400"/></div>
 
 ```python
 aptr = a_buffer.physical_address
@@ -607,7 +606,7 @@ import numpy as np
 import pynq
 from pynq import MMIO
 overlay = pynq.Overlay('design_1.bit')
-overlay ?
+overlay?
 ```
 <div align=center><img src="Images/9_12.png" alt="drawing" width="700"/></div>
 
@@ -657,5 +656,5 @@ We will see:
 <div align=center><img src="Images/9_13.png" alt="drawing" width="400"/></div>
 
 ## Demonstrates 
-You need to finish the two examples for the maual_burst and implement them on the PYNQ-Z1 board.
+You need to finish the two examples for the maual_burst and implement them on the PYNQ-Z2 board.
 
