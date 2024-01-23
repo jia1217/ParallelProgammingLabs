@@ -394,7 +394,7 @@ import numpy as np
 import pynq
 from pynq import MMIO
 overlay = pynq.Overlay('design_1.bit')
-overlay ?
+overlay?
 ```
 <div align=center><img src="Images/9_12.png" alt="drawing" width="700"/></div>
 
@@ -427,7 +427,7 @@ top_ip.register_map
 
 ```python
 # specify the address
-# These addresses can be found in the generated .v file: vadd_control_s_axi.v
+# These addresses are in the generated .v file: vadd_control_s_axi.v
 top_ip.write(0x10, aptr)
 # start the HLS kernel
 top_ip.write(0x00, 1)
@@ -439,4 +439,4 @@ We will see:
 <div align=center><img src="Images/10_11.png" alt="drawing" width="400"/></div>
 
 ## Demonstrate
-You need to finish the example for the ```using_axi_master``` and implement it on the PYNQ-Z1 board.
+You need to finish the example for the ```using_axi_master``` and implement it on the PYNQ-Z2 board.
