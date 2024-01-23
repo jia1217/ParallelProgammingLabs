@@ -641,7 +641,7 @@ for i in range(N):
     print(oBuf[i])
 
 ```
-<div align=center><img src="Images/2_27.png" alt="drawing" width="300"/></div>
+<div align=center><img src="Images/2_27_2.png" alt="drawing" width="300"/></div>
 
 
 ```python
@@ -657,7 +657,7 @@ s2mm.wait()
 
 We will see:
 
-<div align=center><img src="Images/2_25.png" alt="drawing" width="300"/></div>
+<div align=center><img src="Images/2_25_2.png" alt="drawing" width="300"/></div>
 
 And the result for the C simulation is shown below:
 
@@ -665,7 +665,7 @@ And the result for the C simulation is shown below:
 
 And if we change the value of the iBuf for the frp design(design_frp.bit), we will also see:
 
-<div align=center><img src="Images/2_26.png" alt="drawing" width="300"/></div>
+<div align=center><img src="Images/2_26_2.png" alt="drawing" width="300"/></div>
 
 We can see that style=flp/frp can successfully communicate with DMA for data exchange.
 
