@@ -127,7 +127,7 @@ import numpy as np
 import pynq
 from pynq import MMIO
 hw = pynq.Overlay('design_1.bit')
-hw ?
+hw?
 ```
 <div align=center><img src="Images/13/3.png" alt="drawing" width="400"/></div>
 
@@ -146,7 +146,7 @@ N = 100
 oBuf_0 = allocate(shape=(N,), dtype = np.int32)
 iBuf_0 = allocate(shape=(N,), dtype = np.int32)
 for i in range(N):
-    iBuf_0[i]= i
+    oBuf_0[i]= i
 ```
 
 
@@ -159,8 +159,8 @@ top.register_map.num=100
 
 ```python 
 #begin the DMA transfer
-s2mm.transfer(iBuf_0)
-mm2s.transfer(oBuf_0)
+s2mm.transfer(oBuf_0)
+mm2s.transfer(iBuf_0)
 s2mm.wait()
 mm2s.wait()
 
@@ -168,7 +168,7 @@ mm2s.wait()
 
 We will see:
 
-<div align=center><img src="Images/13/5_2.png" alt="drawing" width="400"/></div>
+<div align=center><img src="Images/13/5_2_2.png" alt="drawing" width="400"/></div>
 
 
 ### using_axi_stream_with_custom_side_channel_data_1
@@ -352,7 +352,7 @@ int main() {
 ```
 ### using_axi_stream_with_side_channel_data
 
-The following example shows how the side-channels can be used directly in the C/C++ code and implemented on the interface. The code uses #include "ap_axi_sdata.h" to provide an API to handle the side-channels of the AXI4-Stream interface. In the following example a signed 32-bit data type is used:
+The following example shows how the side channels can be used directly in the C/C++ code and implemented on the interface. The code uses #include "ap_axi_sdata.h" to provide an API to handle the side channels of the AXI4-Stream interface. In the following example a signed 32-bit data type is used:
 
 **example.h**
 ```c++
@@ -491,14 +491,14 @@ N = 5
 oBuf_0 = allocate(shape=(N,), dtype = np.int32)
 iBuf_0 = allocate(shape=(N,), dtype = np.int32)
 for i in range(N):
-    iBuf_0[i]= i
+    oBuf_0[i]= i
 ```
 
 
 ```python 
 #begin the DMA transfer
-s2mm.transfer(iBuf_0)
-mm2s.transfer(oBuf_0)
+s2mm.transfer(oBuf_0)
+mm2s.transfer(iBuf_0)
 s2mm.wait()
 mm2s.wait()
 
@@ -506,7 +506,7 @@ mm2s.wait()
 
 We will see:
 
-<div align=center><img src="Images/13/10.png" alt="drawing" width="200"/></div>
+<div align=center><img src="Images/13/10_2.png" alt="drawing" width="200"/></div>
 
 ### using_axi_stream_with_struct
 **example.h**
@@ -651,18 +651,18 @@ N = 5
 oBuf_0 = allocate(shape=(N,), dtype = np.int32)
 iBuf_0 = allocate(shape=(N,), dtype = np.int32)
 for i in range(1):
-    iBuf_0[0]= 0
-    iBuf_0[1]= 65537
-    iBuf_0[2]= 131074
-    iBuf_0[3]= 196611
-    iBuf_0[4]= 262148
+    oBuf_0[0]= 0
+    oBuf_0[1]= 65537
+    oBuf_0[2]= 131074
+    oBuf_0[3]= 196611
+    oBuf_0[4]= 262148
 ```
 
 
 ```python 
 #begin the DMA transfer
-s2mm.transfer(iBuf_0)
-mm2s.transfer(oBuf_0)
+s2mm.transfer(oBuf_0)
+mm2s.transfer(iBuf_0)
 s2mm.wait()
 mm2s.wait()
 
@@ -670,7 +670,7 @@ mm2s.wait()
 
 We will see:
 
-<div align=center><img src="Images/13/15.png" alt="drawing" width="300"/></div>
+<div align=center><img src="Images/13/15_2.png" alt="drawing" width="300"/></div>
 
 
 ### using_axis_array_stream_no_side_channel_data
@@ -774,14 +774,14 @@ N = 50
 oBuf_0 = allocate(shape=(N,), dtype = np.int32)
 iBuf_0 = allocate(shape=(N,), dtype = np.int32)
 for i in range(N):
-    iBuf_0[i]= i
+    oBuf_0[i]= i
 ```
 
 
 ```python 
 #begin the DMA transfer
-s2mm.transfer(iBuf_0)
-mm2s.transfer(oBuf_0)
+s2mm.transfer(oBuf_0)
+mm2s.transfer(iBuf_0)
 s2mm.wait()
 mm2s.wait()
 
@@ -789,6 +789,6 @@ mm2s.wait()
 
 We will see:
 
-<div align=center><img src="Images/13/22.png" alt="drawing" width="400"/></div>
+<div align=center><img src="Images/13/22_2.png" alt="drawing" width="400"/></div>
 
 
