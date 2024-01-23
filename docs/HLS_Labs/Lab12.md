@@ -717,7 +717,7 @@ dma2.recvchannel.wait()
 
 We will see:
 
-<div align=center><img src="Images/12_16_2.png" alt="drawing" width="400"/></div>
+<div align=center><img src="Images/12_16_2.png" alt="drawing" width="300"/></div>
 
 
 
