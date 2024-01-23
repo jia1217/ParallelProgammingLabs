@@ -221,7 +221,7 @@ import time
 
 #### Create DMA instances
 
-Using the labels for the DMAs listed above, we can create three DMA objects.
+We can create three DMA objects using the labels for the DMAs listed above.
 
 ```python
 
@@ -242,31 +242,31 @@ The first step is to allocate the buffer. pynq.allocate will be used to allocate
 
 ```python
 N = 64
-oBuf_0 = allocate(shape=(N,), dtype = np.int32)
-oBuf_1 = allocate(shape=(N,), dtype = np.int32)
-oBuf_2 = allocate(shape=(N,), dtype = np.int32)
-oBuf_3 = allocate(shape=(N,), dtype = np.int32)
 iBuf_0 = allocate(shape=(N,), dtype = np.int32)
 iBuf_1 = allocate(shape=(N,), dtype = np.int32)
 iBuf_2 = allocate(shape=(N,), dtype = np.int32)
 iBuf_3 = allocate(shape=(N,), dtype = np.int32)
+oBuf_0 = allocate(shape=(N,), dtype = np.int32)
+oBuf_1 = allocate(shape=(N,), dtype = np.int32)
+oBuf_2 = allocate(shape=(N,), dtype = np.int32)
+oBuf_3 = allocate(shape=(N,), dtype = np.int32)
 for i in range(N):
-    iBuf_0[i]= i
-    iBuf_1[i]= i
-    iBuf_2[i]= i
-    iBuf_3[i]= i
+    oBuf_0[i]= i
+    oBuf_1[i]= i
+    oBuf_2[i]= i
+    oBuf_3[i]= i
 ```
 
 
 ```python
-mm2s_0.transfer(iBuf_0)
-mm2s_1.transfer(iBuf_1)
-mm2s_2.transfer(iBuf_2)
-mm2s_3.transfer(iBuf_3)
-s2mm_0.transfer(oBuf_0)
-s2mm_1.transfer(oBuf_1)
-s2mm_2.transfer(oBuf_2)
-s2mm_3.transfer(oBuf_3)
+mm2s_0.transfer(oBuf_0)
+mm2s_1.transfer(oBuf_1)
+mm2s_2.transfer(oBuf_2)
+mm2s_3.transfer(oBuf_3)
+s2mm_0.transfer(iBuf_0)
+s2mm_1.transfer(iBuf_1)
+s2mm_2.transfer(iBuf_2)
+s2mm_3.transfer(iBuf_3)
 mm2s_0.wait()
 mm2s_1.wait()
 mm2s_2.wait()
@@ -280,7 +280,7 @@ s2mm_2.wait()
 
 We will see:
 
-<div align=center><img src="Images/6_11.png" alt="drawing" width="600"/></div>
+<div align=center><img src="Images/6_11_2.png" alt="drawing" width="600"/></div>
 
 
 ### Unsynchronized_io_maxi
@@ -636,7 +636,7 @@ import time
 
 #### Create DMA instances
 
-Using the labels for the DMAs listed above, we can create three DMA objects.
+We can create three DMA objects using the labels for the DMAs listed above.
 
 ```python
 
@@ -652,10 +652,10 @@ The first step is to allocate the buffer. ```pynq``` allocate will be used to al
 
 ```python
 N = 100
-oBuf = allocate(shape=(N,), dtype = np.int32)
 iBuf = allocate(shape=(N,), dtype = np.int32)
+oBuf = allocate(shape=(N,), dtype = np.int32)
 for i in range(N):
-    iBuf[i]= i
+    oBuf[i]= i
 ```
 
 ```python
@@ -669,8 +669,8 @@ For a single variable ```n```, we assign its value by defining it as an ```s_axi
 <div align=center><img src="Images/6_5.png" alt="drawing" width="400"/></div>
 
 ```python
-mm2s.transfer(iBuf)
-s2mm.transfer(oBuf)
+mm2s.transfer(oBuf)
+s2mm.transfer(iBuf)
 mm2s.wait()
 s2mm.wait()
 
@@ -678,7 +678,7 @@ s2mm.wait()
 
 We will see:
 
-<div align=center><img src="Images/6_4.png" alt="drawing" width="600"/></div>
+<div align=center><img src="Images/6_4_2.png" alt="drawing" width="600"/></div>
 
 ## Demonstrate
 Please finish one function that uses ```hls::task``` object and implement it on the PYNQ-Z1 board.
