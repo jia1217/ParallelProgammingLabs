@@ -470,14 +470,15 @@ from pynq import MMIO
 The first step is to allocate the buffer. pynq allocate will be used to allocate the buffer, and NumPy will be used to specify the type of the buffer.
 
 ```python
-
 overlay = pynq.Overlay('design_1.bit')
 
 top_ip = overlay.dut_0
 top_ip.signature
 
-in_buffer = pynq.allocate((32), np.int32)
-out_buffer = pynq.allocate((32), np.int32)
+a_buffer = pynq.allocate((32), np.int32)
+b_buffer = pynq.allocate((32), np.int32)
+
+
 # initialize input
 for i in range (0, 32):
     a_buffer[i] = i
@@ -485,8 +486,8 @@ for i in range (0, 32):
 
 
 ```python
-in_add = in_buffer.physical_address
-out_add = out_buffer.physical_address
+aptr = a_buffer.physical_address
+bptr = b_buffer.physical_address
 
 top_ip.register_map
 ```
@@ -497,8 +498,8 @@ top_ip.register_map
 top_ip.register_map.size=32
 # specify the address
 # These addresses can be found in the generated .v file: vadd_control_s_axi.v
-top_ip.write(0x10, in_add)
-top_ip.write(0x1c, out_add)
+top_ip.write(0x10, aptr)
+top_ip.write(0x1c, bptr)
 # start the HLS kernel
 top_ip.write(0x00, 1)
 
@@ -506,7 +507,7 @@ top_ip.write(0x00, 1)
 // Find the address offset of the memory ports (input, and output in this example). This information can be found in the xtop_hw.h file under solution1/impl/misc/drivers/top_v1_0/src directory.
 We will see:
 
-<div align=center><img src="Images/8_8.png" alt="drawing" width="400"/></div>
+<div align=center><img src="Images/8_8_2.png" alt="drawing" width="400"/></div>
 
 ### coefficient_filter
 
