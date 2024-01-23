@@ -719,7 +719,8 @@ We will see:
 
 <div align=center><img src="Images/12_16_2.png" alt="drawing" width="300"/></div>
 
-
+## Demonstrate
+Please finish the second part of the ```Register ``` and the two examples of the ```Streaming ``` part and implement them on the PYNQ-Z2 board.
 
 
 
