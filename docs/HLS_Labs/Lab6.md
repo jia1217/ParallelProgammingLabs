@@ -681,4 +681,4 @@ We will see:
 <div align=center><img src="Images/6_4_2.png" alt="drawing" width="600"/></div>
 
 ## Demonstrate
-Please finish one function that uses ```hls::task``` object and implement it on the PYNQ-Z1 board.
+Please finish one function that uses the ```hls::task``` object and implement it on the PYNQ-Z2 board.
