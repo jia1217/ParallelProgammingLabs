@@ -29,7 +29,7 @@ The special ```hls::task``` C++ class is:
 
 * A new object declaration in your source code that requires a special qualifier. The hls_thread_local qualifier is required to keep the object (and the underlying thread) alive across multiple calls of the instantiating function.
 
-The hls_thread_local qualifier is only required to ensure that the C simulation of the data-driven TLP model exhibits the same behavior as the RTL simulation. In the RTL, these functions are already in always running mode once started. In order to ensure the same behavior during C Simulation, the hls_thread_local qualifier is required to ensure that each task is started only once and keeps the same state even when called multiple times. Without the hls_thread_local qualifier, each new invocation of the function would result in a new state.
+The hls_thread_local qualifier is only required to ensure that the C simulation of the data-driven TLP model exhibits the same behavior as the RTL simulation. In the RTL, these functions are already in always running mode once started. To ensure the same behavior during C Simulation, the hls_thread_local qualifier is required to ensure that each task is started only once and keeps the same state even when called multiple times. Without the hls_thread_local qualifier, each new invocation of the function would result in a new state.
 
 * Task objects implicitly manage a thread that runs a function infinitely, passing to it a set of arguments that must be either hls::stream or hls::stream_of_blocks
 
@@ -618,22 +618,22 @@ The first step is to allocate the buffer. pynq.allocate will be used to allocate
 
 ```python
 N = 5
-oBuf_1 = allocate(shape=(N,), dtype = np.int32)
-oBuf_2 = allocate(shape=(N,), dtype = np.int32)
-iBuf = allocate(shape=(10,), dtype = np.int32)
+iBuf_1 = allocate(shape=(N,), dtype = np.int32)
+iBuf_2 = allocate(shape=(N,), dtype = np.int32)
+oBuf = allocate(shape=(10,), dtype = np.int32)
 for i in range(10):
-    iBuf[i]= i
-    print(iBuf[i])
+    oBuf[i]= i
+    print(oBuf[i])
 ```
 
 Print the value of input_buffer, you will see:
 
-<div align=center><img src="Images/5_9.png" alt="drawing" width="300"/></div>
+<div align=center><img src="Images/5_9_2.png" alt="drawing" width="300"/></div>
 
 ```python
-mm2s.transfer(iBuf)
-s2mm_1.transfer(oBuf_1)
-s2mm_2.transfer(oBuf_2)
+mm2s.transfer(oBuf)
+s2mm_1.transfer(iBuf_1)
+s2mm_2.transfer(iBuf_2)
 mm2s.wait()
 s2mm_1.wait()
 s2mm_2.wait()
@@ -643,8 +643,8 @@ s2mm_2.wait()
 
 We will see:
 
-<div align=center><img src="Images/5_10.png" alt="drawing" width="300"/></div>
+<div align=center><img src="Images/5_10_2.png" alt="drawing" width="300"/></div>
 
 ## Demonstrate
-Please finish a function in a data-driven style and implement it on the PYNQ-Z1 board.
+Please finish a function in a data-driven style and implement it on the PYNQ-Z2 board.
 
