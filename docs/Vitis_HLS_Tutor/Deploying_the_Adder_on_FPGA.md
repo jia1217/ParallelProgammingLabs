@@ -40,7 +40,9 @@ And we need to copy the address above.
 
   <div align=center><img src="Images/18/4.png" alt="drawing" width="600"/></div>
   
-We must paste the IP address in the ```Hardware Address```. We can write something in the ```Description ``` to mark our device. Accessing the school network through connecting to the school's Ethernet cable is currently the most convenient way. Then even if we don't have the board with us, we can still remotely access PYNQ by knowing the board's IP address, provided that the board is connected to the school network and powered on.
+We must paste the IP address in the ```Hardware Address```. We can write something in the ```Description ``` to mark our device. Accessing the school network through connecting to the school's Ethernet cable is currently the most convenient way. Then even if we don't have the board with us, we can still remotely access PYNQ by knowing the board's IP address, provided that the board is connected to the school network and powered on. Even if we don't have the board with us, we can still remotely access PYNQ by knowing the board's IP address, provided that the board is connected to the school network and powered on.
+
+<div align=center><img src="Images/18/16.png" alt="drawing" width="600"/></div>
 
 ## Step 2
 
