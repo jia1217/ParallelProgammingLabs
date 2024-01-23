@@ -1003,7 +1003,7 @@ top_ip.register_map
 ```python
 top_ip.register_map.size=32
 # specify the address
-# These addresses can be found in the generated .v file: vadd_control_s_axi.v
+# These addresses are in the generated .v file: vadd_control_s_axi.v
 top_ip.write(0x10, aptr)
 top_ip.write(0x1c, bptr)
 top_ip.write(0x28, sumptr)
@@ -1018,4 +1018,4 @@ We will see:
 
 ## Demonstrates
 
-You need to finish the ```vadd``` function for the ```burst_rw``` and the ```dut``` function for the ```cache``` and implement it on the PYNQ-Z1 board.
+You need to finish the ```vadd``` function for the ```burst_rw``` and the ```dut``` function for the ```cache``` and implement it on the PYNQ-Z2 board.
