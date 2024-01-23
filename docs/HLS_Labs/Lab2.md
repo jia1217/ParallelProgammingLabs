@@ -634,11 +634,11 @@ The first step is to allocate the buffer. pynq.allocate will be used to allocate
 
 ```python
 N = 10
-oBuf = allocate(shape=(N,), dtype = np.int32)
 iBuf = allocate(shape=(N,), dtype = np.int32)
+oBuf = allocate(shape=(N,), dtype = np.int32)
 for i in range(N):
-    iBuf[i]= i
-    print(iBuf[i])
+    oBuf[i]= i
+    print(oBuf[i])
 
 ```
 <div align=center><img src="Images/2_27.png" alt="drawing" width="300"/></div>
@@ -646,8 +646,8 @@ for i in range(N):
 
 ```python
 
-mm2s.transfer(iBuf)
-s2mm.transfer(oBuf)
+mm2s.transfer(oBuf)
+s2mm.transfer(iBuf)
 mm2s.wait()
 s2mm.wait()
 
