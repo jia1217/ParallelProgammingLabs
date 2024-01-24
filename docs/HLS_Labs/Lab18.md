@@ -2,7 +2,7 @@
 sort: 18
 ---
 
-# FIR
+# Lab18 FIR
 
 <script type="text/x-mathjax-config">
   MathJax.Hub.Config({
@@ -25,6 +25,8 @@ Finite Impulse Response (FIR) filter is a well known and widely used digital fil
 $$y[i] = \sum_{j = 0}^{N-1}h[j]x[i-j]$$
 
 where $$h[j]$$ is the impulse response.
+
+**Reference Material**: Ryan Kastner et al., [Parallel Programming for FPGAs](https://github.com/KastnerRG/pp4fpgas/raw/gh-pages/main.pdf), Chapter 2.
 
 ## Optimization
 
