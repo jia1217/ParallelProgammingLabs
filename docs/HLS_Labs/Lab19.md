@@ -3,7 +3,7 @@ sort: 19
 ---
 
 
-# Cordic
+# Lab19 Cordic
 
 <script type="text/x-mathjax-config">
   MathJax.Hub.Config({
@@ -123,6 +123,8 @@ y
 \end{matrix}\right]
 \end{equation}
 $$
+
+**Reference Material**: Ryan Kastner et al., [Parallel Programming for FPGAs](https://github.com/KastnerRG/pp4fpgas/raw/gh-pages/main.pdf), Chapter 3.
 
 Then with circular rotation based Cordic, we have two modes: Rotation Mode and Vector Mode.
 
