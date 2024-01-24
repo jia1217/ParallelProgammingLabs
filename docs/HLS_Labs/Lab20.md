@@ -25,7 +25,7 @@ $$
 X(k) = \sum_{n = 0}^{N - 1}x(n)e^{-j\frac{2\pi}{N}nk}
 $$
 
-Given a certain $k$, DFT is actully a inner product between series $x(n)$ and a complex rotating vector $e^{-j\frac{2k\pi}{N}n}$. Therefore, let $x(n)$ written as a column vector $\vec{x}$, and $e^{-j\frac{2k\pi}{N}n}$ written as a row vector $\vec T_k$, we have $X(k) = \vec T_k \cdot \vec x$. Hence, the entire transform becomes a Matrix-Vector Multiplication (MVM).
+Given a certain $k$, DFT is an inner product between series $x(n)$ and a complex rotating vector $e^{-j\frac{2k\pi}{N}n}$. Therefore, let $x(n)$ written as a column vector $\vec{x}$, and $e^{-j\frac{2k\pi}{N}n}$ written as a row vector $\vec T_k$, we have $X(k) = \vec T_k \cdot \vec x$. Hence, the entire transformation becomes a matrix-vector multiplication (MVM).
 
 $$
 \begin{equation}
@@ -54,7 +54,7 @@ Since DFT has a better implementation called FFT, in this experiment we focus on
 **Reference Material**: Ryan Kastner et al., [Parallel Programming for FPGAs](https://github.com/KastnerRG/pp4fpgas/raw/gh-pages/main.pdf), Chapter 4.
 ## Inner product implementation
 
-The MVM can be treated as $N$ inner products between the row vectors in Matrix and the column vector. The inner product can be implemented with the following code:
+The MVM can be treated as $N$ inner products between the row vectors in the Matrix and the column vector. The inner product can be implemented with the following code:
 
 ```c++
 int acc = 0;
@@ -63,9 +63,10 @@ for (int i = 0; i < N; i++){
 }
 ```
 
-The loop can either be pipelined or unrolled, depending on the data accessibility. For example, mostly the input $\vec x$ comes from a stream interface, which infers that in each clock cycle, only one $x[i]$ is available. In this case, even when the loop is unrolled, it still requires at least $N$ clocks to finish, which is the same with the pipelined structure. This structure is shown in (a) below. However, if both $x$ and $t$ have higher accessibility, it is possible to carry out more multiplications in each clock cycle and then reduce the trip count. For example, in (b), $x$ and $t$ are saved in two blocks. Therefore, in each cycle, two multiplications can be done. In another word, the 'for' loop can be unrolled by a factor of 2 in this case. Furthermore, if the $x$ and $t$ are completely partitioned, it is possible to finish all multiplication and the 'for' loop can be fully unrolled. In summary, data accessibility determines the parallelism of the implementation. The unroll factor should be picked carefully depending on how much data is available in one cycle. Also, if unroll is required to increase the performance, the memory used to save the data should also be changed accordingly. Xilinx provides 'array_partition' pragma to specify the data accessibility ([Ref](https://docs.xilinx.com/r/en-US/ug1399-vitis-hls/pragma-HLS-array_partition)). In general, if the memory is implemented with BRAM on FPGA, two data is available in each cycle. If the memory is implemented with FFs (completely partitioned), all data are available in one clock cycle.  
+The loop can either be pipelined or unrolled, depending on the data accessibility. For example, mostly the input $\vec x$ comes from a stream interface, which infers that only one $x[i]$ is available in each clock cycle. In this case, even when the loop is unrolled, it still requires at least $N$ clocks to finish, which is the same with the pipelined structure. This structure is shown in (a) below. However, if both $x$ and $t$ have higher accessibility, it is possible to carry out more multiplications in each clock cycle and reduce the trip count. For example, in (b), $x$ and $t$ are saved in two blocks. Therefore, in each cycle, two multiplications can be done. In other words, the 'for' loop can be unrolled by a factor of 2.
+Furthermore, if the $x$ and $t$ are completely partitioned, it is possible to finish all multiplication and the 'for' loop can be fully unrolled. In summary, data accessibility determines the parallelism of the implementation. The unroll factor should be picked carefully depending on how much data is available in one cycle. Also, if unroll is required to increase the performance, the memory used to save the data should also be changed accordingly. Xilinx provides an 'array_partition' pragma to specify the data accessibility ([Ref](https://docs.xilinx.com/r/en-US/ug1399-vitis-hls/pragma-HLS-array_partition)). In general, two data are available in each cycle if the memory is implemented with BRAM on FPGA. If the memory is implemented with FFs (completely partitioned), all data are available in one clock cycle.  
 
-<div align=center><img src="Images/18/DotProduct.png" alt="drawing" width="600"/></div>
+<div align=center><img src="18/DotProduct.png" alt="drawing" width="600"/></div>
 
 ## MVM Implementation
 
@@ -83,9 +84,9 @@ ROW_LOOP:
 }
 ```
 
-The first thing to do is to determine which loop should be first. In this example, we assume that $x$ comes in series, which means $x[i]$ comes in order and only one $x[i]$ is available in each clock cycle. In this case, once a new $x[i]$ is received, we should finish all computations that require $x[i]$, otherwise, extra memory is required to save the $x$ for future use. Hence, the $i$ loop (COL_LOOP) should be the first. If not, then $x$ has to be iterated in each outer loop. The second step is to determine the data accessibility in the ROW_LOOP. In the ROW_LOOP (j), the $i^{th}$ values in all rows of $T$ are required. Then, if we don't partition array $T$, only one $T[j][i]$ is available in each cycle, which means it takes $N^2$ trips to finish the operation. Partitioning the $T$ array in the second dimension doesn't help as only one $x[i]$ is available at a clock cycle. Partitioning the $T$ array in the first dimension makes the data in different rows available at the same time, which helps reduce the trip count. For example, if we completely partition the $T$ in the first dimension, the ROW_LOOP can also be fully unrolled, generating $N$ independent dot product instances like the figure (a) in the last section (see Figure 4.12 in the textbook as well).  
+The first thing to do is to determine which loop should be first. In this example, we assume that $x$ comes in series, which means $x[i]$ comes in order and only one $x[i]$ is available in each clock cycle. In this case, once a new $x[i]$ is received, we should finish all computations that require $x[i]$, otherwise, extra memory is required to save the $x$ for future use. Hence, the $i$ loop (COL_LOOP) should be the first. If not, then $x$ has to be iterated in each outer loop. The second step is to determine the data accessibility in the ROW_LOOP. In the ROW_LOOP (j), the $i^{th}$ values in all rows of $T$ are required. Then, if we don't partition array $T$, only one $T[j][i]$ is available in each cycle, which means it takes $N^2$ trips to finish the operation. Partitioning the $T$ array in the second dimension doesn't help as only one $x[i]$ is available at a clock cycle. Partitioning the $T$ array in the first dimension makes the data in different rows available simultaneously, which helps reduce the trip count. For example, if we completely partition the $T$ in the first dimension, the ROW_LOOP can also be fully unrolled, generating $N$ independent dot product instances like the figure (a) in the last section (see Figure 4.12 in the textbook).  
 
-Since multiplication operation mostly requires more than 1 clock cycle to finish, we still need to pipeline the outer loop for better performance. The pipeline is shown below:
+Since the multiplication operation requires more than 1 clock cycle, we still need to pipeline the outer loop for better performance. The pipeline is shown below:
 
 <div align=center><img src="Images/18/DotProductPipeline.png" alt="drawing" width="600"/></div>
 
@@ -268,11 +269,11 @@ The waveform is shown below:
 
 <div align=center><img src="Images/18/1.png" alt="drawing" width="850"/></div>
 
-The waveform shows that the module has a low efficiency. Firstly, matrix A is reloaded every time. For an AXI stream bus, it requires $N^2$ clock cycles to reload the matrix, while the computation only requires $N$ cycles. This stops vector $x$ from being received continuously. Since in most cases, the matrix remains the same while the input vector varies (for example, DFT has a constant transform matrix). Secondly, this structure makes every new input $x[i]$ accessed by all rows simultaneously, which means one FF in the final implementation is fanned out to $N$ receivers. When $N$ is small, it is not a huge concern, however, as $N$ goes to hundreds or more, it leads to high load capacitance that will slow down the circuit. Xilinx Vivado may use redundant resources to avoid large fanout, but it consequently increases the difficulty of routing.
+The waveform shows that the module has a low efficiency. Firstly, matrix A is reloaded every time. An AXI stream bus requires $N^2$ clock cycles to reload the matrix, while the computation only requires $N$ cycles. This stops vector $x$ from being received continuously. Since in most cases, the matrix remains the same while the input vector varies (for example, DFT has a constant transform matrix). Secondly, this structure makes every new input $x[i]$ accessed by all rows simultaneously, which means one FF in the final implementation is fanned out to $N$ receivers. When $N$ is small, it is not a huge concern, however, as $N$ goes to hundreds or more, it leads to high load capacitance that will slow down the circuit. Xilinx Vivado may use redundant resources to avoid large fanouts, but it consequently increases the difficulty of routing.
 
-Systolic array is a typical way to solve the problem. The systolic array uses interconnected independent data processing elements to achieve the final algorithm. The input of a PE comes from the outside or other PEs; the input from the outside and the output of PE are only fanned out to one trasmitter/receiver. Thus, a chain or a network of PEs is formed. In MVM, each PE can simply perfrom the inner product (one row vector times one column vector). However, the input $x$ is only sent to the first PE (the first row) rather than all PEs as previously shown in the unrolled implementation example. The first PE then registers the input $x$ and sends it to the next PE (the second row). Therefore, PE can be simply described with the following figure and formula, where acc has to be cleared every time the calculation starts:
+The systolic array is a typical way to solve the problem. The systolic array uses interconnected independent data processing elements to achieve the final algorithm. The input of a PE comes from the outside or other PEs; the input from the outside and the output of PE are only fanned out to one transmitter/receiver. Thus, a chain or a network of PEs is formed. In MVM, each PE can simply perform the inner product (one row vector times one column vector). However, the input $x$ is only sent to the first PE (the first row) rather than all PEs, as shown in the unrolled implementation example. The first PE then registers the input $x$ and sends it to the next PE (the second row). Therefore, PE can be simply described with the following figure and formula, where acc has to be cleared every time the calculation starts:
 
-<div align=center><img src="Images/18/PE.png" alt="drawing" width="150"/></div>
+<div align=center><img src="18/PE.png" alt="drawing" width="150"/></div>
 
 $$
 \begin{aligned}
@@ -282,12 +283,18 @@ acc &= acc + A_{in} \times x_{in}
 \end{aligned}
 $$
 
-Depending on how the PEs are connected, different operations can be realized. For example, if we connect the new PEs vertically ($x_{out}$ connect to new $x_{in}$, $A_{out}$ is neglected) and form an $N$ row $1$ column array, MVM is realized. If we form an $N$ by $N$ grid, matrix-matrix multiplication can be realized.  
+Depending on how the PEs are connected, different operations can be realized. For example, if we connect the new PEs vertically ($x_{out}$ connect to new $x_{in}$, $A_{out}$ is neglected) and form an $N$ row $1$ column array, MVM is realized. Matrix-matrix multiplication can be realized if we form an $N$ by $N$ grid.  
 
-Avoiding reloading $A$ every time is tricky. All HLS IPs have a block-level interface (Interface pragma, port = return)([Ref](https://docs.xilinx.com/r/en-US/ug1399-vitis-hls/pragma-HLS-interface)). Except for ap_ctrl_none interface, the IP kernel (block, module) must be started manually. Unless the latency from the first input to the last output is much smaller than the length of the total data stream, or the whole module is implemented as an FRP pipeline (Like fir and Cordic example), starting signal can significantly slow down the process. For example, even with the use of systolic array, the first output of MVM comes after the final $x$ is received, which requires $N$ clock cycles, and additional $N$ clock cycles are still required to push out the result. In this case, even under the perfect circumstance, the latency between the first input and last output is at least $2\times N$. If the module requires a starting signal, the corresponding 'done' comes after $2\times N$ clock cycles. During this time, the software can only wait, and no input can be received between $N\to 2N$ cycles. Hence, even with all pipelines inside the loop achieving II=1, the total average II for the module is at least 2. Reloading $A$ requires at least $N^2$ clock cycles and no operation can be done during this time, which means it is impossible to make the module an FRP pipeline via HLS (reloading itself is a pipeline, then the whole module cannot be a pipeline because if the module is specified as pipelined the reload loop must be unrolled). To solve the problem, we have to create independent reloading $A$ module and let the module forwards the columns of $A$ to the MVM module. Only in this case, the MVM kernel is simple enough to be designed as an FRP pipeline. Vitis HLS cannot simulate with multiple kernels connected (Vitis allows). Therefore, here we assume the matrix $A$ is a constant matrix, and we just write it inside the bitstream and not need to be reloaded. The ultimate purpose is to have a module with II=1 and new data can still be received during the $N\to 2N$ cycles. In addition, we hope the kernel allows random stall, which means $x$ may not come continuously.
+Avoiding reloading $A$ every time is tricky. All HLS IPs have a block-level interface (Interface pragma, port = return)([Ref](https://docs.xilinx.com/r/en-US/ug1399-vitis-hls/pragma-HLS-interface)). Except for the ```ap_ctrl_none``` interface, the IP kernel (block, module) must be started manually. Unless the latency from the first input to the last output is much smaller than the length of the total data stream, or the whole module is implemented as an FRP pipeline (Like Fir and Cordic example), the starting signal can significantly slow down the process. For example, even using a systolic array, the first output of MVM comes after the final $x$ is received, which requires $N$ clock cycles, and additional $N$ clock cycles are still required to push out the result. In this case, even under perfect circumstances, the latency between the first input and last output is at least $2\times N$. If the module requires a starting signal, the corresponding 'done' comes after $2\times N$ clock cycles. The software can only wait during this time, and no input can be received between $N\to 2N$ cycles. Hence, even with all pipelines inside the loop achieving II=1, the total average II for the module is at least 2. Reloading $A$ requires at least $N^2$ clock cycles and no operation can be done during this time, which means it is impossible to make the module an FRP pipeline via HLS (reloading itself is a pipeline, then the whole module cannot be a pipeline because if the module is specified as pipelined the reload loop must be unrolled). To solve the problem, we have to create an independent reloading $A$ module and let the module forward the columns of $A$ to the MVM module. Only in this case is the MVM kernel simple enough to be designed as an FRP pipeline. Vitis HLS cannot simulate with multiple kernels connected (Vitis allows). Therefore, here we assume the matrix $A$ is constant, and we just write it inside the bitstream and it does not need to be reloaded. The ultimate purpose is to have a module with II=1 and new data can still be received during the $N\to 2N$ cycles. In addition, we hope the kernel allows random stall, which means $x$ may not come continuously.
 
 ### The second way
-Here is one possible implementation with systolic array architecture:
+Here is one possible implementation with systolic array architecture. And the ```PE_module``` function is to compute the multiplication and addition. The function receive the ```x``` and ```A``` data and pass the ```x``` data to the next ```PE_module```. We use the ```template``` to set the ```PE_module```to create more PE instances. At the same time, the ```matrix_buffer``` function is to divide the ```A``` to the four buffers and pass every ```A_buffer``` to the ```PE_module```. And this way can be called the ```control_driven```(as shown in [lab3](https://uri-nextlab.github.io/ParallelProgammingLabs/HLS_Labs/Lab3.html#control-driven-task-level-parallelism)) in the ```mvm_ctrl``` function.
+
+The PE and the entire structure generated with this code are shown below:
+
+<div align=center><img src="18/PE_p.png" alt="drawing" width="350"/></div>
+
+<div align=center><img src="18/SA.png" alt="drawing" width="350"/></div>
 
 **mvm_ctrl.h**
 ```c++
@@ -382,6 +389,7 @@ void matrix_buffer(Mat_stream &matrix_data,Mat_stream A_buffter[N])
 void mvm_ctrl(Mat_stream &x_in,Mat_stream &A_in,Mat_stream &y_out)
 {
 #pragma HLS INTERFACE ap_ctrl_none port=return
+//cancel the start signal to control the IP
 #pragma HLS INTERFACE mode=axis port=x_in register_mode=off
 #pragma HLS INTERFACE mode=axis port=A_in register_mode=off
 #pragma HLS INTERFACE mode=axis port=y_out register_mode=off
@@ -427,7 +435,7 @@ Load_y:for(int i=0;i<N;i++)
 
 ```
 
-And the synthesis report is shown below:
+The synthesis report is shown below:
 
 <div align=center><img src="Images/18/13.png" alt="drawing" width="800"/></div>
 
@@ -478,7 +486,7 @@ And you will see the result below:
 <div align=center><img src="Images/18/10.png" alt="drawing" width="800"/></div>
 
 ### The last way
-Here is another possible implementation with systolic array architecture:
+Here is another possible implementation with systolic array architecture. The ```mvm_mixed``` function use the ```mixed_control_and_data_driven```(as shown in the [Lab5](https://uri-nextlab.github.io/ParallelProgammingLabs/HLS_Labs/Lab5.html#mixed_control_and_data_driven)). And the ```data_driven``` part is the ```PE_module``` which uses the ```hls::task```. The matrix_A_buffer is the ```control_driven``` which needs loops to finish the data process. You can compare the two ways (the second and last way) from the synthesis report.
 
 **mvm_mixed.h**
 ```c++
@@ -592,7 +600,7 @@ The dataflow view is shown below:
 
 <div align=center><img src="Images/18/12.png" alt="drawing" width="400"/></div>
 
-The PE and entire structure generated with this code are shown below:
+The PE and the entire structure generated with this code are shown below:
 
 <div align=center><img src="Images/18/PE_p.png" alt="drawing" width="350"/></div>
 
@@ -635,9 +643,9 @@ int main()
 ```
 And you will see the result below:
 
-<div align=center><img src="Images/18/10.png" alt="drawing" width="800"/></div>
+<div align=center><img src="18/10.png" alt="drawing" width="800"/></div>
 
-And this IP can transfer data with the AXI_DMA, becauce the port is ```axis```, but we should add the ```middle_data``` IP to provide the ```last``` signal. You can find the ```middle_data``` coding in the [Lab5/Simple_data_driven/Export the test_IP](https://uri-nextlab.github.io/ParallelProgammingLabs/HLS_Labs/Lab5.html#export-the-testip).
+And this IP can transfer data with the AXI_DMA, because the port is ```axis```, but we should add the ```middle_data``` IP to provide the ```last``` signal. You can find the ```middle_data``` coding in the [Lab5/Simple_data_driven/Export the test_IP](https://uri-nextlab.github.io/ParallelProgammingLabs/HLS_Labs/Lab5.html#export-the-testip).
 
 #### Create the Vivado project
 
@@ -702,7 +710,7 @@ We will see:
 <div align=center><img src="Images/18/15.png" alt="drawing" width="400"/></div>
 
 ## Special: Four-point DFT implementation
-Since DFT has a better implementation called FFT, it doesn't make sense to create a large MVM kernel to do DFT in specific. However, Four-point DFT is important due to the simple $T$ matrix:
+Since DFT has a better implementation called FFT, creating a large MVM kernel to do DFT in specific doesn't make sense. However, Four-point DFT is important due to the simple $T$ matrix:
 
 $$
 \begin{equation}
@@ -715,7 +723,7 @@ T = \left[\begin{matrix}
 \end{equation}
 $$
 
-Obviously, only add and subtrication is required in Four-point DFT. Here is an implementation of the Four-point DFT:
+Only add and subtraction is required in Four-point DFT. Here is an implementation of the Four-point DFT:
 
 
 **dft.h**
@@ -794,7 +802,7 @@ void dft(
 }
 ```
 
-This module can be easily pipelined. According to Vitis HLS synthesis report, with 100MHz clock, the II for the module is 1 and the latency is also 1, which means it is a combinational logic module (Under higher frequency, it may become a real pipeline).
+This module can be easily pipelined. According to the Vitis HLS synthesis report, with a 100MHz clock, the II for the module is 1 and the latency is also 1, which means it is a combinational logic module (Under higher frequency, it may become a real pipeline).
 
 ## Demonstrate
 
