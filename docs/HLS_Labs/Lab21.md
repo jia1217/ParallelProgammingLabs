@@ -40,12 +40,12 @@ $$
 
 Now, the $N$ point DFT is divided into two $\frac{N}{2}$ DFT. The combination of the two DFTs requires $N$ multiplications. Another useful fact is that $W_N^{k+\frac{N}{2}} = -W_N^k$ ( $k = 0 \to \frac{N}{2}-1$ ). That gives the well-known radix-2 butterfly structure ([Ref](https://en.wikipedia.org/wiki/Butterfly_diagram)). Take 8 point FFT as an example, the stage is shown below:
 
-<img src="18/EightPtFFTLastStage.png" width="600"/>
+<img src="Images/18/EightPtFFTLastStage.png" width="600"/>
 
 The two $\frac{N}{2}$ can be divided into two $\frac{N}{4}$ FFTs, and the structure is similar. Finally, for an 8-point FFT, the system can be shown as:
 
 
-<img src="18/FFT_structure.png" width="600"/>
+<img src="Images/18/FFT_structure.png" width="600"/>
 
 Hence, to perform FFT, we have to take the following steps:
 
@@ -378,15 +378,15 @@ void FFT(cplx_stream& x_in, cplx_stream& y_out){
 
 The synthesis report is shown below:
 
-<div align=center><img src="19/4.png" alt="drawing" width="600"/></div>
+<div align=center><img src="Images/19/4.png" alt="drawing" width="600"/></div>
 
 The interface information is shown below:
 
-<div align=center><img src="19/5.png" alt="drawing" width="400"/></div>
+<div align=center><img src="Images/19/5.png" alt="drawing" width="400"/></div>
 
 The dataflow view is shown below:
 
-<div align=center><img src="19/7.png" alt="drawing" width="400"/></div>
+<div align=center><img src="Images/19/7.png" alt="drawing" width="400"/></div>
 
 **fft_tb.cpp**
 ```c++
@@ -445,7 +445,7 @@ If you see the message ```Pass``````, you can know you are right.
 
 After running the Cosimuation, we can also see the waveform shown below:
 
-<div align=center><img src="19/2.png" alt="drawing" width="600"/></div>
+<div align=center><img src="Images/19/2.png" alt="drawing" width="600"/></div>
 
 The kernel can receive data in a batch (1024 data in a batch in this example) continuously and after $73.565\mu s$ (latency needed to process 1 batch), the result comes out continuously. Hence, the final **II** in a batch of data is 1. However, the **II** between Different batches are not 1. To stream into the kernel, a new batch must wait for about $73.565\mu s$ (latency required to process 1 batch).
 
@@ -453,7 +453,7 @@ The kernel can receive data in a batch (1024 data in a batch in this example) co
 
 The configure block design can use reference materials [here](https://uri-nextlab.github.io/ParallelProgammingLabs/HLS_Labs/Lab1.html). And we need to choose the number of the DMA according to the number of the interface.
 
-<div align=center><img src="19/1.png" alt="drawing" width="1200"/></div>
+<div align=center><img src="Images/19/1.png" alt="drawing" width="1200"/></div>
 
 #### Run synthesis,  Implementation, and generate bitstream
 
@@ -495,7 +495,7 @@ plt.ylabel('Magnitude')
 
 We will see:
 
-<div align=center><img src="19/6.png" alt="drawing" width="400"/></div>
+<div align=center><img src="Images/19/6.png" alt="drawing" width="400"/></div>
 
 In this testing code, a signal with three frequency components is generated. The first two frequencies are at the bins so that they have a single peak at that frequency and the magnitude equals the time domain magnitude. The third frequency is not at the bins and therefore it has some leakages and the peak magnitude cannot fully represent the time domain magitude.
 
