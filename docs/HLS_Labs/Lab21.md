@@ -2,7 +2,7 @@ sort: 21
 ---
 
 
-# FFT
+# Lab21 FFT
 
 <script type="text/x-mathjax-config">
   MathJax.Hub.Config({
