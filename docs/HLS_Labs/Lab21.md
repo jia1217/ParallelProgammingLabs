@@ -441,7 +441,7 @@ int main(int argc, char* argv[]){
 }
 
 ```
-If you see the message ```Pass``````, you can know you are right.
+If you see the message ```Pass```, you can know you are right.
 
 After running the Cosimuation, we can also see the waveform shown below:
 
