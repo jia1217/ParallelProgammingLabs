@@ -65,7 +65,7 @@ for (int i = 0; i < N; i++){
 
 The loop can either be pipelined or unrolled, depending on the data accessibility. For example, mostly the input $\vec x$ comes from a stream interface, which infers that in each clock cycle, only one $x[i]$ is available. In this case, even when the loop is unrolled, it still requires at least $N$ clocks to finish, which is the same with the pipelined structure. This structure is shown in (a) below. However, if both $x$ and $t$ have higher accessibility, it is possible to carry out more multiplications in each clock cycle and then reduce the trip count. For example, in (b), $x$ and $t$ are saved in two blocks. Therefore, in each cycle, two multiplications can be done. In another word, the 'for' loop can be unrolled by a factor of 2 in this case. Furthermore, if the $x$ and $t$ are completely partitioned, it is possible to finish all multiplication and the 'for' loop can be fully unrolled. In summary, data accessibility determines the parallelism of the implementation. The unroll factor should be picked carefully depending on how much data is available in one cycle. Also, if unroll is required to increase the performance, the memory used to save the data should also be changed accordingly. Xilinx provides 'array_partition' pragma to specify the data accessibility ([Ref](https://docs.xilinx.com/r/en-US/ug1399-vitis-hls/pragma-HLS-array_partition)). In general, if the memory is implemented with BRAM on FPGA, two data is available in each cycle. If the memory is implemented with FFs (completely partitioned), all data are available in one clock cycle.  
 
-<div align=center><img src="18/DotProduct.png" alt="drawing" width="600"/></div>
+<div align=center><img src="Images/18/DotProduct.png" alt="drawing" width="600"/></div>
 
 ## MVM Implementation
 
@@ -87,7 +87,7 @@ The first thing to do is to determine which loop should be first. In this exampl
 
 Since multiplication operation mostly requires more than 1 clock cycle to finish, we still need to pipeline the outer loop for better performance. The pipeline is shown below:
 
-<div align=center><img src="18/DotProductPipeline.png" alt="drawing" width="600"/></div>
+<div align=center><img src="Images/18/DotProductPipeline.png" alt="drawing" width="600"/></div>
 
 If we pipeline the outer loop and unroll the inner loop, $N$ instances of this pipeline are generated. Here is the implementation of the MVM ($y = Ax$, all real number cases):
 
@@ -266,13 +266,13 @@ int main () {
 
 The waveform is shown below:
 
-<div align=center><img src="18/1.png" alt="drawing" width="850"/></div>
+<div align=center><img src="Images/18/1.png" alt="drawing" width="850"/></div>
 
 The waveform shows that the module has a low efficiency. Firstly, matrix A is reloaded every time. For an AXI stream bus, it requires $N^2$ clock cycles to reload the matrix, while the computation only requires $N$ cycles. This stops vector $x$ from being received continuously. Since in most cases, the matrix remains the same while the input vector varies (for example, DFT has a constant transform matrix). Secondly, this structure makes every new input $x[i]$ accessed by all rows simultaneously, which means one FF in the final implementation is fanned out to $N$ receivers. When $N$ is small, it is not a huge concern, however, as $N$ goes to hundreds or more, it leads to high load capacitance that will slow down the circuit. Xilinx Vivado may use redundant resources to avoid large fanout, but it consequently increases the difficulty of routing.
 
 Systolic array is a typical way to solve the problem. The systolic array uses interconnected independent data processing elements to achieve the final algorithm. The input of a PE comes from the outside or other PEs; the input from the outside and the output of PE are only fanned out to one trasmitter/receiver. Thus, a chain or a network of PEs is formed. In MVM, each PE can simply perfrom the inner product (one row vector times one column vector). However, the input $x$ is only sent to the first PE (the first row) rather than all PEs as previously shown in the unrolled implementation example. The first PE then registers the input $x$ and sends it to the next PE (the second row). Therefore, PE can be simply described with the following figure and formula, where acc has to be cleared every time the calculation starts:
 
-<div align=center><img src="18/PE.png" alt="drawing" width="150"/></div>
+<div align=center><img src="Images/18/PE.png" alt="drawing" width="150"/></div>
 
 $$
 \begin{aligned}
@@ -429,11 +429,11 @@ Load_y:for(int i=0;i<N;i++)
 
 And the synthesis report is shown below:
 
-<div align=center><img src="18/13.png" alt="drawing" width="800"/></div>
+<div align=center><img src="Images/18/13.png" alt="drawing" width="800"/></div>
 
 The dataflow view is shown below:
 
-<div align=center><img src="18/14.png" alt="drawing" width="400"/></div>
+<div align=center><img src="Images/18/14.png" alt="drawing" width="400"/></div>
 
 
 **mvm_ctrl_tb.cpp**
@@ -475,7 +475,7 @@ int main()
 ```
 And you will see the result below:
 
-<div align=center><img src="18/10.png" alt="drawing" width="800"/></div>
+<div align=center><img src="Images/18/10.png" alt="drawing" width="800"/></div>
 
 ### The last way
 Here is another possible implementation with systolic array architecture:
@@ -586,17 +586,17 @@ void mvm_mixed(Mat_stream &x_in,Mat_stream &A_in,Mat_stream &y_out)
 ```
 The synthesis report is shown below:
 
-<div align=center><img src="18/11.png" alt="drawing" width="800"/></div>
+<div align=center><img src="Images/18/11.png" alt="drawing" width="800"/></div>
 
 The dataflow view is shown below:
 
-<div align=center><img src="18/12.png" alt="drawing" width="400"/></div>
+<div align=center><img src="Images/18/12.png" alt="drawing" width="400"/></div>
 
 The PE and entire structure generated with this code are shown below:
 
-<div align=center><img src="18/PE_p.png" alt="drawing" width="350"/></div>
+<div align=center><img src="Images/18/PE_p.png" alt="drawing" width="350"/></div>
 
-<div align=center><img src="18/SA.png" alt="drawing" width="350"/></div>
+<div align=center><img src="Images/18/SA.png" alt="drawing" width="350"/></div>
 
 **mvm_mixed_tb.cpp**
 ```c++
@@ -635,7 +635,7 @@ int main()
 ```
 And you will see the result below:
 
-<div align=center><img src="18/10.png" alt="drawing" width="800"/></div>
+<div align=center><img src="Images/18/10.png" alt="drawing" width="800"/></div>
 
 And this IP can transfer data with the AXI_DMA, becauce the port is ```axis```, but we should add the ```middle_data``` IP to provide the ```last``` signal. You can find the ```middle_data``` coding in the [Lab5/Simple_data_driven/Export the test_IP](https://uri-nextlab.github.io/ParallelProgammingLabs/HLS_Labs/Lab5.html#export-the-testip).
 
@@ -643,7 +643,7 @@ And this IP can transfer data with the AXI_DMA, becauce the port is ```axis```, 
 
 The configure block design can use reference materials [here](https://uri-nextlab.github.io/ParallelProgammingLabs/HLS_Labs/Lab1.html). And we need to choose the number of the DMA according to the number of the interface.
 
-<div align=center><img src="18/9.png" alt="drawing" width="1200"/></div>
+<div align=center><img src="Images/18/9.png" alt="drawing" width="1200"/></div>
 
 #### Run synthesis,  Implementation, and generate bitstream
 
@@ -699,7 +699,7 @@ s2mm_y.wait()
 
 We will see:
 
-<div align=center><img src="18/15.png" alt="drawing" width="400"/></div>
+<div align=center><img src="Images/18/15.png" alt="drawing" width="400"/></div>
 
 ## Special: Four-point DFT implementation
 Since DFT has a better implementation called FFT, it doesn't make sense to create a large MVM kernel to do DFT in specific. However, Four-point DFT is important due to the simple $T$ matrix:
