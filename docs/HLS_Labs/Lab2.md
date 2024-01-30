@@ -475,7 +475,7 @@ void add_frp( d_stream& strm, d_stream &out);
 **free_pipe_mult.cpp**
 ```c++
 #include <iostream>
-#include "example_stp.h"
+#include "free_pipe_mult.h"
 
 
 void add_frp( d_stream& strm,d_stream &out) {
@@ -515,7 +515,7 @@ void add_frp( d_stream& strm,d_stream &out) {
 #include <cstdlib>
 #include <fstream>
 #include <iostream>
-#include "example_stp.h"
+#include "free_pipe_mult.h"
 
 using namespace std;
 
