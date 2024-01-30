@@ -169,7 +169,7 @@ The STATIC_PARAM is the static parameterization struct that defines the static p
 All input and outputs are supplied to the function as a ```hls::stream<>```. In the final implementation, the ports on the FFT RTL block will be implemented as AXI4-Stream ports. The data types for input data and output data streams can be ```float``` or ```ap_fixed```.
 
 **fft_top.h**
-```cpp
+```c++
 #include "ap_fixed.h"
 #include "hls_fft.h"
 
@@ -208,7 +208,7 @@ void fft_top(bool direction, hls::stream<cmpxDataIn>& in,
 ```
 
 **fft_top.cpp**
-```cpp
+```c++
 #include "fft_top.h"
 
 void inputdatamover(bool direction, hls::stream<config_t>& config_strm,
@@ -287,7 +287,7 @@ Finally, depending on the hardware device or platform of your choice (UltraScale
  URAMs do not support a read-first output write_mode (unlike block RAMs) when a read and a write to the same address is mapped to the same memory port. Block RAM supports the following write-modes: ```write thru```, ```read first```, ```no change```. URAM only supports ```no change```. Vitis HLS will issue the following warning message when it cannot schedule memory operations in the same cycle on a URAM port:
 
  ```
- Usage of URAM can potentially cause worse II as Vitis HLS does not exploit 
+Usage of URAM can potentially cause worse II as Vitis HLS does not exploit 
 read-first mode for URAMs. Consider using block RAMs instead.
  ```
 
@@ -320,7 +320,7 @@ Where:
 This example shows how global arrays are mapped to RAMs with different implementations, how they are initialized, and how they are reset.
 
 **test.h**
-```cpp
+```c++
 #include <ap_int.h>
 
 int test(int i);
@@ -377,7 +377,7 @@ int main() {
 This example shows how static arrays are mapped to RAMs with different implementations and how they are initialized as well as how they are reset.
 
 **test.h**
-```cpp
+```c++
 #include <ap_int.h>
 
 int test(int i);
@@ -385,7 +385,7 @@ int test(int i);
 ```
 
 **test.cpp**
-```cpp
+```c++
 #include "test.h"
 
 int test(int i) {
@@ -420,7 +420,7 @@ And we can have a new solution for the reset as show below:
 <div align=center><img src="Images/14/11.png" alt="drawing" width="300"/></div>
 
 **test_2.cpp**
-```cpp
+```c++
 #include "test.h"
 
 int test(int i) {
@@ -452,7 +452,7 @@ And we can also use the third way to set as shown below:
 <div align=center><img src="Images/14/12.png" alt="drawing" width="400"/></div>
 
 **test_tb.cpp**
-```cpp
+```c++
 #include "test.h"
 
 int main() {
@@ -474,14 +474,14 @@ int main() {
 This example shows how static arrays are mapped to ROMs with different implementations and how they are initialized.
 
 **test.h**
-```cpp
+```c++
 #include <ap_int.h>
 
 int test(int i);
 ```
 
 **test.cpp**
-```cpp
+```c++
 #include "test.h"
 
 int test(int i) {
@@ -502,7 +502,7 @@ The ```*.dat``` files contain the initial values for the respective arrays. Also
 
 
 **test_tb.cpp**
-```cpp
+```c++
 #include "test.h"
 
 int main() {
@@ -525,7 +525,7 @@ int main() {
 This example shows how static array of struct with arrays are mapped to RAMs with different implementations and how they are initialized as well as how they are reset.
 
 **test.h**
-```cpp
+```c++
 #include <ap_int.h>
 
 template <int N> struct TestStruct {
@@ -539,7 +539,7 @@ int test(int i);
 ```
 
 **test.cpp**
-```cpp
+```c++
 #include "test.h"
 
 int test(int i) {
@@ -594,7 +594,7 @@ The synthesis report is shown below:
 And the reset optimization is the like as the ```static_array_RAM```.
 
 **test_tb.cpp**
-```cpp
+```c++
 #include "test.h"
 
 int main() {
@@ -619,7 +619,7 @@ This example shows how static arrays are mapped to RAMs with different implement
 
 
 **test.h**
-```cpp
+```c++
 #include <ap_int.h>
 
 template <int N> struct TestStruct {
@@ -632,7 +632,7 @@ int test(int i);
 ```
 
 **test.cpp**
-```cpp
+```c++
 #include "test.h"
 
 int test(int i) {
@@ -672,7 +672,7 @@ The synthesis report is shown below:
 And the reset optimization is the like as the ```static_array_RAM```.
 
 **test_tb.cpp**
-```cpp
+```c++
 #include "test.h"
 
 int main() {
@@ -693,7 +693,7 @@ int main() {
 This example shows how static arrays are mapped to RAMs with different implementations and how they are initialized as well as how they are reset. Static RAM initialization on Versal devices is supported while it is not supported on non-Versal devices. 
 
 **test.h**
-```cpp
+```c++
 #include <ap_int.h>
 
 template <int N> struct TestStruct {
@@ -706,7 +706,7 @@ int test(int i);
 ```
 
 **test.cpp**
-```cpp
+```c++
 #include "test.h"
 
 int test(int i) {
@@ -745,7 +745,7 @@ The synthesis report is shown below:
 And the reset optimization is the like as the ```static_array_RAM```.
 
 **test_tb.cpp**
-```cpp
+```c++
 #include "test.h"
 
 int main() {
@@ -774,7 +774,7 @@ Memory allocation system calls must be removed from the design code before synth
 This example shows how to rewrite without using explicit mallocs in the C/C++ code.
 
 **malloc_removed.h**
-```cpp
+```c++
 #ifndef _MALLOC_REMOVED_H_
 #define _MALLOC_REMOVED_H_
 
@@ -792,7 +792,7 @@ dout_t malloc_removed(din_t din[N], dsel_t width);
 ```
 
 **malloc_removed.cpp**
-```cpp
+```c++
 #include "malloc_removed.h"
 #include <stdlib.h>
 //#define NO_SYNTH
@@ -833,7 +833,7 @@ The synthesis report is shown below:
 <div align=center><img src="Images/14/15.png" alt="drawing" width="800"/></div>
 
 **malloc_removed_tb.cpp**
-```cpp
+```c++
 #include "malloc_removed.h"
 #include <stdio.h>
 int main() {
@@ -861,7 +861,7 @@ int main() {
 This examaple uses the RTL blackbox feature. The RTL blackbox enables the use of existing RTL IP in an HLS project. This lets you add RTL code to your C/C++ code for synthesis of the project by Vitis HLS.
 
 **example.h**
-```cpp
+```c++
 #ifndef _EXAMPLE_H_
 #define _EXAMPLE_H_
 
@@ -881,7 +881,7 @@ void example(data_t a1, data_t a2, data_t a3, data_t a4, data_t b1, data_t b2,
 ```
 
 **example.cpp**
-```cpp
+```c++
 #include "example.h"
 //--------------------------------------------------------
 
@@ -908,7 +908,7 @@ void example(data_t a1, data_t a2, data_t a3, data_t a4, data_t b1, data_t b2,
 ```
 
 **example_tb.cpp**
-```cpp
+```c++
 #include "example.h"
 #include <iostream>
 
