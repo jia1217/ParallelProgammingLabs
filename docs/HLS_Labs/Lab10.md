@@ -360,7 +360,7 @@ Two write instructions write to the same location, in a certain order.
 ```<dependent>```: The ```<dependent>``` argument should be specified to indicate whether a dependence is ```true``` and needs to be enforced, or is ```false``` and should be removed. However, when not specified, the tool will return a warning that the value was not specified and will assume a value of ```false```. The accepted values are ```true``` or ```false```.
 
 **resource_uram.h**
-```cpp
+```c++
 
 #include <fstream>
 #include <iomanip>
