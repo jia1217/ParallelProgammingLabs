@@ -34,7 +34,7 @@ In the HLS design, when you find that automatic burst transfers are not working 
 
 The following shows an original code sample, which uses a pointer argument to read data from global memory.
 
-```C++
+```c++
 void dut(int *A) {
   for (int i = 0; i < 64; i++) {
   #pragma pipeline II=1
@@ -44,7 +44,7 @@ void dut(int *A) {
 ```
 In the modified code below, the pointer is replaced with the ```hls::burst_maxi<>``` class objects and methods. In the example, the HLS scheduler puts 4 requests of ```len``` 16 from port ```A``` to the ```m_axi``` adapter. The Adapter stores them inside a FIFO and whenever the AW/AR bus is available it will send the request to the global memory. In the 64 loop iterations, the ```read()``` command issues a blocking call that will wait for the data to come back from the global memory. After the data becomes available the HLS scheduler will read it from the ```m_axi``` adapter FIFO.
 
-```C++
+```c++
 #include "hls_burst_maxi.h"
 void dut(hls::burst_maxi<int> A) {
   // Issue 4 burst requests
@@ -61,7 +61,7 @@ void dut(hls::burst_maxi<int> A) {
 
 In example 2 below, the HLS scheduler/kernel puts 2 requests from port A to the adapter, the first request of ```len``` 2, and the second request of ```len``` 1, for a total of 2 write requests. It then issues corresponding, because the total burst length is 3 write commands. The Adapter stores these requests inside a FIFO and whenever the AW, W bus is available it will send the request and data to the global memory. Finally, two ```write_response``` commands are used, to await response for the two ```write_requests```.
 
-```C++
+```c++
 void trf(hls::burst_maxi<int> A) {
   A.write_request(0, 2);
   A.write(x); // write A[0]
@@ -78,7 +78,7 @@ void trf(hls::burst_maxi<int> A) {
 
 You can pass a regular array to the top function, and the array will be transformed to ```hls::burst_maxi``` automatically by the constructor.
 
-```C++
+```c++
 #include "hls_burst_maxi.h"
 void dut(hls::burst_maxi<int> A);
  
