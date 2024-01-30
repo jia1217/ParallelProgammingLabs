@@ -287,7 +287,7 @@ Processing:
 This example is typical for the mixed control and data-driven. You can see that the interface of the top function is an array, while the interface of the inner function is streaming. This is the outcome for the ```hls::task```. Implementing data-driven TLP in the Vitis HLS tool uses simple classes for modeling tasks ( ```hls::task``` ) and channels ( ```hls::stream```/```hls::stream_of_blocks``` ).
 
 **test_tb.cpp**
-```C++
+```c++
 #include "test.h"
 #include <cstdio>
 
