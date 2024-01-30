@@ -80,7 +80,6 @@ void example(stream<int>& in, stream<int>& out) {
 ```
 **example.h**
 ```c++
-
 #include "ap_int.h"
 #include <hls_stream.h>
 using namespace hls;
@@ -285,7 +284,7 @@ void cpp_template(int inp, int* out) {
 ```
 
 **cpp_template.h**
-```cpp
+```c++
 #ifndef _CPP_TEMPLATE_H_
 #define _CPP_TEMPLATE_H_
 
@@ -304,7 +303,7 @@ template <int K> void func_with_static(int inp, int* dout) {
 #endif
 ```
 **cpp_template_test.cpp**
-```cpp
+```c++
 
 #include "cpp_template.h"
 
@@ -349,7 +348,7 @@ The header file ap_int.h defines the arbitrary precision integer data type for t
 This example illustrates defining arbitrary precision variables through the ap_int.h library
 
 **cpp_ap_int_arith.h**
-```cpp
+```c++
 
 #ifndef _CPP_AP_INT_ARITH_H_
 #define _CPP_AP_INT_ARITH_H_
@@ -388,7 +387,7 @@ void cpp_ap_int_arith(dinA_t inA, dinB_t inB, dinC_t inC, dinD_t inD,
 ```
 
 **cpp_ap_int_arith.cpp**
-```cpp
+```c++
 
 
 #include "cpp_ap_int_arith.h"
@@ -407,7 +406,7 @@ void cpp_ap_int_arith(dinA_t inA, dinB_t inB, dinC_t inC, dinD_t inD,
 ```
 
 **cpp_ap_int_arith_test.cpp**
-```cpp
+```c++
 
 #include "cpp_ap_int_arith.h"
 
