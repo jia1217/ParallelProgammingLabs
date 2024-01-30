@@ -36,7 +36,7 @@ Pointer to pointer is not supported.[Ref](https://docs.xilinx.com/r/en-US/ug1399
 Introducing pointer arithmetic limits the possible interfaces that can be synthesized in RTL. The following code example shows the same code, but in this instance simple pointer arithmetic accumulates the data values (starting from the second value).
 
 **pointer_arith.h**
-```cpp
+```c++
 #ifndef _POINTER_ARITH_H_
 #define _POINTER_ARITH_H_
 
@@ -50,7 +50,7 @@ void pointer_arith(dio_t* d);
 
 ```
 **pointer_arith.cpp**
-```cpp
+```c++
 #include "pointer_arith.h"
 
 void pointer_arith (dio_t *d) {
@@ -68,7 +68,7 @@ void pointer_arith (dio_t *d) {
 The following code example shows the test bench that supports this example. Because the loop to perform the accumulations is now inside function ```pointer_arith```, the test bench populates the address space specified by array ```d[5]``` with the appropriate values.
 
 **pointer_arith_test.cpp**
-```cpp
+```c++
 #include "pointer_arith.h"
 
 int main() {
@@ -712,16 +712,12 @@ out_data_t fxp_sqrt_top(in_data_t& in_val);
 
 **fxp_sqrt.h**
 ```c++
-
-
 #ifndef __FXP_SQRT_H__
 #define __FXP_SQRT_H__
 
 #include <ap_fixed.h>
 #include <cassert>
 using namespace std;
-
-
 
 template <int W2, int IW2, int W1, int IW1>
 void fxp_sqrt(ap_ufixed<W2, IW2>& result, ap_ufixed<W1, IW1>& in_val) {
