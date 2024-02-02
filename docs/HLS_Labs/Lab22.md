@@ -44,7 +44,7 @@ Stencil computation can be intuitively defined as a kernel that updates data ele
 
 The figure shows a possible iteration pattern, as well as the input data elements it accesses when generating the output at (i,j). The operation intensity of the 5-point Jacobi kernel example code above (defined as the number of operations per input data) is relatively low, which makes this type of application communication-limited. In practice, stencil kernels are often complex. Some stencil computations consist of multiple stages, where each stage is a simple stencil kernel. Some stencil computations are repeated over time, where each iteration in time can be viewed as a stage directly connected to the previous stage. If the number of stages or iterations is large enough, the operation intensity will be very high, and the application will become computation-limited (FPGA resources are limited).
 
-<div align=center><img src="Images/19/9.png" alt="drawing" width="400"/></div>
+<div align=center><img src="Images/19/9_2.png" alt="drawing" width="400"/></div>
 
 ### Datalow-Based Implementation
 
