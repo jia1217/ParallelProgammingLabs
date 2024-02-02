@@ -591,7 +591,7 @@ The synthesis report is shown below:
 <div align=center><img src="Images/20/15.png" alt="drawing" width="800"/></div>
 
 
-**main.cpp**
+**complex_tb.cpp**
 ```c++
 #include "complex_2.h"
 
