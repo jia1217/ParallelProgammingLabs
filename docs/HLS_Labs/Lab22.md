@@ -38,39 +38,39 @@ This architecture aims to:
 
 Stencil computation can be intuitively defined as a kernel that updates data elements on a multidimensional array according to a fixed local pattern. In practice, arrays are often too large to be stored on-chip. Here is an example code for a 5-point Jacobi kernel, as an example of a 5-point two-dimensional Jacobi kernel on an M×N input.
 
-<div align=center><img src="19/8.png" alt="drawing" width="400"/></div>
+<div align=center><img src="Images/19/8.png" alt="drawing" width="400"/></div>
 
 
 
 The figure shows a possible iteration pattern, as well as the input data elements it accesses when generating the output at (i,j). The operation intensity of the 5-point Jacobi kernel example code above (defined as the number of operations per input data) is relatively low, which makes this type of application communication-limited. In practice, stencil kernels are often complex. Some stencil computations consist of multiple stages, where each stage is a simple stencil kernel. Some stencil computations are repeated over time, where each iteration in time can be viewed as a stage directly connected to the previous stage. If the number of stages or iterations is large enough, the operation intensity will be very high, and the application will become computation-limited (FPGA resources are limited).
 
-<div align=center><img src="19/9.png" alt="drawing" width="400"/></div>
+<div align=center><img src="Images/19/9.png" alt="drawing" width="400"/></div>
 
 ### Datalow-Based Implementation
 
 The SODA microarchitecture can be efficiently implemented as dataflow modules. The dataflow implementation enables high-frequency synthesis results and accurate resource modeling, due to its localized communication and modularized structure. It also enables the flexibility to connect multiple stages in a single accelerator. The below shows the dataflow modules of 1 iteration of
 the Jacobi kernel shown in Listing 1.
 
-<div align=center><img src="19/10.png" alt="drawing" width="400"/></div>
+<div align=center><img src="Images/19/10.png" alt="drawing" width="400"/></div>
 
 The forwarding module (FW) forwards and distributes input data to the appropriate destination modules. Each forwarding module either directly forwards data from the input, or implements a ```FIFO``` or ```FF``` as part of the reuse buffer. Each ```FIFO``` or ```FF``` in below corresponds to the forwarding module shown in the above. The structure of the forwarding module depends only on the data type, FIFO depth, and fanout. On FPGAs, FIFOs can be implemented using either shift register look-up tables or block RAM (BRAM).
 
-<div align=center><img src="19/11.png" alt="drawing" width="600"/></div>
+<div align=center><img src="Images/19/11.png" alt="drawing" width="600"/></div>
 
 Large FIFOs with capacities greater than 1024 bits are implemented using BRAM and small FIFOs implemented with SRL.
 Processing modules (PEs) are processing units that implement the core functionality. Each processing module contains 1 PE and produces 1 output data element per cycle.For a given stencil kernel, all processing modules in the same stage have the same structure. The dataflow architecture implements the flexibility of cascading multiple stages together. Inputs and outputs can be connected to DRAM or the outputs or inputs of another stage.
 
 Figure 3.4 shows an example overview of a complete SODA accelerator. The accelerator has two stages, and executes the Jacobi kernel twice. The first stage is the buffering stage, which performs the Jacobi kernel computation on the input data, and then outputs the output to the second stage. The second stage then performs the Jacobi kernel computation on the input data again, and outputs the computed results to DRAM. Finally, DRAM outputs the data back to the first stage, to achieve the reuse of the buffer, and to reduce the waste of memory space.
 
-<div align=center><img src="19/12.png" alt="drawing" width="400"/></div>
+<div align=center><img src="Images/19/12.png" alt="drawing" width="400"/></div>
 
 ### The parameters of the SODA accelerator
 
 To generate an effective SODA accelerator, it is necessary to configure the memory size of each register and FIFO buffer in the SODA architecture. As shown in Figure 3.5, for example, in a five-point SODA structure, register R2 stores the data of the central point (i,j), and the remaining registers R0, R1, R3, and R4 store the data of the points (i-1,j), (i,j-1), (i,j+1), and (i+1,j), respectively. The FIFO buffers FIFO_0 and FIFO_1 are used to cache the data of the points between (i-1,j) and (i,j-1) in the matrix, and the data of the points between (i,j+1) and (i+1,j), respectively. The specific parameter configuration is shown in below.
 
-<div align=center><img src="19/14.png" alt="drawing" width="400"/></div>
+<div align=center><img src="Images/19/14.png" alt="drawing" width="400"/></div>
 
-<div align=center><img src="19/13.png" alt="drawing" width="400"/></div>
+<div align=center><img src="Images/19/13.png" alt="drawing" width="400"/></div>
 
 ## FPGA implementation
 
@@ -80,15 +80,15 @@ The first way is written by the control-driven.
 For the detail of the coding, we can have one example below.
 For the 3*12 matrix like below:
 
-<div align=center><img src="19/28.png" alt="drawing" width="700"/></div>
+<div align=center><img src="Images/19/28.png" alt="drawing" width="700"/></div>
 
 If we apply the line buffter structure to the example, we can see the schedule view like  below.
 
-<div align=center><img src="19/29.png" alt="drawing" width="700"/></div>
+<div align=center><img src="Images/19/29.png" alt="drawing" width="700"/></div>
 
 As show above, the ```F0_F1``` are ```FIFO_0 FIFO_1``` and the ```fe0``` ```f1 f2 f3 f4 st``` are ```register```. And the ```RE0``` is corresponds to the ```result[0]``` in the coding and ```st``` is corresponds to the ```start[0]``` in the coding. And if you understand the ```line buffer```, you will know the schudule view is corresponds to the ```line buffer```. And the view is corresponds to the Figure 3.5.
 
-<div align=center><img src="19/31.png" alt="drawing" width="700"/></div>
+<div align=center><img src="Images/19/31.png" alt="drawing" width="700"/></div>
 
 **linebuffer_0.h**
 ```c++
@@ -290,7 +290,7 @@ void jacobi5d_soda(Mat_stream &in0,Mat_stream &out0)
 ```
 The synthesis report is shown below:
 
-<div align=center><img src="19/3.png" alt="drawing" width="800"/></div>
+<div align=center><img src="Images/19/3.png" alt="drawing" width="800"/></div>
 
 From the report, we can see that the first way must wait the first row data input and then can have data output, so the trip counter of the ```jacobi5d_soda``` function is 48.
 
@@ -364,7 +364,7 @@ int main()
 
 The configure block design can use reference materials [here](https://uri-nextlab.github.io/ParallelProgammingLabs/HLS_Labs/Lab1.html). And we need to choose the number of the DMA according to the number of the interface.
 
-<div align=center><img src="19/25.png" alt="drawing" width="1200"/></div>
+<div align=center><img src="Images/19/25.png" alt="drawing" width="1200"/></div>
 
 #### Run synthesis,  Implementation, and generate bitstream
 
@@ -383,7 +383,7 @@ overlay = Overlay('design_1.bit')
 overlay?
 ```
 
-<div align=center><img src="19/24.png" alt="drawing" width="800"/></div>
+<div align=center><img src="Images/19/24.png" alt="drawing" width="800"/></div>
 
 ```python
 s2mm = overlay.axi_dma_0.sendchannel
@@ -398,7 +398,7 @@ for i in range(N):
 
 We should start the IP signal by set like below:
 
-<div align=center><img src="19/26.png" alt="drawing" width="1200"/></div>
+<div align=center><img src="Images/19/26.png" alt="drawing" width="1200"/></div>
 
 ```python
 top_ip.register_map.CTRL.AP_START=1
@@ -416,6 +416,6 @@ mm2s.wait()
 
 We will see:
 
-<div align=center><img src="19/27.png" alt="drawing" width="600"/></div>
+<div align=center><img src="Images/19/27.png" alt="drawing" width="600"/></div>
 
 
