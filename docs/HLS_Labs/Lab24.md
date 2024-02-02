@@ -3,7 +3,7 @@ sort: 24
 ---
 
 
-# Real and complex matrix multiplication
+# Lab24 Real and complex matrix multiplication
 
 <script type="text/x-mathjax-config">
   MathJax.Hub.Config({
@@ -141,7 +141,7 @@ void real_matmul(
 
 The latency and resource utilization for the base implementation are:
 
-<div align=center><img src="20/4.png" alt="drawing" width="800"/></div>
+<div align=center><img src="Images/20/4.png" alt="drawing" width="800"/></div>
 
 
 
@@ -149,11 +149,11 @@ The latency and resource utilization for the base implementation are:
 
 * Loop Tiling: Loop reordering allows unrolling the innermost loop, provided matrices A, B, and C are partitioned. However, due to the large size of the matrices, partitioning and unrolling causes scalability issues. Hence, the loop tiling technique achieves parallelism within smaller tiles. Matrices A, B, and C are partially and cyclically partitioned based on the dimension of the tile, as shown below:
 
-<div align=center><img src="20/6.png" alt="drawing" width="500"/></div>
+<div align=center><img src="Images/20/6.png" alt="drawing" width="500"/></div>
 
 The loop tiling technique helps speed up D x W (D = depth, W = width of the tile). For example, when D = 25 and W = 10, the number of cycles for matrix multiplication is reduced to 24004 from 6000004, thus giving a 250x speedup for Matrix multiplication. But the resource has consumed more than before like DSP.
 
-<div align=center><img src="20/5.png" alt="drawing" width="800"/></div>
+<div align=center><img src="Images/20/5.png" alt="drawing" width="800"/></div>
 
 * Loop Fusion: In the above, it can be observed that computation is no longer a bottleneck. The read/write operations from DRAM to BRAM take 85% of the cycles, while actual computation takes 15%. This is because loading matrices A and B and initializing matrix C happens sequentially. Different DRAM ports can be used for all three matrices to allow parallel access
 and loop fusion can be applied to reduce the DRAM to BRAM transfer latency.
@@ -186,7 +186,7 @@ and loop fusion can be applied to reduce the DRAM to BRAM transfer latency.
 ```
 From the below, it can be observed that loop fusion leads to a further reduction of 50,030 cycles.
 
-<div align=center><img src="20/7.png" alt="drawing" width="800"/></div>
+<div align=center><img src="Images/20/7.png" alt="drawing" width="800"/></div>
 
 The final design achieves parallelism in tiles of D = 25 and W = 10. The performance and utilization estimates can be seen above.
 The latency of the optimized design is 114044. Thus, an overall speedup of 55.94 (6380037/114044) is gained compared to the base implementation.
@@ -316,7 +316,7 @@ void real_matmul(
 
 The synthesis report is shown below:
 
-<div align=center><img src="20/11.png" alt="drawing" width="800"/></div>
+<div align=center><img src="Images/20/11.png" alt="drawing" width="800"/></div>
 
 Though there is a slack, but the ```Estimated``` of the ```Timing Estimate``` is less than 10 ns, so we can have a try by implementing it on the board. And eventually, we makes it.
 
@@ -403,9 +403,9 @@ If you see the "TEST PASSED!" after the C simulation, the function ```real_matmu
 
 #### Create the Vivado project
 
-The configure block design can use reference materials [here](https://uri-nextlab.github.io/ParallelProgammingLabs/HLS_Labs/Lab1.html). And we need to choose the number of the DMA according to the number of the interface.
+The configure block design can use reference materials [here](https://uri-nextlab.github.io/ParallelProgammingLabs/HLS_Labs/Lab1.html#implementation). And we need to choose the number of the DMA according to the number of the interface.
 
-<div align=center><img src="20/12.png" alt="drawing" width="1200"/></div>
+<div align=center><img src="Images/20/12.png" alt="drawing" width="1200"/></div>
 
 #### Run synthesis,  Implementation, and generate bitstream
 
@@ -450,7 +450,7 @@ top_ip.write(0x00, 1)
 
 We will see:
 
-<div align=center><img src="20/13.png" alt="drawing" width="600"/></div>
+<div align=center><img src="Images/20/13.png" alt="drawing" width="600"/></div>
 
 ### Part B: Complex Matrix Multiplication
 
@@ -584,11 +584,11 @@ void complex_matmul(
 
 We need to change the clock to the ```20ns``` and run C synthesis.
 
-<div align=center><img src="20/16.png" alt="drawing" width="300"/></div>
+<div align=center><img src="Images/20/16.png" alt="drawing" width="300"/></div>
 
 The synthesis report is shown below:
 
-<div align=center><img src="20/15.png" alt="drawing" width="800"/></div>
+<div align=center><img src="Images/20/15.png" alt="drawing" width="800"/></div>
 
 
 **main.cpp**
@@ -670,13 +670,13 @@ int main()
 
 The simulation result is shown below:
 
-<div align=center><img src="20/17.png" alt="drawing" width="400"/></div>
+<div align=center><img src="Images/20/17.png" alt="drawing" width="400"/></div>
 
 #### Create the Vivado project
 
 The configure block design can use reference materials [here](https://uri-nextlab.github.io/ParallelProgammingLabs/HLS_Labs/Lab1.html). And we need to choose the number of the DMA according to the number of the interface.
 
-<div align=center><img src="20/14.png" alt="drawing" width="1200"/></div>
+<div align=center><img src="Images/20/14.png" alt="drawing" width="1200"/></div>
 
 #### Run synthesis,  Implementation, and generate bitstream
 
@@ -775,4 +775,4 @@ top_ip.write(0x00, 1)
 
 We will see:
 
-<div align=center><img src="20/18.png" alt="drawing" width="400"/></div>
+<div align=center><img src="Images/20/18.png" alt="drawing" width="400"/></div>
