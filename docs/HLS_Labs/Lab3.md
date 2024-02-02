@@ -740,5 +740,5 @@ The result of the C simulation is shown below.
 <div align=center><img src="Images/3_16.png" alt="drawing" width="500"/></div>
 
 ## Demonstrate
-Please finish the three bypassing writing styles and compare the differences between the ```merge``` and ```split``` pragma.
+Please finish the three ```bypasing``` writing styles and compare the differences between the ```merge``` and ```split``` pragma.
 
