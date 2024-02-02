@@ -3,7 +3,7 @@ sort: 24
 ---
 
 
-# Lab1
+# Real and complex matrix multiplication
 
 <script type="text/x-mathjax-config">
   MathJax.Hub.Config({
