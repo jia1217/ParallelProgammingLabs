@@ -24,41 +24,41 @@ sort: 23
 The second way is different from the first way, because we can use the data_drive to implement the ```line buffer``` structure. In this example, we use the 5-point to compute the Jacobi like below. 
 The system view is shown below:
 
-<div align=center><img src="20/8.png" alt="drawing" width="900"/></div>
+<div align=center><img src="Images/20/8.png" alt="drawing" width="900"/></div>
 
 I will explain the functions and parameters so you can understand them better. First, the buffer module aims to select the data corresponding to the location. For example, we need five parts of data from five locations, like the following:
 
-<div align=center><img src="20/9.png" alt="drawing" width="300"/></div>
+<div align=center><img src="Images/20/9.png" alt="drawing" width="300"/></div>
 
 If we want to get the result of the center data, we need to get the top data; center left data, center correct data, and the bot data to compute the addition of them to get the new center data. We transmit data as a stream to save time reading data from DDR. So we must provide a d,ata buffer channel until we finish the compute. If the matrix size is 3×6, the output data size should be 3×6. Then we will computer the n umber of the center data is 4 like below. Here we use ```ccc``` to replace the ```center data``` and ```ccl``` to replace the ```center left data``` and ```ccr``` to replace the ```center right data```.
 
-<div align=center><img src="20/10.png" alt="drawing" width="500"/></div>
+<div align=center><img src="Images/20/10.png" alt="drawing" width="500"/></div>
 
 So the ```top_buffer``` module only contains the first row's data for every three rows of data, and the ```ccl_buffer``` module contains the center-left data for every three rows of data. And the ```ccc_buffer``` ```ccr_buffer``` and ```bot_buffer```modules, respectively, contain the center data, center-right data, and bot data for every three rows of data. For the ```data_buffer```contains the data except the center data because the center data will be center-right, and the center data will be replaced 0 temporarily.
 For the ```corrector``` modules, they wants to move the data from all five locations to the center location so that the ```PE_add``` module can get all data needed to compute. And the ```PE_add``` module contains the new center data and other data will be 0. The ```all_toatl``` module will combine the data expect the center location and the new center data.
 
 For example, if we have the 18 data, which is a 3×6 matrix like below, and we want to update the center data (yellow marked) by computing the addition.
 
-<div align=center><img src="20/21.png" alt="drawing" width="300"/></div>
+<div align=center><img src="Images/20/21.png" alt="drawing" width="300"/></div>
 
 From the ```top_buffer``` module, we can get the ```top_data``` like below:
 
-<div align=center><img src="20/22.png" alt="drawing" width="300"/></div>
+<div align=center><img src="Images/20/22.png" alt="drawing" width="300"/></div>
 
 From the ```up_corrector``` module, we can get the ```top_data``` like below:
 
-<div align=center><img src="20/23.png" alt="drawing" width="300"/></div>
+<div align=center><img src="Images/20/23.png" alt="drawing" width="300"/></div>
 
 The other four parts data all can be got by the above way.
 
 Every buffer module contains two functions: copy the data, transfer the input data to the next module, and choose the data from five parts of the location. The buffer module view is shown below:
 
-<div align=center><img src="20/19.png" alt="drawing" width="500"/></div>
+<div align=center><img src="Images/20/19.png" alt="drawing" width="500"/></div>
 
 
 Every corrector module contains two functions: retaining the data from the ```top``` or ```ccr``` or ```bot``` location and keep these. data to the same as the center data location
 
-<div align=center><img src="20/20.png" alt="drawing" width="500"/></div>
+<div align=center><img src="Images/20/20.png" alt="drawing" width="500"/></div>
 
 **FIFO_buffer.hpp**
 ```c++
@@ -1114,7 +1114,7 @@ int main()
 
 The configure block design can use reference materials [here](https://uri-nextlab.github.io/ParallelProgammingLabs/HLS_Labs/Lab1.html). And we need to choose the number of the DMA according to the number of the interface.
 
-<div align=center><img src="19/22.png" alt="drawing" width="1200"/></div>
+<div align=center><img src="Images/19/22.png" alt="drawing" width="1200"/></div>
 
 #### Run synthesis,  Implementation, and generate bitstream
 
@@ -1148,4 +1148,4 @@ mm2s.wait()
 
 We will see:
 
-<div align=center><img src="19/23.png" alt="drawing" width="600"/></div>
+<div align=center><img src="Images/19/23.png" alt="drawing" width="600"/></div>
