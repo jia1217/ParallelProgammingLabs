@@ -775,4 +775,4 @@ top_ip.write(0x00, 1)
 
 We will see:
 
-<div align=center><img src="Images/20/18.png" alt="drawing" width="400"/></div>
+<div align=center><img src="Images/20/18_1.png" alt="drawing" width="400"/></div>
