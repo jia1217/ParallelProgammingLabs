@@ -1077,6 +1077,9 @@ void linebuffer_data_driven(hls::stream<mat> &stream_in,hls::stream<mat> &stream
 
 
 ```
+The synthesis report is shown below:
+
+<div align=center><img src="Images/20/24.png" alt="drawing" width="400"/></div>
 
 **linebuffer_2_tb.cpp**
 ```c++
