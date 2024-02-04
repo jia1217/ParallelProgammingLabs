@@ -668,6 +668,28 @@ int main()
 }
 ```
 
+**MatA_test.txt**
+```
+4 3
+4 3
+5 4
+6 5
+4 3
+6 5
+
+
+```
+**MatB_test.txt**
+```
+3 4
+5 6
+4 5
+1 2
+1 2
+1 2
+
+
+```
 The simulation result is shown below:
 
 <div align=center><img src="Images/20/17.png" alt="drawing" width="400"/></div>
