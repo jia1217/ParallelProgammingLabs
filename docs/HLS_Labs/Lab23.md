@@ -1063,7 +1063,7 @@ void linebuffer_data_driven(hls::stream<mat> &stream_in,hls::stream<mat> &stream
 	hls_thread_local hls::task	bot(bot_buffer,ccr_r,bot_r,bot_data);
 	hls_thread_local hls::task	b(bot_corrector<WIDTH,HEIGHT,0>,bot_data,b_buffer);//bot
 
-	hls_thread_local hls::task  add(PE_add<6>,t_buffer,ccl_data,ccc_data,cr_buffer,b_buffer,add_buffer);
+	hls_thread_local hls::task      add(PE_add<6>,t_buffer,ccl_data,ccc_data,cr_buffer,b_buffer,add_buffer);
 	hls_thread_local hls::task	data_around(data_buffer,bot_r,data_other);
 
 	hls_thread_local hls::task	all_total(all_total<0>,add_buffer,data_other,stream_out);//bot
