@@ -642,7 +642,6 @@ int main()
     // Load input matrices and expected output matrix
     loadMatrix("MatA_test.txt", M1, N1);
     loadMatrix("MatB_test.txt", N1, K1);
-    loadMatrix("MatC.txt", M1, K1);
 
     // Uncomment for debugging
     printf("A[0][0] = %d + %dj\n", MatA_tb[0][0].real, MatA_tb[0][0].imag);
@@ -658,7 +657,7 @@ int main()
         for(int j = 0; j < K; j++) 
         {
             
-            printf("Mismatch at MatC[%d][%d]: \t Actual: (%hi + %hij)\n", i, j,  MatC_tb[i][j].real, MatC_tb[i][j].imag);
+            printf(" Actual: (%hi + %hij)\n", i, j,  MatC_tb[i][j].real, MatC_tb[i][j].imag);
             
         }
     }
