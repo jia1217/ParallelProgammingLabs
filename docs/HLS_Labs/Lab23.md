@@ -1037,9 +1037,6 @@ void data_buffer(hls::stream<mat> &stream_in,hls::stream<mat> &stream_up);
 ```c++
 #include "linebuffer_2.h"
 
-
-
-
 void linebuffer_data_driven(hls::stream<mat> &stream_in,hls::stream<mat> &stream_out)
 {
 #pragma HLS INTERFACE ap_ctrl_none port=return
@@ -1079,7 +1076,7 @@ void linebuffer_data_driven(hls::stream<mat> &stream_in,hls::stream<mat> &stream
 ```
 The synthesis report is shown below:
 
-<div align=center><img src="Images/20/24.png" alt="drawing" width="400"/></div>
+<div align=center><img src="Images/20/24.png" alt="drawing" width="800"/></div>
 
 **linebuffer_2_tb.cpp**
 ```c++
