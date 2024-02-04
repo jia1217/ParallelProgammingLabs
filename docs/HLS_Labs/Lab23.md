@@ -65,7 +65,7 @@ Every corrector module contains two functions: retaining the data from the ```to
 #ifndef __FIFO_BUFFER__
 #define __FIFO_BUFFER__
 
-#include "soda_2.h"
+#include "linebuffer_1.h"
 
 template<int PPC, int width,int ID>
 void right_holder(hls::stream<mat> &stream_in,hls::stream<mat> &stream_out)
@@ -543,7 +543,7 @@ void ccl_holder(hls::stream<mat> &stream_in,hls::stream<mat> &stream_out)
 
 **module.cpp**
 ```c++
-#include "soda_2.h"
+#include "linebuffer_1.h"
 
 
 
@@ -1035,7 +1035,7 @@ void data_buffer(hls::stream<mat> &stream_in,hls::stream<mat> &stream_up);
 
 **linebuffer_2.cpp**
 ```c++
-#include "linebuffer_2.h"
+#include "linebuffer_1.h"
 
 void linebuffer_data_driven(hls::stream<mat> &stream_in,hls::stream<mat> &stream_out)
 {
@@ -1078,9 +1078,9 @@ The synthesis report is shown below:
 
 <div align=center><img src="Images/20/24.png" alt="drawing" width="800"/></div>
 
-**linebuffer_2_tb.cpp**
+**linebuffer_1_tb.cpp**
 ```c++
-#include "linebuffer_2.h"
+#include "linebuffer_1.h"
 
 int main()
 {
