@@ -339,7 +339,7 @@ int main()
 	for(int i=0;i<HEIGHT;i++)
 		for(int j=0;j<WIDTH;j++)
 		{
-			valuein.data=indata[i][j];
+			valuein.data=i*WIDTH+j+1;
 			in.write(valuein);
 			//printf(" , 0x%x",valuein.data);
 		}
