@@ -642,7 +642,6 @@ int main()
     // Load input matrices and expected output matrix
     loadMatrix("MatA_test.txt", M1, N1);
     loadMatrix("MatB_test.txt", N1, K1);
-    loadMatrix("MatC.txt", M1, K1);
 
     // Uncomment for debugging
     printf("A[0][0] = %d + %dj\n", MatA_tb[0][0].real, MatA_tb[0][0].imag);
@@ -658,7 +657,7 @@ int main()
         for(int j = 0; j < K; j++) 
         {
             
-            printf("Mismatch at MatC[%d][%d]: \t Actual: (%hi + %hij)\n", i, j,  MatC_tb[i][j].real, MatC_tb[i][j].imag);
+            printf(" Actual: (%hi + %hij)\n", i, j,  MatC_tb[i][j].real, MatC_tb[i][j].imag);
             
         }
     }
@@ -668,6 +667,28 @@ int main()
 }
 ```
 
+**MatA_test.txt**
+```
+4 3
+4 3
+5 4
+6 5
+4 3
+6 5
+
+
+```
+**MatB_test.txt**
+```
+3 4
+5 6
+4 5
+1 2
+1 2
+1 2
+
+
+```
 The simulation result is shown below:
 
 <div align=center><img src="Images/20/17.png" alt="drawing" width="400"/></div>
@@ -775,4 +796,4 @@ top_ip.write(0x00, 1)
 
 We will see:
 
-<div align=center><img src="Images/20/18.png" alt="drawing" width="400"/></div>
+<div align=center><img src="Images/20/18_1.png" alt="drawing" width="400"/></div>
