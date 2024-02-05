@@ -582,13 +582,9 @@ void complex_matmul(
 
 ```
 
-We need to change the clock to the ```20ns``` and run C synthesis.
-
-<div align=center><img src="Images/20/16.png" alt="drawing" width="300"/></div>
-
 The synthesis report is shown below:
 
-<div align=center><img src="Images/20/15.png" alt="drawing" width="800"/></div>
+<div align=center><img src="Images/20/15_1.png" alt="drawing" width="800"/></div>
 
 
 **complex_tb.cpp**
