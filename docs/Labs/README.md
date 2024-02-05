@@ -13,7 +13,3 @@ sort: 2
 - [Lab4](https://uri-nextlab.github.io/ParallelProgammingLabs/Labs/Lab4_ILA.html)
 - [Lab5](https://uri-nextlab.github.io/ParallelProgammingLabs/Labs/Lab5_IPI.html) 
 - [Lab6](https://uri-nextlab.github.io/ParallelProgammingLabs/Labs/Lab6_DMA.html) 
-- [FIR](https://uri-nextlab.github.io/ParallelProgammingLabs/Labs/FIR.html)
-- [Cordic](https://uri-nextlab.github.io/ParallelProgammingLabs/Labs/Cordic.html)
-- [DFT](https://uri-nextlab.github.io/ParallelProgammingLabs/Labs/DFT.html)
-- [FFT](https://uri-nextlab.github.io/ParallelProgammingLabs/Labs/FFT.html)
