@@ -3,7 +3,7 @@ sort: 15
 ---
 
 
-# Lab15 Model_poniters
+# Lab15 Model_pointers
 
 <script type="text/x-mathjax-config">
   MathJax.Hub.Config({
