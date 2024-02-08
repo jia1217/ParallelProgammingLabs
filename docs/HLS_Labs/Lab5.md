@@ -334,7 +334,8 @@ void splitter(hls::stream<int>& in, hls::stream<int>& odds_buf,
               hls::stream<int>& evens_buf) {
 #pragma HLS INTERFACE ap_ctrl_none port=return
 #pragma HLS INTERFACE mode=AXIS port=in register_mode=off
-#pragma HLS INTERFACE mode=AXIS port=out register_mode=off
+#pragma HLS INTERFACE mode=AXIS port=odds_buf register_mode=off
+#pragma HLS INTERFACE mode=AXIS port=evens_buf register_mode=off
 #pragma HLS PIPELINE II=1 style=flp
     int data = in.read();
     if (data % 2 == 0)
