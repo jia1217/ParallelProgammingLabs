@@ -19,8 +19,8 @@ sort: 18
 </script>
 
 ## Introduction
-
-Finite Impulse Response (FIR) filter is a well known and widely used digital filter. The algorithm is shown below:
+Finite Impulse Response (FIR) filters are commonly used in digital signal processing (DSP) applications because they can be implemented efficiently in hardware, such as FPGAs. FIR filters operate on contiguous elements of a signal, making them suitable for streaming applications.
+The Finite Impulse Response (FIR) filter is a well-known and widely used digital filter. The algorithm is shown below:
 
 $$y[i] = \sum_{j = 0}^{N-1}h[j]x[i-j]$$
 
@@ -32,7 +32,7 @@ where $$h[j]$$ is the impulse response.
 
 ### The unoptimized code
 
-Following code shows a highly unoptimized version of FIR filter in HLS. in the header file (fir.h), this code uses ```typedef``` to define the datatype of different variables. Datatype of all three variables (```coef_t```, ```data_t```, and ```acc_t```) are int (32 bit) in this example. ```hls::axis<data_t,0,0,0>``` from ```ap_axi_sdata.h``` packs data_t into a standarded AXI4-Stream Interfaces datatype, namely, data_t_pack. ([Ref](https://docs.xilinx.com/r/en-US/ug1399-vitis-hls/How-AXI4-Stream-is-Implemented)) Finally, ```hls::stream<data_t_pack>``` from ```hls_stream.h``` creates a HLS stream (also an AXIs datatype) datatype, ```d_stream```. The block level interface of the kernel (how the kernel is triggered, ```port=return```, [Ref](https://docs.xilinx.com/r/en-US/ug1399-vitis-hls/pragma-HLS-interface)) is set as ```ap_ctrl_none```, which means the kernel is always ready to receive new data (free-running kernel).  
+The following code shows a highly unoptimized version of the FIR filter in HLS. in the header file (fir.h). This code uses ```typedef``` to define the datatype of different variables. In this example, the datatype of all three variables (```coef_t```, ```data_t```, and ```acc_t```) are int (32 bit). ```hls::axis<data_t,0,0,0>``` from ```ap_axi_sdata.h``` packs data_t into a standarded AXI4-Stream Interfaces datatype, namely, data_t_pack. ([Ref](https://docs.xilinx.com/r/en-US/ug1399-vitis-hls/How-AXI4-Stream-is-Implemented)) Finally, ```hls::stream<data_t_pack>``` from ```hls_stream.h``` creates an HLS stream (also an AXIs datatype) datatype, ```d_stream```. The block level interface of the kernel (how the kernel is triggered, ```port=return```, [Ref](https://docs.xilinx.com/r/en-US/ug1399-vitis-hls/pragma-HLS-interface)) is set as ```ap_ctrl_none```, which means the kernel is always ready to receive new data (free-running kernel).  
 
 **fir.h**
 ```c++
