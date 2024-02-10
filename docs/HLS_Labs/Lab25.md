@@ -279,10 +279,6 @@ The values of these parameters are described in the table below for our example:
 #define IN_BUF_HEIGHT OUT_BUF_HEIGHT + 2
 #define IN_BUF_WIDTH OUT_BUF_WIDTH + 2
 
-#define BLOCK_SIZE_M 16
-#define BLOCK_SIZE_N 16
-
-
 void tiled_conv(
     fm_t fixp_layer1_ifmap[3][IM_SIZE][IM_SIZE],        // input image
     fm_t fixp_layer2_ifmap[32][IM_SIZE][IM_SIZE],       // output of conv1
