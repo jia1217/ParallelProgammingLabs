@@ -167,19 +167,19 @@ For example, if the size of the input feature image is 8×8 and it has two stack
 
 ### Effect of Filter Size (Kernel Size)
 
-Different sized filters will detect different sized features in the input image and, in turn, will result in differently sized feature maps.
+Different-sized filters will detect different-sized features in the input image and, in turn, will result in differently-sized feature maps.
 It is common to use 3×3 sized filters, and perhaps 5×5 or even 7×7 sized filters, for larger input images.
-For example, it is an example of the model with a single filter updated to use a filter size of 5×5 pixels. The 5×5 filter can only be applied to the 8×8 input image 4 times, resulting in a 4×4 feature map output. It may help to further develop the intuition of the relationship between filter size and the output feature map to look at two extreme cases.
-The first is a filter with the size of 1×1 pixels and the output feature map has the same size as the input, specifically 8×8. This is because the filter only has a single weight (and a bias).
+For example, it is an example of a model with a single filter updated to use a filter size of 5×5 pixels. The 5×5 filter can only be applied to the 8×8 input image 4 times, resulting in a 4×4 feature map output. It may help to develop further the intuition of the relationship between filter size and the output feature map to look at two extreme cases.
+The first is a filter with the size of 1×1 pixels, and the output feature map has the same size as the input, specifically 8×8. This is because the filter only has a single weight (and a bias).
 
 
 ### Fix the Border Effect Problem with Padding
 
 By default, a filter starts at the left of the image with the left-hand side of the filter sitting on the far left pixels of the image. The filter is then stepped across the image one column at a time until the right-hand side of the filter is sitting on the far right pixels of the image.
 An alternative approach to applying a filter to an image is to ensure that each pixel in the image is given an opportunity to be at the center of the filter.
-By default, this is not the case, as the pixels on the edge of the input are only ever exposed to the edge of the filter. By starting the filter outside the frame of the image, it gives the pixels on the border of the image more of an opportunity for interacting with the filter, more of an opportunity for features to be detected by the filter, and in turn, an output feature map that has the same shape as the input image.
+By default, this is not the case, as the pixels on the edge of the input are only ever exposed to the filter's edge. By starting the filter outside the frame of the image, it gives the pixels on the border of the image more of an opportunity for interacting with the filter, more of an opportunity for features to be detected by the filter, and in turn, an output feature map that has the same shape as the input image.
 
-For example, in the case of applying a 3×3 filter to the 8×8 input image, we can add a border of one pixel around the outside of the image. This has the effect of artificially creating a 10×10 input image. When the 3×3 filter is applied, it results in an 8×8 feature map. The added pixel values could have the value zero value that has no effect with the dot product operation when the filter is applied.
+For example, when applying a 3×3 filter to the 8×8 input image, we can add a border of one pixel around the outside of the image. This has the effect of artificially creating a 10×10 input image. When the 3×3 filter is applied, it results in an 8×8 feature map. The added pixel values could have the value zero value that has no effect on the dot product operation when the filter is applied.
 
 ```
 x, x, x   0, 1, 0
@@ -193,7 +193,7 @@ The ‘padding‘ value of ‘same‘ calculates and adds the padding required t
 
 ### Downsample Input With Stride
 
-The filter is moved across the image left to right, top to bottom, with a one-pixel column change on the horizontal movements, then a one-pixel row change on the vertical movements.
+The filter is moved across the image from left to right, top to bottom, with a one-pixel column change on the horizontal movements, and then a one-pixel row change on the vertical movements.
 The amount of movement between applications of the filter to the input image is referred to as the stride, and it is almost always symmetrical in height and width dimensions.
 The default stride or strides in two dimensions is (1,1) for the height and the width movement, performed when needed. And this default works well in most cases.
 
@@ -229,7 +229,7 @@ And we can also get the height and the width of the output feature map according
 
 The values of these parameters are described in the table below for our example:
 
-<div align=center><img src="21/7.png" alt="drawing" width="600"/></div>
+<div align=center><img src="Images/21/7.png" alt="drawing" width="600"/></div>
 
 
 
@@ -777,12 +777,12 @@ void model_conv(
 ```
 We need to change the ```Uncertainty``` like below:
 
-<div align=center><img src="21/2.png" alt="drawing" width="400"/></div>
+<div align=center><img src="Images/21/2.png" alt="drawing" width="400"/></div>
 
 
 The synthesis report is shown below：
 
-<div align=center><img src="21/5.png" alt="drawing" width="1000"/></div>
+<div align=center><img src="Images/21/5.png" alt="drawing" width="1000"/></div>
 
 **sim.cpp**
 ```c++
@@ -894,7 +894,7 @@ We can first see the effect of one convolution of the ```tile_conv``` function b
 
 The configure block design can use reference materials [here](https://uri-nextlab.github.io/ParallelProgammingLabs/HLS_Labs/Lab1.html). And we need to choose the number of the DMA according to the number of the interface.
 
-<div align=center><img src="21/1.png" alt="drawing" width="1200"/></div>
+<div align=center><img src="Images/21/1.png" alt="drawing" width="1200"/></div>
 
 #### Run synthesis,  Implementation, and generate bitstream
 
@@ -902,7 +902,7 @@ It may show some errors about I/O Ports, please fix them.
 
 #### Download the bitstream file to PYNQ
 
-<div align=center><img src="21/6.png" alt="drawing" width="400"/></div>
+<div align=center><img src="Images/21/6.png" alt="drawing" width="400"/></div>
 
 
 ```python
@@ -1020,7 +1020,7 @@ plt.show()
 
 We will see the input image:
 
-<div align=center><img src="21/3.png" alt="drawing" width="400"/></div>
+<div align=center><img src="Images/21/3.png" alt="drawing" width="400"/></div>
 
 
 And the input   image:
@@ -1037,12 +1037,12 @@ plt.title("Image from conv_tile_input_feature_map.bin")
 plt.show()
 
 ```
-<div align=center><img src="21/4.png" alt="drawing" width="400"/></div>
+<div align=center><img src="Images/21/4.png" alt="drawing" width="400"/></div>
 
 
 And we can have the second stacked convolutional layers on the basis of the previous one like below:
 
-<div align=center><img src="21/11.png" alt="drawing" width="400"/></div>
+<div align=center><img src="Images/21/11.png" alt="drawing" width="400"/></div>
 
 
 
@@ -1231,7 +1231,7 @@ void tiled_conv(
 
 The synthesis report is shown below:
 
-<div align=center><img src="21/8.png" alt="drawing" width="1000"/></div>
+<div align=center><img src="Images/21/8.png" alt="drawing" width="1000"/></div>
 
 
 **sim.cpp**
@@ -1364,7 +1364,7 @@ int main ()
 
 The configure block design can use reference materials [here](https://uri-nextlab.github.io/ParallelProgammingLabs/HLS_Labs/Lab1.html). And we need to choose the number of the DMA according to the number of the interface.
 
-<div align=center><img src="21/1.png" alt="drawing" width="1200"/></div>
+<div align=center><img src="Images/21/1.png" alt="drawing" width="1200"/></div>
 
 #### Run synthesis,  Implementation, and generate bitstream
 
@@ -1492,7 +1492,7 @@ plt.show()
 
 We can see the image like below:
 
-<div align=center><img src="21/10.png" alt="drawing" width="400"/></div>
+<div align=center><img src="Images/21/10.png" alt="drawing" width="400"/></div>
 
 We can also see the input image:
 
@@ -1510,4 +1510,4 @@ plt.show()
 
 ```
 
-<div align=center><img src="21/4.png" alt="drawing" width="400"/></div>
+<div align=center><img src="Images/21/4.png" alt="drawing" width="400"/></div>
