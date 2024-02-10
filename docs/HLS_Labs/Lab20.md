@@ -20,8 +20,8 @@ sort: 20
 </script>
 
 ## Introduction
-The DFT converts a discrete signal from the time domain to the frequency domain, which is useful for performing functions like filtering and other linear time-invariant operations.
-Discrete Fourier Transform (DFT) is widely used in digital signal processing (Fast-Fourier Transform, FFT, is an optimized algorithm to calculate DFT). The formula is simple:
+The Discrete Fourier Transform (DFT) converts a discrete signal from the time domain to the frequency domain, which is useful for performing functions like filtering and other linear time-invariant operations.
+DFT is widely used in digital signal processing (Fast-Fourier Transform, FFT, is an optimized algorithm to calculate DFT). The formula is simple:
 
 $$
 X(k) = \sum_{n = 0}^{N - 1}x(n)e^{-j\frac{2\pi}{N}nk}
