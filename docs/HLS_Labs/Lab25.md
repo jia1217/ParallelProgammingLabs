@@ -1372,7 +1372,7 @@ It may show some errors about I/O Ports, please fix them.
 
 #### Download the bitstream file to PYNQ
 
-<div align=center><img src="21/9.png" alt="drawing" width="300"/></div>
+<div align=center><img src="Images/21/9.png" alt="drawing" width="300"/></div>
 
 ```python
 from pynq import (allocate, Overlay)
