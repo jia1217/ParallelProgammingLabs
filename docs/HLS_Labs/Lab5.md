@@ -444,15 +444,31 @@ int main() {
     int sum1 = 0, sum2 = 0;
     for (int i = 0; i < N / 2; i++)
     {
+<<<<<<< HEAD
     	sum1 += out1.read();
     	printf("sum1 is %d\r\n",sum1);
+||||||| parent of e730c35 (Update Lab5.md)
+    	out1_data = out1.read();
+    	printf("out1 is %d\r\n",sum1);
+=======
+    	out1_data = out1.read();
+    	printf("out1 is %d\r\n",out1_data);
+>>>>>>> e730c35 (Update Lab5.md)
     }
 
 
     for (int i = 0; i < N / 2; i++)
     {
+<<<<<<< HEAD
     	   sum2 += out2.read();
     	   printf("sum2 is %d\r\n",sum2);
+||||||| parent of e730c35 (Update Lab5.md)
+    	   out2_data += out2.read();
+    	   printf("sum2 is %d\r\n",sum2);
+=======
+    	   out2_data += out2.read();
+    	   printf("out2 is %d\r\n",out2_data);
+>>>>>>> e730c35 (Update Lab5.md)
     }
 
     return 0;
