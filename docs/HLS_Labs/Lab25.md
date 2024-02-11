@@ -52,11 +52,11 @@ Keras provides an implementation of the convolutional layer called a Conv2D.
 
 It requires that you specify the expected shape of the input images in terms of rows (height), columns (width), and channels (depth) or [rows, columns, channels].
 
-The filter contains the weights that must be learned during the training of the layer. The filter weights represent the structure or feature that the filter will detect and the strength of the activation indicates the degree to which the feature was detected.
+The filter contains the weights that must be learned during the training of the layer. The filter weights represent the structure or feature that the filter will detect, and the strength of the activation indicates the degree to which the feature was detected.
 
-The layer requires that both the number of filters be specified and that the shape of the filters be specified.
+The layer requires that both the number of filters and the shape of the filters be specified.
 
-We can demonstrate this with a small example. In this example, we define a single input image or sample that has one channel and is an eight pixel by eight pixel square with all 0 values and a two-pixel wide vertical line in the center.
+We can demonstrate this with a small example. In this example, we define a single input image or sample that has one channel and is an eight-pixel by eight-pixel square with all 0 values and a two-pixel wide vertical line in the center.
 
 ```python
 # define input data
@@ -86,7 +86,7 @@ model.summary()
 ```
 The filter is initialized with random weights as part of the initialization of the model. We will overwrite the random weights and hard code our own 3×3 filter that will detect vertical lines.
 
-That is the filter will strongly activate when it detects a vertical line and weakly activate when it does not. We expect that by applying this filter across the input image, the output feature map will show that the vertical line was detected.
+That is the filter will strongly activate when it detects a vertical line and weakly activate when it does not. By applying this filter across the input image, we expect that the output feature map will show that the vertical line was detected.
 
 ```python
 # define a vertical line detector
@@ -104,16 +104,16 @@ Next, we can apply the filter to our input image by calling the predict() functi
 # apply filter to input data
 yhat = model.predict(data)
 ```
-The result is a four-dimensional output with one batch, a given number of rows and columns, and one filter, or [batch, rows, columns, filters].
+The result is a four-dimensional output with one batch, several rows and columns, and one filter, or [batch, rows, columns, filters].
 Of note is that the single hidden convolutional layer will take the 8×8 pixel input image and will produce a feature map with the dimensions of 6×6. We will go into why this is the case in the next section.
 
 ### Problem of Border Effects
 
-In the previous section, we defined a single filter with the size of three pixels high and three pixels wide (rows, columns).
-We saw that the application of the 3×3 filter, referred to as the kernel size in Keras, to the 8×8 input image resulted in a feature map with the size of 6×6.
-That is, the input image with 64 pixels was reduced to a feature map with 36 pixels. Where did the other 28 pixels go?
-The filter is applied systematically to the input image. It starts at the top left corner of the image and is moved from left to right one pixel column at a time until the edge of the filter reaches the edge of the image.
-For a 3×3 pixel filter applied to a 8×8 input image, we can see that it can only be applied six times, resulting in the width of six in the output feature map.
+In the previous section, we defined a single filter with a size of three pixels high and three pixels wide (rows, columns).
+We saw that applying the 3×3 filter, referred to as the kernel size in Keras, to the 8×8 input image resulted in a feature map with the size of 6×6.
+The input image with 64 pixels was reduced to a feature map with 36 pixels. Where did the other 28 pixels go?
+The filter is applied systematically to the input image. It starts at the top left corner of the image and is moved from left to right one-pixel column at a time until the filter's edge reaches the edge.
+For a 3×3 pixel filter applied to an 8×8 input image, we can see that it can only be applied six times, resulting in a width of six in the output feature map.
 For example, let’s work through each of the six patches of the input image (left) dot product (“.” operator) the filter (right):
 
 ```
