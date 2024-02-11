@@ -445,14 +445,14 @@ int main() {
     for (int i = 0; i < N / 2; i++)
     {
     	out1_data = out1.read();
-    	printf("out1 is %d\r\n",sum1);
+    	printf("out1 is %d\r\n",out1_data);
     }
 
 
     for (int i = 0; i < N / 2; i++)
     {
     	   out2_data += out2.read();
-    	   printf("sum2 is %d\r\n",sum2);
+    	   printf("out2 is %d\r\n",out2_data);
     }
 
     return 0;
