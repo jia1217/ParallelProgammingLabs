@@ -44,11 +44,11 @@ There are a few caveats in handling border pixels that you would need to keep in
 
 ### Convolution Layer
 
-In a convolutional neural network, a convolutional layer is responsible for the systematic application of one or more filters to an input.
+In a convolutional neural network, a convolutional layer is responsible for systematically applying one or more filters to an input.
 
-The multiplication of the filter to the input image results in a single output. The input is typically three-dimensional images (e.g. rows, columns and channels), and in turn, the filters are also three-dimensional with the same number of channels and fewer rows and columns than the input image. As such, the filter is repeatedly applied to each part of the input image, resulting in a two-dimensional output map of activations, called a feature map.
+The multiplication of the filter to the input image results in a single output. The input is typically three-dimensional images (e.g. rows, columns and channels), and in turn, the filters are also three-dimensional with the same number of channels and fewer rows and columns than the input image. As such, the filter is repeatedly applied to each part of the input image, resulting in a two-dimensional output map of activations called a feature map.
 
-Keras provides an implementation of the convolutional layer called a Conv2D.
+Keras provides an implementation of the convolutional layer called Conv2D.
 
 It requires that you specify the expected shape of the input images in terms of rows (height), columns (width), and channels (depth) or [rows, columns, channels].
 
@@ -58,19 +58,15 @@ The layer requires that both the number of filters and the shape of the filters 
 
 We can demonstrate this with a small example. In this example, we define a single input image or sample that has one channel and is an eight-pixel by eight-pixel square with all 0 values and a two-pixel wide vertical line in the center.
 
-```python
-# define input data
-data =  [[0, 0, 0, 1, 1, 0, 0, 0],
-		[0, 0, 0, 1, 1, 0, 0, 0],
-		[0, 0, 0, 1, 1, 0, 0, 0],
-		[0, 0, 0, 1, 1, 0, 0, 0],
-		[0, 0, 0, 1, 1, 0, 0, 0],
-		[0, 0, 0, 1, 1, 0, 0, 0],
-		[0, 0, 0, 1, 1, 0, 0, 0],
-		[0, 0, 0, 1, 1, 0, 0, 0]]
-data = asarray(data)
-data = data.reshape(1, 8, 8, 1)
-
+```
+0, 0, 0, 1, 1, 0, 0, 0
+0, 0, 0, 1, 1, 0, 0, 0
+0, 0, 0, 1, 1, 0, 0, 0
+0, 0, 0, 1, 1, 0, 0, 0
+0, 0, 0, 1, 1, 0, 0, 0
+0, 0, 0, 1, 1, 0, 0, 0
+0, 0, 0, 1, 1, 0, 0, 0
+0, 0, 0, 1, 1, 0, 0, 0	
 ```
 
 Next, we can define a model that expects input samples to have the shape (8, 8, 1) and has a single hidden convolutional layer with a single filter with the shape of three pixels by three pixels.
@@ -88,15 +84,10 @@ The filter is initialized with random weights as part of the initialization of t
 
 That is the filter will strongly activate when it detects a vertical line and weakly activate when it does not. By applying this filter across the input image, we expect that the output feature map will show that the vertical line was detected.
 
-```python
-# define a vertical line detector
-detector = [[[[0]],[[1]],[[0]]],
-            [[[0]],[[1]],[[0]]],
-            [[[0]],[[1]],[[0]]]]
-weights = [asarray(detector), asarray([0.0])]
-# store the weights in the model
-model.set_weights(weights)
-
+```
+0,1,0
+0,1,0
+0,1,0
 ```
 Next, we can apply the filter to our input image by calling the predict() function on the model.
 
