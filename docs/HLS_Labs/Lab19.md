@@ -35,7 +35,7 @@ z' &= z\cdot e^{j\phi} \\
 \end{equation}
 $$
 
-Therefore, if we let $z'=x'+jy'$, and use matrix form to represent the rotation, we have:
+Therefore, if we let $z'=x'+jy'$ and use matrix form to represent the rotation, we have:
 
 $$
 \begin{equation}
@@ -54,7 +54,7 @@ y
 \end{equation}
 $$
 
-Note that the rotation doesn't change the length of the vector. To make the algorithm easily implemented with hardware, we have to simplify the multiplication operation here. In hardware, it is always easy to time a number with $2^N$ as it is only required to shift left by $N$ bits ($N$ can be negative). Therefore, they did a little transformation to the Eq. (2) firstly.
+Note that the rotation doesn't change the length of the vector. To make the algorithm easily implemented with hardware, we have to simplify the multiplication operation here. In hardware, it is always easy to time a number with $2^N$ as it is only required to shift left by $N$ bits ($N$ can be negative). Therefore, they did a little transformation to Eq. (2) first.
 
 $$
 \begin{equation}
@@ -73,13 +73,13 @@ y
 \end{equation}
 $$
 
-Then, if we make $\tan(\phi_i)=\frac{1}{2^i}$ or $\phi_i=arctan(2^{-i})$, where $i$ is a non-negative integer, all the multiplications in the matrix-vector multiplication becomes either keep the original value (times by 1) or shift right by $i$ bits (times $2^{-i}$). Therefore, the rotation angles are:
+Then, if we make $\tan(\phi_i)=\frac{1}{2^i}$ or $\phi_i=arctan(2^{-i})$, where $i$ is a non-negative integer, all the multiplications in the matrix-vector multiplication becomes either keep the original value (times by 1) or shift right by $i$ bits (times $2^{-i}$), therefore, the rotation angles are:
 
 $$
 \phi_i=\arctan(2^{-i}),i = 0,1,2,...
 $$
 
-We can get the corresponding angles as $45\degree$, $26.57\degree$, $14.04\degree$, etc. It can be proved that any angle with $0\to90\degree$ can be represented as the sum of these angles, which means with enough $\phi_i$ summed up, we can calculate any $\cos$ and $\sin$ values.  
+We can get the corresponding angles as 45&deg, 26.57&deg, 14.04&deg, etc. It can be proved that any angle with $0\to90\degree$ can be represented as the sum of these angles, which means with enough $\phi_i$ summed up, we can calculate any $\cos$ and $\sin$ values.  
 
 However, the multiplication with $\cos(\phi_i)$ hasn't been solved yet. Since
 
