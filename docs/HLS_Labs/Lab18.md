@@ -131,8 +131,8 @@ The synthesis report is shown below:
 
 The Vitis HLS will default pipeline the loop. And we can see the II of the ```Shift_Accum_Loop``` is 1 and the ```Clear_Loop``` is the same.
 
-### Optimization 1
-: Loop hoisting
+### Optimization 1：Loop hoisting
+
 
 The if/else operation is inefficient in for loop. Loop hoisted can be carried out.  "HLS tool creates logical hardware that checks if the condition is met, which is executed in every iteration of the loop. Furthermore, this conditional structure limits the execution of the statements in either the if or else branches; these statements can only be executed after the if condition statement is resolved."([Ref](https://kastner.ucsd.edu/hlsbook/)) Now the "Shift_Accum_Loop" becomes:
 
@@ -175,11 +175,11 @@ The synthesis report is shown below:
 
 <div align=center><img src="Images/17/17.png" alt="drawing" width="1000"/></div>
 
-In the above code, the label "TDL" stands for tapped delay line, which is implemented as shift registers in a digital circuit, and "MAC" refers to multiply-accumulate. Notice that in TDL the loop hoisting is used as it is required to check if i equals 0, while the MAC loop doesn't need loop hoisting (i > 0 or i >= 0). The II of both two loops (TDL and MAC) is 1 and the II for the entire module is 48. The TDL and MAC loops consume a total of 300 FFs and 402 LUTs. This is worse than the result with optimization 1. The II of the module becomes 48 as one loop becomes two loops, each requiring 11 trips. More LUTs are required as each loop requires its control circuit.
+In the above code, the label "TDL" stands for tapped delay line, which is implemented as shift registers in a digital circuit, and "MAC" refers to multiply-accumulate. Notice that in TDL, the loop hoisting is used as it is required to check if i equals 0, while the MAC loop doesn't need loop hoisting (i > 0 or i >= 0). The II of both loops (TDL and MAC) is 1, and the II for the entire module is 48. The TDL and MAC loops consume 300 FFs and 402 LUTs. This is worse than the result with optimization 1. The II of the module becomes 48 as one loop becomes two loops, each requiring 11 trips. More LUTs are required as each loop requires its control circuit.
 
 ### Optimization 3: Loop Unrolling
 
-Optimization 2 doesn't make the design faster, but it makes further optimizations possible. The HLS executes the loops in a sequential manner, which means only one circuit instance of the loop body. Essentially, loop unrolling creates multiple running instances for the loop body. A manual unrolling TDL loop is shown below:
+Optimization 2 doesn't make the design faster but makes further optimizations possible. The HLS sequentially executes the loops, which means only one circuit instance of the loop body. Essentially, loop unrolling creates multiple running instances for the loop body. A manual unrolling TDL loop is shown below:
 
 ```c++
 
@@ -198,7 +198,7 @@ The synthesis report is shown below:
 
 <div align=center><img src="Images/17/18.png" alt="drawing" width="1000"/></div>
 
-``` if (i == 1)``` is added to support even N. The unrolling reduces the trip count and increases the hardware required. This is caused by the same reason in the original code. "In the unrolled code, each iteration requires that we read two values from the shift reg array; and we write two values to the same array. Thus, if we wish to execute both statements in parallel, we must be able to perform two read operations and two write operations from the shift reg array in the same cycle."([Ref](https://kastner.ucsd.edu/hlsbook/)) In most cases, RAM only provides one read port and one write port simultaneously. To solve this problem, the shift_array is required to be **partitioned**, which means saving the value in a different memory (or even registers) instead of saving all the values in one single memory. The is called array_partition. HLS provides pragma to do this in the background, this syntax is in [Ref](https://docs.xilinx.com/r/en-US/ug1399-vitis-hls/pragma-HLS-array_partition):
+``` if (i == 1)``` is added to support even N. The unrolling reduces the trip count and increases the hardware required. The same reason in the original code causes this. "In the unrolled code, each iteration requires that we read two values from the shift reg array, and we write two values to the same array. Thus, if we wish to execute both statements in parallel, we must be able to perform two read operations and two write operations from the shift reg array in the same cycle."([Ref](https://kastner.ucsd.edu/hlsbook/)) In most cases, RAM only provides one read port and one write port simultaneously. To solve this problem, the shift_array is required to be **partitioned**, which means saving the value in a different memory (or even registers) instead of saving all the values in one single memory. This is called array_partition. HLS provides pragma to do this in the background, this syntax is in [Ref](https://docs.xilinx.com/r/en-US/ug1399-vitis-hls/pragma-HLS-array_partition):
 
 ```
 
@@ -216,7 +216,7 @@ Since we know that the shift_reg should be implemented as shift registers on har
 
 With this pragma, the HLS should be able to implement TDL with II=1, which reduces the total II of the module by 1/2.
 
-If we unroll the TDL loop by a larger factor (or even completely), it can further increase the performance. However, it is unwise and not always possible to do that manually. Another pragma called ```unroll``` is provided by HLS so that the designer can realize the loop unrolling more easily, the syntax is shown below: ([Ref](https://docs.xilinx.com/r/en-US/ug1399-vitis-hls/pragma-HLS-unroll))
+Unrolling the TDL loop by a larger factor (or even completely) can further increase the performance. However, it is unwise and only sometimes possible to do that manually. Another pragma called ```unroll``` is provided by HLS so that the designer can realize the loop unrolling more easily; the syntax is shown below: ([Ref](https://docs.xilinx.com/r/en-US/ug1399-vitis-hls/pragma-HLS-unroll))
 
 ```
 #pragma HLS unroll factor=<N> skip_exit_check
