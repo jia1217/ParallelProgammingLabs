@@ -611,6 +611,8 @@ int main() {
 
 ```
 
+Before you add the ```middle_data``` IP, you need to change the ```num``` in the ```middle_data.h``` according to the different needs for the output data and run C synthesis and export the IP.
+
 #### Create the Vivado project
 
 The configure block design can use reference materials [here](https://uri-nextlab.github.io/ParallelProgammingLabs/HLS_Labs/Lab1.html)
