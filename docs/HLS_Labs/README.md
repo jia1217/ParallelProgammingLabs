@@ -55,3 +55,4 @@ sort: 3
 
 - [Lab24](https://uri-nextlab.github.io/ParallelProgammingLabs/HLS_Labs/Lab24.html)
 
+- [Lab25](https://uri-nextlab.github.io/ParallelProgammingLabs/HLS_Labs/Lab25.html)
