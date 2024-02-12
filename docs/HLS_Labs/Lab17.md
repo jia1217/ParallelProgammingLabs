@@ -126,7 +126,7 @@ And for the pragma of the array ```l_A```, ```l_B```, ```l_C```, we can see that
 
 <div align=center><img src="Images/17/11.png" alt="drawing" width="200"/></div>
 
-Assuming that ```l_A``` and ```l_B``` are 4*4 matrix, and we set the factor is 4, then we can see the array ```l_A``` and array ```l_B``` as shonw below:
+Assuming that ```l_A``` and ```l_B``` are 4 × 4 matrix, and we set the factor to 4, then we can see the array ```l_A``` and array ```l_B``` as shown below:
 
 <div align=center><img src="Images/17/12.png" alt="drawing" width="300"/></div>
 
@@ -136,7 +136,7 @@ As for the function, we can also see from the report that the array ```l_A``` an
 
 So as for the array ```l_A```, when Vitis HLS pipelined the inner loop of the ```load_A```, its II will be 1 while for the array ```l_B```, its II will not be 1 because Bram has two ports reading data at one clock.
 
-And for the function ```kernel_mmult```, because N is 128 while array_patition factor is 16, every block has 1024 data, and for the array ```l_B``` is divided by the block, the II will not be 1 as shown in the report. And the DSP used 160, while the PYNQ-Z1 had 220 DSPs. We can see that ```2*16=32``` (2 is every port can read 2 data at one clock and 16 is the 16 blocks) and every matrix compute consumes 5 DSPs, so the total is 32*5=160 DSPs.
+And for the function ```kernel_mmult```, because N is 128 while array_patition factor is 16, every block has 1024 data, and for the array ```l_B``` is divided by the block, the II will not be 1 as shown in the report. And the DSP used 160, while the PYNQ-Z1 had 220 DSPs. We can see that ```2 × 16=32``` (2 is every port can read 2 data at one clock and 16 is the 16 blocks) and every matrix compute consumes 5 DSPs, so the total is 32 × 5=160 DSPs.
 
 
 **matmult.h**
