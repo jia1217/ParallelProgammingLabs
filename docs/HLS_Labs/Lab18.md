@@ -134,7 +134,7 @@ The Vitis HLS will default pipeline the loop. And we can see the II of the ```Sh
 ### Optimization 1：Loop hoisting
 
 
-The if/else operation is inefficient in for loop. Loop hoisted can be carried out.  "HLS tool creates logical hardware that checks if the condition is met, which is executed in every iteration of the loop. Furthermore, this conditional structure limits the execution of the statements in either the if or else branches; these statements can only be executed after the if condition statement is resolved."([Ref](https://kastner.ucsd.edu/hlsbook/)) Now the "Shift_Accum_Loop" becomes:
+The if/else operation is inefficient in the for loop. Loop hoisted can be carried out.  "HLS tool creates logical hardware that checks if the condition is met, executed in every iteration of the loop. Furthermore, this conditional structure limits the execution of the statements in either the if or else branches; these statements can only be executed after the if condition statement is resolved."([Ref](https://kastner.ucsd.edu/hlsbook/)) Now the "Shift_Accum_Loop" becomes:
 
 ```c++
 Shift_Accum_Loop:
@@ -150,11 +150,11 @@ The synthesis report is shown below:
 
 <div align=center><img src="Images/17/16.png" alt="drawing" width="1000"/></div>
 
-With the new implementation, the II of the "Shift_Accum_Loop" becomes 1 and the II of the  module becomes 14. However, this performance increase is not directly from the loop hoisting optimization. Moving branch i == 0 out of the for loop reduces one write operation to the shift_reg, removing the conflict (2 writes in the same clock cycle). This design consumes 320 FFs and 383 LUTs. 
+With the new implementation, the II of the "Shift_Accum_Loop" becomes 1, and the II of the  module becomes 14. However, this performance increase is not directly from the loop hoisting optimization. Moving branch i == 0 out of the for loop reduces one write operation to the shift_reg, removing the conflict (2 writes in the same clock cycle). This design consumes 320 FFs and 383 LUTs. 
 
 ### Optimization 2: Loop fission
 
-There are two operations in the Shift_Accum_Loop, one is moving the shift_reg and another one is performing the multiplication and accumulation (MAC). Loop fission refers to separating the operations into independent loops. In this case, the code becomes:
+There are two operations in the Shift_Accum_Loop; one is moving the shift_reg, and the other is performing the multiplication and accumulation (MAC). Loop fission refers to separating the operations into independent loops. In this case, the code becomes:
 
 ```c++
 
@@ -198,7 +198,7 @@ The synthesis report is shown below:
 
 <div align=center><img src="Images/17/18.png" alt="drawing" width="1000"/></div>
 
-``` if (i == 1)``` is added to support even N. The unrolling reduces the trip count and increases the hardware required. The same reason in the original code causes this. "In the unrolled code, each iteration requires that we read two values from the shift reg array, and we write two values to the same array. Thus, if we wish to execute both statements in parallel, we must be able to perform two read operations and two write operations from the shift reg array in the same cycle."([Ref](https://kastner.ucsd.edu/hlsbook/)) In most cases, RAM only provides one read port and one write port simultaneously. To solve this problem, the shift_array is required to be **partitioned**, which means saving the value in a different memory (or even registers) instead of saving all the values in one single memory. This is called array_partition. HLS provides pragma to do this in the background, this syntax is in [Ref](https://docs.xilinx.com/r/en-US/ug1399-vitis-hls/pragma-HLS-array_partition):
+``` if (i == 1)``` is added to support even N. The unrolling reduces the trip count and increases the hardware required. The same reason in the original code causes this. "In the unrolled code, each iteration requires that we read two values from the shift reg array and write two values to the same array. Thus, if we wish to execute both statements in parallel, we must be able to perform two read operations and two write operations from the shift reg array in the same cycle."([Ref](https://kastner.ucsd.edu/hlsbook/)) In most cases, RAM only provides one read port and one write port simultaneously. To solve this problem, the shift_array is required to be partitioned, which means saving the value in a different memory (or even registers) instead of saving all the values in one single memory. This is called array_partition. HLS provides pragma to do this in the background, this syntax is in [Ref](https://docs.xilinx.com/r/en-US/ug1399-vitis-hls/pragma-HLS-array_partition):
 
 ```
 
