@@ -3,7 +3,7 @@ sort: 25
 ---
 
 
-# Tiling-based Convolution
+# Lab25 Tiling-based Convolution
 
 <script type="text/x-mathjax-config">
   MathJax.Hub.Config({
