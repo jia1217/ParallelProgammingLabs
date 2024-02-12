@@ -441,23 +441,22 @@ int main() {
 
     odds_and_evens(in, out1, out2);
 
-    int out2_data = 0, out1_data = 0;
+    int sum1 = 0, sum2 = 0;
     for (int i = 0; i < N / 2; i++)
     {
-    	out1_data = out1.read();
-    	printf("out1 is %d\r\n",sum1);
+    	sum1 += out1.read();
+    	printf("sum1 is %d\r\n",sum1);
     }
 
 
     for (int i = 0; i < N / 2; i++)
     {
-    	   out2_data += out2.read();
+    	   sum2 += out2.read();
     	   printf("sum2 is %d\r\n",sum2);
     }
 
     return 0;
 }
-
 
 ```
 
