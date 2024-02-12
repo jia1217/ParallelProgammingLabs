@@ -224,7 +224,7 @@ The values of these parameters are described in the table below for our example:
 
 
 
-We need to add the four files as the source file ```gradient.h```, ```io.h```, ```utils.h```, ```tile_conv.cpp``` and two bin files. You can find these file in here[https://github.com/jia1217/ParallelProgammingLabs/tree/patch-2/Labs/Lab25_1].
+We need to add the four files as the source file ```gradient.h```, ```io.h```, ```utils.h```, ```tile_conv.cpp``` and two bin files. You can find these file in [here](https://github.com/jia1217/ParallelProgammingLabs/tree/patch-2/Labs/Lab25_1).
 
 
 We need to change the ```Uncertainty``` like below:
@@ -395,19 +395,14 @@ And we can have the second stacked convolutional layers on the basis of the prev
 
 <div align=center><img src="Images/21/11.png" alt="drawing" width="400"/></div>
 
-
-
-
-
-**tile_conv.cpp**
-
+The second coding and bin files can be found [here]().
 
 The synthesis report is shown below:
 
 <div align=center><img src="Images/21/8.png" alt="drawing" width="1000"/></div>
 
 
-**sim.cpp**
+
 
 
 #### Create the Vivado project
