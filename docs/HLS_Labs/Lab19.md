@@ -14,10 +14,20 @@ sort: 19
     }
   });
 </script>
-     
+   
+
 <script type="text/javascript"
-        src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+        src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">	
 </script>
+
+<script src="https://cdn.jsdelivr.net/npm/mathjax@4/es5/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@4/es5/tex-svg.min.js"></script>
+<script type="text/javascript">
+  MathJax.startup.promise.then(function () {
+    MathJax.typeset('$$45 / ^\circ, 2$$');
+  });
+</script>
+
 
 ## Introduction
 
@@ -81,7 +91,7 @@ $$
 
 
 
-We can get the corresponding angles as $$45\degree$$, 26.57&deg, 14.04&deg, etc. It can be proved that any angle with $0\to90\degree$ can be represented as the sum of these angles, which means with enough $\phi_i$ summed up, we can calculate any $\cos$ and $\sin$ values.  
+We can get the corresponding angles as $$45\degree$$, $$26.57\degree$$, $$14.04\degree$$, etc. It can be proved that any angle with $0\to90\degree$ can be represented as the sum of these angles, which means with enough $\phi_i$ summed up, we can calculate any $\cos$ and $\sin$ values.  
 
 However, the multiplication with $\cos(\phi_i)$ hasn't been solved yet. Since
 
