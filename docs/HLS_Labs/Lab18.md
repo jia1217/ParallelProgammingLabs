@@ -305,15 +305,15 @@ Clearly, only 4 multipliers are required. The scheduling of math operations is s
 
 <img src="Images/17/Scheduling.png" alt="drawing" width="600"/>
 
-In the first period, three add operations are completed, corresponding to the three sums in parentheses. Then, four multiplications are done and each requires more than one clock period, which makes the result only available at the fourth (3rd in the scheduling figure) cycle. Notice that only three add operations are required as HLS automatically uses "adder tree" structure to implement accumulation-like loops. For four numbers, only 4 adders are required.
+In the first period, three add operations are completed, corresponding to the three sums in parentheses. Then, four multiplications are done and each requires more than one clock period, which makes the result only available at the fourth (3rd in the scheduling figure) cycle. Notice that only three add operations are required as HLS automatically uses the "adder tree" structure to implement accumulation-like loops. For four numbers, only 4 adders are required.
 
 ### Optimization 4: Pipelining
 
-Pipelining is a widely used hardware trhoughput improvement method. Pipelining can be applied both to a loop and a function. In this example, pipelining any loop is not a good idea as it will reduce the II of the entire module (This is why we unrolled all the loops). The unrolled loops are not loops anymore from the hardware perspective, as unrolling makes all loop iterations run together in parallel. Hence, now the module has the following stages of operations:
+Pipelining is a widely used hardware throughput improvement method. Pipelining can be applied both to a loop and a function. In this example, pipelining any loop is not a good idea as it will reduce the II of the entire module (This is why we unrolled all the loops). The unrolled loops are not loops anymore from the hardware perspective, as unrolling makes all loop iterations run together in parallel. Hence, now the module has the following stages of operations:
 
 > 1. Read new x and shift the TDL
 > 2. MAC
-> 3. Write y out (and clear shift_reg, when the last signal x comes)
+> 3. Write y out (and clear shift_reg when the last signal x comes)
 
 Without pipelining, the operations are executed one by one, and new data can only be received after the last step is finished. Some resources can also be shared, for example, the adders in 2.1 can be reused in 2.3, though some extra logic may be required to control the dataflow. Pipelining, however, creates independent hardware for operation and some flip-flops to tap the inputs and middle results. The book ([Ref](https://kastner.ucsd.edu/hlsbook/)) gives an example for the MAC loop (though we are not pipelining the MAC loop here) shown below, (a) is without pipelining and (b) is with pipelining:
 
@@ -328,7 +328,7 @@ To pipeline the loop, we can simply add a pragma to the source file (under the f
 #pragma HLS pipeline II=<int> off rewind style=<stp, frp, flp>
 ```
 
-The II determines the throughput of the module. Mostly, we want the II=1 which means the module (loop) can receive new data every clock. In this case, we just tell the tool to pipeline the fir function and the code becomes:
+The II determines the throughput of the module. Mostly, we want the II=1, which means the module (loop) can receive new data every clock. In this case, we just tell the tool to pipeline the fir function and the code becomes:
 
 ```c++
 
@@ -403,14 +403,14 @@ In C language supports variables with the following types:
 | float  | 32 | Yes |
 | double  | 64 | Yes |
 
-The first four types only support integers, and they can be defined as unsigned variables. ```float``` and ```double``` are floating point variables that support decimal numbers. Notice that the bit width is always 2 to the power of an integer ($8=2^3$) and the minimum bit width is 8. FPGA is not good at processing floating point data. Therefore, once a decimal number is required to be computed in the FPGA, a common solution is to multiply the number with a large integer number $N$ and truncate the decimal parts so that it becomes an integer. Then the FPGA does the computation with the integer and provides a result. The result should be corrected with $N$ as well according to the math operation. For example, if the FPGA is used to multiply two decimal numbers 0.4 and 0.375, the first step could be multiplying each number by 1000 so that the two numbers become 400 and 375. Then the FPGA does the multiplication with the two numbers and gives the result 400\*375=150000. The last step is to correct the result, and in this case, since both numbers are multiplied by 1000, the result must be divided by 1000\*1000. Therefore, the final result is 0.15. An optimal way to implement this on FPGA (or any other hardware) is to use a $N$ that is 2 to the power of an integer becacuse dividing a number with such $N$ becomes bit shifting, which is super easy to be implemented by hardware. In this example, it is more hardware friendly to use $N=1024$ if you want to let FPGA do the result correction as well. This leads to the concept of fixed-point data, which is a binary number whose decimal is fixed at a constant place. For example, if a fixed-point number has total of 8 bits and 3 bits for the integer part (we call it <8,3>), '010.11000' then translates to 2.75.
+The first four types only support integers, and they can be defined as unsigned variables. ```float``` and ```double``` are floating point variables that support decimal numbers. Notice that the bit width is always 2 to the power of an integer ($8=2^3$) and the minimum bit width is 8. FPGA is not good at processing floating-point data. Therefore, once a decimal number is required to be computed in the FPGA, a common solution is to multiply the number with a large integer number $N$ and truncate the decimal parts so that it becomes an integer. Then the FPGA does the computation with the integer and provides a result. The result should be corrected with $N$ as well according to the math operation. For example, if the FPGA is used to multiply two decimal numbers 0.4 and 0.375, the first step could be multiplying each number by 1000 so that the two numbers become 400 and 375. Then the FPGA does the multiplication with the two numbers and gives the result 400 × 375=150000. The last step is to correct the result, and in this case, since both numbers are multiplied by 1000, the result must be divided by 1000 × 1000. Therefore, the final result is 0.15. An optimal way to implement this on FPGA (or any other hardware) is to use a $N$ that is 2 to the power of an integer because dividing a number with such $N$ becomes bit shifting, which is super easy to implement by hardware. In this example, it is more hardware-friendly to use $N=1024$ if you want to let FPGA do the result correction as well. This leads to the concept of fixed-point data, which is a binary number whose decimal is fixed at a constant place. For example, if a fixed-point number has a total of 8 bits and 3 bits for the integer part (we call it <8,3>), '010.11000' then translates to 2.75.
 
 In this example, the frequency response is shown on the left of the figures below. It is definitely not a normal FIR filter since the gain at the pass band is 60dB rather than 0dB (unit gain). To make the pass band gain equal to 1, we have to divide all the coefficients by the sum of all coefficients (1050 in this case). As talked about before, it is better to use 1024 here as it is close to 1050. The frequency responses when dividing the coefficients by 1050 and 1024 are shown in the right figure, and they are almost identical.
 
 <img src="Images/17/33.png" alt="drawing" width="300"/>
 <img src="Images/17/Freqz1.png" alt="drawing" width="300"/>
 
-In this example, we assume that we want a filter with a passing band gain equal 60dB (so that we don't have to manipulate the coefficients). The maximum value of the coefficients equals 500, which means we need at least 10 bits (1 for sign) to represent the coefficient. For the input signal, we assume that the input signal ranges from -127 to +127, which means we need 8 bits to represent it. Once we know the range of the input signal, we should use as least bits as possible to optimize the resource utilization. If it is in C language, we could use short for the coefficients and char for the input signal. But this causes some waste of Flip-Flops and LUTs for the coefficients because only 10 bits are required but we can only use 16 bits. Xilinx provides an arbitrary precision numbers package in HLS so that we can define variables with custom bit width. To use the package, include ```"ap_fixed.h"``` and then define the variable type like this ([Ref](https://docs.xilinx.com/r/en-US/ug1399-vitis-hls/Arbitrary-Precision-Fixed-Point-Data-Types)):
+In this example, we assume that we want a filter with a passing band gain equal to 60dB (so that we don't have to manipulate the coefficients). The maximum value of the coefficients equals 500, which means we need at least 10 bits (1 for sign) to represent the coefficient. For the input signal, we assume that the input signal ranges from -127 to +127, which means we need 8 bits to represent it. Once we know the range of the input signal, we should use as least bits as possible to optimize the resource utilization. If it is in C language, we could use short for the coefficients and char for the input signal. But this causes some waste of Flip-Flops and LUTs for the coefficients because only 10 bits are required but we can only use 16 bits. Xilinx provides an arbitrary precision numbers package in HLS so that we can define variables with custom bit width. To use the package, include ```"ap_fixed.h"``` and then define the variable type like this ([Ref](https://docs.xilinx.com/r/en-US/ug1399-vitis-hls/Arbitrary-Precision-Fixed-Point-Data-Types)):
 
 ```
 typedef ap_fixed<TOTAL_WIDTH,INTEGER_WIDTH> new_type_name;
@@ -467,7 +467,7 @@ fir.cpp
 ```c++
 #include "fir.h"
 
-// Optimzied code
+// Optimized code
 
 void fir(d_out_stream& y, d_in_stream& x){
 #pragma HLS INTERFACE mode=ap_ctrl_none port=return
@@ -584,17 +584,17 @@ int main () {
 
 }
 ```
-The input signal (input.dat) and correct output signal (out.gold.dat) can be found [here](https://github.com/KastnerRG/pp4fpgas/blob/master/labs/project1.zip). The test bench first read the input signal from the file (```input.dat```), and packets the data into AXI stream interface (with ```tlast``` signal). Then, call the ```fir``` function and save the result into the ```out.dat``` file. Finally, use ```diff``` commands in Linux to compare the ```out.dat``` with ```out.gold.dat```. ```diff``` returns 0 if the two files are the same, and non-zero when there is any difference. If the result matches, the hardware kernel passes the test.  
+The input signal (input.dat) and correct output signal (out.gold.dat) can be found [here](https://github.com/KastnerRG/pp4fpgas/blob/master/labs/project1.zip). The test bench first reads the input signal from the file (```input.dat```), and packets the data into AXI stream interface (with ```tlast``` signal). Then, call the ```fir``` function and save the result into the ```out.dat``` file. Finally, use ```diff``` commands in Linux to compare the ```out.dat``` with ```out.gold.dat```. ```diff``` returns 0 if the two files are the same, and non-zero when there is any difference. If the result matches, the hardware kernel passes the test.  
 
-In Vitis HLS, there are two types of simulations, C simulation, and C/RTL Cosimulation. In C simulation, Vitis HLS runs the kernel (fir) as pure software. The pragmas do not take effect in C simulation. C/RTL cosimulation first compiles the kernel into HDL hardware kernel and then generates the interface between the test bench and hardware kernel. Calling the ```fir``` function launches the hardware simulation if the block level interface is not ```ap_ctrl_none```. In this example, the ```fir``` kernel doesn't require any start signal. Calling the kernel just passes the data into it. Such a free-running kernel performs differently in C simulation and Cosimulation ([Ref](https://docs.xilinx.com/r/en-US/ug1393-vitis-application-acceleration/Free-Running-Kernel)). Conceptually, a free-running kernel is always running which means you can imagine that there is a ```while(1)``` loop outside the kernel code (the ```fir``` function is only required to be called for one time). However, the ```while(1)``` loop will halt the software. Therefore, in the test bench, the ```fir``` function is actually called by ***SAMPLES*** of times. If it is the kernel that is calling the free-running kernel (interconnected between kernels), the C simulation may fail and actually be meaningless.  
+In Vitis HLS, there are two types of simulations, C simulation, and C/RTL Cosimulation. In C simulation, Vitis HLS runs the kernel (fir) as pure software. The pragmas do not take effect in C simulation. C/RTL cosimulation first compiles the kernel into HDL hardware kernel and then generates the interface between the test bench and hardware kernel. Calling the ```fir``` function launches the hardware simulation if the block level interface is not ```ap_ctrl_none```. In this example, the ```fir``` kernel doesn't require any start signal. Calling the kernel just passes the data into it. Such a free-running kernel performs differently in C simulation and Cosimulation ([Ref](https://docs.xilinx.com/r/en-US/ug1393-vitis-application-acceleration/Free-Running-Kernel)). Conceptually, a free-running kernel is always running which means you can imagine that there is a ``` while(1)``` loop outside the kernel code (the ```fir``` function is only required to be called for one time). However, the ``` while(1)``` loop will halt the software. Therefore, in the test bench, the ```fir``` function is actually called by ***SAMPLES*** of times. If it is the kernel that is calling the free-running kernel (interconnected between kernels), the C simulation may fail and actually be meaningless.  
 
-To run the simulation, simply clock the C simulation or C/RTL cosimulation in the Flow Navigator (bottom right). You should see the *PASS* if everything is good. When running the Cosimulation, you can change the *Dump Trace* option to *all* before launching. Then, once the simulation is finished, you can click the *Wave Viewer* to see the waveform from the simulation. You can check if the actual II matches the report with the waveform. 
+To run the simulation, simply click the C simulation or C/RTL cosimulation in the Flow Navigator (bottom right). You should see the *PASS* if everything is good. When running the Cosimulation, you can change the *Dump Trace* option to *all* before launching. Then, once the simulation is finished, you can click the *Wave Viewer* to see the waveform from the simulation. You can check if the actual II matches the report with the waveform. 
 
 ## Implementation
 
 ### Create FIR IP
 
-After running the C synthesis, we click the ```export RTL``` anc choose the fold for IP like below.
+After running the C synthesis, we click the ```export RTL```and choose the fold for IP like below.
 
 <div align=center><img src="Images/17/26.png" alt="drawing" width="400"/></div>
 
@@ -602,7 +602,7 @@ After running the C synthesis, we click the ```export RTL``` anc choose the fold
 
 The configure block design can use reference materials [here](https://uri-nextlab.github.io/ParallelProgammingLabs/HLS_Labs/Lab1.html). And we need to choose the number of the DMA according to the number of the interface.
 
-We can see the ```x_TDATA``` is 8 bits and the ```y_TDATA``` is 24 bits. Since fixed-point data is not supported on software, it is required to transfer a software supporting type to the required fixed-point data as well as the inverse transfer. Xilinx provides official IP to accomplish this. Right-click on the blank area and select 'ADD IP', search for 'floating' and select the 'Floating-point'. Double click the floating-point IP just added to open the configuration window.
+We can see the ```x_TDATA``` is 8 bits and the ```y_TDATA``` is 24 bits. Since fixed-point data is not supported on software, it is required to transfer a software supporting type to the required fixed-point data as well as the inverse transfer. Xilinx provides an official IP to accomplish this. Right-click on the blank area and select 'ADD IP', search for 'floating' and select the 'Floating-point'. Double-click the floating-point IP just added to open the configuration window.
 
 For the ```x``` port:
 
@@ -620,7 +620,7 @@ For the ```y``` port:
 
 <div align=center><img src="Images/17/29.png" alt="drawing" width="600"/></div>
 
-And the result block design is shown below:
+The result block design is shown below:
 
 <div align=center><img src="Images/17/30.png" alt="drawing" width="1000"/></div>
 
@@ -632,9 +632,9 @@ It may show some errors about I/O Ports, please fix them.
 
 <div align=center><img src="Images/17/31.png" alt="drawing" width="800"/></div>
 
-Then create a python3 notebook via clicking the new in the website and selecting python3. 
+Then create a python3 notebook by clicking the new in the website and selecting python3. 
 
-In this project, we need the following python packages and import them.
+In this project, we need the following Python packages and import them.
 
 ```python
 from pynq import Overlay
@@ -644,7 +644,7 @@ import numpy as np
 import time
 ```
 
-First, we download the bitstream and create variables points to the two DMA channels (s2mm is the data flowing towards PS, which should be the output of fir; mm2s is the data flowing away from the PS, which should be the input of fir). The overlay class will automatically load 'fir.hwh' to see how many IPs and their addresses on AXI bus.
+First, we download the bitstream and create variables points to the two DMA channels (s2mm is the data flowing towards PS, which should be the output of fir; mm2s is the data flowing away from the PS, which should be the input of fir). The overlay class will automatically load 'fir.hwh' to see how many IPs and their addresses are on the AXI bus.
 
 ```python
 hw = Overlay('fir.bit')
@@ -690,9 +690,9 @@ We can see the time like below:
 
 <div align=center><img src="Images/17/32.png" alt="drawing" width="400"/></div>
 
-Unlike the testbench where we just call the fir function, don't need to call (or start) the fir kernel here as the block-level interface is ap_ctrl_none. The fir IP is always ready to receive and process new data so all we need to do are just create the two data streams.
+Unlike the testbench where we just call the fir function, don't need to call (or start) the fir kernel here as the block-level interface is ap_ctrl_none. The fir IP is always ready to receive and process new data so all we need to do is create the two data streams.
 
-To fully test the IP, we can also do a frequency sweeping here. Since we don't have a sampling rate defined here, we can just use the digital frequency, which is basically how many radius phase changes in one sample.
+To fully test the IP, we can also do a frequency sweep here. Since we don't have a sampling rate defined here, we can just use the digital frequency, which is basically how many radius phase changes in one sample.
 
 ```python
 N = 1024
