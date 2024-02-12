@@ -25,7 +25,7 @@ The goal of this lab is to design accelerators for matrix multiplication. There 
 - In Part A, you will optimize an existing implementation of matrix multiplication with actual values. 
 - In Part B, you will implement and optimize matrix multiplication with complex values. 
 
-In either part, we will multiply a $100\*200$ matrix with a $200\*300$ matrix to get a $100\*300$ matrix product and accelerate the design for the Pynq-Z2 board.
+In either part, we will multiply a $100\*200$ matrix with a $200 x 300$ matrix to get a $100\*300$ matrix product and accelerate the design for the Pynq-Z2 board.
 
 ### Part A: Real Matrix Multiplication
 
