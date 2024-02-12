@@ -374,7 +374,7 @@ We will see the input image:
 <div align=center><img src="Images/21/3.png" alt="drawing" width="400"/></div>
 
 
-And the input   image:
+And the input image:
 ```python
 plt.imshow(in_buffer[0])
 
@@ -395,15 +395,11 @@ And we can have the second stacked convolutional layers on the basis of the prev
 
 <div align=center><img src="Images/21/11.png" alt="drawing" width="400"/></div>
 
-The second coding and bin files can be found [here]().
+The second coding and bin files can be found [here](https://github.com/jia1217/ParallelProgammingLabs/tree/patch-2/Labs/Lab25_2).
 
 The synthesis report is shown below:
 
 <div align=center><img src="Images/21/8.png" alt="drawing" width="1000"/></div>
-
-
-
-
 
 #### Create the Vivado project
 
