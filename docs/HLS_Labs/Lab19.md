@@ -21,9 +21,9 @@ sort: 19
 
 ## Introduction
 
-Cordic, or Coordinate Rotation Digital Computer, is widely used to calculate trigonometric functions, hyperbolic functions, square roots, multiplications, divisions, and exponentials and logarithms with arbitrary base, typically converging with one digit (or bit) per iteration. the only operations it requires are additions, subtractions, bitshift and lookup tables. The only operations it requires are **additions**, **subtractions**, **bitshift** and **lookup tables**.  
+Cordic, or Coordinate Rotation Digital Computer, is widely used to calculate trigonometric functions, hyperbolic functions, square roots, multiplications, divisions, and exponentials and logarithms with arbitrary base, typically converging with one digit (or bit) per iteration. The only operations it requires are additions, subtractions, bitshift and lookup tables. The only operations it requires are **additions**, **subtractions**, **bitshift** and **lookup tables**.  
 
-The CORDIC algorithm is based on vector rotation. Let $z$ be an imaginary number equals $x+jy=\sqrt{x^2+y^2}e^{j\cdot arctan(\frac{y}{x})}=re^{j\theta}$, where $j$ is the imaginary unit, $r=\sqrt{x^2+y^2}$ and $\theta=arctan(\frac{y}{x})$. If we want to rotate the vector by $\phi$, we can simply times $z$ by $e^{j\phi}$. Hence, if we transfer back to Cartesian coordinate system, we have:
+The CORDIC algorithm is based on vector rotation. Let $z$ be an imaginary number equals $x+jy=\sqrt{x^2+y^2}e^{j\cdot arctan(\frac{y}{x})}=re^{j\theta}$, where $j$ is the imaginary unit, $r=\sqrt{x^2+y^2}$ and $\theta=arctan(\frac{y}{x})$. If we want to rotate the vector by $\phi$, we can simply times $z$ by $e^{j\phi}$. Hence, if we transfer back to the Cartesian coordinate system, we have:
 
 $$
 \begin{equation}
@@ -78,6 +78,8 @@ Then, if we make $\tan(\phi_i)=\frac{1}{2^i}$ or $\phi_i=arctan(2^{-i})$, where 
 $$
 \phi_i=\arctan(2^{-i}),i = 0,1,2,...
 $$
+
+<p>The expression is 45 / <math xmlns="http://www.w3.org/1998/Math/MathML">^{\circ}</math> , 2.</p>
 
 We can get the corresponding angles as $$45\degree$$, 26.57&deg, 14.04&deg, etc. It can be proved that any angle with $0\to90\degree$ can be represented as the sum of these angles, which means with enough $\phi_i$ summed up, we can calculate any $\cos$ and $\sin$ values.  
 
