@@ -224,7 +224,7 @@ The values of these parameters are described in the table below for our example:
 
 
 
-We need to add the four files as the source file ```gradient.h```, ```io.h```, ```utils.h```, ```tile_conv.cpp``` and two bin files. You can find these file in here[].
+We need to add the four files as the source file ```gradient.h```, ```io.h```, ```utils.h```, ```tile_conv.cpp``` and two bin files. You can find these file in here[https://github.com/jia1217/ParallelProgammingLabs/tree/patch-2/Labs/Lab25_1].
 
 
 We need to change the ```Uncertainty``` like below:
@@ -236,7 +236,7 @@ The synthesis report is shown below：
 
 <div align=center><img src="Images/21/5.png" alt="drawing" width="1000"/></div>
 
-The **sim.cpp** is the testbench file.
+The ```sim.cpp``` is the testbench file.
 
 
 We can first see the effect of one convolution of the ```tile_conv``` function by implementing it on the PYNQ-Z2 board.
