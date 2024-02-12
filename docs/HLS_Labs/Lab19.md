@@ -79,7 +79,7 @@ $$
 \phi_i=\arctan(2^{-i}),i = 0,1,2,...
 $$
 
-<p>The expression is 45 / <math xmlns="http://www.w3.org/1998/Math/MathML">^{\circ}</math> , 2.</p>
+
 
 We can get the corresponding angles as $$45\degree$$, 26.57&deg, 14.04&deg, etc. It can be proved that any angle with $0\to90\degree$ can be represented as the sum of these angles, which means with enough $\phi_i$ summed up, we can calculate any $\cos$ and $\sin$ values.  
 
