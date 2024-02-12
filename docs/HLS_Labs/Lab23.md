@@ -3,7 +3,7 @@ sort: 23
 ---
 
 
-# Lab23 Linebuffer_1
+# Linebuffer_1
 
 <script type="text/x-mathjax-config">
   MathJax.Hub.Config({
