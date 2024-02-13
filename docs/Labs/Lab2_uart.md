@@ -220,7 +220,7 @@ Notice that IBUF and OBUF are automatically instantiated (added) to the design a
 
 * Select the `uart_baud_gen_rx_i0` instance, right-click on it, and select Go To Source. Notice that the line instantiated `uart_rx_i0` is highlighted. Also notice that the `CLOCK_RATE` and `BAUD_RATE` parameters are passed to the module being called.
 
-* Go back to the schematic, double-click on the `meta_harden_rxd_io` instance to see how the synchronization circuit is implemented using two FFs. This synchronization is necessary to reduce the likelihood of metastability.
+* Go back to the schematic, double-click on the `meta_harden_rxd_i0` instance to see how the synchronization circuit is implemented using two FFs. This synchronization is necessary to reduce the likelihood of metastability.
 
 #### Generate the utilization and power reports
 
