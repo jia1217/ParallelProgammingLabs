@@ -258,7 +258,7 @@ Observe the Tcl Console window and see the output is being displayed as the test
 
 * Click *Ok* and then click *Discard* to close it without saving the waveform.
 
-### Synthesize the Design and Analyze the Project Summary Output.Synthesize the Design and Analyze the Project Summary Output
+### Synthesize the Design and Analyze the Project Summary Output.
 
 * Click on *Run Synthesis* under the *SYNTHESIS* tasks of the *Flow Navigator* pane.
 
