@@ -416,11 +416,11 @@ set_property -dict { PACKAGE_PIN M14   IOSTANDARD LVCMOS33 } [get_ports { led_0[
   
 If generate bitstream failed, please ensure the setting of the pins like below:
 
-<div align=center><img src="imgs/v_1/1.png" alt="drawing" width="600"/></div>
+<div align=center><img src="imgs/v1/1.png" alt="drawing" width="600"/></div>
 
 Please check the pin assignments are the same as the below:
 
-<div align=center><img src="imgs/v_1/2.png" alt="drawing" width="600"/></div>
+<div align=center><img src="imgs/v1/2.png" alt="drawing" width="600"/></div>
 
 This process will have generated a `design_1_wrapper.bit` file under the *project_1.runs > impl_1* directory.
 
