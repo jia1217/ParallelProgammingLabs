@@ -449,6 +449,7 @@ This process will have generated a `design_1_wrapper.bit` file under the *projec
     bit.download()
     bit.bitfile_name
 ```
+<div align=center><img src="imgs/v1/3.png" alt="drawing" width="800"/></div>
 
 ## Conclusion
 
