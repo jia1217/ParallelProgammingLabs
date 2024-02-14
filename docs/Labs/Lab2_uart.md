@@ -72,7 +72,7 @@ module led_ctl(
             end
 
             if (btn_clk_rx)
-                led_pipeline_reg <= char_data[3: 0] ^ char_data[7: 4]; // What are we doing here? What should we expect?
+                led_pipeline_reg <= char_data[3: 0] ^ char_data[7: 4];
             else
                 led_pipeline_reg <= char_data[3: 0];
         end
