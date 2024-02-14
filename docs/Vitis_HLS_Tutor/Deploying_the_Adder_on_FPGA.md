@@ -60,7 +60,7 @@ Find the address offset of the memory ports (`a`, `b`, and `sum`, in this exampl
 
 Below is the example Python host code to control the FPGA kernel.
 
-```c
+```python
 import numpy as np
 import pynq
 from pynq import MMIO
