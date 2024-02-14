@@ -11,9 +11,9 @@ If you have not used the PYNQ before, check the following link for setup:
 
 -[PYNQ-Z2 Setup Guide](https://pynq.readthedocs.io/en/latest/getting_started/pynq_z2_setup.html).
 
-We can also use another way to use PYNQ more convenient as below:
+-[Optional] Additionally, we can enhance the usability of PYNQ on campus through the following approach:
 
-* Firstly, we need to connect the PYNQ by the Serial Port Terminal(like MobXterm), and we need to set some parameters like below:
+* Firstly, we need to connect the PYNQ by the Serial Port Terminal (like MobXterm), and we need to set some parameters like below:
 
   <div align=center><img src="Images/18/5.png" alt="drawing" width="600"/></div>
 
@@ -60,7 +60,7 @@ Find the address offset of the memory ports (`a`, `b`, and `sum`, in this exampl
 
 Below is the example Python host code to control the FPGA kernel.
 
-```C++
+```c
 import numpy as np
 import pynq
 from pynq import MMIO
