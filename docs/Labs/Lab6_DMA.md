@@ -20,7 +20,7 @@ Please add the source file [here](https://github.com/URI-nextlab/ParallelProgamm
 
 In the block diagram which should contain the ZYNQ PS block, add the *AXI Direct Memory Access* block to your design. 
 
-<div align=center><img src="imgs/V1/8.png" alt="drawing" width="1000"/></div>
+<div align=center><img src="imgs/v1/8.png" alt="drawing" width="1000"/></div>
 
 ### DMA background
 
