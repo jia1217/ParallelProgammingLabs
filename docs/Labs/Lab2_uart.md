@@ -72,7 +72,7 @@ module led_ctl(
             end
 
             if (btn_clk_rx)
-                led_pipeline_reg <= char_data[3: 0] ^ char_data[7: 4];
+                led_pipeline_reg <= char_data[7: 4];
             else
                 led_pipeline_reg <= char_data[3: 0];
         end
@@ -154,7 +154,7 @@ set_property IOSTANDARD LVCMOS33 [get_ports {led_pins_0[1]}]
 set_property PACKAGE_PIN R14 [get_ports {led_pins_0[0]}]
 set_property IOSTANDARD LVCMOS33 [get_ports {led_pins_0[0]}]
 # Reset - BTN1
-set_property PACKAGE_PIN D19 [get_ports btn_pin_0]
+set_property PACKAGE_PIN L19 [get_ports btn_pin_0]
 set_property IOSTANDARD LVCMOS33 [get_ports btn_pin_0]
 
 # CLK source 125 MHz
@@ -320,7 +320,7 @@ uart = UartAXI(ADDRESS)
 uart.setupCtrlReg()
 
 # Loopback test
-l = [0xd3]
+l = [0x42] #0100 0010
 uart.write(l)
 ```
 
@@ -330,18 +330,18 @@ According to the code in `led_ctl.v`,
 
 ```verilog
 if (btn_clk_rx)
-    led_pipeline_reg <= char_data[3:0]^char_data[7:4];//XOR opreation: 0011 ^ 1101 = 1110
+    led_pipeline_reg <= char_data[7:4];
 else
     led_pipeline_reg <= char_data[3:0];
 ```
 
 If you input 0xd3 and do not press the button, you should see.
 
-<div align=center><img src="imgs/2_32.png" alt="drawing" width="400"/></div>
+<div align=center><img src="imgs/v1/1.jpg" alt="drawing" width="400"/></div>
 
 Else, if you press the button, you should see.
 
-<div align=center><img src="imgs/2_33.png" alt="drawing" width="400"/></div>
+<div align=center><img src="imgs/v1/2.jpg" alt="drawing" width="400"/></div>
 
 
 
