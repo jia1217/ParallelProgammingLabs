@@ -15,7 +15,7 @@ Create a project, and add the ZYNQ PS block.
 
 Please add the source file. 
 
-* AXIS_Double.v*
+* AXIS_Double.v
 ```verilog
 `timescale 1ns / 1ps
 
