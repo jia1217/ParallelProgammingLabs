@@ -20,7 +20,7 @@ Please add the source file [here](https://github.com/URI-nextlab/ParallelProgamm
 
 In the block diagram which should contain the ZYNQ PS block, add the *AXI Direct Memory Access* block to your design. 
 
-<div align=center><img src="imgs/6_1.png" alt="drawing" width="1000"/></div>
+<div align=center><img src="imgs/V1/8.png" alt="drawing" width="1000"/></div>
 
 ### DMA background
 
@@ -102,11 +102,11 @@ An alternative to SG for large transfers is to segment your memory transfers in 
 
 * Delete the *orange line* shown in the following figure, and connect the `clk_out1` to the `M_AXI_GP0_ACLK` and `S_AXI_HP0_ACLK` of `ZYNQ7 Processing System`. Then click `Run Connection Automation`.
 
-<div align=center><img src="imgs/6_7.png" alt="drawing" width="1000"/></div>
+<div align=center><img src="imgs/v1/7.png" alt="drawing" width="1000"/></div>
 
 <div align=center><img src="imgs/6_8.png" alt="drawing" width="1000"/></div>
 
-* Click `s_axi_lite_aclk`, change the `clock source` to `/clk_wiz_0/clk_out1`. Repeat this operation to other clock signals.
+* Click `s_axi_lite_aclk`, and change the `clock source` to `/clk_wiz_0/clk_out1`. Repeat this operation to other clock signals.
 
 <div align=center><img src="imgs/6_9.png" alt="drawing" width="600"/></div>
 
@@ -114,7 +114,7 @@ An alternative to SG for large transfers is to segment your memory transfers in 
 
 * The whole diagram will show like the following.
 
-<div align=center><img src="imgs/6_10.png" alt="drawing" width="1000"/></div>
+<div align=center><img src="imgs/v1/6.png" alt="drawing" width="1000"/></div>
 
 * Create wrapper and set it as top 
 
