@@ -148,7 +148,7 @@ void bus (int *d) {
 ```
 With burst mode transfers, Vitis HLS reads or writes data using a single base address followed by multiple sequential data samples, which makes this mode capable of higher data throughput. A Burst mode of operation is possible when using a pipelined ``` for``` loop.
 
-The use of ```memory `` is discouraged because it can not be inlined or pipelined. Its use can also be problematic because it changes the type of the argument into ```char```, which can lead to errors if ```array_partition```, ```array_reshape```, or struct ```disaggregate``` is used. Instead, you should write your own version of ```memcpy``` with explicit arrays and loops to provide better control.
+The use of ```memory ``` is discouraged because it can not be inlined or pipelined. Its use can also be problematic because it changes the type of the argument into ```char```, which can lead to errors if ```array_partition```, ```array_reshape```, or struct ```disaggregate``` is used. Instead, you should write your own version of ```memcpy``` with explicit arrays and loops to provide better control.
 
 When using a ```for``` loop to implement burst reads or writes, follow these requirements:
 
