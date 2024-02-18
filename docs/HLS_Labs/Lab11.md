@@ -192,7 +192,7 @@ void example(int *a){
 
 * The ```m_axi``` adapter will read the start address from the ```s_axilite``` adapter and store it in a queue.
 
-*The HLS design starts to read the data from the global memory.
+* The HLS design starts to read the data from the global memory.
 
 As shown in the following figure, the HLS design will have both the ```s_axilite``` adapter for the base address, and the ```m_axi``` to perform read and write transfer to the global memory.
 
