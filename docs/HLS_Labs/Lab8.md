@@ -145,10 +145,9 @@ int main() {
         source_in[i] = i;
         source_sw_results[i] = i + inc_value;
     }
-}
 
-//    vadd(source_in.data(), source_out.data(),size, inc_value);
     vadd(source,size, inc_value);
+}
 ```
 
 #### Create the Vivado project
