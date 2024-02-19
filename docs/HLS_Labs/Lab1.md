@@ -3,7 +3,7 @@ sort: 1
 ---
 
 
-# Lab1 Array_patitioning_cyclic_block_complete
+# Lab1 Array_partitioning_cyclic_block_complete
 
 <script type="text/x-mathjax-config">
   MathJax.Hub.Config({
