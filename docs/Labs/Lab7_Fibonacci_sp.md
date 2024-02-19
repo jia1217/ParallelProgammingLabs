@@ -32,7 +32,7 @@ If s = 0, the multiplexer’s output m equals the input x; if s = 1, the output 
 
 <div align=center><img src="imgs/v1/9.png" alt="drawing" width="300"/></div>
 
-The multiplexer can be described by the following *Data Flow* VHDL statement:
+The multiplexer can be described by the following *Data Flow* verilog statement:
 
 m <= (NOT (s) AND x) OR (s AND y);
 
@@ -244,7 +244,7 @@ Fibonacci number if the input is a valid number. This circuit will begin at *“
 protect against the difficult beginning of the sequence: 0, 1, 1…). So for *“0001”* the output will be *“00010”* up to
 *“1101”* outputting *“10101”*. For invalid inputs, output *“11111”*.
 
-1. Write the VHDL entity/architecture as described.
+1. Write the Verilog entity/architecture as described.
 
 2. Simulate with a test bench.
 
@@ -517,7 +517,7 @@ correct bit width) will be used to control if the current Fibonacci input
  (when select is 0, the input is displayed when 1, the next Fibonacci number is displayed). This only displays
 When selected, 0-8, ignoring the 13 from the following Fibonacci output.
 
-1. Write the VHDL entity/architecture as described.
+1. Write the Verilog entity/architecture as described.
 
 2. Simulate with a test bench.
 
