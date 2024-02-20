@@ -382,3 +382,7 @@ We will see:
 <div align=center><img src="Images/17/9.png" alt="drawing" width="400"/></div>
 
 This hardware accelerator provides a 1.8x speedup compared to NumPy.
+
+## Demonstrate
+
+Please finish the lab and implement it on the PYNQ-Z2 board.
