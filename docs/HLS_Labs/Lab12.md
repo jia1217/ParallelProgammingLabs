@@ -306,7 +306,7 @@ If the stream data type is an user-defined struct, the default procedure is to k
 
 **How AXI4-Stream Works**
 
-AXI4-Stream is a protocol designed for transporting arbitrary unidirectional data. In an AXI4-Stream, the `TDATA``` width of bits is transferred per clock cycle. The transfer is started once the producer sends the ```TVALID``` signal and the consumer responds by sending the ```TREADY``` signal (once it has consumed the initial ```TDATA```). At this point, the producer will start sending ```TDATA``` and ```TLAST``` (```TUSER``` if needed to carry additional user-defined sideband data). ```TLAST``` signals the last byte of the stream. So the consumer keeps consuming the incoming ```TDATA``` until ```TLAST``` is asserted.
+AXI4-Stream is a protocol designed for transporting arbitrary unidirectional data. In an AXI4-Stream, the ```TDATA``` width of bits is transferred per clock cycle. The transfer is started once the producer sends the ```TVALID``` signal and the consumer responds by sending the ```TREADY``` signal (once it has consumed the initial ```TDATA```). At this point, the producer will start sending ```TDATA``` and ```TLAST``` (```TUSER``` if needed to carry additional user-defined sideband data). ```TLAST``` signals the last byte of the stream. So the consumer keeps consuming the incoming ```TDATA``` until ```TLAST``` is asserted.
 
 <div align=center><img src="Images/12_6.png" alt="drawing" width="600"/></div>
 
