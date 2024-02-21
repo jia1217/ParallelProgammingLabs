@@ -410,6 +410,8 @@ struct data {
 #include "example.h"
 
 /// Reads from in_stream and in_counts, Write to out_memory
+//Input: in_stream and in_counts
+//Output: out_memory
 void streamtoparallelwithburst(hls::stream<data>& in_stream,
                                hls::stream<int>& in_counts,
                                ap_uint<64>* out_memory) {
@@ -425,6 +427,9 @@ void streamtoparallelwithburst(hls::stream<data>& in_stream,
     } while (!in_val.last);
 }
 
+//The function computes the number of the input data
+//Input: in_stream
+//Output: out_stream and out_counts
 void getinstream(hls::stream<trans_pkt>& in_stream,
                  hls::stream<data>& out_stream, hls::stream<int>& out_counts) {
  int count = 0;
@@ -592,6 +597,9 @@ extern int dut(hls::stream<int> s_in[M], hls::stream<int> s_out[M],int *sum);
 ```c++
 #include "example.h"
 
+//The function adds 2 to every input data and outputs and the sum of the output data.
+//Input: s_in[M]
+//Output: s_out[M] and sum
 void dut(hls::stream<int> s_in[M], hls::stream<int> s_out[M],int *sum) {
 #pragma HLS INTERFACE axis port = s_in
 #pragma HLS INTERFACE axis port = s_out

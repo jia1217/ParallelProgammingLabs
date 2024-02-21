@@ -49,6 +49,9 @@ dout_t lookup_math(din1_t inval, din2_t idx);
 #include "lookup_math.h"
 #include <math.h>
 
+//The function computes the sine of the i and stores them on the array sin_table
+//Output: sin_table[256]
+
 void init_sin_table(din1_t sin_table[256]) {
     int i;
     for (i = 0; i < 256; i++) {
@@ -57,6 +60,9 @@ void init_sin_table(din1_t sin_table[256]) {
     }
 }
 
+//The function performs multiplication by calling init_sin_table function
+//Input: inval and idx
+//Output: the return of the function
 dout_t lookup_math(din1_t inval, din2_t idx) {
     short sin_table[256];
     init_sin_table(sin_table);
@@ -309,6 +315,8 @@ This example illustrates how an input argument of a level function can be mapped
 #include <stdio.h>
 #include <string.h>
 
+//The function adds 100 to the every input data and outputs
+//Inout: a
 void example(volatile int* a) {
 
 #pragma HLS INTERFACE m_axi port = a depth = 50

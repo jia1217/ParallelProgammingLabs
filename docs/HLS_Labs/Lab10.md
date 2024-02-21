@@ -56,6 +56,9 @@ void example(int a[N], int b[N]);
 #include "example.h"
 using namespace std;
 
+//The function adds 100 to each input data and then outputs
+//Input: a[N]
+//Output: b[N] 
 void example(int a[N], int b[N]) {
 #pragma HLS INTERFACE m_axi port = a depth = N bundle =                        \
     gmem max_widen_bitwidth = MAXWBW
@@ -177,7 +180,7 @@ We will see:
 
 ## memory_bottleneck
 
-In a previous section, optimization concepts such as loop unrolling and pipelining were introduced to explore parallelism. However, this was done without considering how array access patterns may prevent such optimizations when the arrays are mapped to memories instead of registers. Arrays mapped to memories can become the bottleneck in a design’s performance. Vitis HLS provides several optimizations, such as array reshaping and partitioning, that can remove these memory bottlenecks. These automatic memory optimizations should be used whenever possible, minimizing the number of code modifications. However, there may be situations where explicitly coding the memory architecture is required to meet performance or may allow designers to achieve an even better quality of results. In these cases, it is essential that array accesses are coded in such a way as not to limit performance. This means analyzing array access patterns and organizing the memories in a design to achieve the desired throughput and area. The following code example shows a case in which access to an array can limit performance in the final RTL design. In this example, three accesses exist to the array ```mem[N]``` to create a summed result.
+In a previous section, optimization concepts such as loop unrolling and pipelining were introduced to explore parallelism. However, this was done without considering how array access patterns may prevent such optimizations when the arrays are mapped to memories instead of registers. Arrays mapped to memories can become the bottleneck in a design’s performance. Vitis HLS provides several optimizations, such as array reshaping and partitioning, that can remove these memory bottlenecks. These automatic memory optimizations should be used whenever possible, minimizing the number of code modifications. However, there may be situations where explicitly coding the memory architecture is required to meet performance or may allow designers to achieve an even better quality of results. In these cases, array accesses must be coded so as not to limit performance. This means analyzing array access patterns and organizing the memories in a design to achieve the desired throughput and area. The following code example shows a case in which access to an array can limit performance in the final RTL design. In this example, three accesses exist to the array ```mem[N]``` to create a summed result.
 
 **mem_bottleneck.h**
 ```c++
@@ -203,6 +206,9 @@ dout_t array_mem_bottleneck(din_t mem[N]);
 ```c++
 #include "mem_bottleneck.h"
 
+//The function adds three consecutive adjacent data in the array mem[N]
+//Input: mem[N]
+//Output: the return of the function
 dout_t array_mem_bottleneck(din_t mem[N]) {
 
     dout_t sum = 0;
@@ -235,6 +241,8 @@ The code in the example above can be rewritten as shown in the following code ex
 
 **mem_bottleneck_resolved.cpp**
 ```c++
+
+//The function performs the same effect but uses a more effective way
 dout_t mem_bottleneck_resolved(din_t mem[N]) {
 
     din_t tmp0, tmp1, tmp2;
@@ -391,6 +399,9 @@ void resource_uram(bool wren, bool rden, addr_t addrW, data_t datain,
 ```c++
 #include "resource_uram.h"
 
+//The function performs read or write on the array buffer according to the input
+//Input: wren, rden, addrW, datain, AddrR
+//Output: dataout
 void resource_uram(bool wren, bool rden, addr_t addrW, data_t datain,
                    addr_t AddrR, data_t* dataout) {
 #pragma HLS PIPELINE II = 1

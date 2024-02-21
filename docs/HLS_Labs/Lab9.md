@@ -107,6 +107,11 @@ void krnl_transfer(int* in, int* out, const int size);
 ```c++
 #include "example.h"
 
+
+//The function passes the input data to the output and  repeats NUM times.
+//Input: in and size
+//Output: out
+//NUM is defined to decide the times of repeating
 void krnl_transfer(int* in, int* out, const int size) {
 #pragma HLS INTERFACE m_axi port = in depth = 512
 #pragma HLS INTERFACE m_axi port = out depth = 5120
@@ -129,7 +134,7 @@ The synthesis report is shown below.
 
 <div align=center><img src="Images/9_8.png" alt="drawing" width="1000"/></div>
 
-And the sythesis result is shown below.
+And the synthesis result is shown below.
 
 <div align=center><img src="Images/9_4.png" alt="drawing" width="600"/></div>
 
@@ -168,6 +173,7 @@ int main() {
     krnl_transfer(in, out, size);
 
     int var;
+// The iter is the same effect as the NUM in the example.cpp
     for (int j = 0; j < iter; j++) {
         for (int i = 0; i < size; i++) {
             if (out[i] != a[i]) {
@@ -176,6 +182,7 @@ int main() {
                           << std::endl;
                 return 1;
             }
+        
         }
     }
     return 0;
@@ -200,6 +207,10 @@ void transfer_kernel(hls::burst_maxi<int> in, hls::burst_maxi<int> out,
 ```c++
 #include "example.h"
 
+
+//The function has the same effect as the last example but used another way
+//Input: in and size
+//Output: out
 void transfer_kernel(hls::burst_maxi<int> in, hls::burst_maxi<int> out,
                      const int size) {
 #pragma HLS INTERFACE m_axi port = in depth = 512 latency = 32 offset =        \
@@ -376,14 +387,14 @@ void example(hls::burst_maxi<din_t> A, hls::burst_maxi<din_t> B,
 ```c++
 #include "example.h"
 
+//The function is to read the input data and accumulate the values for the first N/4 data and the last N/4 data and the have the subtraction operation for the last N/4 data
+//Input: IN and factor
+//Output: x_aux[N]
 void read_a(hls::burst_maxi<din_t> IN, dout_t x_aux[N], din_t factor) {
 
-    IN.read_request(
-        0,
-        N / 4); // request to read N/4 elements from the first element
-    IN.read_request(
-        N - N / 4,
-        N / 4); // request to read N/4 elements from the last quarter element
+    IN.read_request( 0,N / 4); // request to read N/4 elements from the first element
+    IN.read_request( N - N / 4,N / 4); // request to read N/4 elements from the last quarter element
+
     dout_t X_accum = N / 4;
     din_t temp;
     for (int i = 0; i < factor / 2; i++) {
@@ -391,7 +402,8 @@ void read_a(hls::burst_maxi<din_t> IN, dout_t x_aux[N], din_t factor) {
             temp = IN.read();
             X_accum += temp;
             x_aux[i] = X_accum;
-        } else {
+        }
+        else {
             if (i == N / 4) {
                 X_accum = i;
             }
@@ -402,13 +414,14 @@ void read_a(hls::burst_maxi<din_t> IN, dout_t x_aux[N], din_t factor) {
     }
 }
 
+
+//The function has the same effect as the read_a function
 void read_b(hls::burst_maxi<din_t> IN, dout_t y_aux[N], din_t factor) {
-    IN.read_request(
-        0,
-        N / 4); // request to read N/4 elements from the first element
-    IN.read_request(
-        N - N / 4,
-        N / 4); // request to read N/4 elements from the last quarter element
+
+    IN.read_request( 0,N / 4); // request to read N/4 elements from the first element
+    IN.read_request( N - N / 4,N / 4); // request to read N/4 elements from the last quarter element
+
+
     dout_t Y_accum = N / 4;
     din_t temp;
     for (int i = 0; i < factor / 2; i++) {
@@ -427,12 +440,13 @@ void read_b(hls::burst_maxi<din_t> IN, dout_t y_aux[N], din_t factor) {
     }
 }
 
+
+//The function performs a subtraction operation on the first N/4 data and last N/4 data of the array x_aux[N] and input array y_aux.
+//Input: x_aux[N] and y_aux[N]
+//Output: RES
 void write(hls::burst_maxi<dout_t> RES, dout_t x_aux[N], dout_t y_aux[N]) {
-    RES.write_request(
-        0, N / 4); // request to write N/4 elements from the first element
-    RES.write_request(
-        N - N / 4,
-        N / 4); // request to write N/4 elements from the last quarter element
+    RES.write_request( 0, N / 4); // request to write N/4 elements from the first element
+    RES.write_request(N - N / 4,N / 4); // request to write N/4 elements from the last quarter element
 
     for (int i = 0; i < N / 2; i++) {
         if (i < N / 4)
@@ -444,6 +458,9 @@ void write(hls::burst_maxi<dout_t> RES, dout_t x_aux[N], dout_t y_aux[N]) {
     RES.write_response(); // wait for the write operation to complete
 }
 
+//The function performs the addition and then performs the subtraction operation on the array and the factor
+//Inout: x_aux[N] and y_aux[N], which means that they are input and output
+//Input: factor
 void process(dout_t x_aux[N], dout_t y_aux[N], din_t factor) {
 
     for (int i = 0; i < N / 4; i++) {
@@ -457,6 +474,9 @@ void process(dout_t x_aux[N], dout_t y_aux[N], din_t factor) {
     }
 }
 
+//The function is to read A and B and has the process of the A and B and write the result at last
+//Input: A and B and factor
+//Output: RES 
 void example(hls::burst_maxi<din_t> A, hls::burst_maxi<din_t> B,
              hls::burst_maxi<dout_t> RES, din_t factor) {
 #pragma HLS INTERFACE m_axi depth = 800 port = A bundle = bundle1
@@ -620,6 +640,7 @@ The first step is to allocate the buffer. pynq allocate will be used to allocate
 top_ip = overlay.example_0
 top_ip.signature
 
+# allcoate memory for the a, b and c and the size is 32 int32 type data
 a_buffer = pynq.allocate((32), np.int32)
 b_buffer = pynq.allocate((32), np.int32)
 c_buffer = pynq.allocate((32), np.int32)
@@ -631,6 +652,7 @@ for i in range (0, 32):
 <div align=center><img src="Images/9_14.png" alt="drawing" width="400"/></div>
 
 ```python
+//obtain the physical address of the buffer to make it easily
 aptr = a_buffer.physical_address
 bptr = b_buffer.physical_address
 cptr = c_buffer.physical_address
