@@ -62,6 +62,10 @@ void matrix_cyclic_block(d_stream &stream_in,d_stream &stream_out, d_stream &str
 
 ```c++
 #include"matrix_cyclic_block.h"
+
+//Function: implement matrix multiplication and take [4][4]×[4][4] =[4][4] as an example
+//Input: stream_in and stream_in2
+//Output: stream_out
 void matrix_cyclic_block(d_stream &stream_in,d_stream &stream_out, d_stream &stream_in2)
 {
 #pragma HLS INTERFACE ap_ctrl_none port=return
