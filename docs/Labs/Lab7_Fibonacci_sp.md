@@ -355,14 +355,14 @@ The block design is shown below:
 
 We need to download the design_1_wrapper.bit to local machine. Back to dashboard-launch Palmetto Desktop, click Files in the orange bar and choose Home Directory. Go to Lab7/project_1/project_1.runs/impl_1 and download design_1_wrapper.bit and upload the file to the PYNQ.
 
-
 ```python
-    from pynq import Overlay
-    from pynq import Bitstream
-    bit = Bitstream("design_1_wrapper.bit")
-    bit.download()
-    bit.bitfile_name
-
+from pynq import Overlay
+from pynq import Bitstream
+bit = Bitstream("design_1_wrapper.bit")
+#keep the name of the bit file and hwh file the same
+bit.download()
+bit.bitfile_name
+#download the file to the board
 ```
 
 If you press the second button, which means the input is 2, then the first led will light as shown below:
@@ -380,6 +380,9 @@ Table 1 below lists the
 Characters that should be displayed for each valuation of c3c2c1c0. Note only valid Fibonacci numbers from 0-8 are
 displayed; E is displayed (for Error) when a non-Fibonacci number is selected.
 
+<div align=center><img src="imgs/v1/31.png" alt="drawing" width="200"/></div>
+
+
 1. Write a Verilog entity/architecture to activate each of the seven segments. Use only simple Verilog
 assignment statements in your code to specify each logic function.
 
@@ -387,6 +390,8 @@ assignment statements in your code to specify each logic function.
 
 3. Wrap this (as shown in Lab0) in another entity to compile for board use. Map the inputs to press buttons and
 connect the outputs of the LED.
+
+4. Converting integers to seven-segment display in python, but we add the ```AXI_GPIO``` IP to read the data of the led.
 
 ### Add the source file
 
@@ -482,32 +487,81 @@ endmodule
 ### Implemention
 
 The part can reference the [Generate Bitstream](https://uri-nextlab.github.io/ParallelProgammingLabs/Labs/Lab1_led.html#generate-the-bitstream) in lab1.
+We just add the AXI_GPIO and double click on the IP and have the setting like below:
 
+<div align=center><img src="imgs/v1/33.png" alt="drawing" width="500"/></div>
+
+And then we just need to click on the green words like ```Run Block Automation``` and connect the ```FCLK_CLK0``` and ```M_AXI_GP0_ACLK``` together.
 The block design is shown below:
 
-<div align=center><img src="imgs/v1/16.png" alt="drawing" width="500"/></div>
+<div align=center><img src="imgs/v1/32.png" alt="drawing" width="500"/></div>
+
+
 
 ### Download the bitstream file to PYNQ
 
-We need to download the design_1_wrapper.bit to local machine. Back to dashboard-launch Palmetto Desktop, click Files in the orange bar and choose Home Directory. Go to Lab7/project_1/project_1.runs/impl_1 and download design_1_wrapper.bit and upload the file to the PYNQ.
+We need to download the design_1_wrapper.bit to local machine. Back to dashboard-launch Palmetto Desktop, click Files in the orange bar and choose Home Directory. Go to Lab7/project_1/project_1.runs/impl_1 and download design_1_wrapper.bit and upload the file to the PYNQ. And we also need the ```.hwh``` file in the /project_1/project_1.gen/sources_1/bd/design_1/hw_handoff and upload the file to the PYNQ like below:
 
+<div align=center><img src="imgs/v1/34.png" alt="drawing" width="500"/></div>
 
 ```python
-    from pynq import Overlay
-    from pynq import Bitstream
-    bit = Bitstream("design_1_wrapper.bit")
-    bit.download()
-    bit.bitfile_name
-
+from pynq import Overlay
+from pynq import Bitstream
+bit = Bitstream("design_1.bit")
+#keep the name of the bit file and hwh file the same
+bit.download()
+bit.bitfile_name
+#download the file to the board
 ```
+```python
+overlay = Overlay('design_1.bit')
+
+representations = {
+    '0': ('###', '# #', '# #', '# #', '###'),
+    '1': ('  #', '  #', '  #', '  #', '  #'),
+    '2': ('###', '  #', '###', '#  ', '###'),
+    '3': ('###', '  #', '###', '  #', '###'),
+    '4': ('# #', '# #', '###', '  #', '  #'),
+    '5': ('###', '#  ', '###', '  #', '###'),
+    '6': ('###', '#  ', '###', '# #', '###'),
+    '7': ('###', '  #', '  #', '  #', '  #'),
+    '8': ('###', '# #', '###', '# #', '###'),
+    '9': ('###', '# #', '###', '  #', '###'),
+    'e': ('###', '#  ', '###', '#  ', '###'),
+}
+
+def seven_segment(number):
+    # treat the number as a string, since that makes it easier to deal with
+    # on a digit-by-digit basis
+    digits = [representations[digit] for digit in str(number)]
+    # now digits is a list of 5-tuples, each representing a digit in the given number
+    # We'll print the first lines of each digit, the second lines of each digit, etc.
+    for i in range(5):
+        print("  ".join(segment[i] for segment in digits))
+```
+```python
+led=overlay.leds_gpio
+#define the leds_gpio and then we can read the values of the leds
+#if you press the third button which means the input data is 4, then the three leds will on which means the value is e
+state=hex(led.read())
+```
+So you can see the state is ```e```
+
+```python
+seven_segment(state[-1])
+#display the values of the leds
+```
+So we can see:
+
+<img src="imgs/v1/22.png" alt="drawing" width="200"/>
+
+<img src="imgs/v1/35.png" alt="drawing" width="200"/>
 
 If you press the first button, which means the input is 1, then the first led will light as shown below:
 
-<div align=center><img src="imgs/v1/23.png" alt="drawing" width="200"/></div>
+<img src="imgs/v1/23.png" alt="drawing" width="200"/>
 
-If you press the third button, which means the input is 4, then the leds will light as shown below:
-
-<div align=center><img src="imgs/v1/22.png" alt="drawing" width="200"/></div>
+<img src="imgs/v1/36.png" alt="drawing" width="200"/>
 
 ## Part V
 
