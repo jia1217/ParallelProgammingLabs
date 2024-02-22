@@ -62,8 +62,9 @@ module part_1(
         y = a;
     else
         y = b;
-end
+    end
 
+endmodule
 
 ```
 
@@ -610,7 +611,7 @@ module Lab1_5(din,sel,valid);
       dout[5] = 4'h08;
     end
 integer i;
-always @* begin
+always @(*) begin
     valid = 1'b0;
     for (i = 0; i < 6; i = i + 1) begin
         if (din == dout[i]) begin
