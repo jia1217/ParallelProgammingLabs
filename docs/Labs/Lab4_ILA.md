@@ -102,7 +102,7 @@ Please copy the whole `Lab2` project and re-name it as `Lab4`:
 
 <div align=center><img src="imgs/5_10.png" alt="drawing" width="600"/></div>
 
-* Open a new jupyter notebook, run the below code and observe that the `hw_ila_1` status changes from capturing to idle. But maybe we can not see the waveform, we can Program Device like below.
+* Open a new jupyter notebook, run the below code and observe that the `hw_ila_1` status changes from capturing to idle.
 
 ```python
 from pynq import MMIO
@@ -131,7 +131,7 @@ while True:
 ```
 * And observe that the `hw_ila_1` status changes from capturing to idle. But maybe we can not see the waveform, we can ```Program Device``` like below.
 
-<div align=center><img src="imgs/v1/30.png" alt="drawing" width="1000"/></div>
+<div align=center><img src="imgs/v1/30.png" alt="drawing" width="300"/></div>
 
 Then we can click on the *Run Trigger* button, we can observe the rx_data_rdy_out became 1 like below:
 
