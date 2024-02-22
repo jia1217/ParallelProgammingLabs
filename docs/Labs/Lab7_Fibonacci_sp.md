@@ -355,15 +355,14 @@ The block design is shown below:
 
 We need to download the design_1_wrapper.bit to local machine. Back to dashboard-launch Palmetto Desktop, click Files in the orange bar and choose Home Directory. Go to Lab7/project_1/project_1.runs/impl_1 and download design_1_wrapper.bit and upload the file to the PYNQ.
 
-
 ```python
-    from pynq import Overlay
-    from pynq import Bitstream
-    bit = Bitstream("design_1_wrapper.bit")
-    bit.download()
-    bit.bitfile_name
-
-```
+from pynq import Overlay
+from pynq import Bitstream
+bit = Bitstream("design_1_wrapper.bit")
+#keep the name of the bit file and hwh file the same
+bit.download()
+bit.bitfile_name
+#download the file to the board
 
 If you press the second button, which means the input is 2, then the first led will light as shown below:
 
@@ -500,25 +499,70 @@ The block design is shown below:
 
 ### Download the bitstream file to PYNQ
 
-We need to download the design_1_wrapper.bit to local machine. Back to dashboard-launch Palmetto Desktop, click Files in the orange bar and choose Home Directory. Go to Lab7/project_1/project_1.runs/impl_1 and download design_1_wrapper.bit and upload the file to the PYNQ.
+We need to download the design_1_wrapper.bit to local machine. Back to dashboard-launch Palmetto Desktop, click Files in the orange bar and choose Home Directory. Go to Lab7/project_1/project_1.runs/impl_1 and download design_1_wrapper.bit and upload the file to the PYNQ. And we also need the ```.hwh``` file in the /project_1/project_1.gen/sources_1/bd/design_1/hw_handoff and upload the file to the PYNQ like below:
 
+<div align=center><img src="imgs/v1/34.png" alt="drawing" width="500"/></div>
 
 ```python
-    from pynq import Overlay
-    from pynq import Bitstream
-    bit = Bitstream("design_1_wrapper.bit")
-    bit.download()
-    bit.bitfile_name
-
+from pynq import Overlay
+from pynq import Bitstream
+bit = Bitstream("design_1.bit")
+#keep the name of the bit file and hwh file the same
+bit.download()
+bit.bitfile_name
+#download the file to the board
 ```
+```python
+overlay = Overlay('design_1.bit')
+
+representations = {
+    '0': ('###', '# #', '# #', '# #', '###'),
+    '1': ('  #', '  #', '  #', '  #', '  #'),
+    '2': ('###', '  #', '###', '#  ', '###'),
+    '3': ('###', '  #', '###', '  #', '###'),
+    '4': ('# #', '# #', '###', '  #', '  #'),
+    '5': ('###', '#  ', '###', '  #', '###'),
+    '6': ('###', '#  ', '###', '# #', '###'),
+    '7': ('###', '  #', '  #', '  #', '  #'),
+    '8': ('###', '# #', '###', '# #', '###'),
+    '9': ('###', '# #', '###', '  #', '###'),
+    'e': ('###', '#  ', '###', '#  ', '###'),
+}
+
+def seven_segment(number):
+    # treat the number as a string, since that makes it easier to deal with
+    # on a digit-by-digit basis
+    digits = [representations[digit] for digit in str(number)]
+    # now digits is a list of 5-tuples, each representing a digit in the given number
+    # We'll print the first lines of each digit, the second lines of each digit, etc.
+    for i in range(5):
+        print("  ".join(segment[i] for segment in digits))
+```
+```python
+led=overlay.leds_gpio
+#define the leds_gpio and then we can read the values of the leds
+#if you press the third button which means the input data is 4, then the three leds will on which means the value is e
+state=hex(led.read())
+```
+So you can see the state is ```e```
+
+```python
+seven_segment(state[-1])
+#display the values of the leds
+```
+So we can see:
+
+<div align=center><img src="imgs/v1/22.png" alt="drawing" width="200"/></div>
+
+<div align=center><img src="imgs/v1/35.png" alt="drawing" width="200"/></div>
 
 If you press the first button, which means the input is 1, then the first led will light as shown below:
 
 <div align=center><img src="imgs/v1/23.png" alt="drawing" width="200"/></div>
 
-If you press the third button, which means the input is 4, then the leds will light as shown below:
+<div align=center><img src="imgs/v1/36.png" alt="drawing" width="200"/></div>
 
-<div align=center><img src="imgs/v1/22.png" alt="drawing" width="200"/></div>
+
 
 ## Part V
 
