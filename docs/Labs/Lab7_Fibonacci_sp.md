@@ -148,7 +148,7 @@ module fibonacci_checker(din,valid);
       dout[6] = 4'h0D;
     end
 integer i;
-always @* begin
+always @(*) begin
     valid = 1'b0;
     for (i = 0; i < 7; i = i + 1) begin
         if (din == dout[i]) begin
@@ -276,7 +276,7 @@ module part_3(
     end
     
 integer i;
-always @* begin
+always @(*) begin
     valid = 5'b11111;
     for (i = 0; i < 8; i = i + 1) begin
         if (din == dout[i]) begin
@@ -416,7 +416,7 @@ module part_4(
     end
     
 integer i;
-always @* begin
+always @(*) begin
     valid = 4'b1110;
     for (i = 0; i < 6; i = i + 1) begin
         if (din == dout[i]) begin
