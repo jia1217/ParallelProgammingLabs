@@ -391,7 +391,7 @@ assignment statements in your code to specify each logic function.
 3. Wrap this (as shown in Lab0) in another entity to compile for board use. Map the inputs to press buttons and
 connect the outputs of the LED.
 
-4.Converting integers to seven-segment display in python, but we add the ```AXI_GPIO``` IP to read the data of the led.
+4. Converting integers to seven-segment display in python, but we add the ```AXI_GPIO``` IP to read the data of the led.
 
 ### Add the source file
 
