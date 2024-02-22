@@ -380,6 +380,9 @@ Table 1 below lists the
 Characters that should be displayed for each valuation of c3c2c1c0. Note only valid Fibonacci numbers from 0-8 are
 displayed; E is displayed (for Error) when a non-Fibonacci number is selected.
 
+<div align=center><img src="imgs/v1/31.png" alt="drawing" width="200"/></div>
+
+
 1. Write a Verilog entity/architecture to activate each of the seven segments. Use only simple Verilog
 assignment statements in your code to specify each logic function.
 
@@ -387,6 +390,8 @@ assignment statements in your code to specify each logic function.
 
 3. Wrap this (as shown in Lab0) in another entity to compile for board use. Map the inputs to press buttons and
 connect the outputs of the LED.
+
+4.Converting integers to seven-segment display in python, but we add the ```AXI_GPIO``` IP to read the data of the led.
 
 ### Add the source file
 
@@ -482,10 +487,16 @@ endmodule
 ### Implemention
 
 The part can reference the [Generate Bitstream](https://uri-nextlab.github.io/ParallelProgammingLabs/Labs/Lab1_led.html#generate-the-bitstream) in lab1.
+We just add the AXI_GPIO and double click on the IP and have the setting like below:
 
+<div align=center><img src="imgs/v1/33.png" alt="drawing" width="500"/></div>
+
+And then we just need to click on the green words like ```Run Block Automation``` and connect the ```FCLK_CLK0``` and ```M_AXI_GP0_ACLK``` together.
 The block design is shown below:
 
-<div align=center><img src="imgs/v1/16.png" alt="drawing" width="500"/></div>
+<div align=center><img src="imgs/v1/32.png" alt="drawing" width="500"/></div>
+
+
 
 ### Download the bitstream file to PYNQ
 
