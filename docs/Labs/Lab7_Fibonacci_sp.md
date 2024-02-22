@@ -762,6 +762,7 @@ If you choose the ```sel``` is low, and input is 2, then the second led will lig
 
 <div align=center><img src="imgs/v1/21.png" alt="drawing" width="200"/></div>
 
+At the same time, you can run the code below:
 ```python
 led=overlay.leds_gpio
 seven_segment(led.read())
