@@ -755,7 +755,7 @@ import numpy as np
 import pynq
 from pynq import MMIO
 hw = pynq.Overlay('design_1.bit')
-hw ?
+hw?
 ```
 <div align=center><img src="Images/13/3.png" alt="drawing" width="400"/></div>
 
