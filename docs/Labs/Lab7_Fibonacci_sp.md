@@ -539,29 +539,38 @@ def seven_segment(number):
     for i in range(5):
         print("  ".join(segment[i] for segment in digits))
 ```
+
 ```python
 led=overlay.leds_gpio
 #define the leds_gpio and then we can read the values of the leds
-#if you press the third button which means the input data is 4, then the three leds will on which means the value is e
-state=hex(led.read())
 ```
-So you can see the state is ```e```
+If you press the third button which means the input data is 4, then the three leds will on which means the value is e
 
+<div align=center><img src="imgs/v1/22.png" alt="drawing" width="200"/></div>
+
+At the same time, you can run the code below:
 ```python
+state=hex(led.read())
 seven_segment(state[-1])
 #display the values of the leds
 ```
-So we can see:
+You can see the state is ```e```
 
-<img src="imgs/v1/22.png" alt="drawing" width="200"/>
-
-<img src="imgs/v1/35.png" alt="drawing" width="200"/>
+<div align=center><img src="imgs/v1/35.png" alt="drawing" width="200"/></div>
 
 If you press the first button, which means the input is 1, then the first led will light as shown below:
 
-<img src="imgs/v1/23.png" alt="drawing" width="200"/>
+<div align=center><img src="imgs/v1/23.png" alt="drawing" width="200"/></div>
 
-<img src="imgs/v1/36.png" alt="drawing" width="200"/>
+At the same time, you can run the code below:
+```python
+state=hex(led.read())
+seven_segment(state[-1])
+#display the values of the leds
+```
+You can see:
+
+<div align=center><img src="imgs/v1/36.png" alt="drawing" width="200"/></div>
 
 ## Part V
 
@@ -577,6 +586,9 @@ When selected, 0-8, ignoring the 13 from the following Fibonacci output.
 
 3. Wrap this (as shown in Lab0) in another entity to compile for board use. Map the input to press buttons (you pick
 which to use) and map the output to the LEDs.
+
+4. Converting integers to seven-segment display in python, but we add the ```AXI_GPIO``` IP to read the data of the led.
+   
 ### Add the source file
 
 **Lab1_5.v**
@@ -684,10 +696,11 @@ endmodule
 ### Implemention
 
 The part can reference the [Generate Bitstream](https://uri-nextlab.github.io/ParallelProgammingLabs/Labs/Lab1_led.html#generate-the-bitstream) in lab1.
+The setting of the ```AXI_GPIO``` is the same as part IV.
 
 The block design is shown below:
 
-<div align=center><img src="imgs/v1/19.png" alt="drawing" width="500"/></div>
+<div align=center><img src="imgs/v1/37.png" alt="drawing" width="500"/></div>
 
 ### Download the bitstream file to PYNQ
 
@@ -703,10 +716,56 @@ We need to download the design_1_wrapper.bit to local machine. Back to dashboard
 
 ```
 
+```python
+overlay = Overlay('design_1.bit')
+
+representations = {
+    '0': ('###', '# #', '# #', '# #', '###'),
+    '1': ('  #', '  #', '  #', '  #', '  #'),
+    '2': ('###', '  #', '###', '#  ', '###'),
+    '3': ('###', '  #', '###', '  #', '###'),
+    '4': ('# #', '# #', '###', '  #', '  #'),
+    '5': ('###', '#  ', '###', '  #', '###'),
+    '6': ('###', '#  ', '###', '# #', '###'),
+    '7': ('###', '  #', '  #', '  #', '  #'),
+    '8': ('###', '# #', '###', '# #', '###'),
+    '9': ('###', '# #', '###', '  #', '###'),
+    'e': ('###', '#  ', '###', '#  ', '###'),
+}
+
+def seven_segment(number):
+    # treat the number as a string, since that makes it easier to deal with
+    # on a digit-by-digit basis
+    digits = [representations[digit] for digit in str(number)]
+    # now digits is a list of 5-tuples, each representing a digit in the given number
+    # We'll print the first lines of each digit, the second lines of each digit, etc.
+    for i in range(5):
+        print("  ".join(segment[i] for segment in digits))
+```
+
+
 If you press the ```sel```, which means the sel is high, then the first led will light as shown below:
 
 <div align=center><img src="imgs/v1/20.png" alt="drawing" width="200"/></div>
 
+At the same time, you can run the code below:
+
+```python
+led=overlay.leds_gpio
+seven_segment(led.read())
+```
+We will see:
+
+<div align=center><img src="imgs/v1/38.png" alt="drawing" width="200"/></div>
+
 If you choose the ```sel``` is low, and input is 2, then the second led will light as shown below:
 
 <div align=center><img src="imgs/v1/21.png" alt="drawing" width="200"/></div>
+
+```python
+led=overlay.leds_gpio
+seven_segment(led.read())
+```
+We will see:
+
+<div align=center><img src="imgs/v1/39.png" alt="drawing" width="200"/></div>
