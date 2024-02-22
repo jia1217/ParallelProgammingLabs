@@ -862,4 +862,4 @@ int main(int argc, char* argv[]) {
 ```
 ## Demonstrate
 
-Please create an HLS component for three parts seperately and try to understand the optimized way.
+Please create an HLS component for three parts separately and try to understand the optimized way.
