@@ -1089,4 +1089,4 @@ int main() {
 ```
 
 ## Demonstrate
-Please create an HLS component to achieve II=1 from II=4.   And create an HLS component for using the vector datatype and implement them on the PYNQ-Z2 board. And you can refer to the example of the first and ```using_vectors ``` part above.
+Please create an HLS component to achieve II=1 from II=4, create an HLS component for using the vector datatype, and implement them on the PYNQ-Z2 board. And you can refer to the example of the first and ```using_vectors ``` part above.
