@@ -725,3 +725,7 @@ The plot is shown below on the left, it matches the theoretical frequency respon
 
 <img src="Images/17/33.png" alt="drawing" width="300"/>
 <img src="Images/17/Freqz1.png" alt="drawing" width="300"/>
+
+## Demonstrate
+
+Please create an HLS component for the ```FIP``` lab and implement it on the PYNQ-Z2 board.
