@@ -129,7 +129,7 @@ while True:
     l = [0xd3] 
     uart.write(l)
 ```
-* And observe that the `hw_ila_1` status changes from capturing to idle. But maybe we can not see the waveform, we can ```Program Device``` like below.
+* But maybe we can not see the waveform, we can ```Program Device``` like below.
 
 <div align=center><img src="imgs/v1/30.png" alt="drawing" width="300"/></div>
 
