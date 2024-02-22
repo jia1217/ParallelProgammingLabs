@@ -755,7 +755,7 @@ import numpy as np
 import pynq
 from pynq import MMIO
 hw = pynq.Overlay('design_1.bit')
-hw ?
+hw?
 ```
 <div align=center><img src="Images/13/3.png" alt="drawing" width="400"/></div>
 
@@ -792,6 +792,6 @@ We will see:
 <div align=center><img src="Images/13/22_2.png" alt="drawing" width="400"/></div>
 
 ## Demonstrate
-Please finish the four examples(except the second and third) and implement them on the PYNQ-Z2 board.
 
+Please create an HLS component that uses ```axi_stream_no_side_channel_data``` interface and ```axi_stream_with_side_channel_data``` interface and ```axi_stream_with_struct``` interface and ```axi_array_strema_no_side_channel_data``` separately and implement them on the PYNQ-Z2 board, and you can refer to the examples of the tutorial.
 

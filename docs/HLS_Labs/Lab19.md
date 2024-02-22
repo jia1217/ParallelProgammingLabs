@@ -451,3 +451,6 @@ ROTATION_LOOP:
     sin_temp.data = inv_sin?((COS_SIN_TYPE)-current_sin):current_sin;
 ......
 ```
+## Demonstrate
+
+Please create an HLS component for ```Cordic``` lab and implement it on the PYNQ-Z2 board.

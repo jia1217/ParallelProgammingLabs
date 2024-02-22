@@ -728,8 +728,7 @@ We will see:
 <div align=center><img src="Images/12_16_2.png" alt="drawing" width="300"/></div>
 
 ## Demonstrate
-Please finish the second part of the ```Register ``` and the two examples of the ```Streaming ``` part and implement them on the PYNQ-Z2 board.
-
+Please create an HLS component that uses the ```axi_lite``` interface and ```axi_stream_to_master``` interface and ```using_array_of_streams``` interface separately and implement them on the PYNQ-Z2 board, and you can refer to the examples of the tutorial.
 
 
 

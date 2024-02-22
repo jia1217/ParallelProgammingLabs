@@ -678,5 +678,4 @@ We will see:
 <div align=center><img src="Images/9_13.png" alt="drawing" width="400"/></div>
 
 ## Demonstrates 
-You need to finish the two examples for the maual_burst and implement them on the PYNQ-Z2 board.
-
+Please finish the example under the  ```manual_burst_inference_success``` and ```manual_burst_with_conditions```sections and implement them on the PYNQ-Z2 board.
