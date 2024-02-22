@@ -559,11 +559,9 @@ So we can see:
 
 If you press the first button, which means the input is 1, then the first led will light as shown below:
 
-<div align=center><img src="imgs/v1/23.png" alt="drawing" width="200"/></div>
+<img src="imgs/v1/23.png" alt="drawing" width="200"/>
 
-<div align=center><img src="imgs/v1/36.png" alt="drawing" width="200"/></div>
-
-
+<img src="imgs/v1/36.png" alt="drawing" width="200"/>
 
 ## Part V
 
