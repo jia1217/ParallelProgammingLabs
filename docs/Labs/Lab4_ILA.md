@@ -48,7 +48,7 @@ Please copy the whole `Lab2` project and re-name it as `Lab4`:
     );
 ```
 
-* Back to *Diagram* window, select `uart_led_0` module, and right click *Refresh module*, then you can see the port. Select one port (like `rx_data_rdy`), right click it and choose *Debug*.
+* Back to *Diagram* window, select `uart_led_0` module, and right click *Refresh module*, then you can see the port. Select one port (like `rx_data_rdy`), right-click it and choose *Debug*.
 
 * Similar operation to the other port.
 
@@ -64,7 +64,7 @@ Please copy the whole `Lab2` project and re-name it as `Lab4`:
 
 <div align=center><img src="imgs/5_3.png" alt="drawing" width="1000"/></div>
 
-### Step 3 Run synthesis, implementation and generate bitstream
+### Step 3 Run synthesis, implementation and generate a bitstream
 
 * Click *PROGRAM AND DEBUG --> Open Hardware Manager --> Open Target*
 
@@ -102,7 +102,38 @@ Please copy the whole `Lab2` project and re-name it as `Lab4`:
 
 <div align=center><img src="imgs/5_10.png" alt="drawing" width="600"/></div>
 
-* Open a new jupyter notebook, similar to Lab2, input a data (i.e 0xd3) and observe that the `hw_ila_1` status changes from capturing to idle as the `rx_data_rdy_out` became 1. And on the `hw_ila_2`, it will show d3 after the trigger.
+* Open a new jupyter notebook, run the below code and observe that the `hw_ila_1` status changes from capturing to idle.
+
+```python
+from pynq import MMIO
+from pynq import Overlay
+
+import sys
+sys.path.insert(1, './src')
+from uartlite import *
+
+ol = Overlay("design_1.bit")
+ol.download()
+
+# Address of the ip core
+# Address can be found in the .hwh file 
+ADDRESS = 0x42c00000           
+uart = UartAXI(ADDRESS)
+
+# Setup AXI UART register
+uart.setupCtrlReg()
+
+
+# Loopback test
+while True:
+    l = [0xd3] 
+    uart.write(l)
+```
+* But maybe we can not see the waveform, we can ```Program Device``` like below.
+
+<div align=center><img src="imgs/v1/30.png" alt="drawing" width="300"/></div>
+
+Then we can click on the *Run Trigger* button, we can observe the rx_data_rdy_out became 1 like below:
 
 <div align=center><img src="imgs/5_16.png" alt="drawing" width="1000"/></div>
 
