@@ -553,9 +553,9 @@ seven_segment(state[-1])
 ```
 So we can see:
 
-<div align=center><img src="imgs/v1/22.png" alt="drawing" width="200"/></div>
+<img src="imgs/v1/22.png" alt="drawing" width="200"/>
 
-<div align=center><img src="imgs/v1/35.png" alt="drawing" width="200"/></div>
+<img src="imgs/v1/35.png" alt="drawing" width="200"/>
 
 If you press the first button, which means the input is 1, then the first led will light as shown below:
 
