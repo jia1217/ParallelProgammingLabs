@@ -1089,6 +1089,4 @@ int main() {
 ```
 
 ## Demonstrate
-
-Please finish the first and the ```using_vectors``` lab and implement them on the PYNQ-Z2 board.
-
+Please create an HLS component to achieve II=1 from II=4.   And create an HLS component for using the vector datatype and implement them on the PYNQ-Z2 board. And you can refer to the example of the first and ```using_vectors ``` part above.
