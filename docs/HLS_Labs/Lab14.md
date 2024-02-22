@@ -1013,3 +1013,7 @@ module rtl_model (input            ap_clk, ap_rst, ap_ce, ap_start, ap_continue,
 endmodule // rtl_model
 
 ```
+
+## Demonstrate
+
+Please create an HLS component for all four parts separately and try to understand the optimized way. 
