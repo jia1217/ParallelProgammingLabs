@@ -363,6 +363,7 @@ bit = Bitstream("design_1_wrapper.bit")
 bit.download()
 bit.bitfile_name
 #download the file to the board
+```
 
 If you press the second button, which means the input is 2, then the first led will light as shown below:
 
