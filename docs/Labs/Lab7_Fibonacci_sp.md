@@ -945,7 +945,7 @@ DATA = 0X0
 gpio.write(DATA_OFFSET,DATA)
 
 ```
-
+And when you press the second button, you can run the coding at the same time
 ```python
 GPIO_BASE_ADDRESS = 0X41210000
 GPIO_RANGE = 0x1000
