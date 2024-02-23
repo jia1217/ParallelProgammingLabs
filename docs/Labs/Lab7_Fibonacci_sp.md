@@ -917,9 +917,9 @@ DATA = 0X1
 #control the sel value to determine the output is the current value or the next value
 gpio.write(DATA_OFFSET,DATA)
 ```
-If you press the ```sel```, which means the sel is high, then the first led will light as shown below:
+Then the first LED will light as shown below:
 
-<div align=center><img src="imgs/v1/20.png" alt="drawing" width="200"/></div>
+<div align=center><img src="imgs/v1/3.jpg" alt="drawing" width="200"/></div>
 
 At the same time, you can run the code below:
 
@@ -933,10 +933,6 @@ seven_segment(gpio.read(0X00))
 We will see:
 
 <div align=center><img src="imgs/v1/38.png" alt="drawing" width="200"/></div>
-
-If you choose the ```sel``` is low, and the input is 2, then the second led will light as shown below:
-
-<div align=center><img src="imgs/v1/21.png" alt="drawing" width="200"/></div>
 
 At the same time, you can run the code below:
 ```python
