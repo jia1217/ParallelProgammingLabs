@@ -134,7 +134,7 @@ Create a circuit that accepts a four-bit input and outputs a single bit. This ci
 module fibonacci_checker(din,valid);
   input [3:0] din;
   output reg valid;
-   reg [3:0] dout[0:6];
+ 
    reg [6:0] out_valid;
    reg [3:0] data;   
 localparam [3:0] dout[7] = {4'h00, 4'h01, 4'h02, 4'03, 4'h05, 4'h08, 4'h0D} ; 
