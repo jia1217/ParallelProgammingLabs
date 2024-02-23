@@ -236,10 +236,16 @@ We need to download the design_1_wrapper.bit to the local machine. Go to Lab7/pr
 Ensure you follow each step to properly transfer the bitstream file from your development environment to the PYNQ board.
 
 ```python
+
+# Import the Overlay and Bitstream classes from the pynq package.
+# Overlay loads and manages a hardware design on the FPGA.
+# Bitstream is used to manage bitstream files specifically.
     from pynq import Overlay
     from pynq import Bitstream
     bit = Bitstream("design_1_wrapper.bit")
     bit.download()
+# Download the bitstream to the FPGA.
+# This method programs the FPGA with the hardware design specified by the bitstream.
     bit.bitfile_name
 
 ```
@@ -255,10 +261,19 @@ If you press the third button, which means the input is 4, then the LEDs will li
 
 
 ## Part III
-Create a circuit that accepts a four-bit input and outputs five bits. This circuit will output the next
-Fibonacci number if the input is a valid number. This circuit will begin at *“0001”* instead of *“0000”* (this is to
-protect against the difficult beginning of the sequence: 0, 1, 1…). So for *“0001”* the output will be *“00010”* up to
-*“1101”* outputting *“10101”*. For invalid inputs, output *“11111”*.
+Design a digital circuit that receives a four-bit binary input and produces a five-bit binary output. This circuit is intended to recognize valid Fibonacci numbers within a predefined range and calculate the next number in the Fibonacci sequence based on the input. The sequence should start from "0001" instead of the traditional "0000" to avoid the initial repeating ones in the Fibonacci series (0, 1, 2, 3, 5...).
+
+* Input: The circuit accepts a four-bit binary number as input.
+* 
+* Output: The circuit outputs a five-bit binary number.
+  
+* Operation:
+  
+* If the input is recognized as a valid number in the modified Fibonacci sequence (starting from 1 instead of 0), the circuit will output the next number in the sequence. For example, if the input is "0001" (1 in decimal), the output should be "00010" (2 in decimal).
+  
+* The circuit recognizes and processes inputs up to "1101" (13 in decimal), outputting "10101" (21 in decimal) for this input.
+
+* For any input that does not correspond to a recognized number in this modified Fibonacci sequence, the circuit will output "11111"
 
 1. Write the Verilog module as described.
 
@@ -396,7 +411,7 @@ The block design is shown below:
 
 ### Download the bitstream file to PYNQ
 
-We need to download the design_1_wrapper.bit to local machine. Back to dashboard-launch Palmetto Desktop, click Files in the orange bar and choose Home Directory. Go to Lab7/project_1/project_1.runs/impl_1 and download design_1_wrapper.bit and upload the file to the PYNQ.
+We need to download the design_1_wrapper.bit to the local machine. Go to Lab7/project_1/project_1.runs/impl_1 and download design_1_wrapper.bit, and upload the file to the PYNQ.
 
 ```python
 from pynq import Overlay
@@ -408,20 +423,20 @@ bit.bitfile_name
 #download the file to the board
 ```
 
-If you press the second button, which means the input is 2, then the first led will light as shown below:
+If you press the second button, which means the input is 2, then the first LED will light as shown below:
 
 <div align=center><img src="imgs/v1/25.png" alt="drawing" width="200"/></div>
 
-If you press the third button, which means the input is 4, then the leds will light as shown below:
+If you press the third button, which means the input is 4, then the LEDs will light as shown below:
 
 <div align=center><img src="imgs/v1/24.png" alt="drawing" width="200"/></div>
 
-Here, we use another RGB LED as the fifth output to stand for the ```0x1f```.
+We use another RGB LED as the fifth output to stand for the ```0x1f```.
 
 ## Part IV
-Table 1 below lists the
-Characters that should be displayed for each valuation of c3c2c1c0. Note only valid Fibonacci numbers from 0-8 are
-displayed; E is displayed (for Error) when a non-Fibonacci number is selected.
+The table below outlines the characters that should be displayed corresponding to each value of the 4-bit input combination c3c2c1c0. It specifically includes valid Fibonacci numbers ranging from 0 to 8. If the input does not correspond to a valid Fibonacci number within this range, the character 'E' (representing "Error") should be displayed.
+
+Note: Only the Fibonacci numbers within the specified range are considered valid. Any other input is treated as invalid, resulting in an 'E' display output.
 
 <div align=center><img src="imgs/v1/31.png" alt="drawing" width="200"/></div>
 
@@ -430,8 +445,8 @@ displayed; E is displayed (for Error) when a non-Fibonacci number is selected.
 2. Simulate with a test bench.
 
 3. Configure the circuit's input to be controlled by pressing a button on the FPGA board and map the circuit's input to press buttons and output to illuminate one of the LEDs on the board.
-4. 
-5. Converting integers to seven-segment display in Python, but we add the ```AXI_GPIO``` IP to read the data of the LEDs.
+
+4. We converted integers to a seven-segment display in Python, but we added the ```AXI_GPIO``` IP to read the data of the LEDs.
 
 ### Add the source file
 
@@ -547,11 +562,11 @@ endmodule // End of the testbench module tb_4
 ### Implementation
 
 The part can reference the [Generate Bitstream](https://uri-nextlab.github.io/ParallelProgammingLabs/Labs/Lab1_led.html#generate-the-bitstream) in lab1.
-We just add the AXI_GPIO double click on the IP, and have the setting like below:
+We add the AXI_GPIO, double click on the IP, and have the setting like below:
 
 <div align=center><img src="imgs/v1/33.png" alt="drawing" width="500"/></div>
 
-Then we just need to click on the green words like ```Run Block Automation``` and connect the ```FCLK_CLK0``` and ```M_AXI_GP0_ACLK``` together.
+Then we need to click on the green words like ```Run Block Automation``` and connect the ```FCLK_CLK0``` and ```M_AXI_GP0_ACLK``` together.
 The block design is shown below:
 
 <div align=center><img src="imgs/v1/32.png" alt="drawing" width="500"/></div>
@@ -560,7 +575,7 @@ The block design is shown below:
 
 ### Download the bitstream file to PYNQ
 
-We need to download the design_1_wrapper.bit to the local machine. Go to Lab7/project_1/project_1.runs/impl_1 and download design_1_wrapper.bit, and upload the file to the PYNQ. And we also need the ```.hwh``` file in the /project_1/project_1.gen/sources_1/bd/design_1/hw_handoff and upload the file to the PYNQ like below:
+We need to download the design_1_wrapper.bit to the local machine. Go to Lab7/project_1/project_1.runs/impl_1, download design_1_wrapper.bit, and upload the file to the PYNQ. And we also need the ```.hwh``` file in the /project_1/project_1.gen/sources_1/bd/design_1/hw_handoff and upload the file to the PYNQ like below:
 
 <div align=center><img src="imgs/v1/34.png" alt="drawing" width="500"/></div>
 
@@ -575,6 +590,8 @@ bit.bitfile_name
 ```
 ```python
 overlay = Overlay('design_1.bit')
+# Dictionary containing the patterns for each character to be displayed on a 7-segment-like display.
+# Each character is represented by a tuple of five strings, each representing a line.
 
 representations = {
     '0': ('###', '# #', '# #', '# #', '###'),
@@ -591,10 +608,10 @@ representations = {
 }
 
 def seven_segment(number):
-    # treat the number as a string, since that makes it easier to deal with
+    # treat the number as a string since that makes it easier to deal with
     # on a digit-by-digit basis
     digits = [representations[digit] for digit in str(number)]
-    # now digits is a list of 5-tuples, each representing a digit in the given number
+    # Now digits is a list of 5-tuples, each representing a digit in the given number
     # We'll print the first lines of each digit, the second lines of each digit, etc.
     for i in range(5):
         print("  ".join(segment[i] for segment in digits))
@@ -604,7 +621,7 @@ def seven_segment(number):
 led=overlay.leds_gpio
 #define the leds_gpio, and then we can read the values of the LEDs
 ```
-If you press the third button, which means the input data is 4, then the three LEDs will on, which means the value is e
+If you press the third button, which means the input data is 4, then the three LEDs will be on, which means the value is e
 
 <div align=center><img src="imgs/v1/22.png" alt="drawing" width="200"/></div>
 
@@ -618,7 +635,7 @@ You can see the state is ```e```
 
 <div align=center><img src="imgs/v1/35.png" alt="drawing" width="200"/></div>
 
-If you press the first button, which means the input is 1, then the first led will light as shown below:
+If you press the first button, which means the input is 1, then the first LED will light as shown below:
 
 <div align=center><img src="imgs/v1/23.png" alt="drawing" width="200"/></div>
 
@@ -626,7 +643,7 @@ At the same time, you can run the code below:
 ```python
 state=hex(led.read())
 seven_segment(state[-1])
-#display the values of the leds
+#display the values of the LEDs
 ```
 You can see:
 
@@ -634,11 +651,17 @@ You can see:
 
 ## Part V
 
-Using all of the components above, create a structural design that links all of the components. Your input to the entity will be a four-bit code for the current number and a one-bit select line for the multiplexer. Your outputs
-There Will be a single bit high for valid Fibonacci numbers on the input. The multiplexer (note you will need to modify the multiplexer shown to the
-correct bit width) will be used to control if the current Fibonacci input
- (when select is 0, the input is displayed. When 1, the next Fibonacci number is displayed). This only displays
-When selected, 0-8, ignoring the 13 from the following Fibonacci output.
+Create a structural design that incorporates various components to form a complete system. This system will accept a four-bit input representing a number and a single-bit selection signal for a multiplexer.
+
+* Inputs: A four-bit code (c3c2c1c0) Represents the current number to be evaluated or displayed.
+  A one-bit select line (sel) Controls the operation mode of the multiplexer.
+  
+* Outputs: A single-bit signal (valid): Indicates whether the provided four-bit input corresponds to a valid Fibonacci number.
+Display Output: Controlled by the multiplexer, it can either show the current input or the next Fibonacci number based on the sel signal
+
+The structural design should link all components logically and efficiently to meet the specified requirements.
+The display output, influenced by the multiplexer, should accurately reflect either the current input or the subsequent Fibonacci number, depending on the state of the sel line.
+All components should be appropriately sized in bit width to handle the required input and output values range.
 
 1. Write the Verilog module as described.
 
@@ -646,7 +669,7 @@ When selected, 0-8, ignoring the 13 from the following Fibonacci output.
 
 3. Configure the circuit's input to be controlled by pressing a button on the FPGA board and map the circuit's input to press buttons and output to illuminate one of the LEDs on the board.
 
-4. Converting integers to seven-segment display in python, but we add the ```AXI_GPIO``` IP to read the data of the LEDs.
+4. We converted integers to a seven-segment display in Python, but we added the ```AXI_GPIO``` IP to read the data of the LEDs.
    
 ### Add the source file
 
@@ -847,7 +870,7 @@ endmodule // End of the testbench module tb_5
 
 <div align=center><img src="imgs/v1/18.png" alt="drawing" width="600"/></div>
 
-### Implemention
+### Implementation
 
 The part can reference the [Generate Bitstream](https://uri-nextlab.github.io/ParallelProgammingLabs/Labs/Lab1_led.html#generate-the-bitstream) in lab1.
 The setting of the ```AXI_GPIO``` is the same as part IV.
@@ -858,7 +881,7 @@ The block design is shown below:
 
 ### Download the bitstream file to PYNQ
 
-We need to download the design_1_wrapper.bit to local machine. Back to dashboard-launch Palmetto Desktop, click Files in the orange bar and choose Home Directory. Go to Lab7/project_1/project_1.runs/impl_1 and download design_1_wrapper.bit and upload the file to the PYNQ.
+We need to download the design_1_wrapper.bit to the local machine. Go to Lab7/project_1/project_1.runs/impl_1 and download design_1_wrapper.bit, and upload the file to the PYNQ.
 
 
 ```python
@@ -888,7 +911,7 @@ representations = {
 }
 
 def seven_segment(number):
-    # treat the number as a string, since that makes it easier to deal with
+    # treat the number as a string since that makes it easier to deal with
     # on a digit-by-digit basis
     digits = [representations[digit] for digit in str(number)]
     # now digits is a list of 5-tuples, each representing a digit in the given number
@@ -912,7 +935,7 @@ We will see:
 
 <div align=center><img src="imgs/v1/38.png" alt="drawing" width="200"/></div>
 
-If you choose the ```sel``` is low, and input is 2, then the second led will light as shown below:
+If you choose the ```sel``` is low, and the input is 2, then the second led will light as shown below:
 
 <div align=center><img src="imgs/v1/21.png" alt="drawing" width="200"/></div>
 
