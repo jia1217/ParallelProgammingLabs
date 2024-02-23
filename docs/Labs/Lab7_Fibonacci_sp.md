@@ -136,17 +136,8 @@ module fibonacci_checker(din,valid);
   output reg valid;
    reg [3:0] dout[0:6];
    reg [6:0] out_valid;
-   reg [3:0] data;
-    initial begin
-      dout[0] = 4'h00;
-      dout[1] = 4'h01;
-      dout[2] = 4'h02;
-      dout[3] = 4'h03;
-      dout[4] = 4'h05;
-      dout[5] = 4'h08;
-      dout[6] = 4'h0D;
-    end   
-    
+   reg [3:0] data;   
+localparam [3:0] dout[7] = {4'h00, 4'h01, 4'h02, 4'03, 4'h05, 4'h08, 4'h0D} ; 
 integer i;
 always @(*) begin
     for (i = 0; i < 7; i = i + 1) begin
