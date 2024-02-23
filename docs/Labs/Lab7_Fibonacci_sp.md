@@ -409,7 +409,7 @@ If you press the third button, which means the input is 4, then the leds will li
 
 <div align=center><img src="imgs/v1/24.png" alt="drawing" width="200"/></div>
 
-Here, we also use another RGB LED as the fifith output to stand for the ```0x1f```.
+Here, we use another RGB LED as the fifth output to stand for the ```0x1f```.
 
 ## Part IV
 Table 1 below lists the
@@ -433,34 +433,52 @@ connect the outputs of the LED.
 
 **part_4.v**
 ```verilog
-module part_4(
+  module part_4(
    input [3:0] din,
-  output reg [3:0] valid
+   output reg [3:0] valid
     );
-   
-   reg [3:0] dout[0:5];
-  
-    initial begin
-      dout[0] = 8'h00;
-      dout[1] = 8'h01;
-      dout[2] = 8'h02;
-      dout[3] = 8'h03;
-      dout[4] = 8'h05;
-      dout[5] = 8'h08;
-
+ 
+    localparam dout_0 = 8'h00,
+            dout_1 = 8'h01,
+            dout_2 = 8'h02,
+            dout_3 = 8'h03,
+            dout_4 = 8'h05,
+            dout_5 = 8'h08;
+        
+    always @(*) begin
+        case(din)
+            dout_0:begin
+                    valid = dout_0;
+                    end
+            dout_1:begin
+                    valid = dout_1;
+                    end
+            dout_2:
+                    begin
+                    valid = dout_2;
+                    end
+            dout_3:
+                    begin
+                    valid = dout_3;
+                    end
+            dout_4:
+                    begin
+                    valid = dout_4;
+                    end
+            dout_5:
+                    begin
+                    valid = dout_5;
+                    end
+       
+            default:
+                    begin
+                    valid = 4'b1110;
+                    end
+                  
+        endcase
     end
     
-integer i;
-always @(*) begin
-    valid = 4'b1110;
-    for (i = 0; i < 6; i = i + 1) begin
-        if (din == dout[i]) begin
-            valid = dout[i];
-        end
-
-            
-    end
-end 
+    
 endmodule
 ```
 
@@ -629,14 +647,67 @@ which to use) and map the output to the LEDs.
 
 **Lab1_5.v**
 ```verilog
-module Lab1_5(din,sel,valid);
-  input [2:0] din;
-  input sel;
-  output reg [3:0] valid;
-  
+module Lab1_5(
+  input [3:0] din,
+  input sel,
+  output  [4:0] valid_put,
+  output  dout
+    );
+    
+    test_2 one_put(
+    .din(din),
+    .valid(dout)
+    );
+    
+    test_1 display(
+    .sel(sel),
+    .din(din),
+    .y(valid_put)
+    );
+    
+    
+endmodule
+```
+**test_1.v**
+```verilog
+module test_1(
+    input sel,
+    input [3:0] din,
+    output reg [4:0] y
+    );
+    
+    wire [4:0] next_vaild;
+# This IP actually is the code of the part III
+    test_3 next(
+    .din(din),
+    .valid(next_vaild)
+    );
+     wire [3:0] current_vaild;
+# This IP actually is the code of the part IV
+    test_4 current(
+    .din(din),
+    .valid(current_vaild)
+    );
+
+    always @(*) begin
+    if(sel == 1'b0)
+        y = current_vaild;
+    else
+        y = next_vaild;
+    end
+
+endmodule
+```
+
+**test_2.v**
+```verilog
+module test_2(din,valid);
+  input [3:0] din;
+  output  reg valid;
   
    reg [3:0] dout[0:6];
-  
+   reg [6:0] out_valid;
+   reg [3:0] data;
     initial begin
       dout[0] = 4'h00;
       dout[1] = 4'h01;
@@ -644,27 +715,34 @@ module Lab1_5(din,sel,valid);
       dout[3] = 4'h03;
       dout[4] = 4'h05;
       dout[5] = 4'h08;
-    end
+      dout[6] = 4'h0D;
+    end   
+    
 integer i;
 always @(*) begin
-    valid = 1'b0;
-    for (i = 0; i < 6; i = i + 1) begin
-        if (din == dout[i]) begin
-            if(sel==1'd1) begin
-                valid = dout[i+1];
-            end
-            if(sel==1'd0) begin
-                valid = dout[i];
-            end
-        end
-    end
+    for (i = 0; i < 7; i = i + 1) begin
+         data = dout[i];
+         if(din == data)
+            out_valid[i]=1'b1;
+         else
+            out_valid[i]=1'b0;
+    end          
 end
 
-  
+always @(*) begin
+    if(out_valid==7'd0)
+        valid = 1'd0;
+    else
+        valid = 1'd1; 
+end
+
+
 endmodule
 ```
 
- Add constraints code: `part_2.xdc`.
+
+
+Add constraints code: `part_2.xdc`.
 
 ```verilog
 # PYNQ Pin Assignments
@@ -691,17 +769,19 @@ set_property IOSTANDARD LVCMOS33 [get_ports sel_0]
 
 ```
 
+You can see the ```Schematic``` under the RTL ANALYSIS as shown below:
 
+<div align=center><img src="imgs/v1/41.png" alt="drawing" width="1000"/></div>
 
 ### Run Simulation
 
 **tb_5.v**
 ``` verilog
 module tb_5();
-
-  reg [2:0] din_t;
+  reg [3:0] din_t;
   reg sel_t;
-  wire  [3:0] valid_t; 
+  wire  [4:0] valid_t;
+  wire one_put;
   initial
   begin
     din_t=0;
@@ -718,10 +798,10 @@ initial begin
     // Add more test cases as needed
 end
   Lab1_5 myFibonacci_task(
-    .valid(valid_t),
+   .valid_put(valid_t),
     .din(din_t),
-    .sel(sel_t));
-
+    .sel(sel_t),
+    .dout(one_put)
 
 
 endmodule
