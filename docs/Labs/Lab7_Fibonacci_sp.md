@@ -569,7 +569,7 @@ We add the AXI_GPIO, double click on the IP, and have the setting like below:
 Then we need to click on the green words like ```Run Block Automation``` and connect the ```FCLK_CLK0``` and ```M_AXI_GP0_ACLK``` together.
 The block design is shown below:
 
-<div align=center><img src="imgs/v1/32.png" alt="drawing" width="500"/></div>
+<div align=center><img src="imgs/v1/32.png" alt="drawing" width="700"/></div>
 
 
 
