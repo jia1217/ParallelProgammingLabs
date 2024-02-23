@@ -6,10 +6,7 @@ sort: 7
 
 ## Lab Overview
 
-This exercise aims to learn how to connect simple input and output devices to an FPGA chip and implement a circuit that uses these devices. We will use the buttons (btn3-0) on the PYNQ-Z2 board as
-inputs to the circuit. We will use light-emitting diodes (LED3-0) as output
-devices. The requirements for this lab consist of completing the Vivado designs.
-
+This exercise aims to learn how to interface with simple input and output devices on an FPGA chip. Specifically, you will implement a circuit on the PYNQ-Z2 board that interacts with the board's buttons and light-emitting diodes (LEDs).
 
 Fibonacci refers to a sequence of numbers named after Leonardo of Pisa, commonly known as Fibonacci. The sequence starts with 0 and 1, and each subsequent number is the sum of the two preceding ones. Therefore, the sequence goes like this: 0, 1, 1, 2, 3, 5, 8, 13, 21, and so on.
 
@@ -21,7 +18,7 @@ Formally, the Fibonacci sequence can be defined recursively as follows:
 
 * F(n)=F(n-1)+F(n-2) for n>1
 
-The Fibonacci sequence appears in various mathematics, science, and nature areas. It has interesting properties and applications in fields such as number theory, combinatorics, algorithms, and financial markets.
+The Fibonacci sequence appears in various mathematics, science, and nature areas. It has interesting properties and applications in number theory, combinatorics, algorithms, and financial markets.
 
 ## Background
 The PYNQ-Z2 board provides four buttons, called btn3-0, that can be used as inputs to a circuit, and 4 red lights, called LEDR3-0, that can be used to display output values. Since there are 10 buttons and lights, it is convenient to represent them as arrays (STD_LOGIC_VECTOR) in verilog code.
