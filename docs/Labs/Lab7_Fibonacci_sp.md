@@ -741,7 +741,7 @@ endmodule
 ```
 You can see the ```Schematic``` under the RTL ANALYSIS as shown below:
 
-<div align=center><img src="imgs/v1/41.png" alt="drawing" width="500"/></div>
+<div align=center><img src="imgs/v1/42.png" alt="drawing" width="500"/></div>
 
 
 Add constraints code: `part_2.xdc`.
