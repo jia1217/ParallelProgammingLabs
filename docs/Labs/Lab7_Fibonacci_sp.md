@@ -169,7 +169,7 @@ endmodule
 ```
 You can see the ```Schematic``` under the RTL ANALYSIS as shown below:
 
-<div align=center><img src="imgs/v1/40.png" alt="drawing" width="1000"/></div>
+<div align=center><img src="imgs/v1/40.png" alt="drawing" width="500"/></div>
 
  Add constraints code: `part_2.xdc`.
 
@@ -321,7 +321,7 @@ endmodule
 ```
 You can see the ```Schematic``` under the RTL ANALYSIS as shown below:
 
-<div align=center><img src="imgs/v1/41.png" alt="drawing" width="1000"/></div>
+<div align=center><img src="imgs/v1/41.png" alt="drawing" width="500"/></div>
 
 
  Add constraints code: `part_3.xdc`.
@@ -739,7 +739,9 @@ end
 
 endmodule
 ```
+You can see the ```Schematic``` under the RTL ANALYSIS as shown below:
 
+<div align=center><img src="imgs/v1/41.png" alt="drawing" width="500"/></div>
 
 
 Add constraints code: `part_2.xdc`.
@@ -769,9 +771,7 @@ set_property IOSTANDARD LVCMOS33 [get_ports sel_0]
 
 ```
 
-You can see the ```Schematic``` under the RTL ANALYSIS as shown below:
 
-<div align=center><img src="imgs/v1/41.png" alt="drawing" width="1000"/></div>
 
 ### Run Simulation
 
