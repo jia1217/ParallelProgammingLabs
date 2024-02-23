@@ -669,7 +669,7 @@ All components should be appropriately sized in bit width to handle the required
 
 3. Configure the circuit's input to be controlled by pressing a button on the FPGA board and map the circuit's input to press buttons and output to illuminate one of the LEDs on the board.
 
-4. We converted integers to a seven-segment display in Python, but we added the ```AXI_GPIO``` IP to read the data of the LEDs.
+4. We converted integers to a seven-segment display in Python, but we added the ```AXI_GPIO``` IP to write the ```sel``` and read the output value data.
    
 ### Add the source file
 
@@ -792,23 +792,17 @@ Add constraints code: `part_2.xdc`.
 ############################
 # On-board Slide Buttons  #
 ############################
+set_property PACKAGE_PIN R14 [get_ports dout_0]
+set_property IOSTANDARD LVCMOS33 [get_ports dout_0]
+set_property PACKAGE_PIN L19 [get_ports {din_0[3]}]
 set_property PACKAGE_PIN L20 [get_ports {din_0[2]}]
-set_property PACKAGE_PIN D20 [get_ports {din_0[1]}]
 set_property PACKAGE_PIN D19 [get_ports {din_0[0]}]
-set_property PACKAGE_PIN M14 [get_ports {valid_0[3]}]
-set_property PACKAGE_PIN N16 [get_ports {valid_0[2]}]
-set_property PACKAGE_PIN P14 [get_ports {valid_0[1]}]
-set_property PACKAGE_PIN R14 [get_ports {valid_0[0]}]
+set_property PACKAGE_PIN D20 [get_ports {din_0[1]}]
+set_property IOSTANDARD LVCMOS33 [get_ports {din_0[3]}]
 set_property IOSTANDARD LVCMOS33 [get_ports {din_0[2]}]
 set_property IOSTANDARD LVCMOS33 [get_ports {din_0[1]}]
 set_property IOSTANDARD LVCMOS33 [get_ports {din_0[0]}]
-set_property IOSTANDARD LVCMOS33 [get_ports {valid_0[3]}]
-set_property IOSTANDARD LVCMOS33 [get_ports {valid_0[2]}]
-set_property IOSTANDARD LVCMOS33 [get_ports {valid_0[1]}]
-set_property IOSTANDARD LVCMOS33 [get_ports {valid_0[0]}]
 
-set_property PACKAGE_PIN L19 [get_ports sel_0]
-set_property IOSTANDARD LVCMOS33 [get_ports sel_0]
 
 ```
 
@@ -867,7 +861,11 @@ The setting of the ```AXI_GPIO``` is the same as part IV.
 
 The block design is shown below:
 
-<div align=center><img src="imgs/v1/37.png" alt="drawing" width="700"/></div>
+<div align=center><img src="imgs/v1/43.png" alt="drawing" width="700"/></div>
+
+The AXI GPIO block will be assigned memory-mapped addresses that the processor can access. These addresses are used to control the GPIO pins and read their status. The memory mapping allows the processor to interact with the GPIO through standard read and write operations to specific addresses associated with the GPIO functions. We can get the addresses of the two GIPOs below:
+
+<div align=center><img src="imgs/v1/44.png" alt="drawing" width="700"/></div>
 
 ### Download the bitstream file to PYNQ
 
@@ -875,16 +873,20 @@ We need to download the design_1_wrapper.bit to the local machine. Go to Lab7/pr
 
 
 ```python
-    from pynq import Overlay
-    from pynq import Bitstream
-    bit = Bitstream("design_1_wrapper.bit")
-    bit.download()
-    bit.bitfile_name
+from pynq import Overlay
+from pynq import Bitstream
+bit = Bitstream("design_1.bit")
+bit.download()
+bit.bitfile_name
 
 ```
 
 ```python
-overlay = Overlay('design_1.bit')
+from pynq import MMIO
+
+GPIO_BASE_ADDRESS = 0X41200000
+GPIO_RANGE = 0x1000
+gpio = MMIO(GPIO_BASE_ADDRESS, GPIO_RANGE)
 
 representations = {
     '0': ('###', '# #', '# #', '# #', '###'),
@@ -909,8 +911,12 @@ def seven_segment(number):
     for i in range(5):
         print("  ".join(segment[i] for segment in digits))
 ```
-
-
+```python
+DATA_OFFSET = 0X0
+DATA = 0X1
+#control the sel value to determine the output is the current value or the next value
+gpio.write(DATA_OFFSET,DATA)
+```
 If you press the ```sel```, which means the sel is high, then the first led will light as shown below:
 
 <div align=center><img src="imgs/v1/20.png" alt="drawing" width="200"/></div>
@@ -918,8 +924,11 @@ If you press the ```sel```, which means the sel is high, then the first led will
 At the same time, you can run the code below:
 
 ```python
-led=overlay.leds_gpio
-seven_segment(led.read())
+GPIO_BASE_ADDRESS = 0X41210000
+GPIO_RANGE = 0x1000
+gpio = MMIO(GPIO_BASE_ADDRESS, GPIO_RANGE)
+
+seven_segment(gpio.read(0X00))
 ```
 We will see:
 
@@ -931,8 +940,26 @@ If you choose the ```sel``` is low, and the input is 2, then the second led will
 
 At the same time, you can run the code below:
 ```python
-led=overlay.leds_gpio
-seven_segment(led.read())
+GPIO_BASE_ADDRESS = 0X41200000
+GPIO_RANGE = 0x1000
+gpio = MMIO(GPIO_BASE_ADDRESS, GPIO_RANGE)
+DATA_OFFSET = 0X0
+DATA = 0X0
+#change the sel value to the 0
+gpio.write(DATA_OFFSET,DATA)
+
+```
+
+```python
+GPIO_BASE_ADDRESS = 0X41210000
+GPIO_RANGE = 0x1000
+gpio = MMIO(GPIO_BASE_ADDRESS, GPIO_RANGE)
+
+
+state=hex(gpio.read())
+seven_segment(state[-1])
+
+
 ```
 We will see:
 
