@@ -852,7 +852,7 @@ endmodule // End of the testbench module tb_5
 
 ```
 
-<div align=center><img src="imgs/v1/18.png" alt="drawing" width="600"/></div>
+<div align=center><img src="imgs/v1/45.png" alt="drawing" width="600"/></div>
 
 ### Implementation
 
