@@ -934,7 +934,7 @@ We will see:
 
 <div align=center><img src="imgs/v1/38.png" alt="drawing" width="200"/></div>
 
-At the same time, you can run the code below:
+If you change the sel value to 0, you can run the code below:
 ```python
 GPIO_BASE_ADDRESS = 0X41200000
 GPIO_RANGE = 0x1000
