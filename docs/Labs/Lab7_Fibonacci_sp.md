@@ -673,10 +673,10 @@ All components should be appropriately sized in bit width to handle the required
    
 ### Add the source file
 
-**Lab1_5.v**
+**test_5.v**
 ```verilog
 // Define a module named Lab1_5
-module Lab1_5(
+module test_5(
   input [3:0] din,          // 4-bit input 'din' representing the data input
   input sel,                // Single-bit input 'sel' used for selection in the display module
   output [4:0] valid_put,   // 5-bit output 'valid_put' from the display module
@@ -841,7 +841,7 @@ module tb_5();
     end
 
     // Instantiate the Device Under Test (DUT): Lab1_5 module
-    Lab1_5 myFibonacci_task(
+    test_5 myFibonacci_task(
         .valid_put(valid_t), // Connect the testbench 'valid_t' to the DUT 'valid_put'
         .din(din_t),         // Connect the testbench 'din_t' to the DUT 'din'
         .sel(sel_t),         // Connect the testbench 'sel_t' to the DUT 'sel'
