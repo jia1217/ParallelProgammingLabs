@@ -927,7 +927,7 @@ At the same time, you can run the code below:
 GPIO_BASE_ADDRESS = 0X41210000
 GPIO_RANGE = 0x1000
 gpio = MMIO(GPIO_BASE_ADDRESS, GPIO_RANGE)
-
+#input is 0, then output data will be 1
 seven_segment(gpio.read(0X00))
 ```
 We will see:
