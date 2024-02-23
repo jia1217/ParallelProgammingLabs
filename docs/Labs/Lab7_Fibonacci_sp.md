@@ -134,10 +134,9 @@ Create a circuit that accepts a four-bit input and outputs a single bit. This ci
 module fibonacci_checker(din,valid);
   input [3:0] din;
   output reg valid;
-  
-  
    reg [3:0] dout[0:6];
-  
+   reg [6:0] out_valid;
+   reg [3:0] data;
     initial begin
       dout[0] = 4'h00;
       dout[1] = 4'h01;
@@ -146,20 +145,31 @@ module fibonacci_checker(din,valid);
       dout[4] = 4'h05;
       dout[5] = 4'h08;
       dout[6] = 4'h0D;
-    end
+    end   
+    
 integer i;
 always @(*) begin
-    valid = 1'b0;
     for (i = 0; i < 7; i = i + 1) begin
-        if (din == dout[i]) begin
-            valid = 1'b1;
-        end
-    end
+         data = dout[i];
+         if(din == data)
+            out_valid[i]=1'b1;
+         else
+            out_valid[i]=1'b0;
+    end          
 end
 
-  
+always @(*) begin
+    if(out_valid==7'd0)
+        valid = 1'd0;
+    else
+        valid = 1'd1; 
+end
+
 endmodule
 ```
+You can see the ```Schematic``` under the RTL ANALYSIS as shown below:
+
+<div align=center><img src="imgs/v1/40.png" alt="drawing" width="1000"/></div>
 
  Add constraints code: `part_2.xdc`.
 
@@ -256,38 +266,63 @@ the output to *LEDR* outputs.
 
 **part_3.v**
 ```verilog
-module part_3(
-    input [3:0] din,
-  output reg [4:0] valid
+ module part_3(
+   input [3:0] din,
+   output reg [4:0] valid
     );
  
- 
-   reg [4:0] dout[0:7];
-  
-    initial begin
-      dout[0] = 8'h00;
-      dout[1] = 8'h01;
-      dout[2] = 8'h02;
-      dout[3] = 8'h03;
-      dout[4] = 8'h05;
-      dout[5] = 8'h08;
-      dout[6] = 8'h0D;
-      dout[7] = 8'h15;
+    localparam dout_0 = 8'h00,
+            dout_1 = 8'h01,
+            dout_2 = 8'h02,
+            dout_3 = 8'h03,
+            dout_4 = 8'h05,
+            dout_5 = 8'h08,
+            dout_6 = 8'h0D,
+            dout_7 = 8'h15;
+    always @(*) begin
+        case(din)
+            dout_0:begin
+                    valid = dout_1;
+                    end
+            dout_1:begin
+                    valid = dout_2;
+                    end
+            dout_2:
+                    begin
+                    valid = dout_3;
+                    end
+            dout_3:
+                    begin
+                    valid = dout_4;
+                    end
+            dout_4:
+                    begin
+                    valid = dout_5;
+                    end
+             dout_5:
+                    begin
+                    valid = dout_6;
+                    end
+             dout_6:
+                    begin
+                    valid = dout_7;
+                    end
+                    
+              default:
+                    begin
+                    valid = 5'b11111;
+                    end
+                  
+        endcase
     end
     
-integer i;
-always @(*) begin
-    valid = 5'b11111;
-    for (i = 0; i < 8; i = i + 1) begin
-        if (din == dout[i]) begin
-            valid = dout[i+1];
-        end
-            
-    end
-end
-
+    
 endmodule
 ```
+You can see the ```Schematic``` under the RTL ANALYSIS as shown below:
+
+<div align=center><img src="imgs/v1/41.png" alt="drawing" width="1000"/></div>
+
 
  Add constraints code: `part_3.xdc`.
 
