@@ -6,8 +6,8 @@ sort: 7
 
 ## Lab Overview
 
-The purpose of this exercise is to learn how to connect simple input and output devices to an FPGA chip and implement a circuit that uses these devices. We will use the buttons (btn3-0) on the PYNQ-Z2 board as
-inputs to the circuit. We will use light emitting diodes (LEDR3-0) as output
+This exercise aims to learn how to connect simple input and output devices to an FPGA chip and implement a circuit that uses these devices. We will use the buttons (btn3-0) on the PYNQ-Z2 board as
+inputs to the circuit. We will use light-emitting diodes (LED3-0) as output
 devices. The requirements for this lab consist of completing the Vivado designs.
 
 
@@ -21,10 +21,10 @@ Formally, the Fibonacci sequence can be defined recursively as follows:
 
 * F(n)=F(n-1)+F(n-2) for n>1
 
-The Fibonacci sequence appears in various areas of mathematics, science, and nature. It has interesting properties and applications in fields such as number theory, combinatorics, algorithms, and even in financial markets.
+The Fibonacci sequence appears in various mathematics, science, and nature areas. It has interesting properties and applications in fields such as number theory, combinatorics, algorithms, and financial markets.
 
 ## Background
-The PYNQ-Z2 board provides 4 buttons, called btn3-0, that can be used as inputs to a circuit, and 4 red lights, called LEDR3-0, that can be used to display output values. Since there are 10 buttons and lights, it is convenient to represent them as arrays (STD_LOGIC_VECTOR) in verilog code.
+The PYNQ-Z2 board provides four buttons, called btn3-0, that can be used as inputs to a circuit, and 4 red lights, called LEDR3-0, that can be used to display output values. Since there are 10 buttons and lights, it is convenient to represent them as arrays (STD_LOGIC_VECTOR) in verilog code.
 
 ## Part I
 The figure below shows a sum-of-products circuit that implements a 2-to-1 multiplexer with select inputs.
@@ -50,66 +50,70 @@ some good designs that demonstrate multiplexer code!
 **part_1.v** 
 ```verilog
 
+// Define a module named part_1
 module part_1(
-    input sel,
-    input [7:0] a,
-    input [7:0] b,
-    output reg [7:0] y
-    );
-    
+    input sel,              // Declare a single-bit input 'sel' for selection
+    input [7:0] a,          // Declare an 8-bit input 'a'
+    input [7:0] b,          // Declare an 8-bit input 'b'
+    output reg [7:0] y      // Declare an 8-bit output 'y' and make it a reg type to allow procedural assignments
+);
+
+    // Define a combinational always block that triggers on any change of inputs
     always @(*) begin
-    if(sel == 1'b0)
-        y = a;
-    else
-        y = b;
+        if(sel == 1'b0)     // Check if the selection input 'sel' is 0
+            y = a;          // If 'sel' is 0, assign the value of 'a' to 'y'
+        else
+            y = b;          // If 'sel' is not 0 (i.e., is 1), assign the value of 'b' to 'y'
     end
 
-endmodule
+endmodule // End of module part_1
 
 ```
 
 **tb_part1.v**
 ```verilog
+// Define a testbench module for part_1
 module tb_part1;
 
-    // Inputs
-    reg sel;
-    reg [7:0] a;
-    reg [7:0] b;
+    // Test Inputs
+    reg sel;            // Define a single-bit register 'sel' for selection
+    reg [7:0] a;        // Define an 8-bit register 'a'
+    reg [7:0] b;        // Define an 8-bit register 'b'
 
-    // Output
-    wire [7:0] y;
+    // Test Output
+    wire [7:0] y;       // Define an 8-bit wire 'y' for the output of the device under test (DUT)
 
-    // Instantiate the part_1
+    // Instantiate the Device Under Test (DUT): part_1 module
     part_1 uut (
-        .sel(sel),
-        .a(a),
-        .b(b),
-        .y(y)
+        .sel(sel),      // Connect the testbench 'sel' to the DUT 'sel'
+        .a(a),          // Connect the testbench 'a' to the DUT 'a'
+        .b(b),          // Connect the testbench 'b' to the DUT 'b'
+        .y(y)           // Connect the DUT 'y' to the testbench 'y'
     );
- initial begin
-        // Test case 1: select a
-        sel = 0;
-        a = 8'b10101010;
-        b = 8'b00001111;
-        #10;
 
-        // Test case 2: select b
-        sel = 1;
-        a = 8'b10101010;
-        b = 8'b00001111;
-        #10;
+    // Begin the initial block for test stimulus
+    initial begin
+        // Test case 1: select input 'a'
+        sel = 0;        // Set 'sel' to 0 to select input 'a'
+        a = 8'b10101010; // Assign test value to 'a'
+        b = 8'b00001111; // Assign test value to 'b'
+        #10;             // Wait for 10 time units
+
+        // Test case 2: select input 'b'
+        sel = 1;        // Set 'sel' to 1 to select input 'b'
+        a = 8'b10101010; // Assign test value to 'a'
+        b = 8'b00001111; // Assign test value to 'b'
+        #10;             // Wait for 10 time units
 
         // Add more test cases as needed
     end
 
-    // Display output
+    // Always block to display the results whenever any of the inputs or output changes
     always @* begin
-        $display("sel=%b, a=%b, b=%b, y=%b", sel, a, b, y);
+        $display("sel=%b, a=%b, b=%b, y=%b", sel, a, b, y); // Display the current values of 'sel', 'a', 'b', and 'y'
     end
 
-
-endmodule
+endmodule // End of testbench module tb_part1
 
 
 ```
@@ -131,32 +135,39 @@ Create a circuit that accepts a four-bit input and outputs a single bit. This ci
 
 **fibonacci_checker.v**
 ```verilog
-module fibonacci_checker(din,valid);
-  input [3:0] din;
-  output reg valid;
- 
-   reg [6:0] out_valid;
-   reg [3:0] data;   
-localparam [3:0] dout[7] = {4'h00, 4'h01, 4'h02, 4'03, 4'h05, 4'h08, 4'h0D} ; 
-integer i;
-always @(*) begin
-    for (i = 0; i < 7; i = i + 1) begin
-         data = dout[i];
-         if(din == data)
-            out_valid[i]=1'b1;
-         else
-            out_valid[i]=1'b0;
-    end          
-end
+// Define a module named fibonacci_checker
+module fibonacci_checker(din, valid);
+    input [3:0] din;         // 4-bit input 'din' representing the data to check
+    output reg valid;        // Output 'valid' indicating if 'din' is a Fibonacci number
 
-always @(*) begin
-    if(out_valid==7'd0)
-        valid = 1'd0;
-    else
-        valid = 1'd1; 
-end
+    reg [6:0] out_valid;     // 7-bit register to hold validity status for each Fibonacci number
+    reg [3:0] data;          // Temporary register to hold current Fibonacci number being checked
 
-endmodule
+    // Local parameter array holding the first eight Fibonacci numbers (as 4-bit values)
+    localparam [3:0] dout[7] = {4'h0, 4'h1, 4'h2, 4'03, 4'h5, 4'h8, 4'hD}; 
+    integer i;               // Integer used for loop indexing
+
+    // Always block to check if 'din' is a Fibonacci number
+    always @(*) begin
+        for (i = 0; i < 7; i = i + 1) begin    // Iterate over all Fibonacci numbers defined
+            data = dout[i];                   // Assign the current Fibonacci number to 'data'
+            if(din == data)                   // Check if input 'din' matches the current Fibonacci number
+                out_valid[i] = 1'b1;          // If match, set corresponding bit in 'out_valid'
+            else
+                out_valid[i] = 1'b0;          // If not, clear corresponding bit in 'out_valid'
+        end          
+    end
+
+    // Always block to set 'valid' output based on 'out_valid' contents
+    always @(*) begin
+        if(out_valid == 7'd0) // Check if none of the Fibonacci numbers matched 'din'
+            valid = 1'd0;     // If no match, set 'valid' to 0
+        else
+            valid = 1'd1;     // If there's a match, set 'valid' to 1
+    end
+
+endmodule // End of module fibonacci_checker
+
 ```
 You can see the ```Schematic``` under the RTL ANALYSIS as shown below:
 
@@ -191,18 +202,26 @@ set_property IOSTANDARD LVCMOS33 [get_ports valid_0]
 
 **tb_fi_ch.v**
 ``` verilog
+// Define a testbench module named tb_fi_ch for the fibonacci_checker
 module tb_fi_ch();
-  reg [3:0] din_t;
-  wire  valid_t; 
-  initial
-  begin
-    din_t=0;
-  end
-  always #10 din_t=din_t+1;
-  fibonacci_checker myFibonacci_task(
-    .valid(valid_t),
-    .din(din_t));
-endmodule
+    reg [3:0] din_t;   // Define a 4-bit register 'din_t' for driving the input to the DUT
+    wire valid_t;     // Define a wire 'valid_t' to receive the output from the DUT
+
+    // Initial block to initialize test values
+    initial begin
+        din_t = 0;     // Start testing with the input value 0
+    end
+
+    // Always block to increment 'din_t' every 10 time units
+    always #10 din_t = din_t + 1; // Increment 'din_t' every 10 simulation time units
+
+    // Instantiate the Device Under Test (DUT): fibonacci_checker
+    fibonacci_checker myFibonacci_task(
+        .din(din_t),     // Map the testbench 'din_t' to the DUT 'din'
+        .valid(valid_t)  // Map the DUT 'valid' output to the testbench 'valid_t'
+    );
+endmodule // End of the testbench module tb_fi_ch
+
 
 ```
 
