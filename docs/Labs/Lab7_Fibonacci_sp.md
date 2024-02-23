@@ -577,7 +577,7 @@ The block design is shown below:
 
 We need to download the design_1_wrapper.bit to the local machine. Go to Lab7/project_1/project_1.runs/impl_1, download design_1_wrapper.bit, and upload the file to the PYNQ. And we also need the ```.hwh``` file in the /project_1/project_1.gen/sources_1/bd/design_1/hw_handoff and upload the file to the PYNQ like below:
 
-<div align=center><img src="imgs/v1/34.png" alt="drawing" width="500"/></div>
+<div align=center><img src="imgs/v1/34.png" alt="drawing" width="300"/></div>
 
 ```python
 from pynq import Overlay
@@ -712,7 +712,7 @@ module test_1(
     wire [4:0] next_vaild;
 
     // Instantiate test_3 module named next
-    // This IP actually is the code of the part III (as indicated by the comment)
+    // This IP actually is the code of part III (as indicated by the comment)
     test_3 next(
         .din(din),              // Connect 'din' from test_1 to 'din' in test_3
         .valid(next_vaild)      // Connect 'next_vaild' from test_3 to 'next_vaild' in test_1
@@ -728,7 +728,7 @@ module test_1(
         .valid(current_vaild)   // Connect 'current_vaild' from test_4 to 'current_vaild' in test_1
     );
 
-    // Always block to select between current valid value and next valid value based on 'sel'
+    // Always block to select between the current valid value and the next valid value based on 'sel'
     always @(*) begin
         if(sel == 1'b0)
             y = {1'b0, current_vaild}; // If 'sel' is 0, assign 'current_vaild' to 'y' (extended to 5 bits)
@@ -867,7 +867,7 @@ The setting of the ```AXI_GPIO``` is the same as part IV.
 
 The block design is shown below:
 
-<div align=center><img src="imgs/v1/37.png" alt="drawing" width="500"/></div>
+<div align=center><img src="imgs/v1/37.png" alt="drawing" width="700"/></div>
 
 ### Download the bitstream file to PYNQ
 
