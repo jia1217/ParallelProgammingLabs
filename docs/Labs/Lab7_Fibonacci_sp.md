@@ -748,23 +748,13 @@ module test_2(
     output reg valid      // Single-bit output 'valid' indicating if 'din' is a Fibonacci number
 );
 
-    // Declaration of an array to hold predefined Fibonacci numbers
-    reg [3:0] dout[0:6];
     // Register to hold the validation status for each Fibonacci number
     reg [6:0] out_valid;
     // Temporary register to hold the current Fibonacci number being checked
     reg [3:0] data;
 
     // Initial block to populate the 'dout' array with the first seven Fibonacci numbers
-    initial begin
-        dout[0] = 4'h0;
-        dout[1] = 4'h1;
-        dout[2] = 4'h2;
-        dout[3] = 4'h3;
-        dout[4] = 4'h5;
-        dout[5] = 4'h8;
-        dout[6] = 4'hD;
-    end   
+   localparam [3:0] dout[7] = {4'h0, 4'h1, 4'h2, 4'03, 4'h5, 4'h8, 4'hD}; 
     
     // Integer used for loop indexing
     integer i;
