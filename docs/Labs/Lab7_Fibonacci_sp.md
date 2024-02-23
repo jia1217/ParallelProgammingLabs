@@ -7,6 +7,7 @@ sort: 7
 ## Lab Overview
 
 This exercise aims to learn how to interface with simple input and output devices on an FPGA chip. Specifically, you will implement a circuit on the PYNQ-Z2 board that interacts with the board's buttons and light-emitting diodes (LEDs).
+Complete the design in Vivado for the PYNQ-Z2 board. This design should map the board's buttons (BTN3 to BTN0) as inputs to your circuit. Use the board's LEDs (LED3 to LED0) as output devices. Your circuit should drive these LEDs based on the input received from the buttons.
 
 Fibonacci refers to a sequence of numbers named after Leonardo of Pisa, commonly known as Fibonacci. The sequence starts with 0 and 1, and each subsequent number is the sum of the two preceding ones. Therefore, the sequence goes like this: 0, 1, 1, 2, 3, 5, 8, 13, 21, and so on.
 
@@ -21,7 +22,7 @@ Formally, the Fibonacci sequence can be defined recursively as follows:
 The Fibonacci sequence appears in various mathematics, science, and nature areas. It has interesting properties and applications in number theory, combinatorics, algorithms, and financial markets.
 
 ## Background
-The PYNQ-Z2 board provides four buttons, called btn3-0, that can be used as inputs to a circuit, and 4 red lights, called LEDR3-0, that can be used to display output values. Since there are 10 buttons and lights, it is convenient to represent them as arrays (STD_LOGIC_VECTOR) in verilog code.
+The PYNQ-Z2 board is equipped with four push buttons and four red LEDs. These components are useful for interacting with and visualizing the behavior of your digital circuit designs. In this exercise, you will utilize these buttons and LEDs to create an interactive Verilog module.
 
 ## Part I
 The figure below shows a sum-of-products circuit that implements a 2-to-1 multiplexer with select inputs.
@@ -29,14 +30,11 @@ If s = 0, the multiplexer’s output m equals the input x; if s = 1, the output 
 
 <div align=center><img src="imgs/v1/9.png" alt="drawing" width="300"/></div>
 
-The multiplexer can be described by the following *Data Flow* verilog statement:
+The multiplexer can be described by the following *Data Flow* Verilog statement:
 
 m <= (NOT (s) AND x) OR (s AND y);
 
-1. Write a Verilog entity that describes the circuit given in below figure (an eight-bit wide 2-to-1 multiplexer).
-This circuit has two eight-bit inputs, X and Y, and produces the eight-bit output M. If s = 0 then M = X,
-while if s = 1 then M = Y. It has the circuit symbol shown in b, in which X, Y, and M are depicted as eightbit wires (vectors). Note, it will be very difficult to describe this as data flow! Refer to lecture notes for
-some good designs that demonstrate multiplexer code!
+1. Design a Verilog module that implements an 8-bit wide 2-to-1 multiplexer. This multiplexer should take two 8-bit inputs, X and Y, and select between them based on a single-bit selector, s. The output of the multiplexer, M, will be one of the two inputs depending on the state of s: when s = 0, M should equal X; and when s = 1, M should equal Y.
 
 2. Simulate with a test bench.
 
@@ -115,18 +113,18 @@ endmodule // End of testbench module tb_part1
 
 ```
 
-And we can run Simulation to check the code by clicking the ```Run Simulation``` under the ```SIMULATION``` and choose the first ```Run Behavioral Simulation```. 
+We can run a Simulation to check the code by clicking the ```Run Simulation``` under ```SIMULATION``` and choose the first ```Run Behavioral Simulation```. 
 
 <div align=center><img src="imgs/v1/11.png" alt="drawing" width="1000"/></div>
 
 ## Part II
 Create a circuit that accepts a four-bit input and outputs a single bit. This circuit will output logic high if the input bits are valid Fibonacci numbers (0, 1, 2, 3, 5, 8, 13), and logic is low otherwise.
 
-1. Write the Verilog entity/architecture as described.
+1. Write the Verilog module as described.
 
 2. Simulate with a test bench.
 
-3. Wrap this (as shown in Lab0) in another entity to compile it for board use. Map the input to press the button and map the output to one of the LEDR outputs.
+3. Configure the circuit's input to be controlled by pressing a button on the FPGA board and map the circuit's output to illuminate one of the LEDs on the board.
 
 ### Add the source file
 
@@ -224,7 +222,7 @@ endmodule // End of the testbench module tb_fi_ch
 
 <div align=center><img src="imgs/v1/12.png" alt="drawing" width="1000"/></div>
 
-### Implemention
+### Implementation
 
 The part can reference the [Generate Bitstream](https://uri-nextlab.github.io/ParallelProgammingLabs/Labs/Lab1_led.html#generate-the-bitstream) in lab1.
 
@@ -234,8 +232,8 @@ The block design is shown below:
 
 ### Download the bitstream file to PYNQ
 
-We need to download the design_1_wrapper.bit to local machine. Back to dashboard-launch Palmetto Desktop, click Files in the orange bar and choose Home Directory. Go to Lab7/project_1/project_1.runs/impl_1 and download design_1_wrapper.bit and upload the file to the PYNQ.
-
+We need to download the design_1_wrapper.bit to the local machine. Go to Lab7/project_1/project_1.runs/impl_1, download design_1_wrapper.bit, and upload the file to the PYNQ.
+Ensure you follow each step to properly transfer the bitstream file from your development environment to the PYNQ board.
 
 ```python
     from pynq import Overlay
@@ -246,11 +244,11 @@ We need to download the design_1_wrapper.bit to local machine. Back to dashboard
 
 ```
 
-If you don't press the button, which means the input is 0, then the first led will light as shown below:
+If you don't press the button, which means the input is 0, then the first LED will light up as shown below:
 
 <div align=center><img src="imgs/v1/26.png" alt="drawing" width="200"/></div>
 
-If you press the third button, which means the input is 4, then the leds will light as shown below:
+If you press the third button, which means the input is 4, then the LEDs will light as shown below:
 
 <div align=center><img src="imgs/v1/27.png" alt="drawing" width="200"/></div>
 
@@ -262,13 +260,11 @@ Fibonacci number if the input is a valid number. This circuit will begin at *“
 protect against the difficult beginning of the sequence: 0, 1, 1…). So for *“0001”* the output will be *“00010”* up to
 *“1101”* outputting *“10101”*. For invalid inputs, output *“11111”*.
 
-1. Write the Verilog entity/architecture as described.
+1. Write the Verilog module as described.
 
 2. Simulate with a test bench.
 
-3. Wrap this (as shown in Lab0) in another entity to compile it for board use. Map the input to press the buttons and map
-the output to *LEDR* outputs.
-
+3. Configure the circuit's input to be controlled by pressing a button on the FPGA board and map the circuit's input to press the buttons and output to illuminate one of the LEDs on the board.
 ### Add the source file
 
 **part_3.v**
@@ -390,7 +386,7 @@ endmodule // End of the testbench module tb_3
 
 <div align=center><img src="imgs/v1/14.png" alt="drawing" width="1000"/></div>
 
-### Implemention
+### Implementation
 
 The part can reference the [Generate Bitstream](https://uri-nextlab.github.io/ParallelProgammingLabs/Labs/Lab1_led.html#generate-the-bitstream) in lab1.
 
@@ -429,16 +425,13 @@ displayed; E is displayed (for Error) when a non-Fibonacci number is selected.
 
 <div align=center><img src="imgs/v1/31.png" alt="drawing" width="200"/></div>
 
-
-1. Write a Verilog entity/architecture to activate each of the seven segments. Use only simple Verilog
-assignment statements in your code to specify each logic function.
+1. Write the Verilog module as described.
 
 2. Simulate with a test bench.
 
-3. Wrap this (as shown in Lab0) in another entity to compile for board use. Map the inputs to press buttons and
-connect the outputs of the LED.
-
-4. Converting integers to seven-segment display in python, but we add the ```AXI_GPIO``` IP to read the data of the led.
+3. Configure the circuit's input to be controlled by pressing a button on the FPGA board and map the circuit's input to press buttons and output to illuminate one of the LEDs on the board.
+4. 
+5. Converting integers to seven-segment display in Python, but we add the ```AXI_GPIO``` IP to read the data of the LEDs.
 
 ### Add the source file
 
@@ -551,14 +544,14 @@ endmodule // End of the testbench module tb_4
 
 <div align=center><img src="imgs/v1/17.png" alt="drawing" width="1000"/></div>
 
-### Implemention
+### Implementation
 
 The part can reference the [Generate Bitstream](https://uri-nextlab.github.io/ParallelProgammingLabs/Labs/Lab1_led.html#generate-the-bitstream) in lab1.
-We just add the AXI_GPIO and double click on the IP and have the setting like below:
+We just add the AXI_GPIO double click on the IP, and have the setting like below:
 
 <div align=center><img src="imgs/v1/33.png" alt="drawing" width="500"/></div>
 
-And then we just need to click on the green words like ```Run Block Automation``` and connect the ```FCLK_CLK0``` and ```M_AXI_GP0_ACLK``` together.
+Then we just need to click on the green words like ```Run Block Automation``` and connect the ```FCLK_CLK0``` and ```M_AXI_GP0_ACLK``` together.
 The block design is shown below:
 
 <div align=center><img src="imgs/v1/32.png" alt="drawing" width="500"/></div>
@@ -567,7 +560,7 @@ The block design is shown below:
 
 ### Download the bitstream file to PYNQ
 
-We need to download the design_1_wrapper.bit to local machine. Back to dashboard-launch Palmetto Desktop, click Files in the orange bar and choose Home Directory. Go to Lab7/project_1/project_1.runs/impl_1 and download design_1_wrapper.bit and upload the file to the PYNQ. And we also need the ```.hwh``` file in the /project_1/project_1.gen/sources_1/bd/design_1/hw_handoff and upload the file to the PYNQ like below:
+We need to download the design_1_wrapper.bit to the local machine. Go to Lab7/project_1/project_1.runs/impl_1 and download design_1_wrapper.bit, and upload the file to the PYNQ. And we also need the ```.hwh``` file in the /project_1/project_1.gen/sources_1/bd/design_1/hw_handoff and upload the file to the PYNQ like below:
 
 <div align=center><img src="imgs/v1/34.png" alt="drawing" width="500"/></div>
 
@@ -609,9 +602,9 @@ def seven_segment(number):
 
 ```python
 led=overlay.leds_gpio
-#define the leds_gpio and then we can read the values of the leds
+#define the leds_gpio, and then we can read the values of the LEDs
 ```
-If you press the third button which means the input data is 4, then the three leds will on which means the value is e
+If you press the third button, which means the input data is 4, then the three LEDs will on, which means the value is e
 
 <div align=center><img src="imgs/v1/22.png" alt="drawing" width="200"/></div>
 
@@ -619,7 +612,7 @@ At the same time, you can run the code below:
 ```python
 state=hex(led.read())
 seven_segment(state[-1])
-#display the values of the leds
+#display the values of the LEDs
 ```
 You can see the state is ```e```
 
@@ -644,17 +637,16 @@ You can see:
 Using all of the components above, create a structural design that links all of the components. Your input to the entity will be a four-bit code for the current number and a one-bit select line for the multiplexer. Your outputs
 There Will be a single bit high for valid Fibonacci numbers on the input. The multiplexer (note you will need to modify the multiplexer shown to the
 correct bit width) will be used to control if the current Fibonacci input
- (when select is 0, the input is displayed when 1, the next Fibonacci number is displayed). This only displays
+ (when select is 0, the input is displayed. When 1, the next Fibonacci number is displayed). This only displays
 When selected, 0-8, ignoring the 13 from the following Fibonacci output.
 
-1. Write the Verilog entity/architecture as described.
+1. Write the Verilog module as described.
 
 2. Simulate with a test bench.
 
-3. Wrap this (as shown in Lab0) in another entity to compile for board use. Map the input to press buttons (you pick
-which to use) and map the output to the LEDs.
+3. Configure the circuit's input to be controlled by pressing a button on the FPGA board and map the circuit's input to press buttons and output to illuminate one of the LEDs on the board.
 
-4. Converting integers to seven-segment display in python, but we add the ```AXI_GPIO``` IP to read the data of the led.
+4. Converting integers to seven-segment display in python, but we add the ```AXI_GPIO``` IP to read the data of the LEDs.
    
 ### Add the source file
 
