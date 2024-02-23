@@ -80,7 +80,7 @@ module tb_part1;
     // Output
     wire [7:0] y;
 
-    // Instantiate the DUT
+    // Instantiate the part_1
     part_1 uut (
         .sel(sel),
         .a(a),
