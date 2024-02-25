@@ -264,7 +264,7 @@ If you press the third button, which means the input is 4, then the LEDs will li
 Design a digital circuit that receives a four-bit binary input and produces a five-bit binary output. This circuit is intended to recognize valid Fibonacci numbers within a predefined range and calculate the next number in the Fibonacci sequence based on the input. The sequence should start from "0001" instead of the traditional "0000" to avoid the initial repeating ones in the Fibonacci series (0, 1, 2, 3, 5...).
 
 * Input: The circuit accepts a four-bit binary number as input.
-* 
+  
 * Output: The circuit outputs a five-bit binary number.
   
 * Operation:
