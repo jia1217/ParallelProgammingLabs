@@ -267,8 +267,6 @@ Design a digital circuit that receives a four-bit binary input and produces a fi
   
 * Output: The circuit outputs a five-bit binary number.
   
-* Operation:
-  
 * If the input is recognized as a valid number in the modified Fibonacci sequence (starting from 1 instead of 0), the circuit will output the next number in the sequence. For example, if the input is "0001" (1 in decimal), the output should be "00010" (2 in decimal).
   
 * The circuit recognizes and processes inputs up to "1101" (13 in decimal), outputting "10101" (21 in decimal) for this input.
