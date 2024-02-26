@@ -33,7 +33,7 @@ Where:
 * `n` is an index over the time-domain samples
 * `k` is an index over the frequency-domain samples
 * `N` is the total number of samples, and
-* $$e^{-j\frac{2\pi}{N}nk}$$ are the basis functions, with `j` being the imaginary unit
+* $e^{-j\frac{2\pi}{N}nk}$ are the basis functions, with `j` being the imaginary unit
 
 Given a certain $k$, DFT is an 
 inner product between series $$x(n)$$ and a complex rotating vector $e^{-j\frac{2k\pi}{N}n}$. Therefore, let $x(n)$ written as a column vector $\vec{x}$, and $e^{-j\frac{2k\pi}{N}n}$ written as a row vector $\vec T_k$, we have $X(k) = \vec T_k \cdot \vec x$. Hence, the entire transformation becomes a matrix-vector multiplication (MVM).
