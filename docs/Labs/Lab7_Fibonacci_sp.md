@@ -880,10 +880,13 @@ bit.bitfile_name
 ```
 
 ```python
+# Import the MMIO class from the PYNQ library to interface with memory-mapped I/O registers.
 from pynq import MMIO
 
-GPIO_BASE_ADDRESS = 0X41200000
-GPIO_RANGE = 0x1000
+# Define constants for the GPIO base address and the range of memory it covers.
+# The base address is where the GPIO registers start in the memory map.
+GPIO_BASE_ADDRESS = 0X41200000  # Base address for the GPIO block
+GPIO_RANGE = 0x1000             # Size of the memory-mapped area for GPIO
 gpio = MMIO(GPIO_BASE_ADDRESS, GPIO_RANGE)
 
 representations = {
@@ -937,8 +940,9 @@ If you change the sel value to 0, you can run the code below:
 GPIO_BASE_ADDRESS = 0X41200000
 GPIO_RANGE = 0x1000
 gpio = MMIO(GPIO_BASE_ADDRESS, GPIO_RANGE)
-DATA_OFFSET = 0X0
-DATA = 0X0
+DATA_OFFSET = 0X0  # Offset for the data register within the GPIO space
+DATA = 0X0        # Data to be written (0 in this case, which might represent all GPIO pins off or select value to 0)
+
 #change the sel value to the 0
 gpio.write(DATA_OFFSET,DATA)
 
