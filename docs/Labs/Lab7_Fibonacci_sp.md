@@ -914,7 +914,7 @@ def seven_segment(number):
 ```
 ```python
 DATA_OFFSET = 0X0  # Offset for the data register within the GPIO space
-DATA = 0X1        # Data to be written (0 in this case, which might represent all GPIO pins off or select value to 0)
+DATA = 0X1        # Data to be written 
 #control the sel value to determine the output is the current value or the next value
 gpio.write(DATA_OFFSET,DATA)
 ```
@@ -941,7 +941,7 @@ GPIO_BASE_ADDRESS = 0X41200000
 GPIO_RANGE = 0x1000
 gpio = MMIO(GPIO_BASE_ADDRESS, GPIO_RANGE)
 DATA_OFFSET = 0X0  # Offset for the data register within the GPIO space
-DATA = 0X0        # Data to be written (0 in this case, which might represent all GPIO pins off or select value to 0)
+DATA = 0X0        # Data to be written 
 
 #change the sel value to the 0
 gpio.write(DATA_OFFSET,DATA)
