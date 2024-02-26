@@ -7,22 +7,20 @@ sort: 8
 ## Lab Overview
 
 The purpose of this lab is to implement a state machine that acts as a lock. The requirements of this
-lab consists of understanding the design requirements implementing the Verilog design.
+The lab consists of understanding the design requirements for implementing the Verilog design.
 
 ## Background
 
 State machines are very useful tools in any computer system. They make it easy to visualize and solve
-all kinds of problems. A state machine is a device that keeps track of the `state` of something. That `state` can change as
-a result of changes to input values, or it may change through some pre-determined sequence. A common example
+all kinds of problems. A state machine is a device that keeps track of the `state` of something. That `state` can change due to changes to input values or through some pre-determined sequence. A common example
 might be a traffic signal at an intersection. The `state` describes how the lights at the intersection may be lit at a given
-time. For simple timed lights, the status will change regularly after fixed time intervals. The same lights could be made
+time. The status will change regularly after fixed time intervals for simple timed lights. The same lights could be made
 more intelligent by incorporating sensor inputs that detect whether cars are waiting, causing the state to change
 differently. That might be from a radar detector or magnetic coil in the road. Additional lights could incorporate a
 pedestrian crossing, and so a pedestrian crosswalk request button could be another input.
 
 Every state machine must have some initial state to ensure everything begins properly and a reset signal to return
-to that initialization. There are two main categories of state machines, ```Moore``` and ```Mealy```. A Moore machine is defined
-as a state machine whose output values are determined only by its current state. A ```Mealy``` machine is defined as a state
+to that initialization. There are two main categories of state machines, ```Moore``` and ```Mealy```. A Moore machine is a state machine whose output values are determined only by its current state. A ```Mealy``` machine is defined as a state
 machine whose output values are determined by both its current state and current inputs. 
 
 <div align=center><img src="imgs/v2/FSMs.png" alt="drawing" width="600"/></div>
@@ -33,7 +31,7 @@ machine whose output values are determined by both its current state and current
 You are to design a ```Moore``` state machine that controls a digital lock. Your lock
 should have three inputs: a reset, a submit (clock) bit, and a decimal digit (4-bit) input. The decimal digit input will encode the
 decimal digits 0-9 in the standard unsigned binary encoding. You will input 3-digit codes by setting the decimal
-digit input to a number and activating the submit bit three times in a row. In order to unlock your device, it should
+digit input to a number and activating the submit bit three times in a row. To unlock your device, it should
 receive three correct digits. In addition, there will be three `Tamper Freeze` sequences, which will freeze the device until a
 reset signal is received. You can use these sequences:
 
@@ -566,7 +564,7 @@ And then you need to press the ```submit ``` button like below:
 
 <div align=center><img src="imgs/v2/6.jpg" alt="drawing" width="200"/></div>
 
-It's unlocked and the blue LED is off because we input the right code number
+It's unlocked, and the blue LED is off because we input the right code number
 
 ```python
 state=gpio_read.read(0x0)
