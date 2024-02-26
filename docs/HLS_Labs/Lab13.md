@@ -39,6 +39,9 @@ typedef ap_axiu<32, 0, 0, 0> pkt;
 ```c++
 #include "example.h"
 
+//Read data from the stream A and add 5 to the data, then write to the stream B
+//Input: stream A and num
+//Output: stream B
 void example(hls::stream<pkt>& A, hls::stream<pkt>& B,int num) {
 #pragma HLS INTERFACE axis port = A
 #pragma HLS INTERFACE axis port = B
