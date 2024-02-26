@@ -542,9 +542,7 @@ When writing `4` to the input, see the board below:
 
 <div align=center><img src="imgs/v2/4.jpg" alt="drawing" width="200"/></div>
 
-And then you need to press the ```submit ``` button like below:
-
-<div align=center><img src="imgs/v2/5.jpg" alt="drawing" width="200"/></div>
+Then, you need to press the ```submit ``` button.
 
 ```python
 state=gpio_read.read(0x0)
