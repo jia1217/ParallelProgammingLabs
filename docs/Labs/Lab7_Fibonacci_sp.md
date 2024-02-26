@@ -913,8 +913,8 @@ def seven_segment(number):
         print("  ".join(segment[i] for segment in digits))
 ```
 ```python
-DATA_OFFSET = 0X0
-DATA = 0X1
+DATA_OFFSET = 0X0  # Offset for the data register within the GPIO space
+DATA = 0X1        # Data to be written (0 in this case, which might represent all GPIO pins off or select value to 0)
 #control the sel value to determine the output is the current value or the next value
 gpio.write(DATA_OFFSET,DATA)
 ```
