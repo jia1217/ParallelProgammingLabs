@@ -7,20 +7,20 @@ sort: 8
 ## Lab Overview
 
 The purpose of this lab is to implement a state machine that acts as a lock. The requirements of this
-lab consist of understanding the design requirements, implementing the Verilog design.
+lab consists of understanding the design requirements implementing the Verilog design.
 
 ## Background
 
 State machines are very useful tools in any computer system. They make it easy to visualize and solve
 all kinds of problems. A state machine is a device that keeps track of the `state` of something. That `state` can change as
-a result of changes to input values or it may change through some pre-determined sequence. A common example
+a result of changes to input values, or it may change through some pre-determined sequence. A common example
 might be a traffic signal at an intersection. The `state` describes how the lights at the intersection may be lit at a given
 time. For simple timed lights, the status will change regularly after fixed time intervals. The same lights could be made
-more intelligent by incorporating sensor inputs which detect whether cars are waiting cause the state to change
+more intelligent by incorporating sensor inputs that detect whether cars are waiting, causing the state to change
 differently. That might be from a radar detector or magnetic coil in the road. Additional lights could incorporate a
-pedestrian crossing and so a pedestrian cross walk request button could be another input.
+pedestrian crossing, and so a pedestrian crosswalk request button could be another input.
 
-Every state machine must have some initial state to make sure everything begins properly and a reset signal to return
+Every state machine must have some initial state to ensure everything begins properly and a reset signal to return
 to that initialization. There are two main categories of state machines, ```Moore``` and ```Mealy```. A Moore machine is defined
 as a state machine whose output values are determined only by its current state. A ```Mealy``` machine is defined as a state
 machine whose output values are determined by both its current state and current inputs. 
@@ -31,18 +31,18 @@ machine whose output values are determined by both its current state and current
 ## Part I(Design Requirements)
 
 You are to design a ```Moore``` state machine that controls a digital lock. Your lock
-should have 3 inputs: a reset, a submit (clock) bit, decimal digit (4-bit) input. The decimal digit input will encode the
+should have three inputs: a reset, a submit (clock) bit, and a decimal digit (4-bit) input. The decimal digit input will encode the
 decimal digits 0-9 in the standard unsigned binary encoding. You will input 3-digit codes by setting the decimal
-digit input to a number and activating the submit bit, three times in a row. In order to unlock your device it should
-receive 3 correct digits. In addition, there will be three `Tamper Freeze` sequences which will freeze the device until a
+digit input to a number and activating the submit bit three times in a row. In order to unlock your device, it should
+receive three correct digits. In addition, there will be three `Tamper Freeze` sequences, which will freeze the device until a
 reset signal is received. You can use these sequences:
 
 `Correct` sequence: “642”
 
 `Tamper Freeze` sequence: “641”; “652”; “643”
 
-Your digital lock will have three outputs: a Locked bit, a Ready bit, and a Tamper bit. The Locked bit and Ready bits should initially be on. After you input your first digit the Ready bit should turn off. If the correct input sequence is observed the Locked bit should turn off, and remain off until the lock is reset. No further inputs should effect the
-device. If one of the Tamper Freeze sequences are observed the Tamper bit should be turned on and remain on until the reset is activated. No further inputs should effect the device. If any other input is observed the device should return to the ready state by activating the Ready bit and wait to accept the next 3-digit input.
+Your digital lock will have three outputs: a Locked bit, a Ready bit, and a Tamper bit. The Locked bit and Ready bits should initially be on. After you input your first digit, the Ready bit should turn off. If the correct input sequence is observed, the Locked bit should turn off and remain off until the lock is reset. No further inputs should affect the
+device. If one of the Tamper Freeze sequences is observed, the Tamper bit should be turned on and remain on until the reset is activated. No further inputs should affect the device. If any other input is observed, the device should return to the ready state by activating the Ready bit and waiting to accept the next 3-digit input.
 
 
 ### Add the source file
@@ -67,7 +67,7 @@ module digital_lock(
     localparam idle = 4'd0,       // Idle state waiting for input
                C_6 = 4'd1,       // State indicating the first digit (6) has been entered correctly
                C_64 = 4'd2,      // State indicating the first two digits (6,4) have been entered correctly
-               C_65 = 4'd3,      // Unused state, you might want to remove or update this comment
+               C_65 = 4'd3,      // Unused state. You might want to remove or update this comment
                C_X = 4'd4,       // State for an incorrect initial digit
                C_XX = 4'd5,      // State for an incorrect sequence after the first digit
                unlocked = 4'd6,  // State where the lock is unlocked
@@ -97,7 +97,7 @@ module digital_lock(
         case(state)
             idle:
                 begin
-                    // In idle state, system is ready and locked. Awaiting correct input
+                    // In idle state, the system is ready and locked. Awaiting correct input
                     if(dint == 3'b110)
                         next_state = C_6;  // Correct first digit
                     else 
@@ -105,7 +105,7 @@ module digital_lock(
                 end
             C_6:
                 begin 
-                    // First digit was correct, ready for second
+                    //The first digit was correct, ready for the second
                     ready = 1'b0;  // System not ready for new input until next submit
                     if(dint == 3'b100)                           
                         next_state = C_64; // Correct second digit
@@ -114,13 +114,13 @@ module digital_lock(
                 end
             C_64:
                 begin
-                    // First two digits correct, decide on final digit
+                    // First two digits correct; decide on the final digit
                     if(dint == 3'b010)
                         next_state = unlocked; // Unlock if correct final digit
                     else if(dint == 3'b001)
                         next_state = tampered; // Tamper detected
                 end     
-            // Other states follow similar pattern
+            // Other states follow a similar pattern
             C_X:
                 begin
                 // For other incorrect data
@@ -197,10 +197,10 @@ module tb_2();
     initial begin
             clk <= 0;      // Initialize the clock
             submit <= 0;   // Initialize the submit button as not pressed
-            reset <= 0;    // Start with the lock in reset state
+            reset <= 0;    // Start with the lock in the reset state
             dint <= 0;     // Initialize the input digit
             #20;           // Wait for 20ns
-            reset <= 1;    // Release the reset to start lock operation
+            reset <= 1;    // Release the reset to start the lock operation
             #20;           // Wait for 20ns
                 
 	        // First input sequence: 6-2-1
@@ -313,7 +313,7 @@ endmodule
 
 ```
 
-Considering that the button press is a high level, it is necessary to debounce the button to ensure the stability of the data.
+Considering that the button press is at a high level, it is necessary to debounce the button to ensure the stability of the data.
 
 **btn_digit.v**
 ```verilog
@@ -343,9 +343,9 @@ module btn_digit (
         else
             begin
                 if (key == 1'd1)
-                    key_reg <= 1'd1;  // Set key register if key is pressed
+                    key_reg <= 1'd1;  // Set key register if the key is pressed
                 else 
-                    key_reg <= 1'd0;  // Clear key register if key is not pressed           
+                    key_reg <= 1'd0;  // Clear key register if the key is not pressed           
             end       
     end
     
@@ -387,7 +387,7 @@ endmodule
 
 
 
-And we can run Simulation to check the code by clicking the ```Run Simulation``` under the ```SIMULATION``` and choose the first ```Run Behavioral Simulation```. 
+We can run a Simulation to check the code by clicking the ```Run Simulation``` under ```SIMULATION``` and choose the first ```Run Behavioral Simulation```. 
 
 <div align=center><img src="imgs/v2/1.png" alt="drawing" width="1000"/></div>
 
@@ -416,7 +416,7 @@ set_property PACKAGE_PIN L19 [get_ports submit_0]
 set_property IOSTANDARD LVCMOS33 [get_ports submit_0]
 ```
 
-### Implemention
+### Implementation
 
 The part can reference the [Generate Bitstream](https://uri-nextlab.github.io/ParallelProgammingLabs/Labs/Lab1_led.html#generate-the-bitstream) in lab1.
 
@@ -424,11 +424,11 @@ The block design is shown below:
 
 <div align=center><img src="imgs/v2/2.png" alt="drawing" width="800"/></div>
 
-Here, we use the ```AXI_GPIO``` write the number to the ```dint``` as input and read the value of the LEDs as the display.
+Here, we use the ```AXI_GPIO``` IP, write the number to the ```dint``` as input and read the value of the LEDs as the display.
 
 ### Download the bitstream file to PYNQ
 
-We need to download the design_1_wrapper.bit to local machine. Back to dashboard-launch Palmetto Desktop, click Files in the orange bar and choose Home Directory. Go to Lab7/project_1/project_1.runs/impl_1 and download design_1_wrapper.bit and upload the file to the PYNQ.
+We need to download the design_1_wrapper.bit to the local machine. Go to Lab7/project_1/project_1.runs/impl_1 download design_1_wrapper.bit, and upload the file to the PYNQ.
 
 ```python
     from pynq import Overlay
@@ -490,10 +490,10 @@ representations = {
 }
 
 def seven_segment(number):
-    # treat the number as a string, since that makes it easier to deal with
+    # treat the number as a string since that makes it easier to deal with
     # on a digit-by-digit basis
     digits = [representations[digit] for digit in str(number)]
-    # now digits is a list of 5-tuples, each representing a digit in the given number
+    # Now digits is a list of 5-tuples, each representing a digit in the given number
     # We'll print the first lines of each digit, the second lines of each digit, etc.
     for i in range(5):
         print("  ".join(segment[i] for segment in digits))
@@ -513,17 +513,17 @@ gpio_write.write(DATA_OFFSET, DATA)  # Write the data to the register at the spe
 
 ```
 
-When write `6` to the input, see the board like below:
+When writing `6` to the input, see the board below:
 
 <div align=center><img src="imgs/v2/2.jpg" alt="drawing" width="200"/></div>
 
-The blue led is on showing it's locked
+The blue LED is on showing it's locked.
 
-And then you need press the ```submit ``` button like below:
+And then you need to press the ```submit ``` button like below:
 
 <div align=center><img src="imgs/v2/3.jpg" alt="drawing" width="200"/></div>
 
- When entering the first data, the ```ready``` led is off.
+ When entering the first data, the ```ready``` LED is off.
 
 ```python
 # Read the current state from the GPIO device. This involves accessing the memory-mapped I/O region
@@ -540,11 +540,11 @@ DATA = 0X4
 gpio_write.write(DATA_OFFSET,DATA)
 
 ```
-When write `4` to the input, see the board like below:
+When writing `4` to the input, see the board below:
 
 <div align=center><img src="imgs/v2/4.jpg" alt="drawing" width="200"/></div>
 
-And then you need press the ```submit ``` button like below:
+And then you need to press the ```submit ``` button like below:
 
 <div align=center><img src="imgs/v2/5.jpg" alt="drawing" width="200"/></div>
 
@@ -562,11 +562,11 @@ DATA = 0X2
 gpio_write.write(DATA_OFFSET,DATA)
 ```
 
-And then you need press the ```submit ``` button like below:
+And then you need to press the ```submit ``` button like below:
 
 <div align=center><img src="imgs/v2/6.jpg" alt="drawing" width="200"/></div>
 
-It's unlocked and the blue led is off because we input the right code number
+It's unlocked and the blue LED is off because we input the right code number
 
 ```python
 state=gpio_read.read(0x0)
