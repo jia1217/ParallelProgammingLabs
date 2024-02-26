@@ -20,13 +20,15 @@ sort: 16
 </script>
 
 ## free_running_kernel_remerge_ii4to1
-This example illustrates the coding example of achieving II=1 based on two sources using the De-Mux/Mux mechanism. It also uses an ap_ctrl_none which shows the free-running kernel behavior.
+This example illustrates the coding example of achieving II=1 based on two sources using the De-Mux/Mux mechanism. It also uses an ap_ctrl_none, which shows the free-running kernel behavior.
 
 **example.cpp**
 ```c++
 #include "example.h"
 
-//--------------------------------------------
+//Write out the read data
+//Input: in
+//Output: out
 template <int ID> void proc(stream<int, 16>& in, stream<int, 16>& out) {
     for (int i = 0; i < 25; i++) {
 #pragma HLS PIPELINE II = 4
@@ -38,6 +40,7 @@ template <int ID> void proc(stream<int, 16>& in, stream<int, 16>& out) {
 }
 
 //--------------------------------------------
+//
 void mux(stream<int, 16> (&inter)[2], stream<int>& mux_output) {
     int mux_sel = 0;
     for (int i = 0; i < 50; i++) {

@@ -27,7 +27,16 @@ $$
 X(k) = \sum_{n = 0}^{N - 1}x(n)e^{-j\frac{2\pi}{N}nk}
 $$
 
-Given a certain $k$, DFT is an inner product between series $$x(n)$$ and a complex rotating vector $e^{-j\frac{2k\pi}{N}n}$. Therefore, let $x(n)$ written as a column vector $\vec{x}$, and $e^{-j\frac{2k\pi}{N}n}$ written as a row vector $\vec T_k$, we have $X(k) = \vec T_k \cdot \vec x$. Hence, the entire transformation becomes a matrix-vector multiplication (MVM).
+Where:
+
+* `X[k]` is the `k`-th element of the DFT
+* `n` is an index over the time-domain samples
+* `k` is an index over the frequency-domain samples
+* `N` is the total number of samples, and
+* `$e^{-j\frac{2\pi}{N}nk}$` are the basis functions, with `j` being the imaginary unit
+
+Given a certain $k$, DFT is an 
+inner product between series $$x(n)$$ and a complex rotating vector $e^{-j\frac{2k\pi}{N}n}$. Therefore, let $x(n)$ written as a column vector $\vec{x}$, and $e^{-j\frac{2k\pi}{N}n}$ written as a row vector $\vec T_k$, we have $X(k) = \vec T_k \cdot \vec x$. Hence, the entire transformation becomes a matrix-vector multiplication (MVM).
 
 $$
 \begin{equation}
@@ -290,8 +299,7 @@ Depending on how the PEs are connected, different operations can be realized. Fo
 Avoiding reloading $A$ every time is tricky. All HLS IPs have a block-level interface (Interface pragma, port = return)([Ref](https://docs.xilinx.com/r/en-US/ug1399-vitis-hls/pragma-HLS-interface)). Except for the ```ap_ctrl_none``` interface, the IP kernel (block, module) must be started manually. Unless the latency from the first input to the last output is much smaller than the length of the total data stream, or the whole module is implemented as an FRP pipeline (Like Fir and Cordic example), the starting signal can significantly slow down the process. For example, even using a systolic array, the first output of MVM comes after the final $x$ is received, which requires $N$ clock cycles, and additional $N$ clock cycles are still required to push out the result. In this case, even under perfect circumstances, the latency between the first input and last output is at least $2\times N$. If the module requires a starting signal, the corresponding 'done' comes after $2\times N$ clock cycles. The software can only wait during this time, and no input can be received between $N\to 2N$ cycles. Hence, even with all pipelines inside the loop achieving II=1, the total average II for the module is at least 2. Reloading $A$ requires at least $N^2$ clock cycles and no operation can be done during this time, which means it is impossible to make the module an FRP pipeline via HLS (reloading itself is a pipeline, then the whole module cannot be a pipeline because if the module is specified as pipelined the reload loop must be unrolled). To solve the problem, we have to create an independent reloading $A$ module and let the module forward the columns of $A$ to the MVM module. Only in this case is the MVM kernel simple enough to be designed as an FRP pipeline. Vitis HLS cannot simulate with multiple kernels connected (Vitis allows). Therefore, here we assume the matrix $A$ is constant, and we just write it inside the bitstream and it does not need to be reloaded. The ultimate purpose is to have a module with II=1 and new data can still be received during the $N\to 2N$ cycles. In addition, we hope the kernel allows random stall, which means $x$ may not come continuously.
 
 ### The second way
-Here is one possible implementation with systolic array architecture. And the ```PE_module``` function is to compute the multiplication and addition. The function receive the ```x``` and ```A``` data and pass the ```x``` data to the next ```PE_module```. We use the ```template``` to set the ```PE_module```to create more PE instances. At the same time, the ```matrix_buffer``` function is to divide the ```A``` to the four buffers and pass every ```A_buffer``` to the ```PE_module```. And this way can be called the ```control_driven```(as shown in [lab3](https://uri-nextlab.github.io/ParallelProgammingLabs/HLS_Labs/Lab3.html#control-driven-task-level-parallelism)) in the ```mvm_ctrl``` function.
-
+Here is one possible implementation with systolic array architecture. And the ```PE_module``` function is to compute the multiplication and addition. The function receive the ```x``` and ```A``` data and pass the ```x``` data to the next ```PE_module```. We use the ```template``` to set the ```PE_module```to create more PE instances. At the same time, the ```matrix_buffer``` function is to divide the ```A``` to the four buffers and pass every ```A_buffer``` to the ```PE_module```. 
 The PE and the entire structure generated with this code are shown below:
 
 <div align=center><img src="Images/18/PE_p.png" alt="drawing" width="350"/></div>

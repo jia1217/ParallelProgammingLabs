@@ -21,7 +21,7 @@ sort: 12
 
 ## Register
 
-An HLS IP or kernel can be controlled by a host application, or embedded processor using the Slave AXI4-Lite interface (```s_axilite```) which acts as a system bus for communication between the processor and the kernel. Using the ```s_axilite``` interface the host or an embedded processor can start and stop the kernel, and read or write data to it. When Vitis HLS synthesizes the design the ```s_axilite``` interface is implemented as an adapter that captures the data communicated from the host in registers on the adapter.
+An HLS IP or kernel can be controlled by a host application or embedded processor using the Slave AXI4-Lite interface (```s_axilite```), which acts as a system bus for communication between the processor and the kernel. Using the ```s_axilite``` interface, the host or an embedded processor can start and stop the kernel and read or write data to it. When Vitis HLS synthesizes the design, the ```s_axilite``` interface is implemented as an adapter that captures the data communicated from the host in registers on the adapter.
 
 The AXI4-Lite interface performs several functions within a Vivado IP or Vitis kernel:
 
@@ -37,7 +37,7 @@ The AXI4-Lite interface performs several functions within a Vivado IP or Vitis k
 
 * Bundle: This flow supports multiple ```s_axilite``` interfaces, specified by bundle. Refer to [S_AXILITE Bundle Rules](https://docs.xilinx.com/r/en-US/ug1399-vitis-hls/S_AXILITE-Bundle-Rules) for more information.
 
-* Offset: By default the tool will place the arguments in a sequential order starting from 0x10 in the control register map. Refer to [S_AXILITE Offset Option](https://docs.xilinx.com/r/en-US/ug1399-vitis-hls/S_AXILITE-Offset-Option) for additional details.
+* Offset: By default, the tool will place the arguments in a sequential order starting from 0x10 in the control register map. Refer to [S_AXILITE Offset Option](https://docs.xilinx.com/r/en-US/ug1399-vitis-hls/S_AXILITE-Offset-Option) for additional details.
 
 
 <div align=center><img src="Images/12_1.png" alt="drawing" width="600"/></div>
@@ -69,9 +69,9 @@ Arrays default to ```ap_memory```. The ```bram``` port protocol is unsupported f
 
 **S_AXILITE Bundle Rules**
 
-In the [S_AXILITE Example](https://docs.xilinx.com/r/en-US/ug1399-vitis-hls/S_AXILITE-Example) all the function arguments are grouped into a single ```s_axilite``` interface adapter specified by the ```bundle=BUS_A ``` option in the INTERFACE pragma. The ```bundle``` option lets you group ports together into one interface.
+In the [S_AXILITE Example](https://docs.xilinx.com/r/en-US/ug1399-vitis-hls/S_AXILITE-Example), all the function arguments are grouped into a single ```s_axilite``` interface adapter specified by the ```bundle=BUS_A ``` option in the INTERFACE pragma. The ```bundle``` option lets you group ports together into one interface.
 
-In the Vitis kernel flow, there should only be a single interface bundle, commonly named ```s_axi_control``` by the tool. So you should not specify the ```bundle``` option in that flow, or you will probably encounter an error during synthesis. However, in the Vivado IP flow, you can specify multiple bundles using the ```s_axilite``` interface, creating a separate interface adapter for each bundle you have defined.
+In the Vitis kernel flow, there should only be a single interface bundle, commonly named ```s_axi_control``` by the tool. So, you should not specify the ```bundle``` option in that flow, or you will probably encounter an error during synthesis. However, in the Vivado IP flow, you can specify multiple bundles using the ```s_axilite``` interface, creating a separate interface adapter for each bundle you have defined.
 
 After synthesis, the Synthesis Summary report provides feedback regarding the number of ```s_axilite``` adapters generated. The SW-to-HW Mapping section of the report contains the HW info showing the control register offset and the address range for each port.[Ref](https://docs.xilinx.com/r/en-US/ug1399-vitis-hls/S_AXILITE-Bundle-Rules)
 
@@ -81,7 +81,7 @@ However, there are some rules related to using bundles with the ```s_axilite``` 
 
 * User-Specified Bundle Names: This rule explicitly groups all interface ports with the same ```bundle``` name into the same AXI4-Lite interface port, and names the RTL port the value specified by ```s_axi_<string>```.
 
-* Partially Specified Bundle Names: If you specify ```bundle``` names for some arguments, but leave other arguments unassigned, then the tool will bundle the arguments as follows:
+* Partially Specified Bundle Names: If you specify ```bundle``` names for some arguments but leave other arguments unassigned, then the tool will bundle the arguments as follows:
 
 * Group all ports into the specified bundles as the INTERFACE pragmas indicate.
 
