@@ -2,7 +2,7 @@
 sort: 8
 ---
 
-# Lab8_state_machine
+# Lab8_State_Machines
 
 ## Lab Overview
 
