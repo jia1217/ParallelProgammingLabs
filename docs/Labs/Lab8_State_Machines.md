@@ -545,6 +545,7 @@ When writing `4` to the input, see the board below:
 Then, you need to press the ```submit ``` button.
 
 ```python
+# Read the current state from the GPIO device. This involves accessing the memory-mapped I/O region
 state=gpio_read.read(0x0)
 seven_segment(state)
 
@@ -565,6 +566,7 @@ And then you need to press the ```submit ``` button like below:
 It's unlocked, and the blue LED is off because we input the right code number
 
 ```python
+# Read the current state from the GPIO device. This involves accessing the memory-mapped I/O region
 state=gpio_read.read(0x0)
 seven_segment(state)
 
