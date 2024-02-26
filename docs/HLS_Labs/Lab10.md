@@ -88,7 +88,7 @@ The result is shown below.
 
 <div align=center><img src="Images/10_5.png" alt="drawing" width="400"/></div>
 
-**example_tb.cpp
+**example_tb.cpp**
 ```c++
 #include "example.h"
 using namespace std;
