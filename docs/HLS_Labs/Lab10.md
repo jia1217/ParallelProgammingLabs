@@ -84,6 +84,10 @@ And we define the ```m_axi_alignment_byte_size``` 64 as shown below.
 
 <div align=center><img src="Images/10_2.png" alt="drawing" width="400"/></div>
 
+The config_interface options can be found as below:
+
+<div align=center><img src="Images/4.jpg" alt="drawing" width="400"/></div>
+
 The result is shown below.
 
 <div align=center><img src="Images/10_5.png" alt="drawing" width="400"/></div>
