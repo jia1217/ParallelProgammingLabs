@@ -320,7 +320,7 @@ This example illustrates how an input argument of a level function can be mapped
 void example(volatile int* a) {
 
 #pragma HLS INTERFACE m_axi port = a depth = 50
-
+#pragma HLS INTERFACE mode=s_axilite port=return
     int i;
     int buff[50];
 
