@@ -429,7 +429,7 @@ Here, we use the ```AXI_GPIO``` IP, write the number to the ```dint``` as input 
 
 ### Download the bitstream file to PYNQ
 
-We need to download the design_1_wrapper.bit to the local machine. Go to Lab7/project_1/project_1.runs/impl_1, download design_1_wrapper.bit, and upload the file to the PYNQ. And we also need to upload the design_1.hwh  file which is in the Lab7/project_1/project_1.gen/sources_1/bd/design_1/hw_handoff.
+We need to download the design_1_wrapper.bit to the local machine. Go to Lab8/project_1/project_1.runs/impl_1, download design_1_wrapper.bit, and upload the file to the PYNQ. And we also need to upload the design_1.hwh  file which is in the Lab8/project_1/project_1.gen/sources_1/bd/design_1/hw_handoff.
 
 ```python
     from pynq import Overlay
