@@ -44,7 +44,7 @@ device. If one of the Tamper Freeze sequences is observed, the Tamper bit should
 
 You can also understand the process by the table below:
 
-<div align=center><img src="imgs/v1/46.png" alt="drawing" width="600"/></div>
+<div align=center><img src="imgs/v1/46.png" alt="drawing" width="300"/></div>
 
 ### Add the source file
 
