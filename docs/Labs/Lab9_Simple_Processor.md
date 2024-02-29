@@ -919,7 +919,7 @@ run.write(DATA_OFFSET,1)
 ```python
 seven_segment(reg2_read.read(0x0))
 ```
-We will see the value of the reg1:
+We will see the value of the reg2:
 
 <div align=center><img src="imgs/v2/15.png" alt="drawing" width="400"/></div>
 
