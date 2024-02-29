@@ -42,6 +42,9 @@ reset signal is received. You can use these sequences:
 Your digital lock will have three outputs: a Locked bit, a Ready bit, and a Tamper bit. The Locked bit and Ready bits should initially be on. After you input your first digit, the Ready bit should turn off. If the correct input sequence is observed, the Locked bit should turn off and remain off until the lock is reset. No further inputs should affect the
 device. If one of the Tamper Freeze sequences is observed, the Tamper bit should be turned on and remain on until the reset is activated. No further inputs should affect the device. If any other input is observed, the device should return to the ready state by activating the Ready bit and waiting to accept the next 3-digit input.
 
+You can also understand the process by the table below:
+
+<div align=center><img src="imgs/v1/46.png" alt="drawing" width="300"/></div>
 
 ### Add the source file
 
@@ -426,12 +429,12 @@ Here, we use the ```AXI_GPIO``` IP, write the number to the ```dint``` as input 
 
 ### Download the bitstream file to PYNQ
 
-We need to download the design_1_wrapper.bit to the local machine. Go to Lab7/project_1/project_1.runs/impl_1 download design_1_wrapper.bit, and upload the file to the PYNQ.
+We need to download the design_1_wrapper.bit to the local machine. Go to Lab8/project_1/project_1.runs/impl_1, download design_1_wrapper.bit, and upload the file to the PYNQ. And we also need to upload the design_1.hwh  file which is in the Lab8/project_1/project_1.gen/sources_1/bd/design_1/hw_handoff.
 
 ```python
     from pynq import Overlay
     from pynq import Bitstream
-    bit = Bitstream("design_1_wrapper.bit")
+    bit = Bitstream("design_1.bit")
     bit.download()
     bit.bitfile_name
 

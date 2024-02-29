@@ -587,7 +587,7 @@ This example illustrates how to define and use an array of streams in the interf
 
 #define M 3
 
-extern int dut(hls::stream<int> s_in[M], hls::stream<int> s_out[M],int *sum);
+extern void dut(hls::stream<int> s_in[M], hls::stream<int> s_out[M],int *sum);
 
 #endif
 
