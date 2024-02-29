@@ -877,7 +877,7 @@ Then press the ```key``` button again, and you will see the LED is off.
 seven_segment(reg0_read.read(0x0))
 
 ```
-We will see the value of the reg0:
+We will see the value of the ```reg0```:
 
 <div align=center><img src="imgs/v2/13.png" alt="drawing" width="400"/></div>
 
@@ -903,7 +903,7 @@ din_write.write(DATA_OFFSET,DATA)
 ```python
 seven_segment(reg1_read.read(0x0))
 ```
-We will see the value of the reg1:
+We will see the value of the ```reg1```:
 
 <div align=center><img src="imgs/v2/14.png" alt="drawing" width="400"/></div>
 
@@ -919,7 +919,7 @@ run.write(DATA_OFFSET,1)
 ```python
 seven_segment(reg2_read.read(0x0))
 ```
-We will see the value of the reg2:
+We will see the value of the ```reg2```:
 
 <div align=center><img src="imgs/v2/15.png" alt="drawing" width="400"/></div>
 
