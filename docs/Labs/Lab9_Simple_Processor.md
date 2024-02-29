@@ -768,11 +768,11 @@ For the value of ```reg0``` ```reg1``` ```reg2``` ```Bus_data``` ports can be re
 We need to download the design_1_wrapper.bit to the local machine. Go to Lab9/project_1/project_1.runs/impl_1, download design_1_wrapper.bit, and upload the file to the PYNQ. And we also need to upload the design_1.hwh  file which is in the Lab9/project_1/project_1.gen/sources_1/bd/design_1/hw_handoff.
 
 ```python
-    from pynq import Overlay
-    from pynq import Bitstream
-    bit = Bitstream("design_1_wrapper.bit")
-    bit.download()
-    bit.bitfile_name
+from pynq import Overlay
+from pynq import Bitstream
+bit = Bitstream("design_1.bit")
+bit.download()
+bit.bitfile_name
 
 ```
 
