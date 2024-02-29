@@ -12,4 +12,7 @@ sort: 2
 - [Lab3](https://uri-nextlab.github.io/ParallelProgammingLabs/Labs/Lab3_IO_Planning.html)
 - [Lab4](https://uri-nextlab.github.io/ParallelProgammingLabs/Labs/Lab4_ILA.html)
 - [Lab5](https://uri-nextlab.github.io/ParallelProgammingLabs/Labs/Lab5_IPI.html) 
-- [Lab6](https://uri-nextlab.github.io/ParallelProgammingLabs/Labs/Lab6_DMA.html) 
+- [Lab6](https://uri-nextlab.github.io/ParallelProgammingLabs/Labs/Lab6_DMA.html)
+- [Lab7](https://uri-nextlab.github.io/ParallelProgammingLabs/Labs/Lab7_Fibonacci_sp.html)
+- [Lab8](https://uri-nextlab.github.io/ParallelProgammingLabs/Labs/Lab8_State_Machines.html)
+- 
