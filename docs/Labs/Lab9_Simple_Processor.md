@@ -879,7 +879,7 @@ seven_segment(reg0_read.read(0x0))
 ```
 We will see the value of the reg0:
 
-<div align=center><img src="imgs/v2/13.png" alt="drawing" width="200"/></div>
+<div align=center><img src="imgs/v2/13.png" alt="drawing" width="400"/></div>
 
 
 ```python
@@ -905,7 +905,7 @@ seven_segment(reg1_read.read(0x0))
 ```
 We will see the value of the reg1:
 
-<div align=center><img src="imgs/v2/14.png" alt="drawing" width="200"/></div>
+<div align=center><img src="imgs/v2/14.png" alt="drawing" width="400"/></div>
 
 ```python
 DATA_OFFSET = 0X0
@@ -921,7 +921,7 @@ seven_segment(reg2_read.read(0x0))
 ```
 We will see the value of the reg1:
 
-<div align=center><img src="imgs/v2/15.png" alt="drawing" width="200"/></div>
+<div align=center><img src="imgs/v2/15.png" alt="drawing" width="400"/></div>
 
 Then we will try to ```add``` and ```sub``` instruction.
 
@@ -936,7 +936,7 @@ Becasue for the add/sub operation, the porcessor will go through all states, so 
 
 And you will see:
 
-<div align=center><img src="imgs/v2/16.png" alt="drawing" width="200"/></div>
+<div align=center><img src="imgs/v2/16.png" alt="drawing" width="400"/></div>
 
 
 The ```sub``` instruction is the same.
@@ -952,4 +952,4 @@ run.write(DATA_OFFSET,1)
 
 And you can see the result of the ```reg2```:
 
-<div align=center><img src="imgs/v2/17.png" alt="drawing" width="200"/></div>
+<div align=center><img src="imgs/v2/17.png" alt="drawing" width="400"/></div>
