@@ -279,7 +279,7 @@ module CTRL_unit #(
                        A = 1'b0;
                        done = 1'b1;
                        case(instruction[5:3])
-                        3'b000:     select_reg = 11'b00000000010;
+                        3'b000:         select_reg = 11'b00000000010;
                         3'b001: 	select_reg = 11'b00000000100;
                         3'b010: 	select_reg = 11'b00000001000;
                         3'b011: 	select_reg = 11'b00000010000;
@@ -296,7 +296,7 @@ module CTRL_unit #(
                     A = 1'b0;
                     done = 1'b1;
                    case(instruction[5:3])
-                        3'b000:     select_reg = 11'b00000000010;
+                        3'b000:         select_reg = 11'b00000000010;
                         3'b001: 	select_reg = 11'b00000000100;
                         3'b010: 	select_reg = 11'b00000001000;
                         3'b011: 	select_reg = 11'b00000010000;
@@ -307,7 +307,7 @@ module CTRL_unit #(
                         default: select_reg = 11'b00000000000;
                     endcase
                     case(instruction[2:0])
-                        3'b000:     select_mux = 10'b0000000010;
+                        3'b000:        select_mux = 10'b0000000010;
                         3'b001: 	select_mux = 10'b0000000100;
                         3'b010: 	select_mux = 10'b0000001000;
                         3'b011: 	select_mux = 10'b0000010000;
@@ -326,7 +326,7 @@ module CTRL_unit #(
                     done = 1'b0;
                     select_reg = 11'b01000000000;
                        case(instruction[5:3])
-                        3'b000:     select_mux = 10'b0000000010;
+                        3'b000:         select_mux = 10'b0000000010;
                         3'b001: 	select_mux = 10'b0000000100;
                         3'b010: 	select_mux = 10'b0000001000;
                         3'b011: 	select_mux = 10'b0000010000;
@@ -345,7 +345,7 @@ module CTRL_unit #(
                     done = 1'b0;
                     select_reg = 11'b01000000000;
                        case(instruction[5:3])
-                        3'b000:     select_mux = 10'b0000000010;
+                        3'b000:         select_mux = 10'b0000000010;
                         3'b001: 	select_mux = 10'b0000000100;
                         3'b010: 	select_mux = 10'b0000001000;
                         3'b011: 	select_mux = 10'b0000010000;
@@ -368,7 +368,7 @@ module CTRL_unit #(
                         done = 1'b0;
                         select_reg = 11'b10000000000;
                        case(instruction[2:0])
-                        3'b000:     select_mux = 10'b0000000010;
+                        3'b000:         select_mux = 10'b0000000010;
                         3'b001: 	select_mux = 10'b0000000100;
                         3'b010: 	select_mux = 10'b0000001000;
                         3'b011: 	select_mux = 10'b0000010000;
@@ -410,7 +410,7 @@ module CTRL_unit #(
                  done = 1'b1;
                 
                    case(instruction[5:3])
-                        3'b000:     select_reg = 11'b00000000010;
+                        3'b000:         select_reg = 11'b00000000010;
                         3'b001: 	select_reg = 11'b00000000100;
                         3'b010: 	select_reg = 11'b00000001000;
                         3'b011: 	select_reg = 11'b00000010000;
@@ -420,11 +420,11 @@ module CTRL_unit #(
                         3'b111: 	select_reg = 11'b00100000000;
                         default: select_reg = 11'b00000000000;
                    endcase
-                  select_mux = 10'b1000000000;           
+                  select_mux = 10'b1000000000;  //choose the G register         
             end       
         default:
                begin
-                     select_mux = 10'b0000000000;  // Reset multiplexer selection.
+                    select_mux = 10'b0000000000;  // Reset multiplexer selection.
                     select_reg = 11'b00000000000; // Reset register selection.
                     A = 1'b0;                     // Reset auxiliary control signal.
                     done = 1'b0;                  // Reset operation completion indicator.
@@ -452,11 +452,11 @@ module system_processor #(
 	input 						rst, 		// Global reset signal.
 	input 						reg_rst, 	// Register reset signal.
 	input 						Run, 		// Control signal to start the processor.
-	input		     [N-1:0]    DIN, 		// Data input port.
+	input		 [N-1:0]    DIN, 		// Data input port.
 	output           [N-1:0]    reg0,		// Output from register 0.
 	output           [N-1:0]    reg1,  	// Output from register 1.
 	output           [N-1:0]    reg2,   	// Output from register 2.
-	output		[N-1:0] Bus_data, 	// Data bus used for internal and external data communication.
+	output		 [N-1:0] Bus_data, 	// Data bus used for internal and external data communication.
 	output 						Done		// Signal indicating completion of operation.
 );
 
@@ -665,7 +665,7 @@ initial begin
     DIN <= 8'b00000000; // Specify target register (example instruction)
     run <= 1'b1;        // Signal to start the operation
     #20;
-	clk	 		<=	1'b1;
+	clk	 	<=	1'b1;
 	#20;
     DIN <= 85;          // Load value into target register (assumed operation)
     run <= 1'b0;        // End the operation
