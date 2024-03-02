@@ -558,7 +558,8 @@ module btn_run #(
                 key_reg <= 1'd0;  // Clear the key register if key input is low.
         end       
     end
-    
+
+integer i;
     // Buffer to hold the debounced key value for detecting edges.
     always @(posedge clk or negedge rst) begin
         if (!rst)
