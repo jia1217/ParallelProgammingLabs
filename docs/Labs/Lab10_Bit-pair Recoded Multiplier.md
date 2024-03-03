@@ -605,7 +605,8 @@ module btn_lab4 #(
         else 
             key_reg <= 1'b0;  // Clear the key register if key input is low.
     end
-    
+
+integer i; 
     // Update key buffer on each clock cycle, used for edge detection.
     always @(posedge clk or negedge rst) begin
         if (!rst)
