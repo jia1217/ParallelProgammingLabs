@@ -1,8 +1,8 @@
 ---
-sort: 4
+sort: 3
 ---
 
 
-# FPGA/Verilog Labs
+# Verilog Labs
 
 <!-- {% include list.liquid %} -->
