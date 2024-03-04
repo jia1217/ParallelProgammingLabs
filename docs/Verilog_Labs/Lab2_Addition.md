@@ -99,7 +99,7 @@ Then you can press the button of the board and you can see the LED is on like be
 
 <div align=center><img src="imgs/v3/29.jpg" alt="drawing" width="400"/></div>
 
-### Part lab2_3_1_rca_dataflow
+### Part lab2-3-2
 
  Create and add the Verilog module (called rca_dataflow) to the project with three inputs (a, b, cin)
 and two outputs (cout and s) instantiating full adder (FA) four times and connecting them as
