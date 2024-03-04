@@ -829,6 +829,7 @@ representations = {
     '7': ('###', '  #', '  #', '  #', '  #'),
     '8': ('###', '# #', '###', '# #', '###'),
     '9': ('###', '# #', '###', '  #', '###'),
+    '-': ('   ', '   ', '###', '   ', '   '),
     '.': ('   ', '   ', '   ', '   ', '  #'),
 }
 
@@ -857,7 +858,23 @@ start_write.write(0x0,1)
 Then we need to press the button(L19) until you can see the LED(M14) is on which means the process is done. And we need to press the button again and you can see the LED is off and we can see the result below:
 
 ```python
-seven_segment(product.read(0x0))
+# Decimal value
+decimal_value = product.read(0x0)
+
+# Convert the decimal value to an 8-bit binary string
+binary_str = format(decimal_value, '08b')
+
+# Convert to signed decimal
+if binary_str[0] == '1':  # Check if the number is negative in two's complement
+    # Invert the digits
+    inverted_str = ''.join('1' if bit == '0' else '0' for bit in binary_str)
+    # Convert to decimal and subtract 1 to get the magnitude
+    signed_decimal = -1 * (int(inverted_str, 2) + 1)
+else:
+    # If the number is positive, just convert directly
+    signed_decimal = int(binary_str, 2)
+
+seven_segment(signed_decimal)
 ```
 <div align=center><img src="imgs/v2/35.png" alt="drawing" width="400"/></div>
 
@@ -874,7 +891,23 @@ start_write.write(0x0,1)
 ```
 
 ```python
-seven_segment(product.read(0x0))
+# Decimal value
+decimal_value = product.read(0x0)
+
+# Convert the decimal value to an 8-bit binary string
+binary_str = format(decimal_value, '08b')
+
+# Convert to signed decimal
+if binary_str[0] == '1':  # Check if the number is negative in two's complement
+    # Invert the digits
+    inverted_str = ''.join('1' if bit == '0' else '0' for bit in binary_str)
+    # Convert to decimal and subtract 1 to get the magnitude
+    signed_decimal = -1 * (int(inverted_str, 2) + 1)
+else:
+    # If the number is positive, just convert directly
+    signed_decimal = int(binary_str, 2)
+
+seven_segment(signed_decimal)
 ```
 <div align=center><img src="imgs/v2/35.png" alt="drawing" width="400"/></div>
 
@@ -892,7 +925,23 @@ start_write.write(0x0,1)
 Then we need to press the button(L19) until you can see the LED(M14) is on which means the process is done. And we need to press the button again and you can see the LED is off and we can see the result below:
 
 ```python
-seven_segment(product.read(0x0))#1111 0010 ----(-14)
+# Decimal value
+decimal_value = product.read(0x0)
+
+# Convert the decimal value to an 8-bit binary string
+binary_str = format(decimal_value, '08b')
+
+# Convert to signed decimal
+if binary_str[0] == '1':  # Check if the number is negative in two's complement
+    # Invert the digits
+    inverted_str = ''.join('1' if bit == '0' else '0' for bit in binary_str)
+    # Convert to decimal and subtract 1 to get the magnitude
+    signed_decimal = -1 * (int(inverted_str, 2) + 1)
+else:
+    # If the number is positive, just convert directly
+    signed_decimal = int(binary_str, 2)
+
+seven_segment(signed_decimal)
 ```
 <div align=center><img src="imgs/v2/32_2.png" alt="drawing" width="400"/></div>
 
@@ -910,7 +959,23 @@ start_write.write(0x0,1)
 Then we need to press the button(L19) until you can see the LED(M14) is on which means the process is done. And we need to press the button again and you can see the LED is off and we can see the result below:
 
 ```python
-seven_segment(product.read(0x0))#1110 0100
+# Decimal value
+decimal_value = product.read(0x0)
+
+# Convert the decimal value to an 8-bit binary string
+binary_str = format(decimal_value, '08b')
+
+# Convert to signed decimal
+if binary_str[0] == '1':  # Check if the number is negative in two's complement
+    # Invert the digits
+    inverted_str = ''.join('1' if bit == '0' else '0' for bit in binary_str)
+    # Convert to decimal and subtract 1 to get the magnitude
+    signed_decimal = -1 * (int(inverted_str, 2) + 1)
+else:
+    # If the number is positive, just convert directly
+    signed_decimal = int(binary_str, 2)
+
+seven_segment(signed_decimal)
 ```
 <div align=center><img src="imgs/v2/33_2.png" alt="drawing" width="400"/></div>
 
@@ -929,7 +994,22 @@ start_write.write(0x0,1)
 Then we need to press the button(L19) until you can see the LED(M14) is on which means the process is done. And we need to press the button again and you can see the LED is off and we can see the result below:
 
 ```python
-seven_segment(product.read(0x0))
-```
+seven_segment(product.read(0x0))# Decimal value
+decimal_value = product.read(0x0)
+
+# Convert the decimal value to an 8-bit binary string
+binary_str = format(decimal_value, '08b')
+
+# Convert to signed decimal
+if binary_str[0] == '1':  # Check if the number is negative in two's complement
+    # Invert the digits
+    inverted_str = ''.join('1' if bit == '0' else '0' for bit in binary_str)
+    # Convert to decimal and subtract 1 to get the magnitude
+    signed_decimal = -1 * (int(inverted_str, 2) + 1)
+else:
+    # If the number is positive, just convert directly
+    signed_decimal = int(binary_str, 2)
+
+seven_segment(signed_decimal)```
 <div align=center><img src="imgs/v2/35.png" alt="drawing" width="400"/></div>
 
