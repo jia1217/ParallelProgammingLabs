@@ -142,7 +142,7 @@ Qbar to LED1. Implement the design and verify the functionality in the
 hardware. 
 
 
-<div align=center><img src="imgs/v1/33.png" alt="drawing" width="600"/></div>
+<div align=center><img src="imgs/v1/33.png" alt="drawing" width="900"/></div>
 
 **lab5_1_2.v**
 ```verilog
