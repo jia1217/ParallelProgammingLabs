@@ -235,7 +235,7 @@ We can run Simulation to check the code by clicking the Run Simulation under the
 * Add the appropriate board related master XDC file to the project and edit it to include the related
 pins, assigning S input to BTN0, R input to BTN1  E input to BTN2, Q to LED0, and Qbar to LED1. 
 
-<div align=center><img src="imgs/v2/21.png" alt="drawing" width="900"/></div>
+<div align=center><img src="imgs/v2/21.png" alt="drawing" width="1200"/></div>
 
 For the constraints file, please add the code as below:
 ```verilog
