@@ -254,7 +254,7 @@ standardization, speed, secrecy, security, or saving space by shrinking size. In
 Design an 8-to-3 priority encoder whose truth table is given below. Use
 behavioral modeling. 
 
-<div align=center><img src="imgs/v1/5.png" alt="drawing" width="600"/></div>
+<div align=center><img src="imgs/v1/6.png" alt="drawing" width="600"/></div>
 
 Create and add the Verilog module with *v* and *en_in_n* input; *y*, *en_out*, and *gs* output. The *v*
 input will be 8-bit data inputs (labeled 0 to 7 in the table), *en_in_n* input will be one bit (E1), *y*
