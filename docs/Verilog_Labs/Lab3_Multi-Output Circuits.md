@@ -25,8 +25,7 @@ each output is true for a unique input combination.
 
 ### Part3-1-1
 
-Design a 3-to-8-line decoder. Let the input be through btn2-btn0 and
-the output be on LED7-LED0. Use dataflow modeling constructs. 
+Design a 3-to-8-line decoder. Use dataflow modeling constructs. 
 
 Create and add the Verilog module, naming it decoder_3to8_dataflow.v, that defines the 3-to-8
 line decoder with three-bit input x and 8-bit output y. Use dataflow modeling constructs. 
