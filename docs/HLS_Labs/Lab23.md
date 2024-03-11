@@ -125,11 +125,7 @@ void right_holder(hls::stream<mat> &stream_in,hls::stream<mat> &stream_out)
 			element_counter++;
 		}
 	}
-
-
 }
-
-
 
 template< int PPC, int width, int ID>
 void retain_right(hls::stream<mat> &right_stream,hls::stream<mat> &U_left)
@@ -171,10 +167,7 @@ void retain_right(hls::stream<mat> &right_stream,hls::stream<mat> &U_left)
     	{
     		batch_counter++;
     	}
-
-
     }
-
 }
 
 template<int PPC, int width, int ID>
@@ -188,7 +181,6 @@ void ccr_corrector(hls::stream<mat>& stream_in, hls::stream<mat>& stream_out){
 
     hls_thread_local hls::task drop(retain_right<PPC, width, ID>, stream_in, data_path);
     hls_thread_local hls::task pad_1(right_holder<PPC, width, ID>, data_path, stream_out);
-
 }
 
 
@@ -218,8 +210,6 @@ void bot_holder(hls::stream<mat> &stream_in,hls::stream<mat> &stream_out)
 		{
 			temp=stream_in.read();
 			stream_out.write(temp);
-
-
 		}
 		else{
 			temp=0;
@@ -239,12 +229,9 @@ void bot_holder(hls::stream<mat> &stream_in,hls::stream<mat> &stream_out)
 		}
 		else
 		{
-
 			element_counter++;
 		}
 	}
-
-
 }
 
 template< int PPC, int width, int ID>
@@ -294,7 +281,6 @@ void retain_bot(hls::stream<mat> &stream_in,hls::stream<mat> &stream_bot)
 			counter++;
 		}
 	}
-
 }
 template<int PPC, int width, int ID>
 void bot_corrector(hls::stream<mat>& stream_in, hls::stream<mat>& stream_out){
@@ -305,7 +291,6 @@ void bot_corrector(hls::stream<mat>& stream_in, hls::stream<mat>& stream_out){
 
     hls_thread_local hls::task drop(retain_bot<PPC, width, ID>, stream_in, data_path);
     hls_thread_local hls::task pad_1(bot_holder<PPC, width, ID>, data_path, stream_out);
-
 }
 
 template<int PPC, int width,int ID>
@@ -336,7 +321,6 @@ void up_holder(hls::stream<mat> &stream_in,hls::stream<mat> &stream_out)
 			stream_out.write(temp);
 		}
 		else{
-
 			temp=0;
 			stream_out.write(temp);
 		}
@@ -354,12 +338,9 @@ void up_holder(hls::stream<mat> &stream_in,hls::stream<mat> &stream_out)
 		}
 		else
 		{
-
 			element_counter++;
 		}
 	}
-
-
 }
 
 template< int PPC, int width, int ID>
@@ -387,9 +368,7 @@ void retain_up(hls::stream<mat> &stream_in,hls::stream<mat> &stream_bot)
 
 		if(row_counter==0)
 		{
-
 			stream_bot.write(temp);
-
 		}
 		else
 		{
@@ -412,8 +391,8 @@ void retain_up(hls::stream<mat> &stream_in,hls::stream<mat> &stream_bot)
 			counter++;
 		}
 	}
-
 }
+
 template<int PPC, int width, int ID>
 void up_corrector(hls::stream<mat>& stream_in, hls::stream<mat>& stream_out){
 #pragma HLS INTERFACE axis register_mode=off port=stream_in
@@ -446,7 +425,6 @@ template<int ID>
 void PE_add(hls::stream<mat> &up_in,hls::stream<mat> &cl_in,hls::stream<mat> &cc_in,
 		hls::stream<mat> &cr_in,hls::stream<mat> &b_in,hls::stream<mat> &out)
 {
-
 #pragma HLS INTERFACE ap_ctrl_none port=return
 #pragma HLS INTERFACE mode=axis port=up_in
 #pragma HLS INTERFACE mode=axis port=cl_in
@@ -522,21 +500,15 @@ void ccl_holder(hls::stream<mat> &stream_in,hls::stream<mat> &stream_out)
 				stream_out.write(temp);
 			}
 			counter++;
-
 		}
-
-
 }
 
 #endif
-
 ```
 
 **module.cpp**
 ```c++
 #include "linebuffer_1.h"
-
-
 
 void buffer_top(hls::stream<mat> &stream_in,hls::stream<mat> &stream_up)
 {
@@ -595,7 +567,6 @@ void buffer_top(hls::stream<mat> &stream_in,hls::stream<mat> &stream_up)
 			counter++;
 		}
 	}
-
 }
 
 
@@ -607,11 +578,9 @@ void top_buffer(hls::stream<mat> &stream_in,hls::stream<mat> &stream_R,hls::stre
 #pragma HLS INTERFACE mode=AXIS port=stream_R register_mode=off
 #pragma HLS INTERFACE mode=AXIS port=stream_top register_mode=off
 
-
 	hls_thread_local hls::stream<mat,total> buffer_up,top,fl,top_data;
 	hls_thread_local hls::task	data_0(data_copy<0>,stream_in,buffer_up,stream_R);
 	hls_thread_local hls::task  top_1(buffer_top,buffer_up,stream_top);
-
 }
 
 void buffer_ccl(hls::stream<mat> &stream_in,hls::stream<mat> &stream_up)
@@ -669,7 +638,6 @@ void buffer_ccl(hls::stream<mat> &stream_in,hls::stream<mat> &stream_up)
 			counter++;
 		}
 	}
-
 }
 
 void ccl_buffer(hls::stream<mat> &stream_in,hls::stream<mat> &stream_R,hls::stream<mat> &stream_ccc)
@@ -741,7 +709,6 @@ void buffer_ccc(hls::stream<mat> &stream_in,hls::stream<mat> &stream_up)
 			counter++;
 		}
 	}
-
 }
 
 void ccc_buffer(hls::stream<mat> &stream_in,hls::stream<mat> &stream_R,hls::stream<mat> &stream_ccc)
@@ -815,7 +782,6 @@ void buffer_ccr(hls::stream<mat> &stream_in,hls::stream<mat> &stream_up)
 			counter++;
 		}
 	}
-
 }
 
 void ccr_buffer(hls::stream<mat> &stream_in,hls::stream<mat> &stream_R,hls::stream<mat> &stream_ccr)
@@ -864,8 +830,6 @@ void buffer_bot(hls::stream<mat> &stream_in,hls::stream<mat> &stream_up)
 			{
 				stream_up.write(temp);
 			}
-
-
 		}
 		else
 		{
@@ -889,7 +853,6 @@ void buffer_bot(hls::stream<mat> &stream_in,hls::stream<mat> &stream_up)
 			counter++;
 		}
 	}
-
 }
 
 void bot_buffer(hls::stream<mat> &stream_in,hls::stream<mat> &stream_R,hls::stream<mat> &stream_bot)
@@ -898,7 +861,6 @@ void bot_buffer(hls::stream<mat> &stream_in,hls::stream<mat> &stream_R,hls::stre
 #pragma HLS INTERFACE mode=AXIS port=stream_in register_mode=off
 #pragma HLS INTERFACE mode=AXIS port=stream_R register_mode=off
 #pragma HLS INTERFACE mode=AXIS port=stream_bot register_mode=off
-
 
 	hls_thread_local hls::stream<mat,total> bot,fl;
 
@@ -931,7 +893,6 @@ void data_buffer(hls::stream<mat> &stream_in,hls::stream<mat> &stream_up)
 		{
 			if(counter==0||counter==WIDTH-1)
 			{
-
 				stream_up.write(temp);
 			}
 			else
@@ -939,7 +900,6 @@ void data_buffer(hls::stream<mat> &stream_in,hls::stream<mat> &stream_up)
 				temp=0;
 				stream_up.write(temp);
 			}
-
 		}
 		else
 		{
@@ -962,10 +922,7 @@ void data_buffer(hls::stream<mat> &stream_in,hls::stream<mat> &stream_up)
 			counter++;
 		}
 	}
-
 }
-
-
 ```
 
 **linebuffer_1.h**
@@ -978,8 +935,6 @@ void data_buffer(hls::stream<mat> &stream_in,hls::stream<mat> &stream_up)
 #include "FIFO_buffer.hpp"
 #include <ap_axi_sdata.h>
 
-
-
 #ifndef __LINEBUFFER_1__
 #define __LINEBUFFER_1__
 
@@ -990,7 +945,6 @@ typedef int mat;
 typedef hls::stream<mat> Mat_stream;
 typedef hls::axis<mat,0,0,0> F_mat;
 typedef hls::stream<F_mat> F_stream;
-
 
 void linebuffer_data_driven(hls::stream<mat> &stream_in,hls::stream<mat> &stream_out);
 
@@ -1015,7 +969,6 @@ void data_buffer(hls::stream<mat> &stream_in,hls::stream<mat> &stream_up);
 
 
 #endif
-
 ```
 
 **linebuffer_2.cpp**
@@ -1031,14 +984,10 @@ void linebuffer_data_driven(hls::stream<mat> &stream_in,hls::stream<mat> &stream
 	hls_thread_local hls::stream<mat,total> top_r,top_data,ccl_r,add_data1,ccc_r,ccr_r,ccr_data,bot_r,bot_data;
 	hls_thread_local hls::stream<mat,total> cr_buffer,b_buffer,t_buffer,ccc_data,ccl_data,data_other,add_buffer;
 
-
-
 	hls_thread_local hls::task	top(top_buffer,stream_in,top_r,top_data);
 	hls_thread_local hls::task	t(up_corrector<WIDTH,HEIGHT,0>,top_data,t_buffer);///cr
 
-
 	hls_thread_local hls::task	ccl(ccl_buffer,top_r,ccl_r,ccl_data);
-
 
 	hls_thread_local hls::task	ccc(ccc_buffer,ccl_r,ccc_r,ccc_data);
 
@@ -1054,7 +1003,6 @@ void linebuffer_data_driven(hls::stream<mat> &stream_in,hls::stream<mat> &stream
 	hls_thread_local hls::task	all_total(all_total<0>,add_buffer,data_other,stream_out);//bot
 
 }
-
 ```
 The synthesis report is shown below:
 
@@ -1082,12 +1030,8 @@ int main()
 			outdata1=out1.read();
 			printf("outdata1 is %d\r\n",outdata1);
 		}
-
 	}
-
-
 }
-
 ```
 
 
@@ -1123,8 +1067,6 @@ s2mm.transfer(oBuf_0)
 mm2s.transfer(iBuf_0)
 s2mm.wait()
 mm2s.wait()
-
-
 ```
 
 We will see:
