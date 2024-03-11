@@ -37,7 +37,6 @@ This Lab aims to design an accelerator for matrix multiplication. In the base im
 
 **real.h**
 ```c++
-
 #ifndef __REAL_H__
 #define __REAL_H__
 
@@ -61,12 +60,9 @@ void real_matmul(
 );
 
 #endif
-
-
 ```
 **real_matmul.cpp**
 ```c++
-
 #include "real.h"
 
 void real_matmul( 
@@ -135,8 +131,6 @@ void real_matmul(
     }
 
 }
-
-
 ```
 
 The latency and resource utilization for the base implementation are:
@@ -182,7 +176,6 @@ and loop fusion can be applied to reduce the DRAM to BRAM transfer latency.
             }
         }
     }
-
 ```
 From the below, it can be observed that loop fusion leads to a further reduction of 50,030 cycles.
 
@@ -213,16 +206,11 @@ We can use another example to implement it on the PYNQ-Z2 board, as shown below.
 #include <ap_int.h>
 
 //typedef int real_t;
-
-
 typedef ap_int<16> real_t;
-
 
 #define M 100
 #define N 150
 #define K 200
-
-
 
 void real_matmul(
     real_t MatA_DRAM[M][N],
@@ -230,14 +218,11 @@ void real_matmul(
     real_t MatC_DRAM[M][K]
 );
 
-
 #endif
-
 ```
 
 **real_matmul.cpp**
 ```c++
-
 #include "real.h"
 
 void real_matmul(
@@ -258,7 +243,6 @@ void real_matmul(
 #pragma HLS ARRAY_PARTITION variable=MatA type=cyclic factor=50 dim=1
 #pragma HLS ARRAY_PARTITION variable=MatB type=block factor=50 dim=1
 #pragma HLS ARRAY_PARTITION variable=MatC type=cyclic factor=50  dim=1
-
 
     // Read in the data (Matrix A) from DRAM to BRAM
     MAT_A_ROWS:
@@ -296,7 +280,6 @@ void real_matmul(
 //	            	#pragma HLS PIPELINE II=1
 	                MatC[i][j] += MatA[i][p] * MatB[p][j];
 	            }
-
 	        }
 	    }
 
@@ -308,10 +291,7 @@ void real_matmul(
             MatC_DRAM[i][j] = MatC[i][j];
         }
     }
-
 }
-
-
 ```
 
 The synthesis report is shown below:
@@ -392,11 +372,8 @@ int main()
         printf("|         TEST FAILED :(          |\n");
         printf("-----------------------------------\n");
     }
-
     return 0;
 }
-
-
 ```
 If you see the "TEST PASSED!" after the C simulation, the function ```real_matmul``` is correct.
 
@@ -440,7 +417,6 @@ for i in range (0, 150):
 aptr = a_buffer.physical_address
 bptr = b_buffer.physical_address
 sumptr = sum_buffer.physical_address
-
 
 top_ip.write(0x10, aptr)
 top_ip.write(0x1c, bptr)
@@ -494,13 +470,10 @@ void complex_matmul (
 using namespace std;
 
 #endif
-
-
 ```
 
 **complex_matmul.cpp**
 ```c++
-
 #include "complex_2.h"
 
 void complex_matmul(
@@ -577,9 +550,7 @@ void complex_matmul(
 	            MatC_DRAM[i][j].imag = MatC[i][j].imag;
 	        }
 	    }
-
 }
-
 ```
 
 The synthesis report is shown below:
@@ -671,8 +642,6 @@ int main()
 6 5
 4 3
 6 5
-
-
 ```
 **MatB_test.txt**
 ```
@@ -682,8 +651,6 @@ int main()
 1 2
 1 2
 1 2
-
-
 ```
 The simulation result is shown below:
 
@@ -709,7 +676,6 @@ from pynq import (allocate, Overlay)
 import numpy as np
 import pynq
 ol = Overlay('design_1.bit')
-
 
 top_ip = ol.complex_matmul_0
 top_ip.signature
