@@ -151,7 +151,7 @@ The latency and resource utilization for the base implementation are:
 
 <div align=center><img src="Images/20/6.png" alt="drawing" width="500"/></div>
 
-The loop tiling technique helps speed up D x W (D = depth, W = width of the tile). For example, when D = 25 and W = 10, the number of cycles for matrix multiplication is reduced to 24004 from 6000004, thus giving a 250x speedup for Matrix multiplication. But the resource has consumed more than before like DSP.
+The loop tiling technique helps speed up D x W (D = depth, W = width of the tile). For example, when D = 25 and W = 10, the number of cycles for matrix multiplication is reduced to 24004 from 6000004, thus giving a 250x speedup for Matrix multiplication. But the resource has been consumed more than before, like DSP.
 
 <div align=center><img src="Images/20/5.png" alt="drawing" width="800"/></div>
 
@@ -191,16 +191,16 @@ From the below, it can be observed that loop fusion leads to a further reduction
 The final design achieves parallelism in tiles of D = 25 and W = 10. The performance and utilization estimates can be seen above.
 The latency of the optimized design is 114044. Thus, an overall speedup of 55.94 (6380037/114044) is gained compared to the base implementation.
 
-While tiling helps in achieving a speedup of D x W for matrix multiplication, it can be observed that after a point increasing D and W does not result in high speed up as memory becomes a bottleneck. Even after loop fusion, about 78.9% of the cycles
-(90,023 cycles) are spent in loading and storing data from DRAM to BRAM whereas only 21.06% cycles (24004 cycles) are spent in the actual computation. Thus, further optimization techniques such as data streaming can be applied to reduce the memory overhead – i.e., begin computation as soon as the first few elements of A and B are available instead of waiting for all elements of A and B to be loaded in BRAM.
+While tiling helps in achieving a speedup of D x W for matrix multiplication, it can be observed that after a point, increasing D and W does not result in a high speed-up as memory becomes a bottleneck. Even after loop fusion, about 78.9% of the cycles
+(90,023 cycles) are spent loading and storing data from DRAM to BRAM, whereas only 21.06% of cycles (24004 cycles) are spent in the actual computation. Thus, further optimization techniques such as data streaming can be applied to reduce the memory overhead – i.e., begin computation as soon as the first few elements of A and B are available instead of waiting for all elements of A and B to be loaded in BRAM.
 
 Secondly, in the current design, fanout is high as D elements from matrix A are multiplied with W elements in matrix B, which can be improved.
 
 Finally, for an M x K matrix, D and W must be factors of M and K, respectively, to maintain functional correctness. Thus, there is a lot of constraint in the incremental step size of D and W. Moreover, if M and K are not factorizable, tiling becomes slightly complicated.
 
-But for the PYNQ-Z2 board, it has over the number of the hardware resource, so this optimization cannot be implemented on the PYNQ-Z2 board.
+However, the PYNQ-Z2 board has many hardware resources, so this optimization cannot be implemented on the PYNQ-Z2 board.
 
-We can use another example to implement it on the PYNQ-Z2 board as shown below.
+We can use another example to implement it on the PYNQ-Z2 board, as shown below.
 
 **real. h**
 ```c++
@@ -318,7 +318,7 @@ The synthesis report is shown below:
 
 <div align=center><img src="Images/20/11.png" alt="drawing" width="800"/></div>
 
-Though there is a slack, but the ```Estimated``` of the ```Timing Estimate``` is less than 10 ns, so we can have a try by implementing it on the board. And eventually, we makes it.
+Though there is slack, the ```Estimated``` of the ```Timing Estimate``` is less than ten ns, so we can have a try by implementing it on the board. And eventually, we made it.
 
 **real_tb.cpp**
 ```c++
@@ -403,13 +403,13 @@ If you see the "TEST PASSED!" after the C simulation, the function ```real_matmu
 
 #### Create the Vivado project
 
-The configure block design can use reference materials [here](https://uri-nextlab.github.io/ParallelProgammingLabs/HLS_Labs/Lab1.html#implementation). And we need to choose the number of the DMA according to the number of the interface.
+The configure block design can use reference materials [here](https://uri-nextlab.github.io/ParallelProgammingLabs/HLS_Labs/Lab1.html#implementation). We also need to choose the number of the DMA according to the number of the interface.
 
 <div align=center><img src="Images/20/12.png" alt="drawing" width="1200"/></div>
 
 #### Run synthesis,  Implementation, and generate bitstream
 
-It may show some errors about I/O Ports, please fix them.
+It may show some errors about I/O Ports; please fix them.
 
 #### Download the bitstream file to PYNQ
 
@@ -454,7 +454,7 @@ We will see:
 
 ### Part B: Complex Matrix Multiplication
 
-Many applications in scientific computing and signal processing require working with not just the magnitude but also the phase. This information is aptly captured using complex numbers. Let's build on Part A and develop an accelerator to perform matrix multiplication with complex numbers.
+Many applications in scientific computing and signal processing require working with the magnitude and phase. This information is aptly captured using complex numbers. Let's build on Part A and develop an accelerator to perform matrix multiplication with complex numbers.
 
 **Reference Material**: [Complex Matrix Multiplication](https://mathworld.wolfram.com/ComplexMatrix.html)
 
@@ -697,7 +697,7 @@ The configure block design can use reference materials [here](https://uri-nextla
 
 #### Run synthesis,  Implementation, and generate bitstream
 
-It may show some errors about I/O Ports, please fix them.
+It may show some errors about I/O Ports, and please fix them.
 
 #### Download the bitstream file to PYNQ
 
@@ -793,3 +793,7 @@ top_ip.write(0x00, 1)
 We will see:
 
 <div align=center><img src="Images/20/18_1.png" alt="drawing" width="400"/></div>
+
+## Demonstrate
+
+Please finish the ```real_matrix multiplication``` example and implement it on the PYNQ-Z2 board.
