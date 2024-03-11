@@ -70,19 +70,16 @@ data =  [[0, 0, 0, 1, 1, 0, 0, 0],
 	[0, 0, 0, 1, 1, 0, 0, 0]]
 data = asarray(data)
 data = data.reshape(1, 8, 8, 1)
-
 ```
 
 Next, we can define a model that expects input samples to have the shape (8, 8, 1) and has a single hidden convolutional layer with a single filter with the shape of three pixels by three pixels.
 
 ```python
-
 # create model
 model = Sequential()
 model.add(Conv2D(1, (3,3), input_shape=(8, 8, 1)))
 # summarize model
 model.summary()
-
 ```
 The filter is initialized with random weights as part of the initialization of the model. We will overwrite the random weights and hard code our own 3×3 filter that will detect vertical lines.
 
@@ -96,7 +93,6 @@ detector = [[[[0]],[[1]],[[0]]],
 weights = [asarray(detector), asarray([0.0])]
 # store the weights in the model
 model.set_weights(weights)
-
 ```
 
 Next, we can apply the filter to our input image by calling the predict() function on the model.
@@ -133,7 +129,6 @@ Moved right one pixel:
 0, 1, 1   0, 1, 0
 0, 1, 1 . 0, 1, 0 = 3
 0, 1, 1   0, 1, 0
-
 ```
 Moved right one pixel:
 ```
@@ -152,7 +147,6 @@ Moved right one pixel:
 0, 0, 0   0, 1, 0
 0, 0, 0 . 0, 1, 0 = 0
 0, 0, 0   0, 1, 0
-
 ```
 
 That gives us the first row and each column of the output feature map:
@@ -206,7 +200,6 @@ We can demonstrate this with an example using the 8×8 image with a vertical lin
 0, 0, 0   0, 1, 0
 0, 0, 0 . 0, 1, 0 = 0
 0, 0, 0   0, 1, 0
-
 ```
 
 Moved two pixels right:
@@ -267,7 +260,6 @@ It may show some errors about I/O ports, so please fix them.
 
 
 ```python
-
 from pynq import (allocate, Overlay)
 import numpy as np
 import pynq
@@ -287,7 +279,6 @@ for i in range (3):
     for j in range (32):
         for k in range (32):
             in_buffer[i][j][k]=1
-
 ```
 
 ```python
@@ -299,8 +290,6 @@ with open("conv_layer1_weights.bin", "rb") as f:
 # Bias
 with open("conv_layer1_bias.bin", "rb") as f:
     conv_layer_bias = struct.unpack("{}f".format(32), f.read())
-
-
 ```
 
 
@@ -339,7 +328,6 @@ def from_fixed_point(src, *, width=None, iwidth, signed=True):
 #Perform data type conversion
 to_fixed_point(w_buffer,conv_layer_weights,iwidth=3)
 to_fixed_point(b_buffer,conv_layer_bias,iwidth=3)
-
 ```
 
 ```python
@@ -356,7 +344,6 @@ top_ip.write(0x34, bptr)
 
 top_ip.write(0x00, 1)
 isready = top_ip.read(0x00)
-
 
 out_float= from_fixed_point(out_buffer,iwidth=3)
 print(out_float.shape)
@@ -376,7 +363,6 @@ plt.title("Image from conv_tile_output_feature_map.bin")
 
 # Display the plot
 plt.show()
-
 ```
 
 We will see the input image:
@@ -396,7 +382,6 @@ plt.title("Image from conv_tile_input_feature_map.bin")
 
 # Display the plot
 plt.show()
-
 ```
 <div align=center><img src="Images/21/4.png" alt="drawing" width="400"/></div>
 
@@ -446,7 +431,6 @@ for i in range (3):
     for j in range (32):
         for k in range (32):
             in_buffer[i][j][k]=1
-
 ```
 
 ```python
@@ -505,14 +489,12 @@ to_fixed_point(b_buffer_2,conv_layer_bias_2,iwidth=3)
 ```
 
 ```python
-
 inptr = in_buffer.physical_address
 wptr1 = w_buffer_1.physical_address
 bptr1 = b_buffer_1.physical_address
 wptr2 = w_buffer_2.physical_address
 bptr2 = b_buffer_2.physical_address
 outptr = out_buffer.physical_address
-
 
 top_ip.write(0x10, inptr)
 top_ip.write(0x1c, outptr)
@@ -538,7 +520,6 @@ plt.title("Image from conv_tile_output_feature_map.bin")
 
 # Display the plot
 plt.show()
-
 ```
 
 We can see the image like below:
@@ -558,7 +539,6 @@ plt.title("Image from conv_tile_input_feature_map.bin")
 
 # Display the plot
 plt.show()
-
 ```
 
 <div align=center><img src="Images/21/4.png" alt="drawing" width="400"/></div>
