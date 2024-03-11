@@ -187,9 +187,6 @@ module tb_sequence_detector_mealy();
         #40; // Apply reset
 
         reset = 0; // Release reset
-//        repeat (9) begin // Generate a sequence of '1's
-//            #20 ain = ~ain;
-//        end
         ain = 1;
         #40;
         ain = 0;
