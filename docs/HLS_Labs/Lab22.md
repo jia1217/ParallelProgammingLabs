@@ -118,7 +118,6 @@ void jacobi5d_soda(Mat_stream &in0,Mat_stream &out0);
 void temporal(
 		hls::stream <mat> &in0,
 		hls::stream <mat> &out0
-
 );
 #endif
 ```
@@ -160,10 +159,7 @@ void jacobi5d_top(F_stream &in0,F_stream &out0)
 			valueout.last=1;
 		}
 	}
-
 }
-
-
 
 
 void jacobi5d_soda(Mat_stream &in0,Mat_stream &out0)
@@ -205,14 +201,11 @@ void jacobi5d_soda(Mat_stream &in0,Mat_stream &out0)
 					if(i<HEIGHT-1)
 					{
 						in0.read(start);
-
 					}
 				}
-
 			}
 			else
 			{
-
 				if((i+1)*WIDTH+j+1>2*WIDTH)
 				{
 					fifo_edge1.read(ff_edge[4]);
@@ -263,8 +256,7 @@ void jacobi5d_soda(Mat_stream &in0,Mat_stream &out0)
 			{
 				if(j==-1||j==WIDTH-2)
 				{
-					out0.write(ff_edge[2]);
-				
+					out0.write(ff_edge[2]);				
 				}
 				else
 				{
@@ -274,7 +266,6 @@ void jacobi5d_soda(Mat_stream &in0,Mat_stream &out0)
 			}
 		}
 }
-
 ```
 The synthesis report is shown below:
 
@@ -288,26 +279,20 @@ From the report, we can see that the first way must wait for the first-row data 
 
 #include "linebuffer_0.h"
 
-
-
 void temporal(
 		hls::stream <mat> &in0,
 		hls::stream <mat> &out0
-
 )
 {
 	hls::stream<mat> stage0_0, stage0_1;
 #pragma HLS DATAFLOW
 #pragma HLS STREAM variable=stage0_0 depth=9
 
-
 	jacobi5d_soda(in0,stage0_0);
 	jacobi5d_soda(stage0_0,out0);
 	//which shows that the jacobi5d_soda can multiple iterations like the above
 
 }
-
-
 ```
 **test.cpp**
 ```c++
