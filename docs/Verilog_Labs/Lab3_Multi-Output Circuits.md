@@ -108,8 +108,6 @@ We can run Simulation to check the code by clicking the Run Simulation under the
 
 <div align=center><img src="imgs/v1/8.png" alt="drawing" width="800"/></div>
 
-
-
 Then, we can click on the Run synthesis under the SYNTHESIS and Run implementation under the IMPLEMENTATION. We should add the appropriate board-related master XDC file to the project and edit it to include the related pins like the below:
 
 <div align=center><img src="imgs/v1/3.png" alt="drawing" width="800"/></div>
@@ -118,8 +116,11 @@ Because the board has four LEDs, so we can also use the RGB LED(LD5 and LD4).
 
 <div align=center><img src="imgs/v1/4.png" alt="drawing" width="600"/></div>
 
-Click on the Generate Bitstream under the PROGRAM AND DEBUG, and when writing bitstream is complete, we can donwload the file to the board and verify the lab.
+Click on the Generate Bitstream under the PROGRAM AND DEBUG, and when writing bitstream is complete, we can download the file to the board and verify the lab.
 
+<div align=center><img src="imgs/v4/1.jpg" alt="drawing" width="600"/></div>
+
+<div align=center><img src="imgs/v4/2.jpg" alt="drawing" width="600"/></div>
 
 ### Part3-1-2
 
