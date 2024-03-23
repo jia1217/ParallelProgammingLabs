@@ -310,7 +310,7 @@ The configure block design can use reference materials [here](https://uri-nextla
 
 Here, we need to change the data width of the AXI DMA ip, because the data width of the ```matmult_accel``` IP's interface is 512 bits, so they need to keep the same.
 
-<div align=center><img src="Images/v4/14.png" alt="drawing" width="1000"/></div>
+<div align=center><img src="Images/21/14.png" alt="drawing" width="1000"/></div>
 
 ## Run synthesis,  Implementation, and generate bitstream
 
