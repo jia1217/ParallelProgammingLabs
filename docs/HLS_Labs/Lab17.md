@@ -308,6 +308,10 @@ The configure block design can use reference materials [here](https://uri-nextla
 
 <div align=center><img src="Images/17/7.png" alt="drawing" width="1000"/></div>
 
+Here, we need to change the data width of the AXI DMA ip, because the data width of the ```matmult_accel``` IP's interface is 512 bits, so they need to keep the same.
+
+<div align=center><img src="Images/v4/14.png" alt="drawing" width="1000"/></div>
+
 ## Run synthesis,  Implementation, and generate bitstream
 
 It may show some errors about I/O Ports. Please fix them.
@@ -339,7 +343,6 @@ B = np.random.rand(DIM, DIM).astype(dtype=np.float32)
 in_buffer[:] = np.stack((A, B))
 ```
 
-
 ```python 
 #begin the DMA transfer
 def run_kernel():
@@ -347,7 +350,6 @@ def run_kernel():
     dma.recvchannel.transfer(out_buffer)
     dma.sendchannel.wait()
     dma.recvchannel.wait()
-
 #Times an entire code cell.
 %%timeit
 run_kernel()
