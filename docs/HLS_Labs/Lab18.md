@@ -277,7 +277,7 @@ The synthesis report is shown below:
 
 <div align=center><img src="Images/21/19.png" alt="drawing" width="1000"/></div>
 
-According to the synthesis result, II of the entire block becomes 4, which is a huge improvement. The trade-off is that the required FF becomes 581 and the required LUT becomes 665 and the required DSP becomes 8. This is due to the fact the unrolling and array partition increases the parallelism and of course, require more hardware resources. In this example, N = 11 so it is possible to unroll all loops and partition all arrays. If N equals 4096 or more, we may need to reduce the unroll factor to balance the resources with speed.
+According to the synthesis result, II of the entire block becomes 6, which is a huge improvement. The trade-off is that the required FF becomes 111 and the required LUT becomes 342 and the required DSP becomes 4. This is due to the fact the unrolling and array partition increases the parallelism and of course, require more hardware resources. In this example, N = 11 so it is possible to unroll all loops and partition all arrays. If N equals 4096 or more, we may need to reduce the unroll factor to balance the resources with speed.
 
 In addition, only 4 multipliers rather than N are used. HLS does some conditional optimization. In this case, if the coefficient is 0, it is not required to perform the multiplication. and since the coefficients are symmetric, some multiplications can be combined. Therefore, the unrolled MAC loop is finally implemented as:
 
