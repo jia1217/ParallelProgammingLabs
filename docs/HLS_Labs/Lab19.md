@@ -91,7 +91,7 @@ $$
 
 
 
-We can get the corresponding angles as $45&#176$, $26.57&#176$, $14.04&#176$, etc. It can be proved that any angle with $0\to90&#176$ can be represented as the sum of these angles, which means with enough $\phi_i$ summed up, we can calculate any $\cos$ and $\sin$ values.  
+We can get the corresponding angles as $45&#xb0$, $26.57&#xb0$, $14.04&#xb0$, etc. It can be proved that any angle with $0\to90&#176$ can be represented as the sum of these angles, which means with enough $\phi_i$ summed up, we can calculate any $\cos$ and $\sin$ values.  
 
 However, the multiplication with $\cos(\phi_i)$ hasn't been solved yet. Since
 
