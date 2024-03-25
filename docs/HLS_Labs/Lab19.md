@@ -91,7 +91,7 @@ $$
 
 
 
-We can get the corresponding angles as $45U+000B0$, $26.57&#xb0$, $14.04&#xb0$, etc. It can be proved that any angle with $0\to90&#xb0$ can be represented as the sum of these angles, which means with enough $\phi_i$ summed up, we can calculate any $\cos$ and $\sin$ values.  
+We can get the corresponding angles as 45U+000B0, $26.57&#xb0$, $14.04&#xb0$, etc. It can be proved that any angle with $0\to90&#xb0$ can be represented as the sum of these angles, which means with enough $\phi_i$ summed up, we can calculate any $\cos$ and $\sin$ values.  
 
 However, the multiplication with $\cos(\phi_i)$ hasn't been solved yet. Since
 
