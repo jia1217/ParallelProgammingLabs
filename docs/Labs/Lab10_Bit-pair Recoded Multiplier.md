@@ -513,15 +513,15 @@ module Bitpair_Mult #(
     );
     
     // Adder for accumulating the multiplication results.
-    adder #(
-        .N(N + 1)
-    ) adder_inst (
-        .cin(code[2]),                        // Carry-in based on Booth code, affects addition.
-        .x0(multi_multiplican),               // First operand for addition.
-        .x1(product_1),                       // Second operand, accumulated product.
-        .y(partial)                           // Result of addition.
-    );
-
+adder #(
+		.N(N + 1)
+	) adder_inst (
+		.cin(code[2]),//+1
+		.extend(sign_extend),
+		.x0(multi_multiplican),
+		.x1(product_1),
+		.y(partial)
+	);
     // Reset block to clear or set the partial sum/product.
     RESET #(
         .N(N+1)
