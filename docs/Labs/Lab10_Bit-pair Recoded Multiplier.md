@@ -600,7 +600,7 @@ module btn_lab4 #(
     input rst,               // Global reset signal.
     input key,               // Input signal from a physical button.
     input start,             // Control signal to start the processor.
-    input [N-1:0] multiplicand,    // Data input port for the multiplicand.
+    input [N-1:0] multiplican,    // Data input port for the multiplicand.
     input [N-1:0] multiplier,       // Data input port for the multiplier.
     output [2*N-1:0] product,       // Output port for the product result.
     output Busy,                     // Processor's busy status output.
