@@ -65,7 +65,7 @@ module fulladder_dataflow_tb();
     wire cout, s;
     
     // Instantiate the Device Under Test (DUT) with the named port mapping
-    lab2_3_1 DUT (.a(a), .b(b), .cin(cin), .cout(cout), .s(s));
+    lab2_3_1 DUT (.a(a), .b(b), .cin(cin), .count(count), .s(s));
     
     // Initial block starts at time 0 and executes sequentially
     initial
