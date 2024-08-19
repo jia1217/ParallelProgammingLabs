@@ -55,7 +55,8 @@ Now we can see the ```Schematic``` under the RTL ANALYSIS part like below:
 Then we can run Simulation to check the code of the lab2_3_1 module.
 
 **tb.v**
-The way to add test_bench files is similar to the way to add design source file in [lab1](https://uri-nextlab.github.io/ParallelProgammingLabs/Verilog_Labs/Lab1_Modeling_Concepts.html) We just need to choose add or create the simulation sources.
+
+The way to add test_bench files is similar to the way to add design source file in [lab1](https://uri-nextlab.github.io/ParallelProgammingLabs/Verilog_Labs/Lab1_Modeling_Concepts.html) . We just need to choose add or create the simulation sources.
 
 ```verilog
 // Define the testbench module with no ports, as it's a top-level entity
