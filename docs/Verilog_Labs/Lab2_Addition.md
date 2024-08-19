@@ -230,7 +230,9 @@ Now we can see the ```Schematic``` under the RTL ANALYSIS part like below:
 <div align=center><img src="imgs/v3/19.png" alt="drawing" width="900"/></div>
 
 Then we can run Simulation to check the code of the lab2_3_1 module.
+
 **tb.v**
+
 ```verilog
 // Define the testbench module with no ports, as it's a top-level entity
 module fulladder_dataflow_tb();
