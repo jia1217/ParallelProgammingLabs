@@ -44,7 +44,7 @@ module lab2_3_1(
     // and the most significant bit is used as the carry-out ('count').
     // This is a compact way to express the functionality of a full adder without explicitly 
     // detailing the logic operations usually seen in a full adder.
-    assign {count, s} = a + b + cin; // Concatenation of carry and sum, {carry, sum} = a + b + cin
+    assign {cout, s} = a + b + cin; // Concatenation of carry and sum, {carry, sum} = a + b + cin
 
 endmodule
 ```
