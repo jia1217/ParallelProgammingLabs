@@ -41,7 +41,7 @@ module lab2_3_1(
     // In this case, we use arithmetic addition to determine the sum and carry.
     // The arithmetic addition of 'a', 'b', and 'cin' results in a 2-bit number.
     // The least significant bit of this result is used as the sum ('s'),
-    // and the most significant bit is used as the carry-out ('count').
+    // and the most significant bit is used as the carry-out ('cout').
     // This is a compact way to express the functionality of a full adder without explicitly 
     // detailing the logic operations usually seen in a full adder.
     assign {cout, s} = a + b + cin; // Concatenation of carry and sum, {carry, sum} = a + b + cin
@@ -114,7 +114,7 @@ module lab2_3_1_rca_dataflow(
     input [3:0] b,       // Second 4-bit operand
     input cin,           // Carry-in bit for the least significant bit addition
     output [3:0] s,      // 4-bit sum output
-    output count         // Carry-out bit from the most significant bit addition
+    output cout         // Carry-out bit from the most significant bit addition
 );
    
     wire [3:0] c_temp;   // Internal wires to propagate carry between full adder stages
@@ -125,7 +125,7 @@ module lab2_3_1_rca_dataflow(
         .b(b[0]),
         .cin(cin),     // This is the external carry-in for the entire 4-bit addition
         .s(s[0]),      // Sum bit for the least significant position
-        .count(c_temp[0]) // Carry-out used as carry-in for the next significant bit
+        .cout(c_temp[0]) // Carry-out used as carry-in for the next significant bit
     );
     
     // Instantiate the second full adder
@@ -134,7 +134,7 @@ module lab2_3_1_rca_dataflow(
         .b(b[1]),
         .cin(c_temp[0]), // Carry-in from the previous less significant adder
         .s(s[1]),        // Sum bit for the second least significant position
-        .count(c_temp[1]) // Carry-out used as carry-in for the next significant bit
+        .cout(c_temp[1]) // Carry-out used as carry-in for the next significant bit
     );
 
     // Instantiate the third full adder
@@ -143,7 +143,7 @@ module lab2_3_1_rca_dataflow(
         .b(b[2]),
         .cin(c_temp[1]), // Carry-in from the previous less significant adder
         .s(s[2]),        // Sum bit for the second most significant position
-        .count(c_temp[2]) // Carry-out used as carry-in for the next significant bit
+        .cout(c_temp[2]) // Carry-out used as carry-in for the next significant bit
     );
     
     // Instantiate the fourth and final full adder
@@ -152,7 +152,7 @@ module lab2_3_1_rca_dataflow(
         .b(b[3]),
         .cin(c_temp[2]), // Carry-in from the previous less significant adder
         .s(s[3]),        // Sum bit for the most significant position
-        .count(count)    // Final carry-out, which is the carry-out of the entire 4-bit addition
+        .cout(cout)    // Final carry-out, which is the carry-out of the entire 4-bit addition
     );
 
 endmodule
