@@ -34,7 +34,7 @@ module lab2_3_1(
     input b,      // Second input bit of the full adder
     input cin,    // Carry-in input bit of the full adder
     output s,     // Sum output bit of the full adder
-    output count  // Carry-out output bit of the full adder
+    output cout  // Carry-out output bit of the full adder
 );
 
     // Implement the sum and carry using dataflow modeling expressions.
@@ -65,7 +65,7 @@ module fulladder_dataflow_tb();
     wire cout, s;
     
     // Instantiate the Device Under Test (DUT) with the named port mapping
-    lab2_3_1 DUT (.a(a), .b(b), .cin(cin), .count(count), .s(s));
+    lab2_3_1 DUT (.a(a), .b(b), .cin(cin), .cout(cout), .s(s));
     
     // Initial block starts at time 0 and executes sequentially
     initial
